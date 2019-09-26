@@ -16,14 +16,8 @@
 
 package org.springframework.boot.test.autoconfigure.json;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-
-import javax.json.bind.Jsonb;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -36,17 +30,17 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.jsonb.JsonbAutoConfiguration;
-import org.springframework.boot.test.json.AbstractJsonMarshalTester;
-import org.springframework.boot.test.json.BasicJsonTester;
-import org.springframework.boot.test.json.GsonTester;
-import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.boot.test.json.JsonbTester;
+import org.springframework.boot.test.json.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.ResolvableType;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ReflectionUtils;
+
+import javax.json.bind.Jsonb;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
 /**
  * Auto-configuration for Json testers.
@@ -59,7 +53,7 @@ import org.springframework.util.ReflectionUtils;
 @Configuration
 @ConditionalOnClass(name = "org.assertj.core.api.Assert")
 @ConditionalOnProperty("spring.test.jsontesters.enabled")
-@AutoConfigureAfter({ JacksonAutoConfiguration.class, GsonAutoConfiguration.class, JsonbAutoConfiguration.class })
+@AutoConfigureAfter({JacksonAutoConfiguration.class, GsonAutoConfiguration.class, JsonbAutoConfiguration.class})
 public class JsonTestersAutoConfiguration {
 
 	@Bean
@@ -171,8 +165,7 @@ public class JsonTestersAutoConfiguration {
 		private void processField(Object bean, Field field) {
 			if (AbstractJsonMarshalTester.class.isAssignableFrom(field.getType())) {
 				initializeTester(bean, field, bean.getClass(), ResolvableType.forField(field).getGeneric());
-			}
-			else if (BasicJsonTester.class.isAssignableFrom(field.getType())) {
+			} else if (BasicJsonTester.class.isAssignableFrom(field.getType())) {
 				initializeTester(bean, field, bean.getClass());
 			}
 		}

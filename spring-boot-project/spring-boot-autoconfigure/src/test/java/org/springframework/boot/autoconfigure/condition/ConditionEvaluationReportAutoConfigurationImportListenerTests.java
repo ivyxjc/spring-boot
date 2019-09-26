@@ -16,19 +16,18 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportEvent;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportListener;
 import org.springframework.core.io.support.SpringFactoriesLoader;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,9 +39,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ConditionEvaluationReportAutoConfigurationImportListenerTests {
 
-	private ConditionEvaluationReportAutoConfigurationImportListener listener;
-
 	private final ConfigurableListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+	private ConditionEvaluationReportAutoConfigurationImportListener listener;
 
 	@Before
 	public void setup() {

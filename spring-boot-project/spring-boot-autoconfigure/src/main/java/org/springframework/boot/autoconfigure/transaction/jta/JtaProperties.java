@@ -42,12 +42,12 @@ public class JtaProperties {
 	 */
 	private String transactionManagerId;
 
-	public void setLogDir(String logDir) {
-		this.logDir = logDir;
-	}
-
 	public String getLogDir() {
 		return this.logDir;
+	}
+
+	public void setLogDir(String logDir) {
+		this.logDir = logDir;
 	}
 
 	public String getTransactionManagerId() {

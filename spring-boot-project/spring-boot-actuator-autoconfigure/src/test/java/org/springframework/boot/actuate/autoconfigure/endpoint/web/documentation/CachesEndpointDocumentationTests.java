@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.cache.CachesEndpoint;
 import org.springframework.boot.actuate.cache.CachesEndpointWebExtension;
 import org.springframework.cache.CacheManager;
@@ -34,6 +27,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.request.ParameterDescriptor;
+
+import java.util.*;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -67,8 +62,8 @@ public class CachesEndpointDocumentationTests extends MockMvcEndpointDocumentati
 						responseFields(fieldWithPath("cacheManagers").description("Cache managers keyed by id."),
 								fieldWithPath("cacheManagers.*.caches")
 										.description("Caches in the application context keyed by " + "name."))
-												.andWithPrefix("cacheManagers.*.caches.*.", fieldWithPath("target")
-														.description("Fully qualified name of the native cache."))));
+								.andWithPrefix("cacheManagers.*.caches.*.", fieldWithPath("target")
+										.description("Fully qualified name of the native cache."))));
 	}
 
 	@Test

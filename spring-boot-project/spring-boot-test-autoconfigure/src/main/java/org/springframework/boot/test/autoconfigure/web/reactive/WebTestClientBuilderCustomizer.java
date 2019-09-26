@@ -24,14 +24,15 @@ import org.springframework.test.web.reactive.server.WebTestClient.Builder;
  * auto-configured {@link Builder}.
  *
  * @author Andy Wilkinson
- * @since 2.0.0
  * @see WebTestClientAutoConfiguration
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface WebTestClientBuilderCustomizer {
 
 	/**
 	 * Customize the given {@code builder}.
+	 *
 	 * @param builder the builder
 	 */
 	void customize(Builder builder);

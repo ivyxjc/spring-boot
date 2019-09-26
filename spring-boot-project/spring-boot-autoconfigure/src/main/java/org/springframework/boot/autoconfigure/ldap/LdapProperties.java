@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.ldap;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Configuration properties for LDAP.
@@ -34,36 +34,30 @@ import org.springframework.util.ObjectUtils;
 public class LdapProperties {
 
 	private static final int DEFAULT_PORT = 389;
-
-	/**
-	 * LDAP URLs of the server.
-	 */
-	private String[] urls;
-
-	/**
-	 * Base suffix from which all operations should originate.
-	 */
-	private String base;
-
-	/**
-	 * Login username of the server.
-	 */
-	private String username;
-
-	/**
-	 * Login password of the server.
-	 */
-	private String password;
-
-	/**
-	 * Whether read-only operations should use an anonymous environment.
-	 */
-	private boolean anonymousReadOnly;
-
 	/**
 	 * LDAP specification settings.
 	 */
 	private final Map<String, String> baseEnvironment = new HashMap<>();
+	/**
+	 * LDAP URLs of the server.
+	 */
+	private String[] urls;
+	/**
+	 * Base suffix from which all operations should originate.
+	 */
+	private String base;
+	/**
+	 * Login username of the server.
+	 */
+	private String username;
+	/**
+	 * Login password of the server.
+	 */
+	private String password;
+	/**
+	 * Whether read-only operations should use an anonymous environment.
+	 */
+	private boolean anonymousReadOnly;
 
 	public String[] getUrls() {
 		return this.urls;
@@ -111,7 +105,7 @@ public class LdapProperties {
 
 	public String[] determineUrls(Environment environment) {
 		if (ObjectUtils.isEmpty(this.urls)) {
-			return new String[] { "ldap://localhost:" + determinePort(environment) };
+			return new String[]{"ldap://localhost:" + determinePort(environment)};
 		}
 		return this.urls;
 	}

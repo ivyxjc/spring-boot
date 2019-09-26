@@ -16,22 +16,17 @@
 
 package org.springframework.boot.cli.command.install;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
 import org.springframework.boot.cli.compiler.GroovyCompilerScope;
 import org.springframework.boot.cli.compiler.RepositoryConfigurationFactory;
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration;
 import org.springframework.boot.testsupport.assertj.Matched;
+
+import java.io.File;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItems;
@@ -77,7 +72,7 @@ public class GroovyGrabDependencyResolverTests {
 
 			@Override
 			public String[] getClasspath() {
-				return new String[] { "." };
+				return new String[]{"."};
 			}
 
 			@Override
@@ -104,7 +99,7 @@ public class GroovyGrabDependencyResolverTests {
 	}
 
 	@Test
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void resolveShorthandArtifactWithDependencies() throws Exception {
 		List<File> resolved = this.resolver.resolve(Arrays.asList("spring-beans"));
 		assertThat(resolved).hasSize(3);

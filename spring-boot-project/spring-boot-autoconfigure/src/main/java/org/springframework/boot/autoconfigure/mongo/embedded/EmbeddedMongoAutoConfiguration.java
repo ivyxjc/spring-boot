@@ -16,23 +16,11 @@
 
 package org.springframework.boot.autoconfigure.mongo.embedded;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.mongodb.MongoClient;
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
-import de.flapdoodle.embed.mongo.config.ExtractedArtifactStoreBuilder;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Storage;
+import de.flapdoodle.embed.mongo.config.*;
 import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.mongo.distribution.Version;
@@ -47,7 +35,6 @@ import de.flapdoodle.embed.process.runtime.Network;
 import de.flapdoodle.embed.process.store.ArtifactStoreBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -67,6 +54,12 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.data.mongodb.core.MongoClientFactoryBean;
 import org.springframework.data.mongodb.core.ReactiveMongoClientFactoryBean;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Embedded Mongo.
  *
@@ -78,14 +71,14 @@ import org.springframework.data.mongodb.core.ReactiveMongoClientFactoryBean;
  * @since 1.3.0
  */
 @Configuration
-@EnableConfigurationProperties({ MongoProperties.class, EmbeddedMongoProperties.class })
+@EnableConfigurationProperties({MongoProperties.class, EmbeddedMongoProperties.class})
 @AutoConfigureBefore(MongoAutoConfiguration.class)
-@ConditionalOnClass({ MongoClient.class, MongodStarter.class })
+@ConditionalOnClass({MongoClient.class, MongodStarter.class})
 public class EmbeddedMongoAutoConfiguration {
 
-	private static final byte[] IP4_LOOPBACK_ADDRESS = { 127, 0, 0, 1 };
+	private static final byte[] IP4_LOOPBACK_ADDRESS = {127, 0, 0, 1};
 
-	private static final byte[] IP6_LOOPBACK_ADDRESS = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 };
+	private static final byte[] IP6_LOOPBACK_ADDRESS = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1};
 
 	private final MongoProperties properties;
 
@@ -96,7 +89,7 @@ public class EmbeddedMongoAutoConfiguration {
 	private final IRuntimeConfig runtimeConfig;
 
 	public EmbeddedMongoAutoConfiguration(MongoProperties properties, EmbeddedMongoProperties embeddedProperties,
-			ApplicationContext context, IRuntimeConfig runtimeConfig) {
+										  ApplicationContext context, IRuntimeConfig runtimeConfig) {
 		this.properties = properties;
 		this.embeddedProperties = embeddedProperties;
 		this.context = context;
@@ -135,8 +128,7 @@ public class EmbeddedMongoAutoConfiguration {
 		Integer configuredPort = this.properties.getPort();
 		if (configuredPort != null && configuredPort > 0) {
 			builder.net(new Net(getHost().getHostAddress(), configuredPort, Network.localhostIsIPv6()));
-		}
-		else {
+		} else {
 			builder.net(new Net(getHost().getHostAddress(), Network.getFreeServerPort(getHost()),
 					Network.localhostIsIPv6()));
 		}
@@ -215,7 +207,7 @@ public class EmbeddedMongoAutoConfiguration {
 	 * {@link MongodExecutable} beans.
 	 */
 	@Configuration
-	@ConditionalOnClass({ MongoClient.class, MongoClientFactoryBean.class })
+	@ConditionalOnClass({MongoClient.class, MongoClientFactoryBean.class})
 	protected static class EmbeddedMongoDependencyConfiguration extends MongoClientDependsOnBeanFactoryPostProcessor {
 
 		EmbeddedMongoDependencyConfiguration() {
@@ -230,7 +222,7 @@ public class EmbeddedMongoAutoConfiguration {
 	 * {@link MongodExecutable} beans.
 	 */
 	@Configuration
-	@ConditionalOnClass({ com.mongodb.reactivestreams.client.MongoClient.class, ReactiveMongoClientFactoryBean.class })
+	@ConditionalOnClass({com.mongodb.reactivestreams.client.MongoClient.class, ReactiveMongoClientFactoryBean.class})
 	protected static class EmbeddedReactiveMongoDependencyConfiguration
 			extends ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor {
 

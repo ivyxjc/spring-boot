@@ -16,13 +16,12 @@
 
 package org.springframework.boot.autoconfigure.data.redis;
 
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,27 +16,6 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.attribute.PosixFilePermission;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.gradle.api.Project;
@@ -47,8 +26,22 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.loader.tools.DefaultLaunchScript;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.JarOutputStream;
+import java.util.jar.Manifest;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -88,8 +81,7 @@ public abstract class AbstractBootArchiveTests<T extends Jar & BootArchive> {
 			this.project = ProjectBuilder.builder().withProjectDir(this.temp.newFolder()).build();
 			this.project.setDescription("Test project for " + this.taskClass.getSimpleName());
 			this.task = configure(this.project.getTasks().create("testArchive", this.taskClass));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -252,8 +244,7 @@ public abstract class AbstractBootArchiveTests<T extends Jar & BootArchive> {
 		try {
 			Set<PosixFilePermission> permissions = Files.getPosixFilePermissions(this.task.getArchivePath().toPath());
 			assertThat(permissions).contains(PosixFilePermission.OWNER_EXECUTE);
-		}
-		catch (UnsupportedOperationException ex) {
+		} catch (UnsupportedOperationException ex) {
 			// Windows, presumably. Continue
 		}
 	}

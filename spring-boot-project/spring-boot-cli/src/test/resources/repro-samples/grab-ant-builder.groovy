@@ -5,7 +5,7 @@ class MainController {
 
 	@RequestMapping("/")
 	def home() {
-		new AntBuilder().echo(message:"Hello world")
+		new AntBuilder().echo(message: "Hello world")
 		[message: "Hello World"]
 	}
 }

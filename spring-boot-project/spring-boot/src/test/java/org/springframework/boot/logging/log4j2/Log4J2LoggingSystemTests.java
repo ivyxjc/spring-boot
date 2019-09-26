@@ -16,15 +16,6 @@
 
 package org.springframework.boot.logging.log4j2;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,25 +27,27 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import org.springframework.boot.logging.AbstractLoggingSystemTests;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.LoggingSystemProperties;
+import org.springframework.boot.logging.*;
 import org.springframework.boot.testsupport.assertj.Matched;
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link Log4J2LoggingSystem}.
@@ -66,11 +59,9 @@ import static org.mockito.Mockito.verify;
  */
 public class Log4J2LoggingSystemTests extends AbstractLoggingSystemTests {
 
+	private final TestLog4J2LoggingSystem loggingSystem = new TestLog4J2LoggingSystem();
 	@Rule
 	public OutputCapture output = new OutputCapture();
-
-	private final TestLog4J2LoggingSystem loggingSystem = new TestLog4J2LoggingSystem();
-
 	private Logger logger;
 
 	@Before
@@ -228,7 +219,7 @@ public class Log4J2LoggingSystemTests extends AbstractLoggingSystemTests {
 	@Test
 	public void springConfigLocations() {
 		String[] locations = getSpringConfigLocations(this.loggingSystem);
-		assertThat(locations).isEqualTo(new String[] { "log4j2-spring.properties", "log4j2-spring.xml" });
+		assertThat(locations).isEqualTo(new String[]{"log4j2-spring.properties", "log4j2-spring.xml"});
 	}
 
 	@Test
@@ -262,8 +253,7 @@ public class Log4J2LoggingSystemTests extends AbstractLoggingSystemTests {
 			this.logger.warn("Expected exception", new RuntimeException("Expected", new RuntimeException("Cause")));
 			String fileContents = FileCopyUtils.copyToString(new FileReader(new File(tmpDir() + "/spring.log")));
 			assertThat(fileContents).is(Matched.by(expectedOutput));
-		}
-		finally {
+		} finally {
 			System.clearProperty(LoggingSystemProperties.EXCEPTION_CONVERSION_WORD);
 		}
 	}

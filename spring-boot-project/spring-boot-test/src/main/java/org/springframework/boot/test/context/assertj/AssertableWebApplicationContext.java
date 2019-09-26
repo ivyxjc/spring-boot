@@ -16,11 +16,11 @@
 
 package org.springframework.boot.test.context.assertj;
 
-import java.util.function.Supplier;
-
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.function.Supplier;
 
 /**
  * A {@link WebApplicationContext} that additionally supports AssertJ style assertions.
@@ -30,18 +30,19 @@ import org.springframework.web.context.WebApplicationContext;
  * See {@link ApplicationContextAssertProvider} for more details.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see WebApplicationContextRunner
  * @see WebApplicationContext
+ * @since 2.0.0
  */
 public interface AssertableWebApplicationContext
 		extends ApplicationContextAssertProvider<ConfigurableWebApplicationContext>, ConfigurableWebApplicationContext {
 
 	/**
 	 * Factory method to create a new {@link AssertableWebApplicationContext} instance.
+	 *
 	 * @param contextSupplier a supplier that will either return a fully configured
-	 * {@link ConfigurableWebApplicationContext} or throw an exception if the context
-	 * fails to start.
+	 *                        {@link ConfigurableWebApplicationContext} or throw an exception if the context
+	 *                        fails to start.
 	 * @return a {@link AssertableWebApplicationContext} instance
 	 */
 	static AssertableWebApplicationContext get(Supplier<? extends ConfigurableWebApplicationContext> contextSupplier) {

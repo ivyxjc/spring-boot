@@ -16,12 +16,12 @@
 
 package org.springframework.boot.cli;
 
-import java.io.File;
-import java.net.URI;
-
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.io.File;
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -130,8 +130,7 @@ public class SampleIntegrationTests {
 		try {
 			String output = this.cli.run("jms.groovy");
 			assertThat(output).contains("Received Greetings from Spring Boot via Artemis");
-		}
-		finally {
+		} finally {
 			System.clearProperty("spring.artemis.embedded.queues");
 		}
 	}

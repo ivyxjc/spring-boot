@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.mustache;
 
 import com.samskivert.mustache.Mustache.Compiler;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;

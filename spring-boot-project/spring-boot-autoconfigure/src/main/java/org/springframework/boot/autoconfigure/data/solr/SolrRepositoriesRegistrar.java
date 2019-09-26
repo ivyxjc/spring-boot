@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.data.solr;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.boot.autoconfigure.data.AbstractRepositoryConfigurationSourceSupport;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.data.repository.config.RepositoryConfigurationExtension;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 import org.springframework.data.solr.repository.config.SolrRepositoryConfigExtension;
+
+import java.lang.annotation.Annotation;
 
 /**
  * {@link ImportBeanDefinitionRegistrar} used to auto-configure Spring Data Solr

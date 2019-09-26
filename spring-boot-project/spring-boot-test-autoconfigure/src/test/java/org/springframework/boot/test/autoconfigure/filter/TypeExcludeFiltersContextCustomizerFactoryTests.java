@@ -17,7 +17,6 @@
 package org.springframework.boot.test.autoconfigure.filter;
 
 import org.junit.Test;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -83,12 +82,12 @@ public class TypeExcludeFiltersContextCustomizerFactoryTests {
 
 	}
 
-	@TypeExcludeFilters({ SimpleExclude.class, TestClassAwareExclude.class })
+	@TypeExcludeFilters({SimpleExclude.class, TestClassAwareExclude.class})
 	static class WithExcludeFilters {
 
 	}
 
-	@TypeExcludeFilters({ TestClassAwareExclude.class, SimpleExclude.class })
+	@TypeExcludeFilters({TestClassAwareExclude.class, SimpleExclude.class})
 	static class WithSameExcludeFilters {
 
 	}

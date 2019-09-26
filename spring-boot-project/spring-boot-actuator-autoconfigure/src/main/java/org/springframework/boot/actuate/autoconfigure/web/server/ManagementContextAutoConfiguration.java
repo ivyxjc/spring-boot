@@ -52,7 +52,7 @@ import org.springframework.util.Assert;
  */
 @Configuration
 @AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
-@EnableConfigurationProperties({ WebEndpointProperties.class, ManagementServerProperties.class })
+@EnableConfigurationProperties({WebEndpointProperties.class, ManagementServerProperties.class})
 public class ManagementContextAutoConfiguration {
 
 	@Configuration
@@ -82,6 +82,7 @@ public class ManagementContextAutoConfiguration {
 		/**
 		 * Add an alias for 'local.management.port' that actually resolves using
 		 * 'local.server.port'.
+		 *
 		 * @param environment the environment
 		 */
 		private void addLocalManagementPortPropertyAlias(ConfigurableEnvironment environment) {
@@ -115,7 +116,7 @@ public class ManagementContextAutoConfiguration {
 		private final ManagementContextFactory managementContextFactory;
 
 		DifferentManagementContextConfiguration(ApplicationContext applicationContext,
-				ManagementContextFactory managementContextFactory) {
+												ManagementContextFactory managementContextFactory) {
 			this.applicationContext = applicationContext;
 			this.managementContextFactory = managementContextFactory;
 		}
@@ -158,6 +159,18 @@ public class ManagementContextAutoConfiguration {
 			this.childContext = childContext;
 		}
 
+		public static void addIfPossible(ApplicationContext parentContext,
+										 ConfigurableApplicationContext childContext) {
+			if (parentContext instanceof ConfigurableApplicationContext) {
+				add((ConfigurableApplicationContext) parentContext, childContext);
+			}
+		}
+
+		private static void add(ConfigurableApplicationContext parentContext,
+								ConfigurableApplicationContext childContext) {
+			parentContext.addApplicationListener(new CloseManagementContextListener(parentContext, childContext));
+		}
+
 		@Override
 		public void onApplicationEvent(ApplicationEvent event) {
 			if (event instanceof ContextClosedEvent) {
@@ -180,18 +193,6 @@ public class ManagementContextAutoConfiguration {
 			if (applicationContext == this.parentContext) {
 				this.childContext.close();
 			}
-		}
-
-		public static void addIfPossible(ApplicationContext parentContext,
-				ConfigurableApplicationContext childContext) {
-			if (parentContext instanceof ConfigurableApplicationContext) {
-				add((ConfigurableApplicationContext) parentContext, childContext);
-			}
-		}
-
-		private static void add(ConfigurableApplicationContext parentContext,
-				ConfigurableApplicationContext childContext) {
-			parentContext.addApplicationListener(new CloseManagementContextListener(parentContext, childContext));
 		}
 
 	}

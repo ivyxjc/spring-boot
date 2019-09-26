@@ -16,10 +16,6 @@
 
 package org.springframework.boot.context.config;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.ApplicationContextException;
@@ -32,6 +28,10 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * {@link ApplicationListener} that delegates to other listeners that are specified under
@@ -83,8 +83,7 @@ public class DelegatingApplicationListener implements ApplicationListener<Applic
 					Assert.isAssignable(ApplicationListener.class, clazz,
 							"class [" + className + "] must implement ApplicationListener");
 					listeners.add((ApplicationListener<ApplicationEvent>) BeanUtils.instantiateClass(clazz));
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new ApplicationContextException("Failed to load context listener class [" + className + "]",
 							ex);
 				}
@@ -94,13 +93,13 @@ public class DelegatingApplicationListener implements ApplicationListener<Applic
 		return listeners;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
 	@Override
 	public int getOrder() {
 		return this.order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 }

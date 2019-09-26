@@ -35,6 +35,7 @@ public class Link {
 
 	/**
 	 * Creates a new {@link Link} with the given {@code href}.
+	 *
 	 * @param href the href
 	 */
 	public Link(String href) {
@@ -45,6 +46,7 @@ public class Link {
 
 	/**
 	 * Returns the href of the link.
+	 *
 	 * @return the href
 	 */
 	public String getHref() {
@@ -53,6 +55,7 @@ public class Link {
 
 	/**
 	 * Returns whether or not the {@link #getHref() href} is templated.
+	 *
 	 * @return {@code true} if the href is templated, otherwise {@code false}
 	 */
 	public boolean isTemplated() {

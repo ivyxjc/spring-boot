@@ -16,17 +16,13 @@
 
 package org.springframework.boot.maven;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
 import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
 import org.junit.Test;
+
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -38,6 +34,20 @@ import static org.mockito.Mockito.mock;
  * @author Stephane Nicoll
  */
 public class DependencyFilterMojoTests {
+
+	private static Artifact createArtifact(String groupId, String artifactId) {
+		return createArtifact(groupId, artifactId, null);
+	}
+
+	private static Artifact createArtifact(String groupId, String artifactId, String scope) {
+		Artifact a = mock(Artifact.class);
+		given(a.getGroupId()).willReturn(groupId);
+		given(a.getArtifactId()).willReturn(artifactId);
+		if (scope != null) {
+			given(a.getScope()).willReturn(scope);
+		}
+		return a;
+	}
 
 	@Test
 	public void filterDependencies() throws MojoExecutionException {
@@ -97,26 +107,12 @@ public class DependencyFilterMojoTests {
 		assertThat(artifacts).containsExactly(one, three, four);
 	}
 
-	private static Artifact createArtifact(String groupId, String artifactId) {
-		return createArtifact(groupId, artifactId, null);
-	}
-
-	private static Artifact createArtifact(String groupId, String artifactId, String scope) {
-		Artifact a = mock(Artifact.class);
-		given(a.getGroupId()).willReturn(groupId);
-		given(a.getArtifactId()).willReturn(artifactId);
-		if (scope != null) {
-			given(a.getScope()).willReturn(scope);
-		}
-		return a;
-	}
-
 	private static final class TestableDependencyFilterMojo extends AbstractDependencyFilterMojo {
 
 		private final ArtifactsFilter[] additionalFilters;
 
 		private TestableDependencyFilterMojo(List<Exclude> excludes, String excludeGroupIds,
-				ArtifactsFilter... additionalFilters) {
+											 ArtifactsFilter... additionalFilters) {
 			setExcludes(excludes);
 			setExcludeGroupIds(excludeGroupIds);
 			this.additionalFilters = additionalFilters;

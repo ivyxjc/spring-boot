@@ -16,14 +16,6 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.stream.Stream;
-
-import javax.servlet.ServletException;
-
 import org.apache.catalina.Container;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Manager;
@@ -31,9 +23,15 @@ import org.apache.catalina.Wrapper;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.core.StandardWrapper;
 import org.apache.catalina.session.ManagerBase;
-
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ClassUtils;
+
+import javax.servlet.ServletException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.stream.Stream;
 
 /**
  * Tomcat {@link StandardContext} used by {@link TomcatWebServer} to support deferred
@@ -80,8 +78,7 @@ class TomcatEmbeddedContext extends StandardContext {
 	private void load(Wrapper wrapper) {
 		try {
 			wrapper.load();
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			String message = sm.getString("standardContext.loadOnStartup.loadException", getName(), wrapper.getName());
 			if (getComputedFailCtxIfServletStartFails()) {
 				throw new WebServerException(message, ex);
@@ -96,28 +93,28 @@ class TomcatEmbeddedContext extends StandardContext {
 	 * initialize them later the class loader may have changed, so wrap the call to
 	 * loadOnStartup in what we think its going to be the main webapp classloader at
 	 * runtime.
+	 *
 	 * @param classLoader the class loader to use
-	 * @param code the code to run
+	 * @param code        the code to run
 	 */
 	private void doWithThreadContextClassLoader(ClassLoader classLoader, Runnable code) {
 		ClassLoader existingLoader = (classLoader != null) ? ClassUtils.overrideThreadContextClassLoader(classLoader)
 				: null;
 		try {
 			code.run();
-		}
-		finally {
+		} finally {
 			if (existingLoader != null) {
 				ClassUtils.overrideThreadContextClassLoader(existingLoader);
 			}
 		}
 	}
 
-	public void setStarter(TomcatStarter starter) {
-		this.starter = starter;
-	}
-
 	public TomcatStarter getStarter() {
 		return this.starter;
+	}
+
+	public void setStarter(TomcatStarter starter) {
+		this.starter = starter;
 	}
 
 }

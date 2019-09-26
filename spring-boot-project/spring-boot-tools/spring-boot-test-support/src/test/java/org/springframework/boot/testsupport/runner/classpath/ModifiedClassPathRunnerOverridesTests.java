@@ -18,7 +18,6 @@ package org.springframework.boot.testsupport.runner.classpath;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.StringUtils;
 

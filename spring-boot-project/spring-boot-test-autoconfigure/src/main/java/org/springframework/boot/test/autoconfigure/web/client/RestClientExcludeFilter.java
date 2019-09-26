@@ -16,17 +16,17 @@
 
 package org.springframework.boot.test.autoconfigure.web.client;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.boot.test.autoconfigure.filter.AnnotationCustomizableTypeExcludeFilter;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.ClassUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link TypeExcludeFilter} for {@link RestClientTest @RestClientTest}.
@@ -45,8 +45,7 @@ class RestClientExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 			try {
 				includes.add(Class.forName(DATABIND_MODULE_CLASS_NAME, true,
 						RestClientExcludeFilter.class.getClassLoader()));
-			}
-			catch (ClassNotFoundException ex) {
+			} catch (ClassNotFoundException ex) {
 				throw new IllegalStateException("Failed to load " + DATABIND_MODULE_CLASS_NAME, ex);
 			}
 			includes.add(JsonComponent.class);
@@ -68,10 +67,10 @@ class RestClientExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 	@Override
 	protected Filter[] getFilters(FilterType type) {
 		switch (type) {
-		case INCLUDE:
-			return this.annotation.includeFilters();
-		case EXCLUDE:
-			return this.annotation.excludeFilters();
+			case INCLUDE:
+				return this.annotation.includeFilters();
+			case EXCLUDE:
+				return this.annotation.excludeFilters();
 		}
 		throw new IllegalStateException("Unsupported type " + type);
 	}

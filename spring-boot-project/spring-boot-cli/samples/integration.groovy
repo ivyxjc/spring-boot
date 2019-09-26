@@ -31,7 +31,7 @@ class SpringIntegrationExample implements CommandLineRunner {
 @MessageEndpoint
 class HelloTransformer {
 
-	@Transformer(inputChannel="input")
+	@Transformer(inputChannel = "input")
 	String transform(String payload) {
 		"Hello, ${payload}"
 	}

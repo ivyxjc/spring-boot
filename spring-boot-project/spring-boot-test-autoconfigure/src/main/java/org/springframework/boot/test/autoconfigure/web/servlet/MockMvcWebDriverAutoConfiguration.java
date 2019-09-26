@@ -16,12 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.util.concurrent.Executors;
-
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -36,6 +33,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder;
 import org.springframework.util.ClassUtils;
 
+import java.util.concurrent.Executors;
+
 /**
  * Auto-configuration for Selenium {@link WebDriver} MockMVC integration.
  *
@@ -48,16 +47,15 @@ import org.springframework.util.ClassUtils;
 @ConditionalOnProperty(prefix = "spring.test.mockmvc.webdriver", name = "enabled", matchIfMissing = true)
 public class MockMvcWebDriverAutoConfiguration {
 
-	private final Environment environment;
-
 	private static final String SECURITY_CONTEXT_EXECUTOR = "org.springframework.security.concurrent.DelegatingSecurityContextExecutor";
+	private final Environment environment;
 
 	MockMvcWebDriverAutoConfiguration(Environment environment) {
 		this.environment = environment;
 	}
 
 	@Bean
-	@ConditionalOnMissingBean({ WebDriver.class, MockMvcHtmlUnitDriverBuilder.class })
+	@ConditionalOnMissingBean({WebDriver.class, MockMvcHtmlUnitDriverBuilder.class})
 	@ConditionalOnBean(MockMvc.class)
 	public MockMvcHtmlUnitDriverBuilder mockMvcHtmlUnitDriverBuilder(MockMvc mockMvc) {
 		return MockMvcHtmlUnitDriverBuilder.mockMvcSetup(mockMvc)

@@ -16,24 +16,18 @@
 
 package org.springframework.boot.actuate.metrics.web.servlet;
 
-import java.lang.reflect.AnnotatedElement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.LongTaskTimer;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.AnnotatedElement;
+import java.util.*;
 
 /**
  * A {@link HandlerInterceptor} that supports Micrometer's long task timers configured on
@@ -52,7 +46,8 @@ public class LongTaskTimingHandlerInterceptor implements HandlerInterceptor {
 	 * Creates a new {@code LongTaskTimingHandlerInterceptor} that will create
 	 * {@link LongTaskTimer LongTaskTimers} using the given registry. Timers will be
 	 * tagged using the given {@code tagsProvider}.
-	 * @param registry the registry
+	 *
+	 * @param registry     the registry
 	 * @param tagsProvider the tags provider
 	 */
 	public LongTaskTimingHandlerInterceptor(MeterRegistry registry, WebMvcTagsProvider tagsProvider) {
@@ -86,7 +81,7 @@ public class LongTaskTimingHandlerInterceptor implements HandlerInterceptor {
 	}
 
 	private Collection<LongTaskTimer.Sample> getLongTaskTimerSamples(HttpServletRequest request, Object handler,
-			Set<Timed> annotations) {
+																	 Set<Timed> annotations) {
 		List<LongTaskTimer.Sample> samples = new ArrayList<>();
 		annotations.stream().filter(Timed::longTask).forEach((annotation) -> {
 			Iterable<Tag> tags = this.tagsProvider.getLongRequestTags(request, handler);
@@ -136,16 +131,16 @@ public class LongTaskTimingHandlerInterceptor implements HandlerInterceptor {
 			this.longTaskTimerSamples = longTaskTimerSamples;
 		}
 
+		static LongTaskTimingContext get(HttpServletRequest request) {
+			return (LongTaskTimingContext) request.getAttribute(ATTRIBUTE);
+		}
+
 		Collection<LongTaskTimer.Sample> getLongTaskTimerSamples() {
 			return this.longTaskTimerSamples;
 		}
 
 		void attachTo(HttpServletRequest request) {
 			request.setAttribute(ATTRIBUTE, this);
-		}
-
-		static LongTaskTimingContext get(HttpServletRequest request) {
-			return (LongTaskTimingContext) request.getAttribute(ATTRIBUTE);
 		}
 
 	}

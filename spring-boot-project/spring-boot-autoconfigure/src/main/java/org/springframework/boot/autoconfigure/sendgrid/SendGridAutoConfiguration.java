@@ -20,7 +20,6 @@ import com.sendgrid.Client;
 import com.sendgrid.SendGrid;
 import org.apache.http.HttpHost;
 import org.apache.http.impl.client.HttpClientBuilder;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

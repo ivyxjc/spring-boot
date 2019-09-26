@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.web.servlet;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter;
@@ -56,9 +55,9 @@ public class WebMvcEndpointChildContextConfigurationTests {
 	public void contextShouldNotConfigureRequestContextFilterWhenRequestContextListenerPresent() {
 		this.contextRunner.withUserConfiguration(RequestContextListenerConfig.class,
 				WebMvcEndpointChildContextConfiguration.class).run((context) -> {
-					assertThat(context).hasSingleBean(RequestContextListener.class);
-					assertThat(context).doesNotHaveBean(OrderedRequestContextFilter.class);
-				});
+			assertThat(context).hasSingleBean(RequestContextListener.class);
+			assertThat(context).doesNotHaveBean(OrderedRequestContextFilter.class);
+		});
 	}
 
 	@Test

@@ -16,10 +16,10 @@
 
 package org.springframework.boot.context.properties;
 
-import java.util.function.Supplier;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -247,12 +247,12 @@ public class PropertyMapperTests {
 
 		private String name;
 
-		public void setName(String name) {
-			this.name = name;
-		}
-
 		public String getName() {
 			return this.name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
 		}
 
 	}

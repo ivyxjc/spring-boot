@@ -102,7 +102,7 @@ class WebMvcEndpointChildContextConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean({ RequestContextListener.class, RequestContextFilter.class })
+	@ConditionalOnMissingBean({RequestContextListener.class, RequestContextFilter.class})
 	public RequestContextFilter requestContextFilter() {
 		return new OrderedRequestContextFilter();
 	}

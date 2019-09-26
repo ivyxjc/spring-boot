@@ -16,12 +16,6 @@
 
 package org.springframework.boot.gradle.plugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
-import java.util.concurrent.Callable;
-
 import org.gradle.api.GradleException;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
@@ -33,8 +27,13 @@ import org.gradle.api.internal.IConventionAware;
 import org.gradle.api.plugins.ApplicationPlugin;
 import org.gradle.api.plugins.ApplicationPluginConvention;
 import org.gradle.jvm.application.scripts.TemplateBasedScriptGenerator;
-
 import org.springframework.boot.gradle.tasks.application.CreateBootStartScripts;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.util.concurrent.Callable;
 
 /**
  * Action that is executed in response to the {@link ApplicationPlugin} being applied.
@@ -93,8 +92,7 @@ final class ApplicationPluginAction implements PluginApplicationAction {
 				writer.write(buffer, 0, read);
 			}
 			return writer.toString();
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new GradleException("Failed to read '" + name + "'", ex);
 		}
 	}

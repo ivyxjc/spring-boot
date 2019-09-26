@@ -16,15 +16,14 @@
 
 package org.springframework.boot.cli;
 
-import java.io.File;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.cli.command.grab.GrabCommand;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

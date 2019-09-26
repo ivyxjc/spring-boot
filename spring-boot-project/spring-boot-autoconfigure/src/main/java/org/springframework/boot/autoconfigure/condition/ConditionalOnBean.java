@@ -16,15 +16,10 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.Conditional;
+
+import java.lang.annotation.*;
 
 /**
  * {@link Conditional} that only matches when beans meeting all the specified requirements
@@ -57,7 +52,7 @@ import org.springframework.context.annotation.Conditional;
  * @author Phillip Webb
  * @since 1.0.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Conditional(OnBeanCondition.class)
@@ -66,6 +61,7 @@ public @interface ConditionalOnBean {
 	/**
 	 * The class types of beans that should be checked. The condition matches when beans
 	 * of all classes specified are contained in the {@link BeanFactory}.
+	 *
 	 * @return the class types of beans to check
 	 */
 	Class<?>[] value() default {};
@@ -73,6 +69,7 @@ public @interface ConditionalOnBean {
 	/**
 	 * The class type names of beans that should be checked. The condition matches when
 	 * beans of all classes specified are contained in the {@link BeanFactory}.
+	 *
 	 * @return the class type names of beans to check
 	 */
 	String[] type() default {};
@@ -81,6 +78,7 @@ public @interface ConditionalOnBean {
 	 * The annotation type decorating a bean that should be checked. The condition matches
 	 * when all of the annotations specified are defined on beans in the
 	 * {@link BeanFactory}.
+	 *
 	 * @return the class-level annotation types to check
 	 */
 	Class<? extends Annotation>[] annotation() default {};
@@ -88,6 +86,7 @@ public @interface ConditionalOnBean {
 	/**
 	 * The names of beans to check. The condition matches when all of the bean names
 	 * specified are contained in the {@link BeanFactory}.
+	 *
 	 * @return the names of beans to check
 	 */
 	String[] name() default {};
@@ -95,6 +94,7 @@ public @interface ConditionalOnBean {
 	/**
 	 * Strategy to decide if the application context hierarchy (parent contexts) should be
 	 * considered.
+	 *
 	 * @return the search strategy
 	 */
 	SearchStrategy search() default SearchStrategy.ALL;
@@ -104,6 +104,7 @@ public @interface ConditionalOnBean {
 	 * parameters. For example, an annotation declaring {@code value=Name.class} and
 	 * {@code parameterizedContainer=NameRegistration.class} would detect both
 	 * {@code Name} and {@code NameRegistration<Name>}.
+	 *
 	 * @return the container types
 	 * @since 2.1.0
 	 */

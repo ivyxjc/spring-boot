@@ -16,12 +16,11 @@
 
 package org.springframework.boot.test.autoconfigure.properties;
 
+import org.junit.Test;
+import org.springframework.core.annotation.AliasFor;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-
-import org.junit.Test;
-
-import org.springframework.core.annotation.AliasFor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -172,12 +171,13 @@ public class AnnotationsPropertySourceTests {
 		assertThat(source.containsProperty("testenum.value")).isFalse();
 	}
 
-	static class NoAnnotation {
+	enum EnumItem {
 
-	}
+		DEFAULT,
 
-	@TypeLevelAnnotation("abc")
-	static class TypeLevel {
+		ONE,
+
+		TWO
 
 	}
 
@@ -189,21 +189,11 @@ public class AnnotationsPropertySourceTests {
 
 	}
 
-	@TypeLevelWithPrefixAnnotation("abc")
-	static class TypeLevelWithPrefix {
-
-	}
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@PropertyMapping("test")
 	@interface TypeLevelWithPrefixAnnotation {
 
 		String value();
-
-	}
-
-	@AttributeLevelWithPrefixAnnotation("abc")
-	static class AttributeLevelWithPrefix {
 
 	}
 
@@ -215,22 +205,12 @@ public class AnnotationsPropertySourceTests {
 
 	}
 
-	@TypeAndAttributeLevelWithPrefixAnnotation("abc")
-	static class TypeAndAttributeLevelWithPrefix {
-
-	}
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@PropertyMapping("test")
 	@interface TypeAndAttributeLevelWithPrefixAnnotation {
 
 		@PropertyMapping("example")
 		String value();
-
-	}
-
-	@NotMappedAtTypeLevelAnnotation("abc")
-	static class NotMappedAtTypeLevel {
 
 	}
 
@@ -245,11 +225,6 @@ public class AnnotationsPropertySourceTests {
 
 	}
 
-	@NotMappedAtAttributeLevelAnnotation("abc")
-	static class NotMappedAtAttributeLevel {
-
-	}
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@PropertyMapping
 	@interface NotMappedAtAttributeLevelAnnotation {
@@ -258,12 +233,6 @@ public class AnnotationsPropertySourceTests {
 
 		@PropertyMapping(skip = SkipPropertyMapping.YES)
 		String ignore() default "xyz";
-
-	}
-
-	@ArraysAnnotation(strings = { "a", "b" }, classes = { Integer.class, Long.class }, ints = { 1, 2 },
-			longs = { 1, 2 }, floats = { 1.0f, 2.0f }, doubles = { 1.0, 2.0 }, booleans = { false, true })
-	static class Arrays {
 
 	}
 
@@ -287,21 +256,11 @@ public class AnnotationsPropertySourceTests {
 
 	}
 
-	@CamelCaseToKebabCaseAnnotation
-	static class CamelCaseToKebabCase {
-
-	}
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@PropertyMapping
 	@interface CamelCaseToKebabCaseAnnotation {
 
 		String camelCaseToKebabCase() default "abc";
-
-	}
-
-	@PropertiesFromSingleMetaAnnotationAnnotation
-	static class PropertiesFromSingleMetaAnnotation {
 
 	}
 
@@ -311,21 +270,11 @@ public class AnnotationsPropertySourceTests {
 
 	}
 
-	@PropertiesFromMultipleMetaAnnotationsAnnotation
-	static class PropertiesFromMultipleMetaAnnotations {
-
-	}
-
 	@Retention(RetentionPolicy.RUNTIME)
 	@TypeLevelAnnotation("alpha")
 	@TypeLevelWithPrefixAnnotation("bravo")
 	@TypeAndAttributeLevelWithPrefixAnnotation("charlie")
 	@interface PropertiesFromMultipleMetaAnnotationsAnnotation {
-
-	}
-
-	@AttributeWithAliasAnnotation("baz")
-	static class PropertyMappedAttributeWithAnAlias {
 
 	}
 
@@ -354,6 +303,75 @@ public class AnnotationsPropertySourceTests {
 
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@PropertyMapping("testenum")
+	@interface EnumAnnotation {
+
+		@PropertyMapping(skip = SkipPropertyMapping.ON_DEFAULT_VALUE)
+		EnumItem value() default EnumItem.DEFAULT;
+
+	}
+
+	static class NoAnnotation {
+
+	}
+
+	@TypeLevelAnnotation("abc")
+	static class TypeLevel {
+
+	}
+
+	@TypeLevelWithPrefixAnnotation("abc")
+	static class TypeLevelWithPrefix {
+
+	}
+
+	@AttributeLevelWithPrefixAnnotation("abc")
+	static class AttributeLevelWithPrefix {
+
+	}
+
+	@TypeAndAttributeLevelWithPrefixAnnotation("abc")
+	static class TypeAndAttributeLevelWithPrefix {
+
+	}
+
+	@NotMappedAtTypeLevelAnnotation("abc")
+	static class NotMappedAtTypeLevel {
+
+	}
+
+	@NotMappedAtAttributeLevelAnnotation("abc")
+	static class NotMappedAtAttributeLevel {
+
+	}
+
+	@ArraysAnnotation(strings = {"a", "b"}, classes = {Integer.class, Long.class}, ints = {1, 2},
+					  longs = {1, 2}, floats = {1.0f, 2.0f}, doubles = {1.0, 2.0}, booleans = {false, true})
+	static class Arrays {
+
+	}
+
+	@CamelCaseToKebabCaseAnnotation
+	static class CamelCaseToKebabCase {
+
+	}
+
+	@PropertiesFromSingleMetaAnnotationAnnotation
+	static class PropertiesFromSingleMetaAnnotation {
+
+	}
+
+	@PropertiesFromMultipleMetaAnnotationsAnnotation
+	static class PropertiesFromMultipleMetaAnnotations {
+
+	}
+
+	@AttributeWithAliasAnnotation("baz")
+	static class PropertyMappedAttributeWithAnAlias {
+
+	}
+
 	@SelfAnnotating
 	static class PropertyMappedWithSelfAnnotatingAnnotation {
 
@@ -374,25 +392,6 @@ public class AnnotationsPropertySourceTests {
 
 	@EnumAnnotation(EnumItem.DEFAULT)
 	static class EnumValueNotMapped {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@PropertyMapping("testenum")
-	@interface EnumAnnotation {
-
-		@PropertyMapping(skip = SkipPropertyMapping.ON_DEFAULT_VALUE)
-		EnumItem value() default EnumItem.DEFAULT;
-
-	}
-
-	enum EnumItem {
-
-		DEFAULT,
-
-		ONE,
-
-		TWO
 
 	}
 

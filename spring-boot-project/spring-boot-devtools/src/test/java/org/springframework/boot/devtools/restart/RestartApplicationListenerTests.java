@@ -16,13 +16,10 @@
 
 package org.springframework.boot.devtools.restart;
 
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
@@ -32,6 +29,8 @@ import org.springframework.boot.test.rule.OutputCapture;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.nullValue;
@@ -47,7 +46,7 @@ public class RestartApplicationListenerTests {
 
 	private static final String ENABLED_PROPERTY = "spring.devtools.restart.enabled";
 
-	private static final String[] ARGS = new String[] { "a", "b", "c" };
+	private static final String[] ARGS = new String[]{"a", "b", "c"};
 
 	@Rule
 	public final OutputCapture output = new OutputCapture();
@@ -100,8 +99,7 @@ public class RestartApplicationListenerTests {
 		listener.onApplicationEvent(new ApplicationPreparedEvent(application, ARGS, context));
 		if (failed) {
 			listener.onApplicationEvent(new ApplicationFailedEvent(application, ARGS, context, new RuntimeException()));
-		}
-		else {
+		} else {
 			listener.onApplicationEvent(new ApplicationReadyEvent(application, ARGS, context));
 		}
 	}

@@ -16,15 +16,7 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-import javax.validation.Configuration;
-import javax.validation.Validation;
-
 import org.apache.catalina.mbeans.MBeanFactory;
-
 import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
@@ -35,6 +27,12 @@ import org.springframework.core.annotation.Order;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.support.AllEncompassingFormHttpMessageConverter;
+
+import javax.validation.Configuration;
+import javax.validation.Validation;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * {@link ApplicationListener} to trigger early initialization in a background thread of
@@ -57,6 +55,7 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 	 * property is set to {@code true}, no pre-initialization happens and each item is
 	 * initialized in the foreground as it needs to. When the property is {@code false}
 	 * (default), pre initialization runs in a separate thread in the background.
+	 *
 	 * @since 2.1.0
 	 */
 	public static final String IGNORE_BACKGROUNDPREINITIALIZER_PROPERTY_NAME = "spring.backgroundpreinitializer.ignore";
@@ -75,8 +74,7 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 				&& preinitializationStarted.get()) {
 			try {
 				preinitializationComplete.await();
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -100,16 +98,14 @@ public class BackgroundPreinitializer implements ApplicationListener<SpringAppli
 				public void runSafely(Runnable runnable) {
 					try {
 						runnable.run();
-					}
-					catch (Throwable ex) {
+					} catch (Throwable ex) {
 						// Ignore
 					}
 				}
 
 			}, "background-preinit");
 			thread.start();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// This will fail on GAE where creating threads is prohibited. We can safely
 			// continue but startup will be slightly slower as the initialization will now
 			// happen on the main thread.

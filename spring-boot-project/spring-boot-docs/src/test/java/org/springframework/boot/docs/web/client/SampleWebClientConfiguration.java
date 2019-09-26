@@ -16,8 +16,6 @@
 
 package org.springframework.boot.docs.web.client;
 
-import java.net.URI;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -28,14 +26,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+
 /**
  * A sample {@link SpringBootConfiguration} with an example controller.
  *
  * @author Stephane Nicoll
  */
 @SpringBootConfiguration
-@ImportAutoConfiguration({ ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-		JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class })
+@ImportAutoConfiguration({ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+								 JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class})
 class SampleWebClientConfiguration {
 
 	@RestController

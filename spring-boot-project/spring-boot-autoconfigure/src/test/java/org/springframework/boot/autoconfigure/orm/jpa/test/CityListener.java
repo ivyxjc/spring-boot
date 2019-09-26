@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa.test;
 
-import javax.persistence.PostLoad;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+
+import javax.persistence.PostLoad;
 
 public class CityListener {
 

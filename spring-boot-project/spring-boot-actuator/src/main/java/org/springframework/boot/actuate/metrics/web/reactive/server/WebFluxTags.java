@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.metrics.web.reactive.server;
 
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.reactive.HandlerMapping;
@@ -65,6 +64,7 @@ public final class WebFluxTags {
 	 * {@link org.springframework.http.server.reactive.ServerHttpRequest#getMethod()
 	 * method} of the {@link ServerWebExchange#getRequest()} request of the given
 	 * {@code exchange}.
+	 *
 	 * @param exchange the exchange
 	 * @return the method tag whose value is a capitalized method (e.g. GET).
 	 */
@@ -75,6 +75,7 @@ public final class WebFluxTags {
 	/**
 	 * Creates a {@code status} tag based on the response status of the given
 	 * {@code exchange}.
+	 *
 	 * @param exchange the exchange
 	 * @return the status tag derived from the response status
 	 */
@@ -92,6 +93,7 @@ public final class WebFluxTags {
 	 * available. Falling back to {@code REDIRECTION} for 3xx responses, {@code NOT_FOUND}
 	 * for 404 responses, {@code root} for requests with no path info, and {@code UNKNOWN}
 	 * for all other requests.
+	 *
 	 * @param exchange the exchange
 	 * @return the uri tag derived from the exchange
 	 */
@@ -125,6 +127,7 @@ public final class WebFluxTags {
 	/**
 	 * Creates an {@code exception} tag based on the {@link Class#getSimpleName() simple
 	 * name} of the class of the given {@code exception}.
+	 *
 	 * @param exception the exception, may be {@code null}
 	 * @return the exception tag derived from the exception
 	 */
@@ -139,6 +142,7 @@ public final class WebFluxTags {
 	/**
 	 * Creates an {@code outcome} tag based on the response status of the given
 	 * {@code exchange}.
+	 *
 	 * @param exchange the exchange
 	 * @return the outcome tag derived from the response status
 	 * @since 2.1.0

@@ -16,20 +16,17 @@
 
 package org.springframework.boot.autoconfigure.domain;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationConfigurationException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import java.util.Collection;
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link EntityScanPackages}.

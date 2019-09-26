@@ -16,15 +16,7 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collection;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -34,12 +26,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Collection;
+
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Base class for tests for {@link DevToolsDataSourceAutoConfiguration}.
@@ -94,7 +88,7 @@ public abstract class AbstractDevToolsDataSourceAutoConfigurationTests {
 	}
 
 	protected final ConfigurableApplicationContext createContext(String driverClassName, String url,
-			Class<?>... classes) {
+																 Class<?>... classes) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		context.register(classes);
 		context.register(DevToolsDataSourceAutoConfiguration.class);

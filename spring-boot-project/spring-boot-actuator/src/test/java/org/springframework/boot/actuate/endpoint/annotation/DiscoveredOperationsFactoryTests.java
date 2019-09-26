@@ -16,15 +16,8 @@
 
 package org.springframework.boot.actuate.endpoint.annotation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.boot.actuate.endpoint.OperationType;
@@ -34,6 +27,8 @@ import org.springframework.boot.actuate.endpoint.invoke.OperationInvokerAdvisor;
 import org.springframework.boot.actuate.endpoint.invoke.OperationParameters;
 import org.springframework.boot.actuate.endpoint.invoke.ParameterValueMapper;
 import org.springframework.boot.actuate.endpoint.invoke.reflect.OperationMethod;
+
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -178,13 +173,13 @@ public class DiscoveredOperationsFactoryTests {
 	static class TestDiscoveredOperationsFactory extends DiscoveredOperationsFactory<TestOperation> {
 
 		TestDiscoveredOperationsFactory(ParameterValueMapper parameterValueMapper,
-				Collection<OperationInvokerAdvisor> invokerAdvisors) {
+										Collection<OperationInvokerAdvisor> invokerAdvisors) {
 			super(parameterValueMapper, invokerAdvisors);
 		}
 
 		@Override
 		protected TestOperation createOperation(EndpointId endpointId, DiscoveredOperationMethod operationMethod,
-				OperationInvoker invoker) {
+												OperationInvoker invoker) {
 			return new TestOperation(endpointId, operationMethod, invoker);
 		}
 
@@ -208,7 +203,7 @@ public class DiscoveredOperationsFactoryTests {
 
 		@Override
 		public OperationInvoker apply(EndpointId endpointId, OperationType operationType,
-				OperationParameters parameters, OperationInvoker invoker) {
+									  OperationParameters parameters, OperationInvoker invoker) {
 			this.endpointId = endpointId;
 			this.operationType = operationType;
 			this.parameters = parameters;

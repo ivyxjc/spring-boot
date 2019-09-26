@@ -16,17 +16,7 @@
 
 package org.springframework.boot.actuate.trace.http.servlet;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.EnumSet;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
 import org.springframework.boot.actuate.trace.http.HttpTrace.Session;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
@@ -35,6 +25,14 @@ import org.springframework.boot.actuate.web.trace.servlet.HttpTraceFilter;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.EnumSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIOException;
@@ -110,9 +108,9 @@ public class HttpTraceFilterTests {
 					}
 
 				}))).satisfies((ex) -> {
-					assertThat(this.repository.findAll()).hasSize(1);
-					assertThat(this.repository.findAll().get(0).getResponse().getStatus()).isEqualTo(500);
-				});
+			assertThat(this.repository.findAll()).hasSize(1);
+			assertThat(this.repository.findAll().get(0).getResponse().getStatus()).isEqualTo(500);
+		});
 	}
 
 	@Test

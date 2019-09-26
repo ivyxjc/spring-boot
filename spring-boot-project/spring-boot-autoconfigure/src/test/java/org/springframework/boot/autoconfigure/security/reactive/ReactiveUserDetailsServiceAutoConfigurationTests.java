@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.security.reactive;
 
-import java.time.Duration;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,6 +31,8 @@ import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -101,12 +100,12 @@ public class ReactiveUserDetailsServiceAutoConfigurationTests {
 	private void testPasswordEncoding(Class<?> configClass, String providedPassword, String expectedPassword) {
 		this.contextRunner.withUserConfiguration(configClass)
 				.withPropertyValues("spring.security.user.password=" + providedPassword).run(((context) -> {
-					MapReactiveUserDetailsService userDetailsService = context
-							.getBean(MapReactiveUserDetailsService.class);
-					String password = userDetailsService.findByUsername("user").block(Duration.ofSeconds(30))
-							.getPassword();
-					assertThat(password).isEqualTo(expectedPassword);
-				}));
+			MapReactiveUserDetailsService userDetailsService = context
+					.getBean(MapReactiveUserDetailsService.class);
+			String password = userDetailsService.findByUsername("user").block(Duration.ofSeconds(30))
+					.getPassword();
+			assertThat(password).isEqualTo(expectedPassword);
+		}));
 	}
 
 	@Configuration

@@ -16,15 +16,7 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -45,11 +37,15 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.AbstractView;
 import org.springframework.web.servlet.view.InternalResourceView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * Tests for {@link WelcomePageHandlerMapping}.
@@ -156,9 +152,9 @@ public class WelcomePageHandlerMappingTests {
 
 		@Bean
 		public WelcomePageHandlerMapping handlerMapping(ApplicationContext applicationContext,
-				ObjectProvider<TemplateAvailabilityProviders> templateAvailabilityProviders,
-				ObjectProvider<Resource> staticIndexPage,
-				@Value("${static-path-pattern:/**}") String staticPathPattern) {
+														ObjectProvider<TemplateAvailabilityProviders> templateAvailabilityProviders,
+														ObjectProvider<Resource> staticIndexPage,
+														@Value("${static-path-pattern:/**}") String staticPathPattern) {
 			return new WelcomePageHandlerMapping(
 					templateAvailabilityProviders
 							.getIfAvailable(() -> new TemplateAvailabilityProviders(applicationContext)),
@@ -197,7 +193,7 @@ public class WelcomePageHandlerMappingTests {
 
 					@Override
 					protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
-							HttpServletResponse response) throws Exception {
+														   HttpServletResponse response) throws Exception {
 						response.getWriter().print(name + " template");
 					}
 

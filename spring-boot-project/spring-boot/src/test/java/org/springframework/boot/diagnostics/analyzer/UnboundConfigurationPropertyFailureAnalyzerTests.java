@@ -16,15 +16,9 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,6 +28,11 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -42,6 +41,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Madhura Bhave
  */
 public class UnboundConfigurationPropertyFailureAnalyzerTests {
+
+	private static String failure(String property, String value, String origin, String reason) {
+		return String.format("Property: %s%n    Value: %s%n    Origin: %s%n    Reason: %s", property, value, origin,
+				reason);
+	}
 
 	@Before
 	public void setup() {
@@ -62,11 +66,6 @@ public class UnboundConfigurationPropertyFailureAnalyzerTests {
 						"The elements [test.foo.listvalue[2]] were left unbound."));
 	}
 
-	private static String failure(String property, String value, String origin, String reason) {
-		return String.format("Property: %s%n    Value: %s%n    Origin: %s%n    Reason: %s", property, value, origin,
-				reason);
-	}
-
 	private FailureAnalysis performAnalysis(Class<?> configuration, String... environment) {
 		BeanCreationException failure = createFailure(configuration, environment);
 		assertThat(failure).isNotNull();
@@ -81,8 +80,7 @@ public class UnboundConfigurationPropertyFailureAnalyzerTests {
 			context.refresh();
 			context.close();
 			return null;
-		}
-		catch (BeanCreationException ex) {
+		} catch (BeanCreationException ex) {
 			return ex;
 		}
 	}

@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import javax.persistence.EntityManager;
-
 import org.hibernate.engine.spi.SessionImplementor;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -28,6 +25,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
+import javax.persistence.EntityManager;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Hibernate JPA.
@@ -39,9 +38,9 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ LocalContainerEntityManagerFactoryBean.class, EntityManager.class, SessionImplementor.class })
+@ConditionalOnClass({LocalContainerEntityManagerFactoryBean.class, EntityManager.class, SessionImplementor.class})
 @EnableConfigurationProperties(JpaProperties.class)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class })
+@AutoConfigureAfter({DataSourceAutoConfiguration.class})
 @Import(HibernateJpaConfiguration.class)
 public class HibernateJpaAutoConfiguration {
 

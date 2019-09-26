@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.elasticsearch;
 
-import java.io.IOException;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import io.searchbox.action.Action;
@@ -27,9 +24,11 @@ import io.searchbox.client.JestResult;
 import io.searchbox.client.config.exception.CouldNotConnectException;
 import io.searchbox.core.SearchResult;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
+
+import java.io.IOException;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -50,6 +49,30 @@ public class ElasticsearchJestHealthIndicatorTests {
 
 	private final ElasticsearchJestHealthIndicator healthIndicator = new ElasticsearchJestHealthIndicator(
 			this.jestClient);
+
+	private static JestResult createJestResult(int responseCode, boolean succeeded, String status) {
+
+		SearchResult searchResult = new SearchResult(new Gson());
+		String json;
+		if (responseCode == 200) {
+			json = String.format(
+					"{\"cluster_name\":\"elasticsearch\","
+							+ "\"status\":\"%s\",\"timed_out\":false,\"number_of_nodes\":1,"
+							+ "\"number_of_data_nodes\":1,\"active_primary_shards\":0,"
+							+ "\"active_shards\":0,\"relocating_shards\":0,\"initializing_shards\":0,"
+							+ "\"unassigned_shards\":0,\"delayed_unassigned_shards\":0,"
+							+ "\"number_of_pending_tasks\":0,\"number_of_in_flight_fetch\":0,"
+							+ "\"task_max_waiting_in_queue_millis\":0,\"active_shards_percent_as_number\":100.0}",
+					status);
+		} else {
+			json = "{\n" + "  \"error\": \"Server Error\",\n" + "  \"status\": " + responseCode + "\n" + "}";
+		}
+		searchResult.setJsonString(json);
+		searchResult.setJsonObject(new JsonParser().parse(json).getAsJsonObject());
+		searchResult.setResponseCode(responseCode);
+		searchResult.setSucceeded(succeeded);
+		return searchResult;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -111,31 +134,6 @@ public class ElasticsearchJestHealthIndicatorTests {
 				entry("initializing_shards", 0), entry("unassigned_shards", 0), entry("delayed_unassigned_shards", 0),
 				entry("number_of_pending_tasks", 0), entry("number_of_in_flight_fetch", 0),
 				entry("task_max_waiting_in_queue_millis", 0), entry("active_shards_percent_as_number", 100.0));
-	}
-
-	private static JestResult createJestResult(int responseCode, boolean succeeded, String status) {
-
-		SearchResult searchResult = new SearchResult(new Gson());
-		String json;
-		if (responseCode == 200) {
-			json = String.format(
-					"{\"cluster_name\":\"elasticsearch\","
-							+ "\"status\":\"%s\",\"timed_out\":false,\"number_of_nodes\":1,"
-							+ "\"number_of_data_nodes\":1,\"active_primary_shards\":0,"
-							+ "\"active_shards\":0,\"relocating_shards\":0,\"initializing_shards\":0,"
-							+ "\"unassigned_shards\":0,\"delayed_unassigned_shards\":0,"
-							+ "\"number_of_pending_tasks\":0,\"number_of_in_flight_fetch\":0,"
-							+ "\"task_max_waiting_in_queue_millis\":0,\"active_shards_percent_as_number\":100.0}",
-					status);
-		}
-		else {
-			json = "{\n" + "  \"error\": \"Server Error\",\n" + "  \"status\": " + responseCode + "\n" + "}";
-		}
-		searchResult.setJsonString(json);
-		searchResult.setJsonObject(new JsonParser().parse(json).getAsJsonObject());
-		searchResult.setResponseCode(responseCode);
-		searchResult.setSucceeded(succeeded);
-		return searchResult;
 	}
 
 }

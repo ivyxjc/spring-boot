@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.autoconfigure.data.redis;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Example service used with {@link DataRedisTest} tests.

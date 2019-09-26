@@ -29,6 +29,7 @@ public class PortInUseException extends WebServerException {
 
 	/**
 	 * Creates a new port in use exception for the given {@code port}.
+	 *
 	 * @param port the port that was in use
 	 */
 	public PortInUseException(int port) {
@@ -38,6 +39,7 @@ public class PortInUseException extends WebServerException {
 
 	/**
 	 * Returns the port that was in use.
+	 *
 	 * @return the port
 	 */
 	public int getPort() {

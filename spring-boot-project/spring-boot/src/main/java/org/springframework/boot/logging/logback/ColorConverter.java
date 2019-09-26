@@ -16,18 +16,17 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.pattern.CompositeConverter;
-
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiElement;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Logback {@link CompositeConverter} colors output using the {@link AnsiOutput} class. A
@@ -40,6 +39,7 @@ import org.springframework.boot.ansi.AnsiStyle;
 public class ColorConverter extends CompositeConverter<ILoggingEvent> {
 
 	private static final Map<String, AnsiElement> ELEMENTS;
+	private static final Map<Integer, AnsiElement> LEVELS;
 
 	static {
 		Map<String, AnsiElement> ansiElements = new HashMap<>();
@@ -52,8 +52,6 @@ public class ColorConverter extends CompositeConverter<ILoggingEvent> {
 		ansiElements.put("cyan", AnsiColor.CYAN);
 		ELEMENTS = Collections.unmodifiableMap(ansiElements);
 	}
-
-	private static final Map<Integer, AnsiElement> LEVELS;
 
 	static {
 		Map<Integer, AnsiElement> ansiLevels = new HashMap<>();

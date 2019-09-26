@@ -16,21 +16,19 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.naming.Context;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.jndi.JndiPropertiesHidingClassLoader;
 import org.springframework.boot.autoconfigure.jndi.TestableInitialContextFactory;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import javax.naming.Context;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -45,12 +43,9 @@ import static org.mockito.Mockito.mock;
  */
 public class ConditionalOnJndiTests {
 
-	private ClassLoader threadContextClassLoader;
-
-	private String initialContextFactory;
-
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
-
+	private ClassLoader threadContextClassLoader;
+	private String initialContextFactory;
 	private MockableOnJndi condition = new MockableOnJndi();
 
 	@Before
@@ -64,8 +59,7 @@ public class ConditionalOnJndiTests {
 		TestableInitialContextFactory.clearAll();
 		if (this.initialContextFactory != null) {
 			System.setProperty(Context.INITIAL_CONTEXT_FACTORY, this.initialContextFactory);
-		}
-		else {
+		} else {
 			System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
 		}
 		Thread.currentThread().setContextClassLoader(this.threadContextClassLoader);

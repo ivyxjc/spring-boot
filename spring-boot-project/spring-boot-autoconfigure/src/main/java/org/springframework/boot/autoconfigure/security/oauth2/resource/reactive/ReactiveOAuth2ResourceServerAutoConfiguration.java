@@ -38,10 +38,10 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 @Configuration
 @AutoConfigureBefore(ReactiveSecurityAutoConfiguration.class)
 @EnableConfigurationProperties(OAuth2ResourceServerProperties.class)
-@ConditionalOnClass({ EnableWebFluxSecurity.class, BearerTokenAuthenticationToken.class, ReactiveJwtDecoder.class })
+@ConditionalOnClass({EnableWebFluxSecurity.class, BearerTokenAuthenticationToken.class, ReactiveJwtDecoder.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
-@Import({ ReactiveOAuth2ResourceServerJwkConfiguration.class,
-		ReactiveOAuth2ResourceServerWebSecurityConfiguration.class })
+@Import({ReactiveOAuth2ResourceServerJwkConfiguration.class,
+				ReactiveOAuth2ResourceServerWebSecurityConfiguration.class})
 public class ReactiveOAuth2ResourceServerAutoConfiguration {
 
 }

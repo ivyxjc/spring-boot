@@ -35,6 +35,22 @@ class ReflectionWrapper {
 		this.instance = this.type.cast(instance);
 	}
 
+	protected static Class<?> findClass(ClassLoader classLoader, String name) {
+		try {
+			return classLoader.loadClass(name);
+		} catch (ClassNotFoundException ex) {
+			throw new IllegalStateException(ex);
+		}
+	}
+
+	protected static Method findMethod(Class<?> type, String name, Class<?>... parameterTypes) {
+		try {
+			return type.getMethod(name, parameterTypes);
+		} catch (Exception ex) {
+			throw new IllegalStateException(ex);
+		}
+	}
+
 	protected final Object getInstance() {
 		return this.instance;
 	}
@@ -50,24 +66,6 @@ class ReflectionWrapper {
 
 	protected Method findMethod(String name, Class<?>... parameterTypes) {
 		return findMethod(this.type, name, parameterTypes);
-	}
-
-	protected static Class<?> findClass(ClassLoader classLoader, String name) {
-		try {
-			return classLoader.loadClass(name);
-		}
-		catch (ClassNotFoundException ex) {
-			throw new IllegalStateException(ex);
-		}
-	}
-
-	protected static Method findMethod(Class<?> type, String name, Class<?>... parameterTypes) {
-		try {
-			return type.getMethod(name, parameterTypes);
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException(ex);
-		}
 	}
 
 }

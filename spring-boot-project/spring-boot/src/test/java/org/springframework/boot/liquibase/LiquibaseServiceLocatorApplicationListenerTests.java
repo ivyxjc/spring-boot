@@ -16,24 +16,23 @@
 
 package org.springframework.boot.liquibase;
 
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Arrays;
-import java.util.List;
-
 import liquibase.servicelocator.CustomResolverServiceLocator;
 import liquibase.servicelocator.DefaultPackageScanClassResolver;
 import liquibase.servicelocator.ServiceLocator;
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

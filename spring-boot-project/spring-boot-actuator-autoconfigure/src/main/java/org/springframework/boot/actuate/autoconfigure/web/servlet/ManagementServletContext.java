@@ -28,6 +28,7 @@ public interface ManagementServletContext {
 
 	/**
 	 * Return the servlet path of the management server.
+	 *
 	 * @return the servlet path
 	 */
 	String getServletPath();

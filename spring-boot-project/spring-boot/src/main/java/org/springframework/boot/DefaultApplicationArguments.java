@@ -16,14 +16,10 @@
 
 package org.springframework.boot;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.util.Assert;
+
+import java.util.*;
 
 /**
  * Default implementation of {@link ApplicationArguments}.

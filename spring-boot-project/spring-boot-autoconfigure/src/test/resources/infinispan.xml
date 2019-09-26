@@ -7,7 +7,7 @@
 	<cache-container default-cache="default">
 		<local-cache name="default"/>
 		<local-cache name="foo"/>
-		<local-cache name="bar" />
+		<local-cache name="bar"/>
 	</cache-container>
 
 </infinispan>

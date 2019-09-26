@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
-import java.io.File;
-import java.io.StringWriter;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.rule.OutputCapture;
+
+import java.io.File;
+import java.io.StringWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -37,11 +36,10 @@ import static org.hamcrest.Matchers.containsString;
  */
 public class FreeMarkerAutoConfigurationTests {
 
-	@Rule
-	public OutputCapture output = new OutputCapture();
-
 	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(FreeMarkerAutoConfiguration.class));
+	@Rule
+	public OutputCapture output = new OutputCapture();
 
 	@Test
 	public void renderNonWebAppTemplate() {
@@ -79,7 +77,7 @@ public class FreeMarkerAutoConfigurationTests {
 		new File("target/test-classes/templates/empty-directory").mkdir();
 		this.contextRunner.withPropertyValues("spring.freemarker.templateLoaderPath:"
 				+ "classpath:/does-not-exist/,classpath:/templates/empty-directory/").run((context) -> {
-				});
+		});
 	}
 
 }

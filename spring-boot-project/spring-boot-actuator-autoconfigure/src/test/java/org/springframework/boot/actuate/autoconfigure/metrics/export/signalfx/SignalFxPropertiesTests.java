@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.metrics.export.signalfx;
 
 import io.micrometer.signalfx.SignalFxConfig;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryPropertiesTests;
 
 import static org.assertj.core.api.Assertions.assertThat;

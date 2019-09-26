@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.function.Function;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import reactor.core.publisher.Mono;
-
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Mono;
+
+import java.util.function.Function;
 
 /**
  * Base {@link ReactiveHealthIndicator} implementations that encapsulates creation of
@@ -46,6 +45,7 @@ public abstract class AbstractReactiveHealthIndicator implements ReactiveHealthI
 	/**
 	 * Create a new {@link AbstractReactiveHealthIndicator} instance with a default
 	 * {@code healthCheckFailedMessage}.
+	 *
 	 * @since 2.1.7
 	 */
 	protected AbstractReactiveHealthIndicator() {
@@ -55,6 +55,7 @@ public abstract class AbstractReactiveHealthIndicator implements ReactiveHealthI
 	/**
 	 * Create a new {@link AbstractReactiveHealthIndicator} instance with a specific
 	 * message to log when the health check fails.
+	 *
 	 * @param healthCheckFailedMessage the message to log on health check failure
 	 * @since 2.1.7
 	 */
@@ -65,6 +66,7 @@ public abstract class AbstractReactiveHealthIndicator implements ReactiveHealthI
 	/**
 	 * Create a new {@link AbstractReactiveHealthIndicator} instance with a specific
 	 * message to log when the health check fails.
+	 *
 	 * @param healthCheckFailedMessage the message to log on health check failure
 	 * @since 2.1.7
 	 */
@@ -77,8 +79,7 @@ public abstract class AbstractReactiveHealthIndicator implements ReactiveHealthI
 	public final Mono<Health> health() {
 		try {
 			return doHealthCheck(new Health.Builder()).onErrorResume(this::handleFailure);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return handleFailure(ex);
 		}
 	}
@@ -94,6 +95,7 @@ public abstract class AbstractReactiveHealthIndicator implements ReactiveHealthI
 	/**
 	 * Actual health check logic. If an error occurs in the pipeline it will be handled
 	 * automatically.
+	 *
 	 * @param builder the {@link Health.Builder} to report health status and details
 	 * @return a {@link Mono} that provides the {@link Health}
 	 */

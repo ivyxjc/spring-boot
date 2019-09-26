@@ -16,9 +16,9 @@
 
 package org.springframework.boot.system;
 
-import java.io.File;
-
 import org.junit.Test;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,8 +45,7 @@ public class ApplicationTempTests {
 			System.setProperty("user.dir", "abc");
 			File t2 = new ApplicationTemp().getDir();
 			assertThat(t1).isNotEqualTo(t2);
-		}
-		finally {
+		} finally {
 			System.setProperty("user.dir", userDir);
 		}
 	}

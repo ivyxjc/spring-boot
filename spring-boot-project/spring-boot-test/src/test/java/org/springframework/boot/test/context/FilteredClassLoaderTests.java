@@ -16,13 +16,12 @@
 
 package org.springframework.boot.test.context;
 
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
-
-import org.junit.Test;
-
-import org.springframework.core.io.ClassPathResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

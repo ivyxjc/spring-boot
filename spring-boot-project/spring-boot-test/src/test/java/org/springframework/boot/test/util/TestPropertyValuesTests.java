@@ -17,7 +17,6 @@
 package org.springframework.boot.test.util;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues.Type;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertySource;
@@ -112,8 +111,7 @@ public class TestPropertyValuesTests {
 			});
 			assertThat(System.getProperty("foo")).isEqualTo("bar1");
 			assertThat(System.getProperties()).doesNotContainKey("baz");
-		}
-		finally {
+		} finally {
 			System.clearProperty("foo");
 		}
 	}
@@ -127,8 +125,7 @@ public class TestPropertyValuesTests {
 				return null;
 			});
 			assertThat(System.getProperty("foo")).isEqualTo("bar1");
-		}
-		finally {
+		} finally {
 			System.clearProperty("foo");
 		}
 	}

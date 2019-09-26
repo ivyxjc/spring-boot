@@ -16,14 +16,13 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Locale;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
+
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +38,11 @@ public class StringToEnumIgnoringCaseConverterFactoryTests {
 
 	public StringToEnumIgnoringCaseConverterFactoryTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new StringToEnumIgnoringCaseConverterFactory());
 	}
 
 	@Test
@@ -80,15 +84,9 @@ public class StringToEnumIgnoringCaseConverterFactoryTests {
 			LocaleSensitiveEnum result = this.conversionService.convert("accept-case-insensitive-properties",
 					LocaleSensitiveEnum.class);
 			assertThat(result).isEqualTo(LocaleSensitiveEnum.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
-		}
-		finally {
+		} finally {
 			Locale.setDefault(defaultLocale);
 		}
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new StringToEnumIgnoringCaseConverterFactory());
 	}
 
 	enum TestEnum {
@@ -106,7 +104,6 @@ public class StringToEnumIgnoringCaseConverterFactoryTests {
 	enum TestSubclassEnum {
 
 		ONE {
-
 			@Override
 			public String toString() {
 				return "foo";

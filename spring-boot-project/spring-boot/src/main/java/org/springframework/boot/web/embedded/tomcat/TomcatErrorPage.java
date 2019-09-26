@@ -16,15 +16,14 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
-import java.lang.reflect.Method;
-
 import org.apache.catalina.Context;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * Tomcat specific management for an {@link ErrorPage}.
@@ -56,8 +55,7 @@ class TomcatErrorPage {
 			if (ClassUtils.isPresent(ERROR_PAGE_CLASS, null)) {
 				return BeanUtils.instantiateClass(ClassUtils.forName(ERROR_PAGE_CLASS, null));
 			}
-		}
-		catch (ClassNotFoundException | LinkageError ex) {
+		} catch (ClassNotFoundException | LinkageError ex) {
 			// Swallow and continue
 		}
 		return null;
@@ -71,8 +69,7 @@ class TomcatErrorPage {
 			errorPage.setErrorCode(this.errorCode);
 			errorPage.setExceptionType(this.exceptionType);
 			context.addErrorPage(errorPage);
-		}
-		else {
+		} else {
 			callMethod(this.nativePage, "setLocation", this.location, String.class);
 			callMethod(this.nativePage, "setErrorCode", this.errorCode, int.class);
 			callMethod(this.nativePage, "setExceptionType", this.exceptionType, String.class);

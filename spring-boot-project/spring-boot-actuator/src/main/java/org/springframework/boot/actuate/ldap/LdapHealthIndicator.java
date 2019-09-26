@@ -16,15 +16,15 @@
 
 package org.springframework.boot.actuate.ldap;
 
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.ldap.core.ContextExecutor;
 import org.springframework.ldap.core.LdapOperations;
 import org.springframework.util.Assert;
+
+import javax.naming.NamingException;
+import javax.naming.directory.DirContext;
 
 /**
  * {@link HealthIndicator} for configured LDAP server(s).

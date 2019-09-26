@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.autoconfigure.data.neo4j;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.test.autoconfigure.filter.AnnotationCustomizableTypeExcludeFilter;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * {@link TypeExcludeFilter} for {@link DataNeo4jTest @DataNeo4jTest}.
@@ -45,12 +45,12 @@ class DataNeo4jTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter
 	@Override
 	protected Filter[] getFilters(FilterType type) {
 		switch (type) {
-		case INCLUDE:
-			return this.annotation.includeFilters();
-		case EXCLUDE:
-			return this.annotation.excludeFilters();
-		default:
-			throw new IllegalStateException("Unsupported type " + type);
+			case INCLUDE:
+				return this.annotation.includeFilters();
+			case EXCLUDE:
+				return this.annotation.excludeFilters();
+			default:
+				throw new IllegalStateException("Unsupported type " + type);
 		}
 	}
 

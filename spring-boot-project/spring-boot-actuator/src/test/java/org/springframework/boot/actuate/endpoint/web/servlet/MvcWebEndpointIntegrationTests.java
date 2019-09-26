@@ -16,17 +16,7 @@
 
 package org.springframework.boot.actuate.endpoint.web.servlet;
 
-import java.io.IOException;
-import java.util.Arrays;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
 import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
@@ -55,6 +45,14 @@ import org.springframework.security.web.servletapi.SecurityContextHolderAwareReq
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.handler.RequestMatchResult;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -129,9 +127,9 @@ public class MvcWebEndpointIntegrationTests
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			ServletWebServerFactoryAutoConfiguration.class, WebMvcAutoConfiguration.class,
-			DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 ServletWebServerFactoryAutoConfiguration.class, WebMvcAutoConfiguration.class,
+									 DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class})
 	static class WebMvcConfiguration {
 
 		@Bean
@@ -141,7 +139,7 @@ public class MvcWebEndpointIntegrationTests
 
 		@Bean
 		public WebMvcEndpointHandlerMapping webEndpointHandlerMapping(Environment environment,
-				WebEndpointDiscoverer endpointDiscoverer, EndpointMediaTypes endpointMediaTypes) {
+																	  WebEndpointDiscoverer endpointDiscoverer, EndpointMediaTypes endpointMediaTypes) {
 			CorsConfiguration corsConfiguration = new CorsConfiguration();
 			corsConfiguration.setAllowedOrigins(Arrays.asList("https://example.com"));
 			corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
@@ -161,15 +159,14 @@ public class MvcWebEndpointIntegrationTests
 
 				@Override
 				protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-						FilterChain filterChain) throws ServletException, IOException {
+												FilterChain filterChain) throws ServletException, IOException {
 					SecurityContext context = SecurityContextHolder.createEmptyContext();
 					context.setAuthentication(new UsernamePasswordAuthenticationToken("Alice", "secret",
 							Arrays.asList(new SimpleGrantedAuthority("ROLE_ACTUATOR"))));
 					SecurityContextHolder.setContext(context);
 					try {
 						filterChain.doFilter(new SecurityContextHolderAwareRequestWrapper(request, "ROLE_"), response);
-					}
-					finally {
+					} finally {
 						SecurityContextHolder.clearContext();
 					}
 				}

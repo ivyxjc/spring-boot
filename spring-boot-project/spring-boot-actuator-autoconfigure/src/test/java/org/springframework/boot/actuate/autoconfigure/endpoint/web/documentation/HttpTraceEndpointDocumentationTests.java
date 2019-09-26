@@ -16,28 +16,21 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.net.URI;
-import java.security.Principal;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.UUID;
-
 import org.junit.Test;
-
-import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
-import org.springframework.boot.actuate.trace.http.HttpTraceEndpoint;
-import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
-import org.springframework.boot.actuate.trace.http.Include;
-import org.springframework.boot.actuate.trace.http.TraceableRequest;
-import org.springframework.boot.actuate.trace.http.TraceableResponse;
+import org.springframework.boot.actuate.trace.http.*;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.payload.JsonFieldType;
+
+import java.net.URI;
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.UUID;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;

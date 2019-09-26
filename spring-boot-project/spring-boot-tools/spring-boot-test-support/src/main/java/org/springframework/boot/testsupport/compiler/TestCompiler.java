@@ -16,20 +16,15 @@
 
 package org.springframework.boot.testsupport.compiler;
 
+import org.junit.rules.TemporaryFolder;
+
+import javax.annotation.processing.Processor;
+import javax.tools.*;
+import javax.tools.JavaCompiler.CompilationTask;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
-
-import javax.annotation.processing.Processor;
-import javax.tools.JavaCompiler;
-import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
-import javax.tools.StandardJavaFileManager;
-import javax.tools.StandardLocation;
-import javax.tools.ToolProvider;
-
-import org.junit.rules.TemporaryFolder;
 
 /**
  * Wrapper to make the {@link JavaCompiler} easier to use in tests.
@@ -65,6 +60,10 @@ public class TestCompiler {
 		this.fileManager.setLocation(StandardLocation.SOURCE_OUTPUT, temp);
 	}
 
+	public static String sourcePathFor(Class<?> type) {
+		return type.getName().replace('.', '/') + ".java";
+	}
+
 	public TestCompilationTask getTask(Collection<File> sourceFiles) {
 		Iterable<? extends JavaFileObject> javaFileObjects = this.fileManager.getJavaFileObjectsFromFiles(sourceFiles);
 		return getTask(javaFileObjects);
@@ -94,10 +93,6 @@ public class TestCompiler {
 
 	protected File getFile(Class<?> type) {
 		return new File(getSourceFolder(), sourcePathFor(type));
-	}
-
-	public static String sourcePathFor(Class<?> type) {
-		return type.getName().replace('.', '/') + ".java";
 	}
 
 	protected File getSourceFolder() {

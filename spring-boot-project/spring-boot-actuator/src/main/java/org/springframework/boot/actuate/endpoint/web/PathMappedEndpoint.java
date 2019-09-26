@@ -23,8 +23,8 @@ import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
  * root web path.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see PathMapper
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface PathMappedEndpoint {
@@ -33,6 +33,7 @@ public interface PathMappedEndpoint {
 	 * Return the root path of the endpoint, relative to the context that exposes it. For
 	 * example, a root path of {@code example} would be exposed under the URL
 	 * "/{actuator-context}/example".
+	 *
 	 * @return the root path for the endpoint
 	 */
 	String getRootPath();

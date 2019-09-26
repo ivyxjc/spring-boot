@@ -30,18 +30,21 @@ public interface ExposableEndpoint<O extends Operation> {
 
 	/**
 	 * Return the endpoint ID.
+	 *
 	 * @return the endpoint ID
 	 */
 	EndpointId getEndpointId();
 
 	/**
 	 * Returns if the endpoint is enabled by default.
+	 *
 	 * @return if the endpoint is enabled by default
 	 */
 	boolean isEnableByDefault();
 
 	/**
 	 * Returns the operations of the endpoint.
+	 *
 	 * @return the operations
 	 */
 	Collection<O> getOperations();

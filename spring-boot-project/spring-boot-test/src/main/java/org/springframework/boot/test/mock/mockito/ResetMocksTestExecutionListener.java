@@ -16,12 +16,7 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -32,6 +27,10 @@ import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.util.ClassUtils;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * {@link TestExecutionListener} to reset any mock beans that have been marked with a
@@ -90,8 +89,7 @@ public class ResetMocksTestExecutionListener extends AbstractTestExecutionListen
 					Mockito.reset(mockedBean);
 				}
 			}
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Continue
 		}
 		if (applicationContext.getParent() != null) {

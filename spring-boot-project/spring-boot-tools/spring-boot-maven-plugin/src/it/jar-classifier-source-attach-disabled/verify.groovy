@@ -1,7 +1,7 @@
-import org.springframework.boot.maven.*
+import org.springframework.boot.maven.Verify
 
-import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
 
 File main = new File(basedir, "target/jar-classifier-source-attach-disabled-0.0.1.BUILD-SNAPSHOT-test.jar")
 File backup = new File(basedir, "target/jar-classifier-source-attach-disabled-0.0.1.BUILD-SNAPSHOT-test.jar.original")
@@ -15,6 +15,6 @@ assertFalse 'repackaged artifact should not have been attached',
 assertTrue 'test artifact should have been updated',
 		file.text.contains("Updating artifact with classifier test " + main + " to " + backup)
 assertTrue 'backup artifact should have been installed',
-		file.text.contains ("Installing " + backup + " to")
+		file.text.contains("Installing " + backup + " to")
 assertFalse 'repackaged artifact should not have been installed',
-		file.text.contains ("Installing " + main + " to")
+		file.text.contains("Installing " + main + " to")

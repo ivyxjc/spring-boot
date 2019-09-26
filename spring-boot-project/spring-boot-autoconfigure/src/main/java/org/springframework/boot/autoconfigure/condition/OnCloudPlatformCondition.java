@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.Map;
-
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.Map;
 
 /**
  * {@link Condition} that checks for a required {@link CloudPlatform}.

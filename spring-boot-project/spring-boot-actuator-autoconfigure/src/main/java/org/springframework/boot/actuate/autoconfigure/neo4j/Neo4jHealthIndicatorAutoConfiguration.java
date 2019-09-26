@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.neo4j;
 
-import java.util.Map;
-
 import org.neo4j.ogm.session.SessionFactory;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -34,6 +31,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.data.neo4j.Neo4jDataAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link Neo4jHealthIndicator}.

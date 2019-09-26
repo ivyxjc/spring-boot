@@ -16,9 +16,9 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.net.URI;
-
 import org.springframework.util.ObjectUtils;
+
+import java.net.URI;
 
 /**
  * The configuration of a repository.
@@ -36,10 +36,11 @@ public final class RepositoryConfiguration {
 
 	/**
 	 * Creates a new {@code RepositoryConfiguration} instance.
-	 * @param name the name of the repository
-	 * @param uri the uri of the repository
+	 *
+	 * @param name             the name of the repository
+	 * @param uri              the uri of the repository
 	 * @param snapshotsEnabled {@code true} if the repository should enable access to
-	 * snapshots, {@code false} otherwise
+	 *                         snapshots, {@code false} otherwise
 	 */
 	public RepositoryConfiguration(String name, URI uri, boolean snapshotsEnabled) {
 		this.name = name;
@@ -49,6 +50,7 @@ public final class RepositoryConfiguration {
 
 	/**
 	 * Return the name of the repository.
+	 *
 	 * @return the repository name
 	 */
 	public String getName() {
@@ -57,6 +59,7 @@ public final class RepositoryConfiguration {
 
 	/**
 	 * Return the URI of the repository.
+	 *
 	 * @return the repository URI
 	 */
 	public URI getUri() {
@@ -65,6 +68,7 @@ public final class RepositoryConfiguration {
 
 	/**
 	 * Return if the repository should enable access to snapshots.
+	 *
 	 * @return {@code true} if snapshot access is enabled
 	 */
 	public boolean getSnapshotsEnabled() {

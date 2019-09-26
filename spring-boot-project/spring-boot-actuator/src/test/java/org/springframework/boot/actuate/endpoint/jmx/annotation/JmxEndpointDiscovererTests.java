@@ -16,16 +16,7 @@
 
 package org.springframework.boot.actuate.endpoint.jmx.annotation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
@@ -46,6 +37,14 @@ import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 import org.springframework.jmx.export.annotation.ManagedOperationParameters;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -231,7 +230,7 @@ public class JmxEndpointDiscovererTests {
 	}
 
 	private void hasDocumentedParameter(JmxOperation operation, int index, String name, Class<?> type,
-			String description) {
+										String description) {
 		assertThat(index).isLessThan(operation.getParameters().size());
 		JmxOperationParameter parameter = operation.getParameters().get(index);
 		assertThat(parameter.getName()).isEqualTo(name);
@@ -262,7 +261,7 @@ public class JmxEndpointDiscovererTests {
 	}
 
 	private void load(Class<?> configuration, Function<EndpointId, Long> timeToLive,
-			Consumer<JmxEndpointDiscoverer> consumer) {
+					  Consumer<JmxEndpointDiscoverer> consumer) {
 		try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(configuration)) {
 			ConversionServiceParameterValueMapper parameterMapper = new ConversionServiceParameterValueMapper(
 					DefaultConversionService.getSharedInstance());
@@ -439,15 +438,15 @@ public class JmxEndpointDiscovererTests {
 		@ReadOperation
 		@ManagedOperation(description = "Get something based on a timeUnit")
 		@ManagedOperationParameters({
-				@ManagedOperationParameter(name = "unitMs", description = "Number of milliseconds") })
+											@ManagedOperationParameter(name = "unitMs", description = "Number of milliseconds")})
 		public String getSomething(Long timeUnit) {
 			return null;
 		}
 
 		@WriteOperation
 		@ManagedOperation(description = "Update something based on bar")
-		@ManagedOperationParameters({ @ManagedOperationParameter(name = "foo", description = "Foo identifier"),
-				@ManagedOperationParameter(name = "bar", description = "Bar value") })
+		@ManagedOperationParameters({@ManagedOperationParameter(name = "foo", description = "Foo identifier"),
+											@ManagedOperationParameter(name = "bar", description = "Bar value")})
 		public void update(String foo, String bar) {
 
 		}
@@ -455,7 +454,7 @@ public class JmxEndpointDiscovererTests {
 		@DeleteOperation
 		@ManagedOperation(description = "Delete something based on a timeUnit")
 		@ManagedOperationParameters({
-				@ManagedOperationParameter(name = "unitMs", description = "Number of milliseconds") })
+											@ManagedOperationParameter(name = "unitMs", description = "Number of milliseconds")})
 		public void deleteSomething(Long timeUnit) {
 
 		}

@@ -23,8 +23,8 @@ import org.springframework.core.env.Environment;
  * integration consider the Spring Cloud project.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see "https://cloud.spring.io"
+ * @since 1.3.0
  */
 public enum CloudPlatform {
 
@@ -32,7 +32,6 @@ public enum CloudPlatform {
 	 * Cloud Foundry platform.
 	 */
 	CLOUD_FOUNDRY {
-
 		@Override
 		public boolean isActive(Environment environment) {
 			return environment.containsProperty("VCAP_APPLICATION") || environment.containsProperty("VCAP_SERVICES");
@@ -44,7 +43,6 @@ public enum CloudPlatform {
 	 * Heroku platform.
 	 */
 	HEROKU {
-
 		@Override
 		public boolean isActive(Environment environment) {
 			return environment.containsProperty("DYNO");
@@ -56,7 +54,6 @@ public enum CloudPlatform {
 	 * SAP Cloud platform.
 	 */
 	SAP {
-
 		@Override
 		public boolean isActive(Environment environment) {
 			return environment.containsProperty("HC_LANDSCAPE");
@@ -65,23 +62,8 @@ public enum CloudPlatform {
 	};
 
 	/**
-	 * Determines if the platform is active (i.e. the application is running in it).
-	 * @param environment the environment
-	 * @return if the platform is active.
-	 */
-	public abstract boolean isActive(Environment environment);
-
-	/**
-	 * Returns if the platform is behind a load balancer and uses
-	 * {@literal X-Forwarded-For} headers.
-	 * @return if {@literal X-Forwarded-For} headers are used
-	 */
-	public boolean isUsingForwardHeaders() {
-		return true;
-	}
-
-	/**
 	 * Returns the active {@link CloudPlatform} or {@code null} if one cannot be deduced.
+	 *
 	 * @param environment the environment
 	 * @return the {@link CloudPlatform} or {@code null}
 	 */
@@ -94,6 +76,24 @@ public enum CloudPlatform {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * Determines if the platform is active (i.e. the application is running in it).
+	 *
+	 * @param environment the environment
+	 * @return if the platform is active.
+	 */
+	public abstract boolean isActive(Environment environment);
+
+	/**
+	 * Returns if the platform is behind a load balancer and uses
+	 * {@literal X-Forwarded-For} headers.
+	 *
+	 * @return if {@literal X-Forwarded-For} headers are used
+	 */
+	public boolean isUsingForwardHeaders() {
+		return true;
 	}
 
 }

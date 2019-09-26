@@ -16,25 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverPropertyInfo;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-import java.util.function.Consumer;
-import java.util.logging.Logger;
-
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -48,6 +32,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverPropertyInfo;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -96,8 +90,8 @@ public class DataSourceAutoConfigurationTests {
 	@Test
 	public void hikariValidatesConnectionByDefault() {
 		assertDataSource(HikariDataSource.class, Collections.singletonList("org.apache.tomcat"), (dataSource) ->
-		// Use Connection#isValid()
-		assertThat(dataSource.getConnectionTestQuery()).isNull());
+				// Use Connection#isValid()
+				assertThat(dataSource.getConnectionTestQuery()).isNull());
 	}
 
 	@Test
@@ -127,7 +121,7 @@ public class DataSourceAutoConfigurationTests {
 				Arrays.asList("com.zaxxer.hikari", "org.apache.tomcat"), (dataSource) -> {
 					assertThat(dataSource.getTestOnBorrow()).isTrue();
 					assertThat(dataSource.getValidationQuery()).isNull(); // Use
-																			// Connection#isValid()
+					// Connection#isValid()
 				});
 	}
 
@@ -136,11 +130,11 @@ public class DataSourceAutoConfigurationTests {
 	public void testEmbeddedTypeDefaultsUsername() {
 		this.contextRunner.withPropertyValues("spring.datasource.driverClassName:org.hsqldb.jdbcDriver",
 				"spring.datasource.url:jdbc:hsqldb:mem:testdb").run((context) -> {
-					DataSource bean = context.getBean(DataSource.class);
-					HikariDataSource pool = (HikariDataSource) bean;
-					assertThat(pool.getDriverClassName()).isEqualTo("org.hsqldb.jdbcDriver");
-					assertThat(pool.getUsername()).isEqualTo("sa");
-				});
+			DataSource bean = context.getBean(DataSource.class);
+			HikariDataSource pool = (HikariDataSource) bean;
+			assertThat(pool.getDriverClassName()).isEqualTo("org.hsqldb.jdbcDriver");
+			assertThat(pool.getUsername()).isEqualTo("sa");
+		});
 	}
 
 	/**
@@ -176,11 +170,11 @@ public class DataSourceAutoConfigurationTests {
 	public void testExplicitDriverClassClearsUsername() {
 		this.contextRunner.withPropertyValues("spring.datasource.driverClassName:" + DatabaseTestDriver.class.getName(),
 				"spring.datasource.url:jdbc:foo://localhost").run((context) -> {
-					assertThat(context).hasSingleBean(DataSource.class);
-					HikariDataSource dataSource = context.getBean(HikariDataSource.class);
-					assertThat(dataSource.getDriverClassName()).isEqualTo(DatabaseTestDriver.class.getName());
-					assertThat(dataSource.getUsername()).isNull();
-				});
+			assertThat(context).hasSingleBean(DataSource.class);
+			HikariDataSource dataSource = context.getBean(HikariDataSource.class);
+			assertThat(dataSource.getDriverClassName()).isEqualTo(DatabaseTestDriver.class.getName());
+			assertThat(dataSource.getUsername()).isNull();
+		});
 	}
 
 	@Test
@@ -198,7 +192,7 @@ public class DataSourceAutoConfigurationTests {
 	}
 
 	private <T extends DataSource> void assertDataSource(Class<T> expectedType, List<String> hiddenPackages,
-			Consumer<T> consumer) {
+														 Consumer<T> consumer) {
 		FilteredClassLoader classLoader = new FilteredClassLoader(StringUtils.toStringArray(hiddenPackages));
 		this.contextRunner.withClassLoader(classLoader).run((context) -> {
 			DataSource bean = context.getBean(DataSource.class);

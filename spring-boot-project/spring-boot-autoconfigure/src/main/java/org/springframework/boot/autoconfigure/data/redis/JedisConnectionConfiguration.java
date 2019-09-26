@@ -16,13 +16,7 @@
 
 package org.springframework.boot.autoconfigure.data.redis;
 
-import java.net.UnknownHostException;
-import java.time.Duration;
-
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPoolConfig;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -36,6 +30,11 @@ import org.springframework.data.redis.connection.jedis.JedisClientConfiguration.
 import org.springframework.data.redis.connection.jedis.JedisConnection;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.util.StringUtils;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPoolConfig;
+
+import java.net.UnknownHostException;
+import java.time.Duration;
 
 /**
  * Redis connection configuration using Jedis.
@@ -44,7 +43,7 @@ import org.springframework.util.StringUtils;
  * @author Stephane Nicoll
  */
 @Configuration
-@ConditionalOnClass({ GenericObjectPool.class, JedisConnection.class, Jedis.class })
+@ConditionalOnClass({GenericObjectPool.class, JedisConnection.class, Jedis.class})
 class JedisConnectionConfiguration extends RedisConnectionConfiguration {
 
 	private final RedisProperties properties;
@@ -52,9 +51,9 @@ class JedisConnectionConfiguration extends RedisConnectionConfiguration {
 	private final ObjectProvider<JedisClientConfigurationBuilderCustomizer> builderCustomizers;
 
 	JedisConnectionConfiguration(RedisProperties properties,
-			ObjectProvider<RedisSentinelConfiguration> sentinelConfiguration,
-			ObjectProvider<RedisClusterConfiguration> clusterConfiguration,
-			ObjectProvider<JedisClientConfigurationBuilderCustomizer> builderCustomizers) {
+								 ObjectProvider<RedisSentinelConfiguration> sentinelConfiguration,
+								 ObjectProvider<RedisClusterConfiguration> clusterConfiguration,
+								 ObjectProvider<JedisClientConfigurationBuilderCustomizer> builderCustomizers) {
 		super(properties, sentinelConfiguration, clusterConfiguration);
 		this.properties = properties;
 		this.builderCustomizers = builderCustomizers;
@@ -102,7 +101,7 @@ class JedisConnectionConfiguration extends RedisConnectionConfiguration {
 	}
 
 	private void applyPooling(RedisProperties.Pool pool,
-			JedisClientConfiguration.JedisClientConfigurationBuilder builder) {
+							  JedisClientConfiguration.JedisClientConfigurationBuilder builder) {
 		builder.usePooling().poolConfig(jedisPoolConfig(pool));
 	}
 

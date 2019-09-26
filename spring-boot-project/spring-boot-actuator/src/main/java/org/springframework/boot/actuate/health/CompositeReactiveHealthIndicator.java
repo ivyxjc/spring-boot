@@ -16,14 +16,14 @@
 
 package org.springframework.boot.actuate.health;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple2;
 
 /**
  * {@link ReactiveHealthIndicator} that returns health indications from all registered
@@ -38,15 +38,13 @@ public class CompositeReactiveHealthIndicator implements ReactiveHealthIndicator
 	private final ReactiveHealthIndicatorRegistry registry;
 
 	private final HealthAggregator healthAggregator;
-
-	private Long timeout;
-
-	private Health timeoutHealth;
-
 	private final Function<Mono<Health>, Mono<Health>> timeoutCompose;
+	private Long timeout;
+	private Health timeoutHealth;
 
 	/**
 	 * Create a new {@link CompositeReactiveHealthIndicator}.
+	 *
 	 * @param healthAggregator the health aggregator
 	 * @deprecated since 2.1.0 in favor of
 	 * {@link #CompositeReactiveHealthIndicator(HealthAggregator, ReactiveHealthIndicatorRegistry)}
@@ -59,15 +57,16 @@ public class CompositeReactiveHealthIndicator implements ReactiveHealthIndicator
 	/**
 	 * Create a new {@link CompositeReactiveHealthIndicator} from the specified
 	 * indicators.
+	 *
 	 * @param healthAggregator the health aggregator
-	 * @param indicators a map of {@link ReactiveHealthIndicator HealthIndicators} with
-	 * the key being used as an indicator name.
+	 * @param indicators       a map of {@link ReactiveHealthIndicator HealthIndicators} with
+	 *                         the key being used as an indicator name.
 	 * @deprecated since 2.1.0 in favor of
 	 * {@link #CompositeReactiveHealthIndicator(HealthAggregator, ReactiveHealthIndicatorRegistry)}
 	 */
 	@Deprecated
 	public CompositeReactiveHealthIndicator(HealthAggregator healthAggregator,
-			Map<String, ReactiveHealthIndicator> indicators) {
+											Map<String, ReactiveHealthIndicator> indicators) {
 		this(healthAggregator, new DefaultReactiveHealthIndicatorRegistry(indicators));
 
 	}
@@ -75,11 +74,12 @@ public class CompositeReactiveHealthIndicator implements ReactiveHealthIndicator
 	/**
 	 * Create a new {@link CompositeReactiveHealthIndicator} from the indicators in the
 	 * given {@code registry}.
+	 *
 	 * @param healthAggregator the health aggregator
-	 * @param registry the registry of {@link ReactiveHealthIndicator HealthIndicators}.
+	 * @param registry         the registry of {@link ReactiveHealthIndicator HealthIndicators}.
 	 */
 	public CompositeReactiveHealthIndicator(HealthAggregator healthAggregator,
-			ReactiveHealthIndicatorRegistry registry) {
+											ReactiveHealthIndicatorRegistry registry) {
 		this.registry = registry;
 		this.healthAggregator = healthAggregator;
 		this.timeoutCompose = (mono) -> (this.timeout != null)
@@ -88,11 +88,12 @@ public class CompositeReactiveHealthIndicator implements ReactiveHealthIndicator
 
 	/**
 	 * Add a {@link ReactiveHealthIndicator} with the specified name.
-	 * @param name the name of the health indicator
+	 *
+	 * @param name      the name of the health indicator
 	 * @param indicator the health indicator to add
 	 * @return this instance
 	 * @throws IllegalStateException if an indicator with the given {@code name} is
-	 * already registered.
+	 *                               already registered.
 	 * @deprecated since 2.1.0 in favor of
 	 * {@link ReactiveHealthIndicatorRegistry#register(String, ReactiveHealthIndicator)}
 	 */
@@ -105,10 +106,11 @@ public class CompositeReactiveHealthIndicator implements ReactiveHealthIndicator
 	/**
 	 * Specify an alternative timeout {@link Health} if a {@link HealthIndicator} failed
 	 * to reply after specified {@code timeout}.
-	 * @param timeout number of milliseconds to wait before using the
-	 * {@code timeoutHealth}
+	 *
+	 * @param timeout       number of milliseconds to wait before using the
+	 *                      {@code timeoutHealth}
 	 * @param timeoutHealth the {@link Health} to use if an health indicator reached the
-	 * {@code timeout}
+	 *                      {@code timeout}
 	 * @return this instance
 	 */
 	public CompositeReactiveHealthIndicator timeoutStrategy(long timeout, Health timeoutHealth) {

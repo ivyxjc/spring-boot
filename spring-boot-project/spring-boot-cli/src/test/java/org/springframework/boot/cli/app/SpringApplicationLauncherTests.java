@@ -16,13 +16,13 @@
 
 package org.springframework.boot.cli.app;
 
+import org.junit.After;
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.junit.After;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,8 +84,7 @@ public class SpringApplicationLauncherTests {
 		TestClassLoader classLoader = new TestClassLoader(getClass().getClassLoader());
 		try {
 			new TestSpringApplicationLauncher(classLoader).launch(new Class<?>[0], new String[0]);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Launch will fail, but we can still check that the launcher tried to use
 			// the right class
 		}

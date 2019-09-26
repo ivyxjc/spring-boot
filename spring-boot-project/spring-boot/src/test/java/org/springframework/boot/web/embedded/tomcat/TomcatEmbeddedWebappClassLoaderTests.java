@@ -16,6 +16,15 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import org.apache.catalina.core.StandardContext;
+import org.apache.catalina.loader.ParallelWebappClassLoader;
+import org.apache.catalina.webresources.StandardRoot;
+import org.apache.catalina.webresources.WarResourceSet;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.util.CollectionUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -25,16 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
-
-import org.apache.catalina.core.StandardContext;
-import org.apache.catalina.loader.ParallelWebappClassLoader;
-import org.apache.catalina.webresources.StandardRoot;
-import org.apache.catalina.webresources.WarResourceSet;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.util.CollectionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,7 +65,7 @@ public class TomcatEmbeddedWebappClassLoaderTests {
 	}
 
 	private void withWebappClassLoader(File war, ClassLoaderConsumer consumer) throws Exception {
-		URLClassLoader parent = new URLClassLoader(new URL[] { new URL(webInfClassesUrlString(war)) }, null);
+		URLClassLoader parent = new URLClassLoader(new URL[]{new URL(webInfClassesUrlString(war))}, null);
 		try (ParallelWebappClassLoader classLoader = new TomcatEmbeddedWebappClassLoader(parent)) {
 			StandardContext context = new StandardContext();
 			context.setName("test");

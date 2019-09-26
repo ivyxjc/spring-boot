@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.data;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -35,6 +33,8 @@ import org.springframework.data.repository.config.BootstrapMode;
 import org.springframework.data.repository.config.RepositoryConfigurationDelegate;
 import org.springframework.data.repository.config.RepositoryConfigurationExtension;
 import org.springframework.data.util.Streamable;
+
+import java.lang.annotation.Annotation;
 
 /**
  * Base {@link ImportBeanDefinitionRegistrar} used to auto-configure Spring Data
@@ -84,18 +84,21 @@ public abstract class AbstractRepositoryConfigurationSourceSupport
 
 	/**
 	 * The Spring Data annotation used to enable the particular repository support.
+	 *
 	 * @return the annotation class
 	 */
 	protected abstract Class<? extends Annotation> getAnnotation();
 
 	/**
 	 * The configuration class that will be used by Spring Boot as a template.
+	 *
 	 * @return the configuration class
 	 */
 	protected abstract Class<?> getConfiguration();
 
 	/**
 	 * The {@link RepositoryConfigurationExtension} for the particular repository support.
+	 *
 	 * @return the repository configuration extension
 	 */
 	protected abstract RepositoryConfigurationExtension getRepositoryConfigurationExtension();
@@ -103,6 +106,7 @@ public abstract class AbstractRepositoryConfigurationSourceSupport
 	/**
 	 * The {@link BootstrapMode} for the particular repository support. Defaults to
 	 * {@link BootstrapMode#DEFAULT}.
+	 *
 	 * @return the bootstrap mode
 	 */
 	protected BootstrapMode getBootstrapMode() {

@@ -16,24 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.AccessLevel;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.SecurityResponse;
 import org.springframework.boot.actuate.endpoint.EndpointId;
-import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
-import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
-import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
-import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
-import org.springframework.boot.actuate.endpoint.web.Link;
-import org.springframework.boot.actuate.endpoint.web.WebOperation;
+import org.springframework.boot.actuate.endpoint.web.*;
 import org.springframework.boot.actuate.endpoint.web.reactive.AbstractWebFluxEndpointHandlerMapping;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +28,13 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * A custom {@link RequestMappingInfoHandlerMapping} that makes web endpoints available on
@@ -57,9 +51,9 @@ class CloudFoundryWebFluxEndpointHandlerMapping extends AbstractWebFluxEndpointH
 	private final EndpointLinksResolver linksResolver;
 
 	CloudFoundryWebFluxEndpointHandlerMapping(EndpointMapping endpointMapping,
-			Collection<ExposableWebEndpoint> endpoints, EndpointMediaTypes endpointMediaTypes,
-			CorsConfiguration corsConfiguration, CloudFoundrySecurityInterceptor securityInterceptor,
-			EndpointLinksResolver linksResolver) {
+											  Collection<ExposableWebEndpoint> endpoints, EndpointMediaTypes endpointMediaTypes,
+											  CorsConfiguration corsConfiguration, CloudFoundrySecurityInterceptor securityInterceptor,
+											  EndpointLinksResolver linksResolver) {
 		super(endpointMapping, endpoints, endpointMediaTypes, corsConfiguration);
 		this.linksResolver = linksResolver;
 		this.securityInterceptor = securityInterceptor;
@@ -67,13 +61,47 @@ class CloudFoundryWebFluxEndpointHandlerMapping extends AbstractWebFluxEndpointH
 
 	@Override
 	protected ReactiveWebOperation wrapReactiveWebOperation(ExposableWebEndpoint endpoint, WebOperation operation,
-			ReactiveWebOperation reactiveWebOperation) {
+															ReactiveWebOperation reactiveWebOperation) {
 		return new SecureReactiveWebOperation(reactiveWebOperation, this.securityInterceptor, endpoint.getEndpointId());
 	}
 
 	@Override
 	protected LinksHandler getLinksHandler() {
 		return new CloudFoundryLinksHandler();
+	}
+
+	/**
+	 * {@link ReactiveWebOperation} wrapper to add security.
+	 */
+	private static class SecureReactiveWebOperation implements ReactiveWebOperation {
+
+		private final ReactiveWebOperation delegate;
+
+		private final CloudFoundrySecurityInterceptor securityInterceptor;
+
+		private final EndpointId endpointId;
+
+		SecureReactiveWebOperation(ReactiveWebOperation delegate, CloudFoundrySecurityInterceptor securityInterceptor,
+								   EndpointId endpointId) {
+			this.delegate = delegate;
+			this.securityInterceptor = securityInterceptor;
+			this.endpointId = endpointId;
+		}
+
+		@Override
+		public Mono<ResponseEntity<Object>> handle(ServerWebExchange exchange, Map<String, String> body) {
+			return this.securityInterceptor.preHandle(exchange, this.endpointId.toLowerCaseString())
+					.flatMap((securityResponse) -> flatMapResponse(exchange, body, securityResponse));
+		}
+
+		private Mono<ResponseEntity<Object>> flatMapResponse(ServerWebExchange exchange, Map<String, String> body,
+															 SecurityResponse securityResponse) {
+			if (!securityResponse.getStatus().equals(HttpStatus.OK)) {
+				return Mono.just(new ResponseEntity<>(securityResponse.getStatus()));
+			}
+			return this.delegate.handle(exchange, body);
+		}
+
 	}
 
 	class CloudFoundryLinksHandler implements LinksHandler {
@@ -107,40 +135,6 @@ class CloudFoundryWebFluxEndpointHandlerMapping extends AbstractWebFluxEndpointH
 		@Override
 		public String toString() {
 			return "Actuator root web endpoint";
-		}
-
-	}
-
-	/**
-	 * {@link ReactiveWebOperation} wrapper to add security.
-	 */
-	private static class SecureReactiveWebOperation implements ReactiveWebOperation {
-
-		private final ReactiveWebOperation delegate;
-
-		private final CloudFoundrySecurityInterceptor securityInterceptor;
-
-		private final EndpointId endpointId;
-
-		SecureReactiveWebOperation(ReactiveWebOperation delegate, CloudFoundrySecurityInterceptor securityInterceptor,
-				EndpointId endpointId) {
-			this.delegate = delegate;
-			this.securityInterceptor = securityInterceptor;
-			this.endpointId = endpointId;
-		}
-
-		@Override
-		public Mono<ResponseEntity<Object>> handle(ServerWebExchange exchange, Map<String, String> body) {
-			return this.securityInterceptor.preHandle(exchange, this.endpointId.toLowerCaseString())
-					.flatMap((securityResponse) -> flatMapResponse(exchange, body, securityResponse));
-		}
-
-		private Mono<ResponseEntity<Object>> flatMapResponse(ServerWebExchange exchange, Map<String, String> body,
-				SecurityResponse securityResponse) {
-			if (!securityResponse.getStatus().equals(HttpStatus.OK)) {
-				return Mono.just(new ResponseEntity<>(securityResponse.getStatus()));
-			}
-			return this.delegate.handle(exchange, body);
 		}
 
 	}

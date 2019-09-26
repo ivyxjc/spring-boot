@@ -16,9 +16,9 @@
 
 package org.springframework.boot.jta.bitronix;
 
-import javax.jms.XAConnectionFactory;
-
 import org.junit.Test;
+
+import javax.jms.XAConnectionFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

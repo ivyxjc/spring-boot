@@ -16,12 +16,12 @@
 
 package org.springframework.boot.info;
 
+import org.junit.Test;
+
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Properties;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,6 +31,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  */
 public class BuildPropertiesTests {
+
+	private static Properties createProperties(String group, String artifact, String version, String buildTime) {
+		Properties properties = new Properties();
+		properties.put("group", group);
+		properties.put("artifact", artifact);
+		properties.put("version", version);
+		properties.put("time", buildTime);
+		return properties;
+	}
 
 	@Test
 	public void basicInfo() {
@@ -51,15 +60,6 @@ public class BuildPropertiesTests {
 		assertThat(properties.getArtifact()).isNull();
 		assertThat(properties.getVersion()).isNull();
 		assertThat(properties.getTime()).isNull();
-	}
-
-	private static Properties createProperties(String group, String artifact, String version, String buildTime) {
-		Properties properties = new Properties();
-		properties.put("group", group);
-		properties.put("artifact", artifact);
-		properties.put("version", version);
-		properties.put("time", buildTime);
-		return properties;
 	}
 
 }

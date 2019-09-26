@@ -16,13 +16,12 @@
 
 package org.springframework.boot.configurationsample.lombok;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration properties using lombok @Getter/@Setter at class level.
@@ -36,21 +35,15 @@ import org.springframework.boot.configurationsample.ConfigurationProperties;
 public class LombokSimpleProperties {
 
 	private final String id = "super-id";
-
+	private final List<String> items = new ArrayList<>();
+	private final String ignored = "foo";
 	/**
 	 * Name description.
 	 */
 	private String name;
-
 	private String description;
-
 	private Integer counter;
-
 	@Deprecated
 	private Integer number = 0;
-
-	private final List<String> items = new ArrayList<>();
-
-	private final String ignored = "foo";
 
 }

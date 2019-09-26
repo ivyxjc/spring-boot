@@ -16,14 +16,14 @@
 
 package org.springframework.boot.configurationprocessor.metadata;
 
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,8 +43,8 @@ public class JsonMarshallerTests {
 		metadata.add(ItemMetadata.newProperty("b.c.d", null, null, null, null, null, null, null));
 		metadata.add(ItemMetadata.newProperty("c", null, null, null, null, null, 123, null));
 		metadata.add(ItemMetadata.newProperty("d", null, null, null, null, null, true, null));
-		metadata.add(ItemMetadata.newProperty("e", null, null, null, null, null, new String[] { "y", "n" }, null));
-		metadata.add(ItemMetadata.newProperty("f", null, null, null, null, null, new Boolean[] { true, false }, null));
+		metadata.add(ItemMetadata.newProperty("e", null, null, null, null, null, new String[]{"y", "n"}, null));
+		metadata.add(ItemMetadata.newProperty("f", null, null, null, null, null, new Boolean[]{true, false}, null));
 		metadata.add(ItemMetadata.newGroup("d", null, null, null));
 		metadata.add(ItemHint.newHint("a.b"));
 		metadata.add(ItemHint.newHint("c", new ItemHint.ValueHint(123, "hey"), new ItemHint.ValueHint(456, null)));
@@ -60,8 +60,8 @@ public class JsonMarshallerTests {
 		assertThat(read).has(Metadata.withProperty("b.c.d"));
 		assertThat(read).has(Metadata.withProperty("c").withDefaultValue(123));
 		assertThat(read).has(Metadata.withProperty("d").withDefaultValue(true));
-		assertThat(read).has(Metadata.withProperty("e").withDefaultValue(new String[] { "y", "n" }));
-		assertThat(read).has(Metadata.withProperty("f").withDefaultValue(new Object[] { true, false }));
+		assertThat(read).has(Metadata.withProperty("e").withDefaultValue(new String[]{"y", "n"}));
+		assertThat(read).has(Metadata.withProperty("f").withDefaultValue(new Object[]{true, false}));
 		assertThat(read).has(Metadata.withGroup("d"));
 		assertThat(read).has(Metadata.withHint("a.b"));
 		assertThat(read).has(Metadata.withHint("c").withValue(0, 123, "hey").withValue(1, 456, null));

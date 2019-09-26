@@ -49,11 +49,11 @@ import org.springframework.util.ObjectUtils;
 @ConditionalOnClass(ReactiveHttpInputMessage.class)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @EnableConfigurationProperties(ServerProperties.class)
-@Import({ ReactiveWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
-		ReactiveWebServerFactoryConfiguration.EmbeddedTomcat.class,
-		ReactiveWebServerFactoryConfiguration.EmbeddedJetty.class,
-		ReactiveWebServerFactoryConfiguration.EmbeddedUndertow.class,
-		ReactiveWebServerFactoryConfiguration.EmbeddedNetty.class })
+@Import({ReactiveWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
+				ReactiveWebServerFactoryConfiguration.EmbeddedTomcat.class,
+				ReactiveWebServerFactoryConfiguration.EmbeddedJetty.class,
+				ReactiveWebServerFactoryConfiguration.EmbeddedUndertow.class,
+				ReactiveWebServerFactoryConfiguration.EmbeddedNetty.class})
 public class ReactiveWebServerFactoryAutoConfiguration {
 
 	@Bean
@@ -78,7 +78,7 @@ public class ReactiveWebServerFactoryAutoConfiguration {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-				BeanDefinitionRegistry registry) {
+											BeanDefinitionRegistry registry) {
 			if (this.beanFactory == null) {
 				return;
 			}

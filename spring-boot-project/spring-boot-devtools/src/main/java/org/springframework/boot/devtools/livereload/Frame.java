@@ -16,10 +16,10 @@
 
 package org.springframework.boot.devtools.livereload;
 
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.io.OutputStream;
-
-import org.springframework.util.Assert;
 
 /**
  * A limited implementation of a WebSocket Frame used to carry LiveReload data.
@@ -37,6 +37,7 @@ class Frame {
 	/**
 	 * Create a new {@link Type#TEXT text} {@link Frame} instance with the specified
 	 * payload.
+	 *
 	 * @param payload the text payload
 	 */
 	Frame(String payload) {
@@ -54,33 +55,6 @@ class Frame {
 	Frame(Type type, byte[] payload) {
 		this.type = type;
 		this.payload = payload;
-	}
-
-	public Type getType() {
-		return this.type;
-	}
-
-	public byte[] getPayload() {
-		return this.payload;
-	}
-
-	@Override
-	public String toString() {
-		return new String(this.payload);
-	}
-
-	public void write(OutputStream outputStream) throws IOException {
-		outputStream.write(0x80 | this.type.code);
-		if (this.payload.length < 126) {
-			outputStream.write(0x00 | (this.payload.length & 0x7F));
-		}
-		else {
-			outputStream.write(0x7E);
-			outputStream.write(this.payload.length >> 8 & 0xFF);
-			outputStream.write(this.payload.length >> 0 & 0xFF);
-		}
-		outputStream.write(this.payload);
-		outputStream.flush();
 	}
 
 	public static Frame read(ConnectionInputStream inputStream) throws IOException {
@@ -105,6 +79,32 @@ class Frame {
 			}
 		}
 		return new Frame(Type.forCode(firstByte & 0x0F), payload);
+	}
+
+	public Type getType() {
+		return this.type;
+	}
+
+	public byte[] getPayload() {
+		return this.payload;
+	}
+
+	@Override
+	public String toString() {
+		return new String(this.payload);
+	}
+
+	public void write(OutputStream outputStream) throws IOException {
+		outputStream.write(0x80 | this.type.code);
+		if (this.payload.length < 126) {
+			outputStream.write(0x00 | (this.payload.length & 0x7F));
+		} else {
+			outputStream.write(0x7E);
+			outputStream.write(this.payload.length >> 8 & 0xFF);
+			outputStream.write(this.payload.length >> 0 & 0xFF);
+		}
+		outputStream.write(this.payload);
+		outputStream.flush();
 	}
 
 	/**

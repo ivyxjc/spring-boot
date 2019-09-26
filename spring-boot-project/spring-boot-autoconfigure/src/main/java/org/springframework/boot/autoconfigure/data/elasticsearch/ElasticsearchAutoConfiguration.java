@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.elasticsearch;
 
-import java.util.Properties;
-
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,6 +25,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.TransportClientFactoryBean;
+
+import java.util.Properties;
 
 /**
  * {@link org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -39,7 +38,7 @@ import org.springframework.data.elasticsearch.client.TransportClientFactoryBean;
  * @since 1.1.0
  */
 @Configuration
-@ConditionalOnClass({ Client.class, TransportClientFactoryBean.class })
+@ConditionalOnClass({Client.class, TransportClientFactoryBean.class})
 @ConditionalOnProperty(prefix = "spring.data.elasticsearch", name = "cluster-nodes", matchIfMissing = false)
 @EnableConfigurationProperties(ElasticsearchProperties.class)
 public class ElasticsearchAutoConfiguration {

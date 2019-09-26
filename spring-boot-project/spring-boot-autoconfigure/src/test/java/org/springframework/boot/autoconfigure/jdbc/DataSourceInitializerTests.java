@@ -16,19 +16,17 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
+import com.zaxxer.hikari.HikariDataSource;
+import org.junit.Test;
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.jdbc.DataSourceInitializationMode;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.UUID;
-
-import javax.sql.DataSource;
-
-import com.zaxxer.hikari.HikariDataSource;
-import org.junit.Test;
-
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.boot.jdbc.DataSourceInitializationMode;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

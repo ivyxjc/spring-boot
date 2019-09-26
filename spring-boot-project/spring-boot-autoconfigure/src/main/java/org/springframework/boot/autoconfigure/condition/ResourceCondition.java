@@ -16,15 +16,15 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.boot.autoconfigure.condition.ConditionMessage.Builder;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage.Style;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * {@link SpringBootCondition} used to check if a resource can be found using a
@@ -45,10 +45,11 @@ public abstract class ResourceCondition extends SpringBootCondition {
 
 	/**
 	 * Create a new condition.
-	 * @param name the name of the component
-	 * @param property the configuration property
+	 *
+	 * @param name              the name of the component
+	 * @param property          the configuration property
 	 * @param resourceLocations default location(s) where the configuration file can be
-	 * found if the configuration key is not specified
+	 *                          found if the configuration key is not specified
 	 * @since 2.0.0
 	 */
 	protected ResourceCondition(String name, String property, String... resourceLocations) {
@@ -67,7 +68,8 @@ public abstract class ResourceCondition extends SpringBootCondition {
 
 	/**
 	 * Check if one of the default resource locations actually exists.
-	 * @param context the condition context
+	 *
+	 * @param context  the condition context
 	 * @param metadata the annotation metadata
 	 * @return the condition outcome
 	 */

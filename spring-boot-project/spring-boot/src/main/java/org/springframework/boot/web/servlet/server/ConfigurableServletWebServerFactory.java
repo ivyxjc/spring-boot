@@ -16,18 +16,17 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import org.springframework.boot.web.server.ConfigurableWebServerFactory;
+import org.springframework.boot.web.server.MimeMappings;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+
+import javax.servlet.ServletContext;
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.servlet.ServletContext;
-
-import org.springframework.boot.web.server.ConfigurableWebServerFactory;
-import org.springframework.boot.web.server.MimeMappings;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 /**
  * A configurable {@link ServletWebServerFactory}.
@@ -37,9 +36,9 @@ import org.springframework.boot.web.servlet.ServletContextInitializer;
  * @author Stephane Nicoll
  * @author Eddú Meléndez
  * @author Brian Clozel
- * @since 2.0.0
  * @see ServletWebServerFactory
  * @see WebServerFactoryCustomizer
+ * @since 2.0.0
  */
 public interface ConfigurableServletWebServerFactory extends ConfigurableWebServerFactory, ServletWebServerFactory {
 
@@ -47,12 +46,14 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 	 * Sets the context path for the web server. The context should start with a "/"
 	 * character but not end with a "/" character. The default context path can be
 	 * specified using an empty string.
+	 *
 	 * @param contextPath the contextPath to set
 	 */
 	void setContextPath(String contextPath);
 
 	/**
 	 * Sets the display name of the application deployed in the web server.
+	 *
 	 * @param displayName the displayName to set
 	 * @since 1.3.0
 	 */
@@ -61,6 +62,7 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 	/**
 	 * Sets the configuration that will be applied to the container's HTTP session
 	 * support.
+	 *
 	 * @param session the session configuration
 	 */
 	void setSession(Session session);
@@ -68,20 +70,23 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 	/**
 	 * Set if the DefaultServlet should be registered. Defaults to {@code true} so that
 	 * files from the {@link #setDocumentRoot(File) document root} will be served.
+	 *
 	 * @param registerDefaultServlet if the default servlet should be registered
 	 */
 	void setRegisterDefaultServlet(boolean registerDefaultServlet);
 
 	/**
 	 * Sets the mime-type mappings.
+	 *
 	 * @param mimeMappings the mime type mappings (defaults to
-	 * {@link MimeMappings#DEFAULT})
+	 *                     {@link MimeMappings#DEFAULT})
 	 */
 	void setMimeMappings(MimeMappings mimeMappings);
 
 	/**
 	 * Sets the document root directory which will be used by the web context to serve
 	 * static files.
+	 *
 	 * @param documentRoot the document root or {@code null} if not required
 	 */
 	void setDocumentRoot(File documentRoot);
@@ -90,6 +95,7 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 	 * Sets {@link ServletContextInitializer} that should be applied in addition to
 	 * {@link ServletWebServerFactory#getWebServer(ServletContextInitializer...)}
 	 * parameters. This method will replace any previously set or added initializers.
+	 *
 	 * @param initializers the initializers to set
 	 * @see #addInitializers
 	 */
@@ -99,6 +105,7 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 	 * Add {@link ServletContextInitializer}s to those that should be applied in addition
 	 * to {@link ServletWebServerFactory#getWebServer(ServletContextInitializer...)}
 	 * parameters.
+	 *
 	 * @param initializers the initializers to add
 	 * @see #setInitializers
 	 */
@@ -106,12 +113,14 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 
 	/**
 	 * Sets the configuration that will be applied to the server's JSP servlet.
+	 *
 	 * @param jsp the JSP servlet configuration
 	 */
 	void setJsp(Jsp jsp);
 
 	/**
 	 * Sets the Locale to Charset mappings.
+	 *
 	 * @param localeCharsetMappings the Locale to Charset mappings
 	 */
 	void setLocaleCharsetMappings(Map<Locale, Charset> localeCharsetMappings);
@@ -119,6 +128,7 @@ public interface ConfigurableServletWebServerFactory extends ConfigurableWebServ
 	/**
 	 * Sets the init parameters that are applied to the container's
 	 * {@link ServletContext}.
+	 *
 	 * @param initParameters the init parameters
 	 */
 	void setInitParameters(Map<String, String> initParameters);

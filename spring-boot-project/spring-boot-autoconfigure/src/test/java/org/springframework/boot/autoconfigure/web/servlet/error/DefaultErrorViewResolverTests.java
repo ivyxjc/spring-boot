@@ -16,17 +16,10 @@
 
 package org.springframework.boot.autoconfigure.web.servlet.error;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider;
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProviders;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
@@ -41,14 +34,17 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link DefaultErrorViewResolver}.
@@ -192,7 +188,7 @@ public class DefaultErrorViewResolverTests {
 	private void setResourceLocation(String path) {
 		String packageName = getClass().getPackage().getName();
 		this.resourceProperties
-				.setStaticLocations(new String[] { "classpath:" + packageName.replace('.', '/') + path + "/" });
+				.setStaticLocations(new String[]{"classpath:" + packageName.replace('.', '/') + path + "/"});
 	}
 
 	private MockHttpServletResponse render(ModelAndView modelAndView) throws Exception {

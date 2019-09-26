@@ -16,27 +16,10 @@
 
 package org.springframework.boot.autoconfigure.thymeleaf;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.DispatcherType;
-
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 import org.junit.Rule;
 import org.junit.Test;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.context.WebContext;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring5.view.ThymeleafView;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -56,6 +39,21 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.support.RequestContext;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafView;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import javax.servlet.DispatcherType;
+import java.io.File;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -73,11 +71,10 @@ import static org.hamcrest.Matchers.not;
  */
 public class ThymeleafServletAutoConfigurationTests {
 
-	@Rule
-	public OutputCapture output = new OutputCapture();
-
 	private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(ThymeleafAutoConfiguration.class));
+	@Rule
+	public OutputCapture output = new OutputCapture();
 
 	@Test
 	public void autoConfigurationBackOffWithoutThymeleafSpring() {
@@ -114,7 +111,7 @@ public class ThymeleafServletAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.servlet.produce-partial-output-while-processing:false")
 				.run((context) -> assertThat(
 						context.getBean(ThymeleafViewResolver.class).getProducePartialOutputWhileProcessing())
-								.isFalse());
+						.isFalse());
 	}
 
 	@Test
@@ -134,7 +131,7 @@ public class ThymeleafServletAutoConfigurationTests {
 	public void overrideViewNames() {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.viewNames:foo,bar")
 				.run((context) -> assertThat(context.getBean(ThymeleafViewResolver.class).getViewNames())
-						.isEqualTo(new String[] { "foo", "bar" }));
+						.isEqualTo(new String[]{"foo", "bar"}));
 	}
 
 	@Test
@@ -224,8 +221,7 @@ public class ThymeleafServletAutoConfigurationTests {
 						.setContext(new SecurityContextImpl(new TestingAuthenticationToken("alice", "admin")));
 				String result = engine.process("security-dialect", attrs);
 				assertThat(result).isEqualTo("<html><body><div>alice</div></body></html>" + System.lineSeparator());
-			}
-			finally {
+			} finally {
 				SecurityContextHolder.clearContext();
 			}
 		});
@@ -274,13 +270,13 @@ public class ThymeleafServletAutoConfigurationTests {
 		// gh-14897
 		this.contextRunner.withUserConfiguration(FilterRegistrationOtherConfiguration.class)
 				.withPropertyValues("spring.resources.chain.enabled:true").run((context) -> {
-					Map<String, FilterRegistrationBean> beans = context.getBeansOfType(FilterRegistrationBean.class);
-					assertThat(beans).hasSize(2);
-					FilterRegistrationBean registration = beans.values().stream()
-							.filter((r) -> r.getFilter() instanceof ResourceUrlEncodingFilter).findFirst().get();
-					assertThat(registration).hasFieldOrPropertyWithValue("dispatcherTypes",
-							EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR));
-				});
+			Map<String, FilterRegistrationBean> beans = context.getBeansOfType(FilterRegistrationBean.class);
+			assertThat(beans).hasSize(2);
+			FilterRegistrationBean registration = beans.values().stream()
+					.filter((r) -> r.getFilter() instanceof ResourceUrlEncodingFilter).findFirst().get();
+			assertThat(registration).hasFieldOrPropertyWithValue("dispatcherTypes",
+					EnumSet.of(DispatcherType.REQUEST, DispatcherType.ERROR));
+		});
 	}
 
 	@Test
@@ -289,13 +285,13 @@ public class ThymeleafServletAutoConfigurationTests {
 		// gh-14926
 		this.contextRunner.withUserConfiguration(FilterRegistrationResourceConfiguration.class)
 				.withPropertyValues("spring.resources.chain.enabled:true").run((context) -> {
-					Map<String, FilterRegistrationBean> beans = context.getBeansOfType(FilterRegistrationBean.class);
-					assertThat(beans).hasSize(1);
-					FilterRegistrationBean registration = beans.values().stream()
-							.filter((r) -> r.getFilter() instanceof ResourceUrlEncodingFilter).findFirst().get();
-					assertThat(registration).hasFieldOrPropertyWithValue("dispatcherTypes",
-							EnumSet.of(DispatcherType.INCLUDE));
-				});
+			Map<String, FilterRegistrationBean> beans = context.getBeansOfType(FilterRegistrationBean.class);
+			assertThat(beans).hasSize(1);
+			FilterRegistrationBean registration = beans.values().stream()
+					.filter((r) -> r.getFilter() instanceof ResourceUrlEncodingFilter).findFirst().get();
+			assertThat(registration).hasFieldOrPropertyWithValue("dispatcherTypes",
+					EnumSet.of(DispatcherType.INCLUDE));
+		});
 	}
 
 	@Test
@@ -303,7 +299,7 @@ public class ThymeleafServletAutoConfigurationTests {
 		this.contextRunner.withUserConfiguration(LayoutDialectConfiguration.class)
 				.run((context) -> assertThat(
 						ReflectionTestUtils.getField(context.getBean(LayoutDialect.class), "sortingStrategy"))
-								.isInstanceOf(GroupingStrategy.class));
+						.isInstanceOf(GroupingStrategy.class));
 	}
 
 	@Test

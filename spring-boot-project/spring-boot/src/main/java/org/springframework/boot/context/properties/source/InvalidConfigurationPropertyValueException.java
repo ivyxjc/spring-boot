@@ -36,11 +36,12 @@ public class InvalidConfigurationPropertyValueException extends RuntimeException
 	/**
 	 * Creates a new instance for the specified property {@code name} and {@code value},
 	 * including a {@code reason} why the value is invalid.
-	 * @param name the name of the property in canonical format
-	 * @param value the value of the property, can be {@code null}
+	 *
+	 * @param name   the name of the property in canonical format
+	 * @param value  the value of the property, can be {@code null}
 	 * @param reason a human-readable text that describes why the reason is invalid.
-	 * Starts with an upper-case and ends with a dot. Several sentences and carriage
-	 * returns are allowed.
+	 *               Starts with an upper-case and ends with a dot. Several sentences and carriage
+	 *               returns are allowed.
 	 */
 	public InvalidConfigurationPropertyValueException(String name, Object value, String reason) {
 		super("Property " + name + " with value '" + value + "' is invalid: " + reason);
@@ -52,6 +53,7 @@ public class InvalidConfigurationPropertyValueException extends RuntimeException
 
 	/**
 	 * Return the name of the property.
+	 *
 	 * @return the property name
 	 */
 	public String getName() {
@@ -60,6 +62,7 @@ public class InvalidConfigurationPropertyValueException extends RuntimeException
 
 	/**
 	 * Return the invalid value, can be {@code null}.
+	 *
 	 * @return the invalid value
 	 */
 	public Object getValue() {
@@ -68,6 +71,7 @@ public class InvalidConfigurationPropertyValueException extends RuntimeException
 
 	/**
 	 * Return the reason why the value is invalid.
+	 *
 	 * @return the reason
 	 */
 	public String getReason() {

@@ -16,13 +16,12 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,10 +50,10 @@ public class HikariDataSourceConfigurationTests {
 	public void testDataSourcePropertiesOverridden() {
 		this.contextRunner.withPropertyValues("spring.datasource.hikari.jdbc-url=jdbc:foo//bar/spam",
 				"spring.datasource.hikari.max-lifetime=1234").run((context) -> {
-					HikariDataSource ds = context.getBean(HikariDataSource.class);
-					assertThat(ds.getJdbcUrl()).isEqualTo("jdbc:foo//bar/spam");
-					assertThat(ds.getMaxLifetime()).isEqualTo(1234);
-				});
+			HikariDataSource ds = context.getBean(HikariDataSource.class);
+			assertThat(ds.getJdbcUrl()).isEqualTo("jdbc:foo//bar/spam");
+			assertThat(ds.getMaxLifetime()).isEqualTo(1234);
+		});
 		// TODO: test JDBC4 isValid()
 	}
 

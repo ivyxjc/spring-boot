@@ -16,6 +16,17 @@
 
 package org.springframework.boot.devtools.tunnel.server;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.devtools.tunnel.payload.HttpTunnelPayload;
+import org.springframework.boot.devtools.tunnel.payload.HttpTunnelPayloadForwarder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.ServerHttpAsyncRequestControl;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.nio.ByteBuffer;
@@ -25,18 +36,6 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.devtools.tunnel.payload.HttpTunnelPayload;
-import org.springframework.boot.devtools.tunnel.payload.HttpTunnelPayloadForwarder;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.server.ServerHttpAsyncRequestControl;
-import org.springframework.http.server.ServerHttpRequest;
-import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.util.Assert;
 
 /**
  * A server that can be used to tunnel TCP traffic over HTTP. Similar in design to the
@@ -61,7 +60,7 @@ import org.springframework.util.Assert;
  *     .                               .
  *     .                               .
  * </pre>
- *
+ * <p>
  * Each incoming request is held open to be used to carry the next available response. The
  * server will hold at most two connections open at any given time.
  * <p>
@@ -103,8 +102,8 @@ import org.springframework.util.Assert;
  *
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 1.3.0
  * @see org.springframework.boot.devtools.tunnel.client.HttpTunnelConnection
+ * @since 1.3.0
  */
 public class HttpTunnelServer {
 
@@ -126,6 +125,7 @@ public class HttpTunnelServer {
 
 	/**
 	 * Creates a new {@link HttpTunnelServer} instance.
+	 *
 	 * @param serverConnection the connection to the target server
 	 */
 	public HttpTunnelServer(TargetServerConnection serverConnection) {
@@ -135,7 +135,8 @@ public class HttpTunnelServer {
 
 	/**
 	 * Handle an incoming HTTP connection.
-	 * @param request the HTTP request
+	 *
+	 * @param request  the HTTP request
 	 * @param response the HTTP response
 	 * @throws IOException in case of I/O errors
 	 */
@@ -145,6 +146,7 @@ public class HttpTunnelServer {
 
 	/**
 	 * Handle an incoming HTTP connection.
+	 *
 	 * @param httpConnection the HTTP connection
 	 * @throws IOException in case of I/O errors
 	 */
@@ -152,14 +154,14 @@ public class HttpTunnelServer {
 		try {
 			getServerThread().handleIncomingHttp(httpConnection);
 			httpConnection.waitForResponse();
-		}
-		catch (ConnectException ex) {
+		} catch (ConnectException ex) {
 			httpConnection.respond(HttpStatus.GONE);
 		}
 	}
 
 	/**
 	 * Returns the active server thread, creating and starting it if necessary.
+	 *
 	 * @return the {@code ServerThread} (never {@code null})
 	 * @throws IOException in case of I/O errors
 	 */
@@ -185,6 +187,7 @@ public class HttpTunnelServer {
 
 	/**
 	 * Set the long poll timeout for the server.
+	 *
 	 * @param longPollTimeout the long poll timeout in milliseconds
 	 */
 	public void setLongPollTimeout(int longPollTimeout) {
@@ -194,11 +197,148 @@ public class HttpTunnelServer {
 
 	/**
 	 * Set the maximum amount of time to wait for a client before closing the connection.
+	 *
 	 * @param disconnectTimeout the disconnect timeout in milliseconds
 	 */
 	public void setDisconnectTimeout(long disconnectTimeout) {
 		Assert.isTrue(disconnectTimeout > 0, "DisconnectTimeout must be a positive value");
 		this.disconnectTimeout = disconnectTimeout;
+	}
+
+	/**
+	 * Encapsulates a HTTP request/response pair.
+	 */
+	protected static class HttpConnection {
+
+		private final long createTime;
+
+		private final ServerHttpRequest request;
+
+		private final ServerHttpResponse response;
+
+		private ServerHttpAsyncRequestControl async;
+
+		private volatile boolean complete = false;
+
+		public HttpConnection(ServerHttpRequest request, ServerHttpResponse response) {
+			this.createTime = System.currentTimeMillis();
+			this.request = request;
+			this.response = response;
+			this.async = startAsync();
+		}
+
+		/**
+		 * Start asynchronous support or if unavailable return {@code null} to cause
+		 * {@link #waitForResponse()} to block.
+		 *
+		 * @return the async request control
+		 */
+		protected ServerHttpAsyncRequestControl startAsync() {
+			try {
+				// Try to use async to save blocking
+				ServerHttpAsyncRequestControl async = this.request.getAsyncRequestControl(this.response);
+				async.start();
+				return async;
+			} catch (Exception ex) {
+				return null;
+			}
+		}
+
+		/**
+		 * Return the underlying request.
+		 *
+		 * @return the request
+		 */
+		public final ServerHttpRequest getRequest() {
+			return this.request;
+		}
+
+		/**
+		 * Return the underlying response.
+		 *
+		 * @return the response
+		 */
+		protected final ServerHttpResponse getResponse() {
+			return this.response;
+		}
+
+		/**
+		 * Determine if a connection is older than the specified time.
+		 *
+		 * @param time the time to check
+		 * @return {@code true} if the request is older than the time
+		 */
+		public boolean isOlderThan(int time) {
+			long runningTime = System.currentTimeMillis() - this.createTime;
+			return (runningTime > time);
+		}
+
+		/**
+		 * Cause the request to block or use asynchronous methods to wait until a response
+		 * is available.
+		 */
+		public void waitForResponse() {
+			if (this.async == null) {
+				while (!this.complete) {
+					try {
+						synchronized (this) {
+							wait(1000);
+						}
+					} catch (InterruptedException ex) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+		}
+
+		/**
+		 * Detect if the request is actually a signal to disconnect.
+		 *
+		 * @return if the request is a signal to disconnect
+		 */
+		public boolean isDisconnectRequest() {
+			return DISCONNECT_MEDIA_TYPE.equals(this.request.getHeaders().getContentType());
+		}
+
+		/**
+		 * Send a HTTP status response.
+		 *
+		 * @param status the status to send
+		 * @throws IOException in case of I/O errors
+		 */
+		public void respond(HttpStatus status) throws IOException {
+			Assert.notNull(status, "Status must not be null");
+			this.response.setStatusCode(status);
+			complete();
+		}
+
+		/**
+		 * Send a payload response.
+		 *
+		 * @param payload the payload to send
+		 * @throws IOException in case of I/O errors
+		 */
+		public void respond(HttpTunnelPayload payload) throws IOException {
+			Assert.notNull(payload, "Payload must not be null");
+			this.response.setStatusCode(HttpStatus.OK);
+			payload.assignTo(this.response);
+			complete();
+		}
+
+		/**
+		 * Called when a request is complete.
+		 */
+		protected void complete() {
+			if (this.async != null) {
+				this.async.complete();
+			} else {
+				synchronized (this) {
+					this.complete = true;
+					notifyAll();
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -230,12 +370,10 @@ public class HttpTunnelServer {
 			try {
 				try {
 					readAndForwardTargetServerData();
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					logger.trace("Unexpected exception from tunnel server", ex);
 				}
-			}
-			finally {
+			} finally {
 				this.closed = true;
 				closeHttpConnections();
 				closeTargetServer();
@@ -264,8 +402,7 @@ public class HttpTunnelServer {
 				while (httpConnection == null) {
 					try {
 						this.httpConnections.wait(HttpTunnelServer.this.longPollTimeout);
-					}
-					catch (InterruptedException ex) {
+					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 						closeHttpConnections();
 					}
@@ -302,8 +439,7 @@ public class HttpTunnelServer {
 				while (!this.httpConnections.isEmpty()) {
 					try {
 						this.httpConnections.removeFirst().respond(HttpStatus.GONE);
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						logger.trace("Unable to close remote HTTP connection");
 					}
 				}
@@ -313,14 +449,14 @@ public class HttpTunnelServer {
 		private void closeTargetServer() {
 			try {
 				this.targetServer.close();
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				logger.trace("Unable to target server connection");
 			}
 		}
 
 		/**
 		 * Handle an incoming {@link HttpConnection}.
+		 *
 		 * @param httpConnection the connection to handle.
 		 * @throws IOException in case of I/O errors
 		 */
@@ -348,138 +484,6 @@ public class HttpTunnelServer {
 			HttpTunnelPayload payload = HttpTunnelPayload.get(request);
 			if (payload != null) {
 				this.payloadForwarder.forward(payload);
-			}
-		}
-
-	}
-
-	/**
-	 * Encapsulates a HTTP request/response pair.
-	 */
-	protected static class HttpConnection {
-
-		private final long createTime;
-
-		private final ServerHttpRequest request;
-
-		private final ServerHttpResponse response;
-
-		private ServerHttpAsyncRequestControl async;
-
-		private volatile boolean complete = false;
-
-		public HttpConnection(ServerHttpRequest request, ServerHttpResponse response) {
-			this.createTime = System.currentTimeMillis();
-			this.request = request;
-			this.response = response;
-			this.async = startAsync();
-		}
-
-		/**
-		 * Start asynchronous support or if unavailable return {@code null} to cause
-		 * {@link #waitForResponse()} to block.
-		 * @return the async request control
-		 */
-		protected ServerHttpAsyncRequestControl startAsync() {
-			try {
-				// Try to use async to save blocking
-				ServerHttpAsyncRequestControl async = this.request.getAsyncRequestControl(this.response);
-				async.start();
-				return async;
-			}
-			catch (Exception ex) {
-				return null;
-			}
-		}
-
-		/**
-		 * Return the underlying request.
-		 * @return the request
-		 */
-		public final ServerHttpRequest getRequest() {
-			return this.request;
-		}
-
-		/**
-		 * Return the underlying response.
-		 * @return the response
-		 */
-		protected final ServerHttpResponse getResponse() {
-			return this.response;
-		}
-
-		/**
-		 * Determine if a connection is older than the specified time.
-		 * @param time the time to check
-		 * @return {@code true} if the request is older than the time
-		 */
-		public boolean isOlderThan(int time) {
-			long runningTime = System.currentTimeMillis() - this.createTime;
-			return (runningTime > time);
-		}
-
-		/**
-		 * Cause the request to block or use asynchronous methods to wait until a response
-		 * is available.
-		 */
-		public void waitForResponse() {
-			if (this.async == null) {
-				while (!this.complete) {
-					try {
-						synchronized (this) {
-							wait(1000);
-						}
-					}
-					catch (InterruptedException ex) {
-						Thread.currentThread().interrupt();
-					}
-				}
-			}
-		}
-
-		/**
-		 * Detect if the request is actually a signal to disconnect.
-		 * @return if the request is a signal to disconnect
-		 */
-		public boolean isDisconnectRequest() {
-			return DISCONNECT_MEDIA_TYPE.equals(this.request.getHeaders().getContentType());
-		}
-
-		/**
-		 * Send a HTTP status response.
-		 * @param status the status to send
-		 * @throws IOException in case of I/O errors
-		 */
-		public void respond(HttpStatus status) throws IOException {
-			Assert.notNull(status, "Status must not be null");
-			this.response.setStatusCode(status);
-			complete();
-		}
-
-		/**
-		 * Send a payload response.
-		 * @param payload the payload to send
-		 * @throws IOException in case of I/O errors
-		 */
-		public void respond(HttpTunnelPayload payload) throws IOException {
-			Assert.notNull(payload, "Payload must not be null");
-			this.response.setStatusCode(HttpStatus.OK);
-			payload.assignTo(this.response);
-			complete();
-		}
-
-		/**
-		 * Called when a request is complete.
-		 */
-		protected void complete() {
-			if (this.async != null) {
-				this.async.complete();
-			}
-			else {
-				synchronized (this) {
-					this.complete = true;
-					notifyAll();
-				}
 			}
 		}
 

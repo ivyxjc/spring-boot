@@ -16,13 +16,13 @@
 
 package org.springframework.boot.cli.archive;
 
+import org.springframework.boot.cli.app.SpringApplicationLauncher;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
-import org.springframework.boot.cli.app.SpringApplicationLauncher;
 
 /**
  * A launcher for a CLI application that has been compiled and packaged as a jar file.
@@ -44,6 +44,10 @@ public final class PackagedSpringApplicationLauncher {
 	public static final String START_CLASS_ENTRY = "Start-Class";
 
 	private PackagedSpringApplicationLauncher() {
+	}
+
+	public static void main(String[] args) throws Exception {
+		new PackagedSpringApplicationLauncher().run(args);
 	}
 
 	private void run(String[] args) throws Exception {
@@ -76,10 +80,6 @@ public final class PackagedSpringApplicationLauncher {
 			classes[i] = classLoader.loadClass(names[i]);
 		}
 		return classes;
-	}
-
-	public static void main(String[] args) throws Exception {
-		new PackagedSpringApplicationLauncher().run(args);
 	}
 
 }

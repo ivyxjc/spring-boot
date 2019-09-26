@@ -16,14 +16,6 @@
 
 package org.springframework.boot.env;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
@@ -31,15 +23,12 @@ import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
 import org.springframework.boot.origin.PropertySourceOrigin;
 import org.springframework.core.Ordered;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.*;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.support.StandardServletEnvironment;
+
+import java.util.*;
 
 /**
  * An {@link EnvironmentPostProcessor} that parses JSON from
@@ -64,20 +53,16 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 	 * Name of the {@code SPRING_APPLICATION_JSON} environment variable.
 	 */
 	public static final String SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE = "SPRING_APPLICATION_JSON";
-
-	private static final String SERVLET_ENVIRONMENT_CLASS = "org.springframework.web."
-			+ "context.support.StandardServletEnvironment";
-
-	private static final Set<String> SERVLET_ENVIRONMENT_PROPERTY_SOURCES = new LinkedHashSet<>(
-			Arrays.asList(StandardServletEnvironment.JNDI_PROPERTY_SOURCE_NAME,
-					StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME,
-					StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME));
-
 	/**
 	 * The default order for the processor.
 	 */
 	public static final int DEFAULT_ORDER = Ordered.HIGHEST_PRECEDENCE + 5;
-
+	private static final String SERVLET_ENVIRONMENT_CLASS = "org.springframework.web."
+			+ "context.support.StandardServletEnvironment";
+	private static final Set<String> SERVLET_ENVIRONMENT_PROPERTY_SOURCES = new LinkedHashSet<>(
+			Arrays.asList(StandardServletEnvironment.JNDI_PROPERTY_SOURCE_NAME,
+					StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME,
+					StandardServletEnvironment.SERVLET_CONFIG_PROPERTY_SOURCE_NAME));
 	private int order = DEFAULT_ORDER;
 
 	@Override
@@ -106,6 +91,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 
 	/**
 	 * Flatten the map keys using period separator.
+	 *
 	 * @param map the map that should be flattened
 	 * @return the flattened map
 	 */
@@ -124,15 +110,13 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 	private void extract(String name, Map<String, Object> result, Object value) {
 		if (value instanceof Map) {
 			flatten(name, result, (Map<String, Object>) value);
-		}
-		else if (value instanceof Collection) {
+		} else if (value instanceof Collection) {
 			int index = 0;
 			for (Object object : (Collection<Object>) value) {
 				extract(name + "[" + index + "]", result, object);
 				index++;
 			}
-		}
-		else {
+		} else {
 			result.put(name, value);
 		}
 	}
@@ -142,8 +126,7 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 		String name = findPropertySource(sources);
 		if (sources.contains(name)) {
 			sources.addBefore(name, source);
-		}
-		else {
+		} else {
 			sources.addFirst(source);
 		}
 	}
@@ -178,8 +161,8 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 
 	private static class JsonPropertyValue {
 
-		private static final String[] CANDIDATES = { SPRING_APPLICATION_JSON_PROPERTY,
-				SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE };
+		private static final String[] CANDIDATES = {SPRING_APPLICATION_JSON_PROPERTY,
+				SPRING_APPLICATION_JSON_ENVIRONMENT_VARIABLE};
 
 		private final PropertySource<?> propertySource;
 
@@ -193,14 +176,6 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 			this.json = json;
 		}
 
-		public String getJson() {
-			return this.json;
-		}
-
-		public Origin getOrigin() {
-			return PropertySourceOrigin.get(this.propertySource, this.propertyName);
-		}
-
 		public static JsonPropertyValue get(PropertySource<?> propertySource) {
 			for (String candidate : CANDIDATES) {
 				Object value = propertySource.getProperty(candidate);
@@ -209,6 +184,14 @@ public class SpringApplicationJsonEnvironmentPostProcessor implements Environmen
 				}
 			}
 			return null;
+		}
+
+		public String getJson() {
+			return this.json;
+		}
+
+		public Origin getOrigin() {
+			return PropertySourceOrigin.get(this.propertySource, this.propertyName);
 		}
 
 	}

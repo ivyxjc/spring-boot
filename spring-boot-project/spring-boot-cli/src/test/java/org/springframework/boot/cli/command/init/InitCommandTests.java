@@ -16,14 +16,6 @@
 
 package org.springframework.boot.cli.command.init;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.UUID;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
 import joptsimple.OptionSet;
 import org.apache.http.Header;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -34,8 +26,15 @@ import org.junit.rules.TemporaryFolder;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.cli.command.status.ExitStatus;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.UUID;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -58,15 +57,15 @@ public class InitCommandTests extends AbstractHttpClientMockTests {
 	@Captor
 	private ArgumentCaptor<HttpUriRequest> requestCaptor;
 
-	@Before
-	public void setupMocks() {
-		MockitoAnnotations.initMocks(this);
-	}
-
 	public InitCommandTests() {
 		InitializrService initializrService = new InitializrService(this.http);
 		this.handler = new TestableInitCommandOptionHandler(initializrService);
 		this.command = new InitCommand(this.handler);
+	}
+
+	@Before
+	public void setupMocks() {
+		MockitoAnnotations.initMocks(this);
 	}
 
 	@Test
@@ -97,8 +96,7 @@ public class InitCommandTests extends AbstractHttpClientMockTests {
 		try {
 			assertThat(this.command.run()).isEqualTo(ExitStatus.OK);
 			assertThat(file.exists()).as("file should have been created").isTrue();
-		}
-		finally {
+		} finally {
 			assertThat(file.delete()).as("failed to delete test file").isTrue();
 		}
 	}
@@ -159,8 +157,7 @@ public class InitCommandTests extends AbstractHttpClientMockTests {
 		try {
 			assertThat(this.command.run(fileName)).isEqualTo(ExitStatus.OK);
 			assertThat(archiveFile).exists();
-		}
-		finally {
+		} finally {
 			archiveFile.delete();
 			file.delete();
 		}
@@ -179,8 +176,7 @@ public class InitCommandTests extends AbstractHttpClientMockTests {
 			assertThat(this.command.run(fileName)).isEqualTo(ExitStatus.OK);
 			assertThat(file.exists()).as("File not saved properly").isTrue();
 			assertThat(file.isFile()).as("Should not be a directory").isTrue();
-		}
-		finally {
+		} finally {
 			file.delete();
 		}
 	}
@@ -198,8 +194,7 @@ public class InitCommandTests extends AbstractHttpClientMockTests {
 			mockSuccessfulProjectGeneration(request);
 			assertThat(this.command.run("--extract", folder.getAbsolutePath())).isEqualTo(ExitStatus.OK);
 			assertThat(file.exists()).as("file should have been saved instead").isTrue();
-		}
-		finally {
+		} finally {
 			assertThat(file.delete()).as("failed to delete test file").isTrue();
 		}
 	}
@@ -216,8 +211,7 @@ public class InitCommandTests extends AbstractHttpClientMockTests {
 			mockSuccessfulProjectGeneration(request);
 			assertThat(this.command.run("--extract", folder.getAbsolutePath())).isEqualTo(ExitStatus.OK);
 			assertThat(file.exists()).as("file should have been saved instead").isTrue();
-		}
-		finally {
+		} finally {
 			assertThat(file.delete()).as("failed to delete test file").isTrue();
 		}
 	}

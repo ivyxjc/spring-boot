@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.condition;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
@@ -53,14 +52,14 @@ public class OnClassConditionAutoConfigurationImportFilterTests {
 
 	@Test
 	public void matchShouldMatchClasses() {
-		String[] autoConfigurationClasses = new String[] { "test.match", "test.nomatch" };
+		String[] autoConfigurationClasses = new String[]{"test.match", "test.nomatch"};
 		boolean[] result = this.filter.match(autoConfigurationClasses, getAutoConfigurationMetadata());
 		assertThat(result).containsExactly(true, false);
 	}
 
 	@Test
 	public void matchShouldRecordOutcome() {
-		String[] autoConfigurationClasses = new String[] { "test.match", "test.nomatch" };
+		String[] autoConfigurationClasses = new String[]{"test.match", "test.nomatch"};
 		this.filter.match(autoConfigurationClasses, getAutoConfigurationMetadata());
 		ConditionEvaluationReport report = ConditionEvaluationReport.get(this.beanFactory);
 		assertThat(report.getConditionAndOutcomesBySource()).hasSize(1).containsKey("test.nomatch");

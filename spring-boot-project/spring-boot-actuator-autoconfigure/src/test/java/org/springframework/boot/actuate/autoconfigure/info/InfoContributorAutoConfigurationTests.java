@@ -16,12 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.info;
 
-import java.util.Map;
-import java.util.Properties;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.info.BuildInfoContributor;
 import org.springframework.boot.actuate.info.GitInfoContributor;
 import org.springframework.boot.actuate.info.Info;
@@ -32,6 +28,9 @@ import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

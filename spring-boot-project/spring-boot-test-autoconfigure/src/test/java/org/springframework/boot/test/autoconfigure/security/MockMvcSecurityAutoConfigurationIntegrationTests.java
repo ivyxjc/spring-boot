@@ -18,7 +18,6 @@ package org.springframework.boot.test.autoconfigure.security;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcSecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest
 @RunWith(SpringRunner.class)
-@TestPropertySource(properties = { "debug=true" })
+@TestPropertySource(properties = {"debug=true"})
 public class MockMvcSecurityAutoConfigurationIntegrationTests {
 
 	@Autowired

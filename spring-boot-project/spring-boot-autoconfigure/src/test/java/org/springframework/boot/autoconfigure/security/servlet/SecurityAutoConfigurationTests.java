@@ -16,13 +16,8 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -48,6 +43,9 @@ import org.springframework.security.data.repository.query.SecurityEvaluationCont
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -60,11 +58,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class SecurityAutoConfigurationTests {
 
-	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner().withConfiguration(
-			AutoConfigurations.of(SecurityAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class));
-
 	@Rule
 	public OutputCapture outputCapture = new OutputCapture();
+	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner().withConfiguration(
+			AutoConfigurations.of(SecurityAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class));
 
 	@Test
 	public void testWebConfiguration() {
@@ -160,13 +157,13 @@ public class SecurityAutoConfigurationTests {
 	public void customFilterDispatcherTypes() {
 		this.contextRunner.withPropertyValues("spring.security.filter.dispatcher-types:INCLUDE,ERROR")
 				.withConfiguration(AutoConfigurations.of(SecurityFilterAutoConfiguration.class)).run((context) -> {
-					DelegatingFilterProxyRegistrationBean bean = context.getBean("securityFilterChainRegistration",
-							DelegatingFilterProxyRegistrationBean.class);
-					@SuppressWarnings("unchecked")
-					EnumSet<DispatcherType> dispatcherTypes = (EnumSet<DispatcherType>) ReflectionTestUtils
-							.getField(bean, "dispatcherTypes");
-					assertThat(dispatcherTypes).containsOnly(DispatcherType.INCLUDE, DispatcherType.ERROR);
-				});
+			DelegatingFilterProxyRegistrationBean bean = context.getBean("securityFilterChainRegistration",
+					DelegatingFilterProxyRegistrationBean.class);
+			@SuppressWarnings("unchecked")
+			EnumSet<DispatcherType> dispatcherTypes = (EnumSet<DispatcherType>) ReflectionTestUtils
+					.getField(bean, "dispatcherTypes");
+			assertThat(dispatcherTypes).containsOnly(DispatcherType.INCLUDE, DispatcherType.ERROR);
+		});
 	}
 
 	@Configuration

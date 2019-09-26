@@ -16,15 +16,15 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
+import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
+import org.springframework.boot.diagnostics.FailureAnalysis;
+import org.springframework.util.ClassUtils;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
-import org.springframework.boot.diagnostics.FailureAnalysis;
-import org.springframework.util.ClassUtils;
 
 /**
  * An {@link AbstractFailureAnalyzer} that analyzes {@link NoSuchMethodError
@@ -98,8 +98,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		try {
 			return Collections.list(NoSuchMethodFailureAnalyzer.class.getClassLoader()
 					.getResources(ClassUtils.convertClassNameToResourcePath(className) + ".class"));
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return null;
 		}
 	}
@@ -107,8 +106,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 	private URL getActual(String className) {
 		try {
 			return getClass().getClassLoader().loadClass(className).getProtectionDomain().getCodeSource().getLocation();
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return null;
 		}
 	}
@@ -153,7 +151,7 @@ class NoSuchMethodFailureAnalyzer extends AbstractFailureAnalyzer<NoSuchMethodEr
 		private final URL actualLocation;
 
 		public NoSuchMethodDescriptor(String errorMessage, String className, List<URL> candidateLocations,
-				URL actualLocation) {
+									  URL actualLocation) {
 			this.errorMessage = errorMessage;
 			this.className = className;
 			this.candidateLocations = candidateLocations;

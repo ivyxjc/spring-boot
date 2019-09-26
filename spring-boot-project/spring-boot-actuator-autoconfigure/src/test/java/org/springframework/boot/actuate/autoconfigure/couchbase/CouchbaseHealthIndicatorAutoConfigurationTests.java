@@ -17,7 +17,6 @@ package org.springframework.boot.actuate.autoconfigure.couchbase;
 
 import com.couchbase.client.java.Cluster;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.couchbase.CouchbaseHealthIndicator;
 import org.springframework.boot.actuate.couchbase.CouchbaseReactiveHealthIndicator;

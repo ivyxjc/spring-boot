@@ -16,16 +16,15 @@
 
 package org.springframework.boot.actuate.neo4j;
 
-import java.util.Collections;
-
 import org.neo4j.ogm.model.Result;
 import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.actuate.health.HealthIndicator;
+
+import java.util.Collections;
 
 /**
  * {@link HealthIndicator} that tests the status of a Neo4j by executing a Cypher
@@ -47,6 +46,7 @@ public class Neo4jHealthIndicator extends AbstractHealthIndicator {
 	/**
 	 * Create a new {@link Neo4jHealthIndicator} using the specified
 	 * {@link SessionFactory}.
+	 *
 	 * @param sessionFactory the SessionFactory
 	 */
 	public Neo4jHealthIndicator(SessionFactory sessionFactory) {
@@ -63,6 +63,7 @@ public class Neo4jHealthIndicator extends AbstractHealthIndicator {
 	/**
 	 * Provide health details using the specified {@link Session} and {@link Builder
 	 * Builder}.
+	 *
 	 * @param session the session to use to execute a cypher statement
 	 * @param builder the builder to add details to
 	 * @throws Exception if getting health details failed

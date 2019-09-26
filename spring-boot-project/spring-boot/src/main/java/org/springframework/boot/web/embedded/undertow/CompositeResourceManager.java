@@ -16,14 +16,14 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
 import io.undertow.UndertowMessages;
 import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A {@link ResourceManager} that delegates to multiple {@code ResourceManager} instances.

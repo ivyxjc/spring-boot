@@ -16,15 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.health.CompositeHealthIndicator;
-import org.springframework.boot.actuate.health.DefaultHealthIndicatorRegistry;
-import org.springframework.boot.actuate.health.HealthAggregator;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.core.ResolvableType;
+
+import java.util.Map;
 
 /**
  * Base class for configurations that can combine source beans using a
@@ -57,8 +53,7 @@ public abstract class CompositeHealthIndicatorConfiguration<H extends HealthIndi
 		Class<S> sourceClass = (Class<S>) generics[1];
 		try {
 			return indicatorClass.getConstructor(sourceClass).newInstance(source);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(
 					"Unable to create indicator " + indicatorClass + " for source " + sourceClass, ex);
 		}

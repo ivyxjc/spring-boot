@@ -16,9 +16,9 @@
 
 package org.springframework.boot.ansi;
 
-import java.awt.Color;
-
 import org.junit.Test;
+
+import java.awt.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.atlas;
 
-import java.time.Duration;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * {@link ConfigurationProperties} for configuring Atlas metrics export.

@@ -16,13 +16,8 @@
 
 package org.springframework.boot.devtools.remote.client;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -30,6 +25,10 @@ import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * {@link Runnable} that waits to triggers live reload until the remote server has
@@ -60,7 +59,7 @@ class DelayedLiveReloadTrigger implements Runnable {
 	private long timeout = TIMEOUT;
 
 	DelayedLiveReloadTrigger(OptionalLiveReloadServer liveReloadServer, ClientHttpRequestFactory requestFactory,
-			String url) {
+							 String url) {
 		Assert.notNull(liveReloadServer, "LiveReloadServer must not be null");
 		Assert.notNull(requestFactory, "RequestFactory must not be null");
 		Assert.hasLength(url, "URL must not be empty");
@@ -68,8 +67,7 @@ class DelayedLiveReloadTrigger implements Runnable {
 		this.requestFactory = requestFactory;
 		try {
 			this.uri = new URI(url);
-		}
-		catch (URISyntaxException ex) {
+		} catch (URISyntaxException ex) {
 			throw new IllegalArgumentException(ex);
 		}
 	}
@@ -94,8 +92,7 @@ class DelayedLiveReloadTrigger implements Runnable {
 			}
 			logger.info("Remote server has changed, triggering LiveReload");
 			this.liveReloadServer.triggerReload();
-		}
-		catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 	}
@@ -105,8 +102,7 @@ class DelayedLiveReloadTrigger implements Runnable {
 			ClientHttpRequest request = createRequest();
 			ClientHttpResponse response = request.execute();
 			return response.getStatusCode() == HttpStatus.OK;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		}
 	}

@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.metrics.web.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.micrometer.core.instrument.MeterRegistry;
-
 import org.springframework.boot.web.client.RestTemplateCustomizer;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link RestTemplateCustomizer} that configures the {@link RestTemplate} to record
@@ -42,12 +41,13 @@ public class MetricsRestTemplateCustomizer implements RestTemplateCustomizer {
 	 * Creates a new {@code MetricsRestTemplateInterceptor} that will record metrics using
 	 * the given {@code meterRegistry} with tags provided by the given
 	 * {@code tagProvider}.
+	 *
 	 * @param meterRegistry the meter registry
-	 * @param tagProvider the tag provider
-	 * @param metricName the name of the recorded metric
+	 * @param tagProvider   the tag provider
+	 * @param metricName    the name of the recorded metric
 	 */
 	public MetricsRestTemplateCustomizer(MeterRegistry meterRegistry, RestTemplateExchangeTagsProvider tagProvider,
-			String metricName) {
+										 String metricName) {
 		this.interceptor = new MetricsClientHttpRequestInterceptor(meterRegistry, tagProvider, metricName);
 	}
 

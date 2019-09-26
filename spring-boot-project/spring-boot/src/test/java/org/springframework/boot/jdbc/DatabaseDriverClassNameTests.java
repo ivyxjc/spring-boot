@@ -16,22 +16,16 @@
 
 package org.springframework.boot.jdbc;
 
-import java.io.IOException;
-import java.sql.Driver;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.sql.XADataSource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.asm.ClassReader;
+
+import javax.sql.XADataSource;
+import java.io.IOException;
+import java.sql.Driver;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,6 +45,11 @@ public class DatabaseDriverClassNameTests {
 
 	private final Class<?> requiredType;
 
+	public DatabaseDriverClassNameTests(DatabaseDriver driver, String className, Class<?> requiredType) {
+		this.className = className;
+		this.requiredType = requiredType;
+	}
+
 	@Parameters(name = "{0} {2}")
 	public static List<Object[]> parameters() {
 		DatabaseDriver[] databaseDrivers = DatabaseDriver.values();
@@ -59,18 +58,13 @@ public class DatabaseDriverClassNameTests {
 			if (EXCLUDED_DRIVERS.contains(databaseDriver)) {
 				continue;
 			}
-			parameters.add(new Object[] { databaseDriver, databaseDriver.getDriverClassName(), Driver.class });
+			parameters.add(new Object[]{databaseDriver, databaseDriver.getDriverClassName(), Driver.class});
 			if (databaseDriver.getXaDataSourceClassName() != null) {
 				parameters.add(
-						new Object[] { databaseDriver, databaseDriver.getXaDataSourceClassName(), XADataSource.class });
+						new Object[]{databaseDriver, databaseDriver.getXaDataSourceClassName(), XADataSource.class});
 			}
 		}
 		return parameters;
-	}
-
-	public DatabaseDriverClassNameTests(DatabaseDriver driver, String className, Class<?> requiredType) {
-		this.className = className;
-		this.requiredType = requiredType;
 	}
 
 	@Test

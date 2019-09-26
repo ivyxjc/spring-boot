@@ -18,7 +18,6 @@ package org.springframework.boot.test.context;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.AbstractSpringBootTestWebServerWebEnvironmentTests.AbstractConfig;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -38,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @DirtiesContext
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = { "server.port=12345" })
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = {"server.port=12345"})
 public class SpringBootTestWebEnvironmentRandomPortCustomPortTests {
 
 	@Autowired

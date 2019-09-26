@@ -16,13 +16,8 @@
 
 package org.springframework.boot.actuate.endpoint.web.test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-
 import org.springframework.boot.actuate.endpoint.http.ActuatorMediaType;
 import org.springframework.boot.actuate.endpoint.invoke.convert.ConversionServiceParameterValueMapper;
 import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
@@ -47,6 +42,10 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * {@link BlockJUnit4ClassRunner} for Spring WebFlux.
  *
@@ -68,7 +67,7 @@ class WebFluxEndpointsRunner extends AbstractWebEndpointRunner {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, WebFluxAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, WebFluxAutoConfiguration.class})
 	static class WebFluxEndpointConfiguration implements ApplicationListener<WebServerInitializedEvent> {
 
 		private final ApplicationContext applicationContext;

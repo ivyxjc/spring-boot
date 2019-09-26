@@ -16,27 +16,18 @@
 
 package org.springframework.boot.cloud;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.config.ConfigFileApplicationListener;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.core.Ordered;
-import org.springframework.core.env.CommandLinePropertySource;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.env.*;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * An {@link EnvironmentPostProcessor} that knows where to find VCAP (a.k.a. Cloud
@@ -58,7 +49,7 @@ import org.springframework.util.StringUtils;
  *   "username":"urpRuqTf8Cpe6","password":"pxLsGVpsC9A5S"}
  * }]}
  * </pre>
- *
+ * <p>
  * These objects are flattened into properties. The VCAP_APPLICATION object goes straight
  * to {@code vcap.application.*} in a fairly obvious way, and the VCAP_SERVICES object is
  * unwrapped so that it is a hash of objects with key equal to the service instance name
@@ -80,7 +71,7 @@ import org.springframework.util.StringUtils;
  * vcap.services.mysql.credentials.password: pxLsGVpsC9A5S
  * ...
  * </pre>
- *
+ * <p>
  * N.B. this initializer is mainly intended for informational use (the application and
  * instance ids are particularly useful). For service binding you might find that Spring
  * Cloud is more convenient and more robust against potential changes in Cloud Foundry.
@@ -100,13 +91,13 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 	// Before ConfigFileApplicationListener so values there can use these ones
 	private int order = ConfigFileApplicationListener.DEFAULT_ORDER - 1;
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
 	@Override
 	public int getOrder() {
 		return this.order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	@Override
@@ -120,8 +111,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 			if (propertySources.contains(CommandLinePropertySource.COMMAND_LINE_PROPERTY_SOURCE_NAME)) {
 				propertySources.addAfter(CommandLinePropertySource.COMMAND_LINE_PROPERTY_SOURCE_NAME,
 						new PropertiesPropertySource("vcap", properties));
-			}
-			else {
+			} else {
 				propertySources.addFirst(new PropertiesPropertySource("vcap", properties));
 			}
 		}
@@ -140,8 +130,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 			String property = environment.getProperty(VCAP_APPLICATION, "{}");
 			Map<String, Object> map = parser.parseMap(property);
 			extractPropertiesFromApplication(properties, map);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.error("Could not parse VCAP_APPLICATION", ex);
 		}
 		return properties;
@@ -153,8 +142,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 			String property = environment.getProperty(VCAP_SERVICES, "{}");
 			Map<String, Object> map = parser.parseMap(property);
 			extractPropertiesFromServices(properties, map);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.error("Could not parse VCAP_SERVICES", ex);
 		}
 		return properties;
@@ -191,8 +179,7 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 			if (value instanceof Map) {
 				// Need a compound key
 				flatten(properties, (Map<String, Object>) value, name);
-			}
-			else if (value instanceof Collection) {
+			} else if (value instanceof Collection) {
 				// Need a compound key
 				Collection<Object> collection = (Collection<Object>) value;
 				properties.put(name, StringUtils.collectionToCommaDelimitedString(collection));
@@ -201,17 +188,13 @@ public class CloudFoundryVcapEnvironmentPostProcessor implements EnvironmentPost
 					String itemKey = "[" + (count++) + "]";
 					flatten(properties, Collections.singletonMap(itemKey, item), name);
 				}
-			}
-			else if (value instanceof String) {
+			} else if (value instanceof String) {
 				properties.put(name, value);
-			}
-			else if (value instanceof Number) {
+			} else if (value instanceof Number) {
 				properties.put(name, value.toString());
-			}
-			else if (value instanceof Boolean) {
+			} else if (value instanceof Boolean) {
 				properties.put(name, value.toString());
-			}
-			else {
+			} else {
 				properties.put(name, (value != null) ? value : "");
 			}
 		});

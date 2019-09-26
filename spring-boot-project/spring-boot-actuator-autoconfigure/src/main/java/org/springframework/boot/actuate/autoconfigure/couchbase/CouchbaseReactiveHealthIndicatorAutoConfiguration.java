@@ -15,11 +15,7 @@
  */
 package org.springframework.boot.actuate.autoconfigure.couchbase;
 
-import java.util.Map;
-
 import com.couchbase.client.java.Cluster;
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeReactiveHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -34,6 +30,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Flux;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
@@ -44,7 +43,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.1.0
  */
 @Configuration
-@ConditionalOnClass({ Cluster.class, Flux.class })
+@ConditionalOnClass({Cluster.class, Flux.class})
 @ConditionalOnBean(Cluster.class)
 @ConditionalOnEnabledHealthIndicator("couchbase")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)

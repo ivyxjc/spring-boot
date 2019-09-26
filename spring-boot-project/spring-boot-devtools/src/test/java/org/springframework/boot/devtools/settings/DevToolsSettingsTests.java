@@ -16,13 +16,13 @@
 
 package org.springframework.boot.devtools.settings;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,10 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class DevToolsSettingsTests {
 
+	private static final String ROOT = DevToolsSettingsTests.class.getPackage().getName().replace('.', '/') + "/";
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-	private static final String ROOT = DevToolsSettingsTests.class.getPackage().getName().replace('.', '/') + "/";
 
 	@Test
 	public void includePatterns() throws Exception {

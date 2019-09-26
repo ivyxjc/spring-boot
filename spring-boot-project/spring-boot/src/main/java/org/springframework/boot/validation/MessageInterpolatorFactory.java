@@ -16,18 +16,17 @@
 
 package org.springframework.boot.validation;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.validation.MessageInterpolator;
-import javax.validation.Validation;
-import javax.validation.ValidationException;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.util.ClassUtils;
+
+import javax.validation.MessageInterpolator;
+import javax.validation.Validation;
+import javax.validation.ValidationException;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ObjectFactory} that can be used to create a {@link MessageInterpolator}.
@@ -51,8 +50,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 	public MessageInterpolator getObject() throws BeansException {
 		try {
 			return Validation.byDefaultProvider().configure().getDefaultMessageInterpolator();
-		}
-		catch (ValidationException ex) {
+		} catch (ValidationException ex) {
 			MessageInterpolator fallback = getFallback();
 			if (fallback != null) {
 				return fallback;
@@ -65,8 +63,7 @@ public class MessageInterpolatorFactory implements ObjectFactory<MessageInterpol
 		for (String fallback : FALLBACKS) {
 			try {
 				return getFallback(fallback);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Swallow an continue
 			}
 		}

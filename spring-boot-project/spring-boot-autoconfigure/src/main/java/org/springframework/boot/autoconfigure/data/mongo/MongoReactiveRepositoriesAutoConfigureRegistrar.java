@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.data.mongo;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.boot.autoconfigure.data.AbstractRepositoryConfigurationSourceSupport;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import org.springframework.data.mongodb.repository.config.ReactiveMongoRepositoryConfigurationExtension;
 import org.springframework.data.repository.config.RepositoryConfigurationExtension;
+
+import java.lang.annotation.Annotation;
 
 /**
  * {@link ImportBeanDefinitionRegistrar} used to auto-configure Spring Data Mongo Reactive

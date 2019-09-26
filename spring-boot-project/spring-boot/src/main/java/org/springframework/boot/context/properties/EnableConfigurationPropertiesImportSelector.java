@@ -16,11 +16,6 @@
 
 package org.springframework.boot.context.properties;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -32,6 +27,11 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Import selector that sets up binding of external properties to configuration classes
@@ -49,8 +49,8 @@ import org.springframework.util.StringUtils;
  */
 class EnableConfigurationPropertiesImportSelector implements ImportSelector {
 
-	private static final String[] IMPORTS = { ConfigurationPropertiesBeanRegistrar.class.getName(),
-			ConfigurationPropertiesBindingPostProcessorRegistrar.class.getName() };
+	private static final String[] IMPORTS = {ConfigurationPropertiesBeanRegistrar.class.getName(),
+			ConfigurationPropertiesBindingPostProcessorRegistrar.class.getName()};
 
 	@Override
 	public String[] selectImports(AnnotationMetadata metadata) {
@@ -79,7 +79,7 @@ class EnableConfigurationPropertiesImportSelector implements ImportSelector {
 		}
 
 		private void register(BeanDefinitionRegistry registry, ConfigurableListableBeanFactory beanFactory,
-				Class<?> type) {
+							  Class<?> type) {
 			String name = getName(type);
 			if (!containsBeanDefinition(beanFactory, name)) {
 				registerBeanDefinition(registry, name, type);

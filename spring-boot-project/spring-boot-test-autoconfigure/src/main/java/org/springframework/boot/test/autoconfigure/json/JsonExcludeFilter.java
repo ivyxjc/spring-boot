@@ -16,16 +16,16 @@
 
 package org.springframework.boot.test.autoconfigure.json;
 
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.boot.test.autoconfigure.filter.AnnotationCustomizableTypeExcludeFilter;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.ClassUtils;
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link TypeExcludeFilter} for {@link JsonTest @JsonTest}.
@@ -42,8 +42,7 @@ class JsonExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 		Set<Class<?>> includes = new LinkedHashSet<>();
 		try {
 			includes.add(ClassUtils.forName(JACKSON_MODULE, null));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 		}
 		includes.add(JsonComponent.class);
 		DEFAULT_INCLUDES = Collections.unmodifiableSet(includes);
@@ -63,10 +62,10 @@ class JsonExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 	@Override
 	protected Filter[] getFilters(FilterType type) {
 		switch (type) {
-		case INCLUDE:
-			return this.annotation.includeFilters();
-		case EXCLUDE:
-			return this.annotation.excludeFilters();
+			case INCLUDE:
+				return this.annotation.includeFilters();
+			case EXCLUDE:
+				return this.annotation.excludeFilters();
 		}
 		throw new IllegalStateException("Unsupported type " + type);
 	}

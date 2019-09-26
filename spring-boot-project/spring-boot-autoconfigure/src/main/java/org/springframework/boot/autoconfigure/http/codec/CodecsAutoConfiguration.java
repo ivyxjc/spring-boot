@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.http.codec;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;

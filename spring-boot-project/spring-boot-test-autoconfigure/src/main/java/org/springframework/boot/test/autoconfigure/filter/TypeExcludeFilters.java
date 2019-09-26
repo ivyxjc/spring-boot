@@ -16,14 +16,10 @@
 
 package org.springframework.boot.test.autoconfigure.filter;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.TypeExcludeFilter;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be on tests to define a set of {@link TypeExcludeFilter} classes
@@ -31,8 +27,8 @@ import org.springframework.boot.context.TypeExcludeFilter;
  * component scanning.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see TypeExcludeFilter
+ * @since 1.4.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -44,8 +40,9 @@ public @interface TypeExcludeFilters {
 	 * {@link SpringBootApplication @SpringBootApplication} component scanning. Classes
 	 * specified here can either have a no-arg constructor or accept a single
 	 * {@code Class<?>} argument if they need access to the {@code testClass}.
-	 * @see TypeExcludeFilter
+	 *
 	 * @return the type exclude filters to apply
+	 * @see TypeExcludeFilter
 	 */
 	Class<? extends TypeExcludeFilter>[] value();
 

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.template.AbstractTemplateViewResolverProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link ConfigurationProperties} for configuring FreeMarker.
@@ -46,7 +46,7 @@ public class FreeMarkerProperties extends AbstractTemplateViewResolverProperties
 	/**
 	 * Comma-separated list of template paths.
 	 */
-	private String[] templateLoaderPath = new String[] { DEFAULT_TEMPLATE_LOADER_PATH };
+	private String[] templateLoaderPath = new String[]{DEFAULT_TEMPLATE_LOADER_PATH};
 
 	/**
 	 * Whether to prefer file system access for template loading. File system access
@@ -70,16 +70,16 @@ public class FreeMarkerProperties extends AbstractTemplateViewResolverProperties
 		return this.templateLoaderPath;
 	}
 
+	public void setTemplateLoaderPath(String... templateLoaderPaths) {
+		this.templateLoaderPath = templateLoaderPaths;
+	}
+
 	public boolean isPreferFileSystemAccess() {
 		return this.preferFileSystemAccess;
 	}
 
 	public void setPreferFileSystemAccess(boolean preferFileSystemAccess) {
 		this.preferFileSystemAccess = preferFileSystemAccess;
-	}
-
-	public void setTemplateLoaderPath(String... templateLoaderPaths) {
-		this.templateLoaderPath = templateLoaderPaths;
 	}
 
 }

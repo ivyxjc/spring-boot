@@ -16,9 +16,9 @@
 
 package org.springframework.boot.web.embedded.netty;
 
-import java.util.function.Function;
-
 import reactor.netty.http.server.HttpServer;
+
+import java.util.function.Function;
 
 /**
  * Mapping function that can be used to customize a Reactor Netty server instance.

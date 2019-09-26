@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.time.Duration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,13 +28,15 @@ import org.springframework.session.ReactiveSessionRepository;
 import org.springframework.session.data.mongo.ReactiveMongoOperationsSessionRepository;
 import org.springframework.session.data.mongo.config.annotation.web.reactive.ReactiveMongoWebSessionConfiguration;
 
+import java.time.Duration;
+
 /**
  * Mongo-backed reactive session configuration.
  *
  * @author Andy Wilkinson
  */
 @Configuration
-@ConditionalOnClass({ ReactiveMongoOperations.class, ReactiveMongoOperationsSessionRepository.class })
+@ConditionalOnClass({ReactiveMongoOperations.class, ReactiveMongoOperationsSessionRepository.class})
 @ConditionalOnMissingBean(ReactiveSessionRepository.class)
 @ConditionalOnBean(ReactiveMongoOperations.class)
 @Conditional(ReactiveSessionCondition.class)

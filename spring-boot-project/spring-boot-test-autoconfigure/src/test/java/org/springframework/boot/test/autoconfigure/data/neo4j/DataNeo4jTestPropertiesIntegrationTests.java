@@ -19,8 +19,6 @@ package org.springframework.boot.test.autoconfigure.data.neo4j;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.testcontainers.containers.Neo4jContainer;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.testsupport.testcontainers.SkippableContainer;
@@ -29,6 +27,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.Neo4jContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

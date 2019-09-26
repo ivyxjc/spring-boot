@@ -16,10 +16,10 @@
 
 package org.springframework.boot.context.annotation;
 
+import org.junit.Test;
+
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.security.servlet;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.security.servlet.AntPathRequestMatcherProvider;
 import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider;
@@ -72,11 +71,11 @@ public class SecurityRequestMatchersManagementContextConfigurationTests {
 	public void registersRequestMatcherForJerseyProviderIfJerseyPresentAndMvcAbsent() {
 		this.contextRunner.withClassLoader(new FilteredClassLoader("org.springframework.web.servlet.DispatcherServlet"))
 				.withUserConfiguration(TestJerseyConfiguration.class).run((context) -> {
-					AntPathRequestMatcherProvider matcherProvider = context
-							.getBean(AntPathRequestMatcherProvider.class);
-					RequestMatcher requestMatcher = matcherProvider.getRequestMatcher("/example");
-					assertThat(ReflectionTestUtils.getField(requestMatcher, "pattern")).isEqualTo("/admin/example");
-				});
+			AntPathRequestMatcherProvider matcherProvider = context
+					.getBean(AntPathRequestMatcherProvider.class);
+			RequestMatcher requestMatcher = matcherProvider.getRequestMatcher("/example");
+			assertThat(ReflectionTestUtils.getField(requestMatcher, "pattern")).isEqualTo("/admin/example");
+		});
 	}
 
 	@Test

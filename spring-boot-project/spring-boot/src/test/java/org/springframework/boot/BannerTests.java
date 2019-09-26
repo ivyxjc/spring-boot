@@ -16,8 +16,6 @@
 
 package org.springframework.boot;
 
-import java.io.PrintStream;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -25,19 +23,18 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.io.PrintStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link Banner} and its usage by {@link SpringApplication}.
@@ -48,7 +45,11 @@ import static org.mockito.Mockito.verify;
  */
 public class BannerTests {
 
+	@Rule
+	public OutputCapture out = new OutputCapture();
 	private ConfigurableApplicationContext context;
+	@Captor
+	private ArgumentCaptor<Class<?>> sourceClassCaptor;
 
 	@After
 	public void cleanUp() {
@@ -56,12 +57,6 @@ public class BannerTests {
 			this.context.close();
 		}
 	}
-
-	@Rule
-	public OutputCapture out = new OutputCapture();
-
-	@Captor
-	private ArgumentCaptor<Class<?>> sourceClassCaptor;
 
 	@Before
 	public void setup() {

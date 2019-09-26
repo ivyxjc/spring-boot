@@ -16,18 +16,17 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.ReflectionUtils;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +42,15 @@ public class CollectionToDelimitedStringConverterTests {
 
 	public CollectionToDelimitedStringConverterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(CollectionToDelimitedStringConverterTests::addConverter);
+	}
+
+	private static void addConverter(FormattingConversionService service) {
+		service.addConverter(new CollectionToDelimitedStringConverter(service));
 	}
 
 	@Test
@@ -89,15 +97,6 @@ public class CollectionToDelimitedStringConverterTests {
 		List<String> list = null;
 		String converted = this.conversionService.convert(list, String.class);
 		assertThat(converted).isNull();
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(CollectionToDelimitedStringConverterTests::addConverter);
-	}
-
-	private static void addConverter(FormattingConversionService service) {
-		service.addConverter(new CollectionToDelimitedStringConverter(service));
 	}
 
 	static class Data {

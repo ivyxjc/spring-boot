@@ -16,17 +16,15 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.io.IOException;
+import org.junit.Test;
+import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
+import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
 import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.annotation.WebListener;
-
-import org.junit.Test;
-
-import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
-import org.springframework.context.annotation.ScannedGenericBeanDefinition;
-import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
+import java.io.IOException;
 
 /**
  * Tests for {@link WebListenerHandler}.

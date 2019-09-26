@@ -16,18 +16,18 @@
 
 package org.springframework.boot.actuate.session;
 
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * {@link Endpoint} to expose a user's {@link Session}s.
@@ -42,6 +42,7 @@ public class SessionsEndpoint {
 
 	/**
 	 * Create a new {@link SessionsEndpoint} instance.
+	 *
 	 * @param sessionRepository the session repository
 	 */
 	public SessionsEndpoint(FindByIndexNameSessionRepository<? extends Session> sessionRepository) {

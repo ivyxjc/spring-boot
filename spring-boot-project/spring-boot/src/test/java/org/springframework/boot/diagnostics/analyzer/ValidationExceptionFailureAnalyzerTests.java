@@ -18,7 +18,6 @@ package org.springframework.boot.diagnostics.analyzer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;

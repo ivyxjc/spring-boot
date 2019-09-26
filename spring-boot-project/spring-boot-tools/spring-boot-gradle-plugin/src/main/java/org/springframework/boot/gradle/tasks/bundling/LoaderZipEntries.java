@@ -16,6 +16,12 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
+import org.apache.commons.compress.archivers.zip.UnixStat;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
+import org.gradle.api.file.FileTreeElement;
+import org.gradle.api.specs.Spec;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,12 +29,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.apache.commons.compress.archivers.zip.UnixStat;
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
-import org.gradle.api.file.FileTreeElement;
-import org.gradle.api.specs.Spec;
 
 /**
  * Internal utility used to copy entries from the {@code spring-boot-loader.jar}.
@@ -53,8 +53,7 @@ class LoaderZipEntries {
 				if (entry.isDirectory() && !entry.getName().equals("META-INF/")) {
 					writeDirectory(new ZipArchiveEntry(entry), zipOutputStream);
 					writtenDirectoriesSpec.add(entry);
-				}
-				else if (entry.getName().endsWith(".class")) {
+				} else if (entry.getName().endsWith(".class")) {
 					writeClass(new ZipArchiveEntry(entry), loaderJar, zipOutputStream);
 				}
 				entry = loaderJar.getNextEntry();

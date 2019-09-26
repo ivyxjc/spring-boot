@@ -22,7 +22,6 @@ import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.ASTTransformation;
-
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
 import org.springframework.core.annotation.Order;
 
@@ -51,8 +50,8 @@ public class DependencyAutoConfigurationTransformation implements ASTTransformat
 	private final Iterable<CompilerAutoConfiguration> compilerAutoConfigurations;
 
 	public DependencyAutoConfigurationTransformation(GroovyClassLoader loader,
-			DependencyResolutionContext dependencyResolutionContext,
-			Iterable<CompilerAutoConfiguration> compilerAutoConfigurations) {
+													 DependencyResolutionContext dependencyResolutionContext,
+													 Iterable<CompilerAutoConfiguration> compilerAutoConfigurations) {
 		this.loader = loader;
 		this.dependencyResolutionContext = dependencyResolutionContext;
 		this.compilerAutoConfigurations = compilerAutoConfigurations;

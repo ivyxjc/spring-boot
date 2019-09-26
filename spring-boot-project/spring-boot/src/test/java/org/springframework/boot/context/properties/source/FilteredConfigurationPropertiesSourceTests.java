@@ -16,10 +16,10 @@
 
 package org.springframework.boot.context.properties.source;
 
-import java.util.Objects;
-
 import org.junit.Test;
 import org.mockito.Answers;
+
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

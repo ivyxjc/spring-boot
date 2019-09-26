@@ -32,23 +32,19 @@ public class BatchProperties {
 
 	private static final String DEFAULT_SCHEMA_LOCATION = "classpath:org/springframework/"
 			+ "batch/core/schema-@@platform@@.sql";
-
+	private final Job job = new Job();
 	/**
 	 * Path to the SQL file to use to initialize the database schema.
 	 */
 	private String schema = DEFAULT_SCHEMA_LOCATION;
-
 	/**
 	 * Table prefix for all the batch meta-data tables.
 	 */
 	private String tablePrefix;
-
 	/**
 	 * Database schema initialization mode.
 	 */
 	private DataSourceInitializationMode initializeSchema = DataSourceInitializationMode.EMBEDDED;
-
-	private final Job job = new Job();
 
 	public String getSchema() {
 		return this.schema;

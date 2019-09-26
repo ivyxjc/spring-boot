@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.metrics.amqp;
 
-import java.util.Collections;
-
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.impl.MicrometerMetricsCollector;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.MeterBinder;
-
 import org.springframework.util.Assert;
+
+import java.util.Collections;
 
 /**
  * A {@link MeterBinder} for RabbitMQ Java Client metrics.
@@ -41,8 +40,9 @@ public class RabbitMetrics implements MeterBinder {
 
 	/**
 	 * Create a new meter binder recording the specified {@link ConnectionFactory}.
+	 *
 	 * @param connectionFactory the {@link ConnectionFactory} to instrument
-	 * @param tags tags to apply to all recorded metrics
+	 * @param tags              tags to apply to all recorded metrics
 	 */
 	public RabbitMetrics(ConnectionFactory connectionFactory, Iterable<Tag> tags) {
 		Assert.notNull(connectionFactory, "ConnectionFactory must not be null");

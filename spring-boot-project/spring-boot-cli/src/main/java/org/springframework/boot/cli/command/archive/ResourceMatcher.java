@@ -16,17 +16,6 @@
 
 package org.springframework.boot.cli.command.archive;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -35,6 +24,13 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+
 /**
  * Used to match resources for inclusion in a CLI application's jar file.
  *
@@ -42,11 +38,11 @@ import org.springframework.util.StringUtils;
  */
 class ResourceMatcher {
 
-	private static final String[] DEFAULT_INCLUDES = { "public/**", "resources/**", "static/**", "templates/**",
-			"META-INF/**", "*" };
+	private static final String[] DEFAULT_INCLUDES = {"public/**", "resources/**", "static/**", "templates/**",
+			"META-INF/**", "*"};
 
-	private static final String[] DEFAULT_EXCLUDES = { ".*", "repository/**", "build/**", "target/**", "**/*.jar",
-			"**/*.groovy" };
+	private static final String[] DEFAULT_EXCLUDES = {".*", "repository/**", "build/**", "target/**", "**/*.jar",
+			"**/*.groovy"};
 
 	private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
@@ -64,8 +60,7 @@ class ResourceMatcher {
 		for (File root : roots) {
 			if (root.isFile()) {
 				matchedResources.add(new MatchedResource(root));
-			}
-			else {
+			} else {
 				matchedResources.addAll(findInFolder(root));
 			}
 		}
@@ -111,13 +106,11 @@ class ResourceMatcher {
 				deltasFound = true;
 				value = value.substring(1);
 				result.add(value);
-			}
-			else if (value.startsWith("-")) {
+			} else if (value.startsWith("-")) {
 				deltasFound = true;
 				value = value.substring(1);
 				minus.add(value);
-			}
-			else if (!value.trim().isEmpty()) {
+			} else if (!value.trim().isEmpty()) {
 				result.add(value);
 			}
 		}
@@ -154,7 +147,7 @@ class ResourceMatcher {
 	private static class FolderClassLoader extends URLClassLoader {
 
 		FolderClassLoader(File rootFolder) throws MalformedURLException {
-			super(new URL[] { rootFolder.toURI().toURL() });
+			super(new URL[]{rootFolder.toURI().toURL()});
 		}
 
 		@Override

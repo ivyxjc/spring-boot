@@ -16,20 +16,16 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import org.springframework.boot.context.properties.bind.Binder.Context;
+import org.springframework.boot.context.properties.source.*;
+import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
+import org.springframework.core.CollectionFactory;
+import org.springframework.core.ResolvableType;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.function.Supplier;
-
-import org.springframework.boot.context.properties.bind.Binder.Context;
-import org.springframework.boot.context.properties.source.ConfigurationProperty;
-import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
-import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.ConfigurationPropertyState;
-import org.springframework.boot.context.properties.source.IterableConfigurationPropertySource;
-import org.springframework.core.CollectionFactory;
-import org.springframework.core.ResolvableType;
 
 /**
  * {@link AggregateBinder} for Maps.
@@ -52,7 +48,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 
 	@Override
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
-			AggregateElementBinder elementBinder) {
+								   AggregateElementBinder elementBinder) {
 		Map<Object, Object> map = CollectionFactory
 				.createMap((target.getValue() != null) ? Map.class : target.getType().resolve(Object.class), 0);
 		Bindable<?> resolvedTarget = resolveTarget(target);
@@ -96,8 +92,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		try {
 			existingMap.putAll(additional);
 			return copyIfPossible(existingMap);
-		}
-		catch (UnsupportedOperationException ex) {
+		} catch (UnsupportedOperationException ex) {
 			Map<Object, Object> result = createNewMap(additional.getClass(), existingMap);
 			result.putAll(additional);
 			return result;
@@ -107,8 +102,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 	private Map<Object, Object> getExistingIfPossible(Supplier<Map<Object, Object>> existing) {
 		try {
 			return existing.get();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}
@@ -116,8 +110,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 	private Map<Object, Object> copyIfPossible(Map<Object, Object> map) {
 		try {
 			return createNewMap(map.getClass(), map);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return map;
 		}
 	}
@@ -167,7 +160,7 @@ class MapBinder extends AggregateBinder<Map<Object, Object>> {
 		}
 
 		private ConfigurationPropertyName getEntryName(ConfigurationPropertySource source,
-				ConfigurationPropertyName name) {
+													   ConfigurationPropertyName name) {
 			Class<?> resolved = this.valueType.resolve(Object.class);
 			if (Collection.class.isAssignableFrom(resolved) || this.valueType.isArray()) {
 				return chopNameAtNumericIndex(name);

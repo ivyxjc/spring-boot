@@ -16,13 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import javax.jms.ConnectionFactory;
-import javax.naming.Context;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jndi.JndiPropertiesHidingClassLoader;
@@ -30,6 +26,9 @@ import org.springframework.boot.autoconfigure.jndi.TestableInitialContextFactory
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ContextConsumer;
+
+import javax.jms.ConnectionFactory;
+import javax.naming.Context;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -61,8 +60,7 @@ public class JndiConnectionFactoryAutoConfigurationTests {
 		TestableInitialContextFactory.clearAll();
 		if (this.initialContextFactory != null) {
 			System.setProperty(Context.INITIAL_CONTEXT_FACTORY, this.initialContextFactory);
-		}
-		else {
+		} else {
 			System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
 		}
 		Thread.currentThread().setContextClassLoader(this.threadContextClassLoader);

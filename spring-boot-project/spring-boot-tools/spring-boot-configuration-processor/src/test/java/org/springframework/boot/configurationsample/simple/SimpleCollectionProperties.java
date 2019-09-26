@@ -16,14 +16,9 @@
 
 package org.springframework.boot.configurationsample.simple;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
+
+import java.util.*;
 
 /**
  * Properties with collections.
@@ -33,19 +28,13 @@ import org.springframework.boot.configurationsample.ConfigurationProperties;
 @ConfigurationProperties(prefix = "collection")
 public class SimpleCollectionProperties {
 
-	private Map<Integer, String> integersToNames;
-
-	private Collection<Long> longs;
-
-	private List<Float> floats;
-
 	private final Map<String, Integer> namesToIntegers = new HashMap<>();
-
 	private final Collection<Byte> bytes = new LinkedHashSet<>();
-
 	private final List<Double> doubles = new ArrayList<>();
-
 	private final Map<String, Holder<String>> namesToHolders = new HashMap<>();
+	private Map<Integer, String> integersToNames;
+	private Collection<Long> longs;
+	private List<Float> floats;
 
 	public Map<Integer, String> getIntegersToNames() {
 		return this.integersToNames;

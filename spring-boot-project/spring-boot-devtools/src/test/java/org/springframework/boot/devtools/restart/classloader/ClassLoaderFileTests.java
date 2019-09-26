@@ -17,7 +17,6 @@
 package org.springframework.boot.devtools.restart.classloader;
 
 import org.junit.Test;
-
 import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
 
 import static org.assertj.core.api.Assertions.assertThat;

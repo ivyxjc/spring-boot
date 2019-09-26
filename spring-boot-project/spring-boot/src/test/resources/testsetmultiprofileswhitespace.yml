@@ -1,4 +1,4 @@
 ---
 spring:
-  profiles:
-    active: dev, healthcheck
+    profiles:
+        active: dev, healthcheck

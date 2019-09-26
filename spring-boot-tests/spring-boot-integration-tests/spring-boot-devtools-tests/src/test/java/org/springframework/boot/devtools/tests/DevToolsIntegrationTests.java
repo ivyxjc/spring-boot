@@ -16,11 +16,6 @@
 
 package org.springframework.boot.devtools.tests;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.description.annotation.AnnotationDescription;
 import net.bytebuddy.description.modifier.Visibility;
@@ -33,12 +28,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -50,17 +49,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(Parameterized.class)
 public class DevToolsIntegrationTests {
 
-	private LaunchedApplication launchedApplication;
-
 	private final File serverPortFile = new File("target/server.port");
-
 	private final ApplicationLauncher applicationLauncher;
-
 	@Rule
 	public JvmLauncher javaLauncher = new JvmLauncher();
+	private LaunchedApplication launchedApplication;
 
 	public DevToolsIntegrationTests(ApplicationLauncher applicationLauncher) {
 		this.applicationLauncher = applicationLauncher;
+	}
+
+	@Parameters(name = "{0}")
+	public static Object[] parameters() {
+		return new Object[]{new Object[]{new LocalApplicationLauncher()},
+				new Object[]{new ExplodedRemoteApplicationLauncher()},
+				new Object[]{new JarFileRemoteApplicationLauncher()}};
 	}
 
 	@Before
@@ -201,13 +204,6 @@ public class DevToolsIntegrationTests {
 
 	private ControllerBuilder controller(String name) {
 		return new ControllerBuilder(name, this.launchedApplication.getClassesDirectory());
-	}
-
-	@Parameters(name = "{0}")
-	public static Object[] parameters() {
-		return new Object[] { new Object[] { new LocalApplicationLauncher() },
-				new Object[] { new ExplodedRemoteApplicationLauncher() },
-				new Object[] { new JarFileRemoteApplicationLauncher() } };
 	}
 
 	private static final class ControllerBuilder {

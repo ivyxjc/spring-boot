@@ -16,6 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint.invoke.reflect;
 
+import org.junit.Test;
+import org.springframework.boot.actuate.endpoint.invoke.OperationParameter;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.util.ReflectionUtils;
+
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
@@ -25,16 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import org.junit.Test;
-
-import org.springframework.boot.actuate.endpoint.invoke.OperationParameter;
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.util.ReflectionUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**

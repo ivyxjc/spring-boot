@@ -16,16 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
-import javax.management.InstanceNotFoundException;
-import javax.management.IntrospectionException;
-import javax.management.MBeanInfo;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-import javax.management.ReflectionException;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.jmx.JmxEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -34,6 +25,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.util.StringUtils;
+
+import javax.management.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,8 +48,8 @@ public class JmxEndpointIntegrationTests {
 	public void jmxEndpointsAreExposed() {
 		this.contextRunner.run((context) -> {
 			MBeanServer mBeanServer = context.getBean(MBeanServer.class);
-			checkEndpointMBeans(mBeanServer, new String[] { "beans", "conditions", "configprops", "env", "health",
-					"info", "mappings", "threaddump", "httptrace" }, new String[] { "shutdown" });
+			checkEndpointMBeans(mBeanServer, new String[]{"beans", "conditions", "configprops", "env", "health",
+					"info", "mappings", "threaddump", "httptrace"}, new String[]{"shutdown"});
 		});
 	}
 
@@ -64,8 +57,8 @@ public class JmxEndpointIntegrationTests {
 	public void jmxEndpointsCanBeExcluded() {
 		this.contextRunner.withPropertyValues("management.endpoints.jmx.exposure.exclude:*").run((context) -> {
 			MBeanServer mBeanServer = context.getBean(MBeanServer.class);
-			checkEndpointMBeans(mBeanServer, new String[0], new String[] { "beans", "conditions", "configprops", "env",
-					"health", "mappings", "shutdown", "threaddump", "httptrace" });
+			checkEndpointMBeans(mBeanServer, new String[0], new String[]{"beans", "conditions", "configprops", "env",
+					"health", "mappings", "shutdown", "threaddump", "httptrace"});
 
 		});
 	}
@@ -74,8 +67,8 @@ public class JmxEndpointIntegrationTests {
 	public void singleJmxEndpointCanBeExposed() {
 		this.contextRunner.withPropertyValues("management.endpoints.jmx.exposure.include=beans").run((context) -> {
 			MBeanServer mBeanServer = context.getBean(MBeanServer.class);
-			checkEndpointMBeans(mBeanServer, new String[] { "beans" }, new String[] { "conditions", "configprops",
-					"env", "health", "mappings", "shutdown", "threaddump", "httptrace" });
+			checkEndpointMBeans(mBeanServer, new String[]{"beans"}, new String[]{"conditions", "configprops",
+					"env", "health", "mappings", "shutdown", "threaddump", "httptrace"});
 		});
 	}
 
@@ -94,8 +87,7 @@ public class JmxEndpointIntegrationTests {
 		try {
 			getMBeanInfo(mBeanServer, objectName);
 			return true;
-		}
-		catch (InstanceNotFoundException ex) {
+		} catch (InstanceNotFoundException ex) {
 			return false;
 		}
 	}
@@ -103,8 +95,7 @@ public class JmxEndpointIntegrationTests {
 	private MBeanInfo getMBeanInfo(MBeanServer mBeanServer, ObjectName objectName) throws InstanceNotFoundException {
 		try {
 			return mBeanServer.getMBeanInfo(objectName);
-		}
-		catch (ReflectionException | IntrospectionException ex) {
+		} catch (ReflectionException | IntrospectionException ex) {
 			throw new IllegalStateException("Failed to retrieve MBeanInfo for ObjectName " + objectName, ex);
 		}
 	}
@@ -117,8 +108,7 @@ public class JmxEndpointIntegrationTests {
 		try {
 			return new ObjectName(
 					String.format("%s:type=Endpoint,name=%s", domain, StringUtils.capitalize(endpointId)));
-		}
-		catch (MalformedObjectNameException ex) {
+		} catch (MalformedObjectNameException ex) {
 			throw new IllegalStateException("Invalid object name", ex);
 		}
 

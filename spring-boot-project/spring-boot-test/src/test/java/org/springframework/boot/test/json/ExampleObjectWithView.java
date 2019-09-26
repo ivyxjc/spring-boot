@@ -17,7 +17,6 @@
 package org.springframework.boot.test.json;
 
 import com.fasterxml.jackson.annotation.JsonView;
-
 import org.springframework.util.ObjectUtils;
 
 /**

@@ -28,6 +28,13 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class SimpleInfoContributorTests {
 
+	private static Info contributeFrom(String prefix, Object detail) {
+		SimpleInfoContributor contributor = new SimpleInfoContributor(prefix, detail);
+		Info.Builder builder = new Info.Builder();
+		contributor.contribute(builder);
+		return builder.build();
+	}
+
 	@Test
 	public void prefixIsMandatory() {
 		assertThatIllegalArgumentException().isThrownBy(() -> new SimpleInfoContributor(null, new Object()));
@@ -38,13 +45,6 @@ public class SimpleInfoContributorTests {
 		Object o = new Object();
 		Info info = contributeFrom("test", o);
 		assertThat(info.get("test")).isSameAs(o);
-	}
-
-	private static Info contributeFrom(String prefix, Object detail) {
-		SimpleInfoContributor contributor = new SimpleInfoContributor(prefix, detail);
-		Info.Builder builder = new Info.Builder();
-		contributor.contribute(builder);
-		return builder.build();
 	}
 
 }

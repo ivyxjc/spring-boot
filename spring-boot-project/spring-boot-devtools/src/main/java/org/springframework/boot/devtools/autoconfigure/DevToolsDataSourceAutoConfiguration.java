@@ -16,6 +16,23 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
+import org.apache.derby.jdbc.EmbeddedDriver;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.*;
+import org.springframework.boot.autoconfigure.data.jpa.EntityManagerFactoryDependsOnPostProcessor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.devtools.autoconfigure.DevToolsDataSourceAutoConfiguration.DevToolsDataSourceCondition;
+import org.springframework.context.annotation.*;
+import org.springframework.core.type.AnnotatedTypeMetadata;
+import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,33 +40,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-
-import javax.sql.DataSource;
-
-import org.apache.derby.jdbc.EmbeddedDriver;
-
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
-import org.springframework.boot.autoconfigure.data.jpa.EntityManagerFactoryDependsOnPostProcessor;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.devtools.autoconfigure.DevToolsDataSourceAutoConfiguration.DevToolsDataSourceCondition;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ConfigurationCondition;
-import org.springframework.core.type.AnnotatedTypeMetadata;
-import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for DevTools-specific
@@ -65,7 +55,7 @@ public class DevToolsDataSourceAutoConfiguration {
 
 	@Bean
 	NonEmbeddedInMemoryDatabaseShutdownExecutor inMemoryDatabaseShutdownExecutor(DataSource dataSource,
-			DataSourceProperties dataSourceProperties) {
+																				 DataSourceProperties dataSourceProperties) {
 		return new NonEmbeddedInMemoryDatabaseShutdownExecutor(dataSource, dataSourceProperties);
 	}
 
@@ -112,8 +102,7 @@ public class DevToolsDataSourceAutoConfiguration {
 				String url = dataSource.getConnection().getMetaData().getURL();
 				try {
 					new EmbeddedDriver().connect(url + ";drop=true", new Properties());
-				}
-				catch (SQLException ex) {
+				} catch (SQLException ex) {
 					if (!"08006".equals(ex.getSQLState())) {
 						throw ex;
 					}
@@ -189,8 +178,8 @@ public class DevToolsDataSourceAutoConfiguration {
 			if (dataSourceDefinition instanceof AnnotatedBeanDefinition
 					&& ((AnnotatedBeanDefinition) dataSourceDefinition).getFactoryMethodMetadata() != null
 					&& ((AnnotatedBeanDefinition) dataSourceDefinition).getFactoryMethodMetadata()
-							.getDeclaringClassName().startsWith(DataSourceAutoConfiguration.class.getPackage().getName()
-									+ ".DataSourceConfiguration$")) {
+					.getDeclaringClassName().startsWith(DataSourceAutoConfiguration.class.getPackage().getName()
+							+ ".DataSourceConfiguration$")) {
 				return ConditionOutcome.match(message.foundExactly("auto-configured DataSource"));
 			}
 			return ConditionOutcome.noMatch(message.didNotFind("an auto-configured DataSource").atAll());

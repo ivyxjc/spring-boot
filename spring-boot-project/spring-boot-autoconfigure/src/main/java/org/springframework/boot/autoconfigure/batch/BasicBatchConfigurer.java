@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.batch;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
@@ -30,6 +27,9 @@ import org.springframework.boot.autoconfigure.transaction.TransactionManagerCust
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
 /**
  * Basic {@link BatchConfigurer} implementation.
@@ -45,11 +45,8 @@ public class BasicBatchConfigurer implements BatchConfigurer {
 	private final BatchProperties properties;
 
 	private final DataSource dataSource;
-
-	private PlatformTransactionManager transactionManager;
-
 	private final TransactionManagerCustomizers transactionManagerCustomizers;
-
+	private PlatformTransactionManager transactionManager;
 	private JobRepository jobRepository;
 
 	private JobLauncher jobLauncher;
@@ -58,13 +55,14 @@ public class BasicBatchConfigurer implements BatchConfigurer {
 
 	/**
 	 * Create a new {@link BasicBatchConfigurer} instance.
-	 * @param properties the batch properties
-	 * @param dataSource the underlying data source
+	 *
+	 * @param properties                    the batch properties
+	 * @param dataSource                    the underlying data source
 	 * @param transactionManagerCustomizers transaction manager customizers (or
-	 * {@code null})
+	 *                                      {@code null})
 	 */
 	protected BasicBatchConfigurer(BatchProperties properties, DataSource dataSource,
-			TransactionManagerCustomizers transactionManagerCustomizers) {
+								   TransactionManagerCustomizers transactionManagerCustomizers) {
 		this.properties = properties;
 		this.dataSource = dataSource;
 		this.transactionManagerCustomizers = transactionManagerCustomizers;
@@ -97,8 +95,7 @@ public class BasicBatchConfigurer implements BatchConfigurer {
 			this.jobRepository = createJobRepository();
 			this.jobLauncher = createJobLauncher();
 			this.jobExplorer = createJobExplorer();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to initialize Spring Batch", ex);
 		}
 	}
@@ -132,6 +129,7 @@ public class BasicBatchConfigurer implements BatchConfigurer {
 
 	/**
 	 * Determine the isolation level for create* operation of the {@link JobRepository}.
+	 *
 	 * @return the isolation level or {@code null} to use the default
 	 */
 	protected String determineIsolationLevel() {

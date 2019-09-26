@@ -30,22 +30,17 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class ConfigurationMetadataSource implements Serializable {
 
-	private String groupId;
-
-	private String type;
-
-	private String description;
-
-	private String shortDescription;
-
-	private String sourceType;
-
-	private String sourceMethod;
-
 	private final Map<String, ConfigurationMetadataProperty> properties = new HashMap<>();
+	private String groupId;
+	private String type;
+	private String description;
+	private String shortDescription;
+	private String sourceType;
+	private String sourceMethod;
 
 	/**
 	 * The identifier of the group to which this source is associated.
+	 *
 	 * @return the group id
 	 */
 	public String getGroupId() {
@@ -59,6 +54,7 @@ public class ConfigurationMetadataSource implements Serializable {
 	/**
 	 * The type of the source. Usually this is the fully qualified name of a class that
 	 * defines configuration items. This class may or may not be available at runtime.
+	 *
 	 * @return the type
 	 */
 	public String getType() {
@@ -71,6 +67,7 @@ public class ConfigurationMetadataSource implements Serializable {
 
 	/**
 	 * A description of this source, if any. Can be multi-lines.
+	 *
 	 * @return the description
 	 * @see #getShortDescription()
 	 */
@@ -84,6 +81,7 @@ public class ConfigurationMetadataSource implements Serializable {
 
 	/**
 	 * A single-line, single-sentence description of this source, if any.
+	 *
 	 * @return the short description
 	 * @see #getDescription()
 	 */
@@ -98,6 +96,7 @@ public class ConfigurationMetadataSource implements Serializable {
 	/**
 	 * The type where this source is defined. This can be identical to the
 	 * {@link #getType() type} if the source is self-defined.
+	 *
 	 * @return the source type
 	 */
 	public String getSourceType() {
@@ -110,6 +109,7 @@ public class ConfigurationMetadataSource implements Serializable {
 
 	/**
 	 * The method name that defines this source, if any.
+	 *
 	 * @return the source method
 	 */
 	public String getSourceMethod() {
@@ -122,6 +122,7 @@ public class ConfigurationMetadataSource implements Serializable {
 
 	/**
 	 * Return the properties defined by this source.
+	 *
 	 * @return the properties
 	 */
 	public Map<String, ConfigurationMetadataProperty> getProperties() {

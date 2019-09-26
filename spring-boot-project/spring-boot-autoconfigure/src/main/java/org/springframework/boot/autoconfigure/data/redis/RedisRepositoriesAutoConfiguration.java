@@ -41,7 +41,7 @@ import org.springframework.data.redis.repository.support.RedisRepositoryFactoryB
 @ConditionalOnClass(EnableRedisRepositories.class)
 @ConditionalOnBean(RedisConnectionFactory.class)
 @ConditionalOnProperty(prefix = "spring.data.redis.repositories", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 @ConditionalOnMissingBean(RedisRepositoryFactoryBean.class)
 @Import(RedisRepositoriesAutoConfigureRegistrar.class)
 @AutoConfigureAfter(RedisAutoConfiguration.class)

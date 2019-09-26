@@ -16,19 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web;
 
-import java.io.File;
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -40,6 +27,14 @@ import org.springframework.boot.web.servlet.server.Jsp;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.util.StringUtils;
 import org.springframework.util.unit.DataSize;
+
+import java.io.File;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 /**
  * {@link ConfigurationProperties} for a web server (e.g. port and path settings).
@@ -61,57 +56,44 @@ import org.springframework.util.unit.DataSize;
 @ConfigurationProperties(prefix = "server", ignoreUnknownFields = true)
 public class ServerProperties {
 
+	@NestedConfigurationProperty
+	private final ErrorProperties error = new ErrorProperties();
+	@NestedConfigurationProperty
+	private final Compression compression = new Compression();
+	@NestedConfigurationProperty
+	private final Http2 http2 = new Http2();
+	private final Servlet servlet = new Servlet();
+	private final Tomcat tomcat = new Tomcat();
+	private final Jetty jetty = new Jetty();
+	private final Undertow undertow = new Undertow();
 	/**
 	 * Server HTTP port.
 	 */
 	private Integer port;
-
 	/**
 	 * Network address to which the server should bind.
 	 */
 	private InetAddress address;
-
-	@NestedConfigurationProperty
-	private final ErrorProperties error = new ErrorProperties();
-
 	/**
 	 * Whether X-Forwarded-* headers should be applied to the HttpRequest.
 	 */
 	private Boolean useForwardHeaders;
-
 	/**
 	 * Value to use for the Server response header (if empty, no header is sent).
 	 */
 	private String serverHeader;
-
 	/**
 	 * Maximum size of the HTTP message header.
 	 */
 	private DataSize maxHttpHeaderSize = DataSize.ofKilobytes(8);
-
 	/**
 	 * Time that connectors wait for another HTTP request before closing the connection.
 	 * When not set, the connector's container-specific default is used. Use a value of -1
 	 * to indicate no (that is, an infinite) timeout.
 	 */
 	private Duration connectionTimeout;
-
 	@NestedConfigurationProperty
 	private Ssl ssl;
-
-	@NestedConfigurationProperty
-	private final Compression compression = new Compression();
-
-	@NestedConfigurationProperty
-	private final Http2 http2 = new Http2();
-
-	private final Servlet servlet = new Servlet();
-
-	private final Tomcat tomcat = new Tomcat();
-
-	private final Jetty jetty = new Jetty();
-
-	private final Undertow undertow = new Undertow();
 
 	public Integer getPort() {
 		return this.port;
@@ -206,22 +188,18 @@ public class ServerProperties {
 		 * Servlet context init parameters.
 		 */
 		private final Map<String, String> contextParameters = new HashMap<>();
-
+		@NestedConfigurationProperty
+		private final Jsp jsp = new Jsp();
+		@NestedConfigurationProperty
+		private final Session session = new Session();
 		/**
 		 * Context path of the application.
 		 */
 		private String contextPath;
-
 		/**
 		 * Display name of the application.
 		 */
 		private String applicationDisplayName = "application";
-
-		@NestedConfigurationProperty
-		private final Jsp jsp = new Jsp();
-
-		@NestedConfigurationProperty
-		private final Session session = new Session();
 
 		public String getContextPath() {
 			return this.contextPath;
@@ -269,7 +247,10 @@ public class ServerProperties {
 		 * Access log configuration.
 		 */
 		private final Accesslog accesslog = new Accesslog();
-
+		/**
+		 * Static resource configuration.
+		 */
+		private final Resource resource = new Resource();
 		/**
 		 * Regular expression that matches proxies that are to be trusted.
 		 */
@@ -280,106 +261,84 @@ public class ServerProperties {
 				+ "172\\.1[6-9]{1}\\.\\d{1,3}\\.\\d{1,3}|" // 172.16/12
 				+ "172\\.2[0-9]{1}\\.\\d{1,3}\\.\\d{1,3}|" + "172\\.3[0-1]{1}\\.\\d{1,3}\\.\\d{1,3}|" //
 				+ "0:0:0:0:0:0:0:1|::1";
-
 		/**
 		 * Header that holds the incoming protocol, usually named "X-Forwarded-Proto".
 		 */
 		private String protocolHeader;
-
 		/**
 		 * Value of the protocol header indicating whether the incoming request uses SSL.
 		 */
 		private String protocolHeaderHttpsValue = "https";
-
 		/**
 		 * Name of the HTTP header used to override the original port value.
 		 */
 		private String portHeader = "X-Forwarded-Port";
-
 		/**
 		 * Name of the HTTP header from which the remote IP is extracted. For instance,
 		 * `X-FORWARDED-FOR`.
 		 */
 		private String remoteIpHeader;
-
 		/**
 		 * Tomcat base directory. If not specified, a temporary directory is used.
 		 */
 		private File basedir;
-
 		/**
 		 * Delay between the invocation of backgroundProcess methods. If a duration suffix
 		 * is not specified, seconds will be used.
 		 */
 		@DurationUnit(ChronoUnit.SECONDS)
 		private Duration backgroundProcessorDelay = Duration.ofSeconds(10);
-
 		/**
 		 * Maximum amount of worker threads.
 		 */
 		private int maxThreads = 200;
-
 		/**
 		 * Minimum amount of worker threads.
 		 */
 		private int minSpareThreads = 10;
-
 		/**
 		 * Maximum size of the HTTP post content.
 		 */
 		private DataSize maxHttpPostSize = DataSize.ofMegabytes(2);
-
 		/**
 		 * Maximum size of the HTTP message header.
 		 */
 		private DataSize maxHttpHeaderSize = DataSize.ofBytes(0);
-
 		/**
 		 * Maximum amount of request body to swallow.
 		 */
 		private DataSize maxSwallowSize = DataSize.ofMegabytes(2);
-
 		/**
 		 * Whether requests to the context root should be redirected by appending a / to
 		 * the path.
 		 */
 		private Boolean redirectContextRoot = true;
-
 		/**
 		 * Whether HTTP 1.1 and later location headers generated by a call to sendRedirect
 		 * will use relative or absolute redirects.
 		 */
 		private Boolean useRelativeRedirects;
-
 		/**
 		 * Character encoding to use to decode the URI.
 		 */
 		private Charset uriEncoding = StandardCharsets.UTF_8;
-
 		/**
 		 * Maximum number of connections that the server accepts and processes at any
 		 * given time. Once the limit has been reached, the operating system may still
 		 * accept connections based on the "acceptCount" property.
 		 */
 		private int maxConnections = 10000;
-
 		/**
 		 * Maximum queue length for incoming connection requests when all possible request
 		 * processing threads are in use.
 		 */
 		private int acceptCount = 100;
-
 		/**
 		 * Comma-separated list of additional patterns that match jars to ignore for TLD
 		 * scanning. The special '?' and '*' characters can be used in the pattern to
 		 * match one and only one character and zero or more characters respectively.
 		 */
 		private List<String> additionalTldSkipPatterns = new ArrayList<>();
-
-		/**
-		 * Static resource configuration.
-		 */
-		private final Resource resource = new Resource();
 
 		public int getMaxThreads() {
 			return this.maxThreads;
@@ -542,26 +501,22 @@ public class ServerProperties {
 		public static class Accesslog {
 
 			/**
+			 * Log file name prefix.
+			 */
+			protected String prefix = "access_log";
+			/**
 			 * Enable access log.
 			 */
 			private boolean enabled = false;
-
 			/**
 			 * Format pattern for access logs.
 			 */
 			private String pattern = "common";
-
 			/**
 			 * Directory in which log files are created. Can be absolute or relative to
 			 * the Tomcat base dir.
 			 */
 			private String directory = "logs";
-
-			/**
-			 * Log file name prefix.
-			 */
-			protected String prefix = "access_log";
-
 			/**
 			 * Log file name suffix.
 			 */
@@ -936,41 +891,35 @@ public class ServerProperties {
 	 */
 	public static class Undertow {
 
+		private final Accesslog accesslog = new Accesslog();
 		/**
 		 * Maximum size of the HTTP post content. When the value is -1, the default, the
 		 * size is unlimited.
 		 */
 		private DataSize maxHttpPostSize = DataSize.ofBytes(-1);
-
 		/**
 		 * Size of each buffer. The default is derived from the maximum amount of memory
 		 * that is available to the JVM.
 		 */
 		private DataSize bufferSize;
-
 		/**
 		 * Number of I/O threads to create for the worker. The default is derived from the
 		 * number of available processors.
 		 */
 		private Integer ioThreads;
-
 		/**
 		 * Number of worker threads. The default is 8 times the number of I/O threads.
 		 */
 		private Integer workerThreads;
-
 		/**
 		 * Whether to allocate buffers outside the Java heap. The default is derived from
 		 * the maximum amount of memory that is available to the JVM.
 		 */
 		private Boolean directBuffers;
-
 		/**
 		 * Whether servlet filters should be initialized on startup.
 		 */
 		private boolean eagerFilterInit = true;
-
-		private final Accesslog accesslog = new Accesslog();
 
 		public DataSize getMaxHttpPostSize() {
 			return this.maxHttpPostSize;
@@ -1030,20 +979,17 @@ public class ServerProperties {
 		public static class Accesslog {
 
 			/**
+			 * Log file name prefix.
+			 */
+			protected String prefix = "access_log.";
+			/**
 			 * Whether to enable the access log.
 			 */
 			private boolean enabled = false;
-
 			/**
 			 * Format pattern for access logs.
 			 */
 			private String pattern = "common";
-
-			/**
-			 * Log file name prefix.
-			 */
-			protected String prefix = "access_log.";
-
 			/**
 			 * Log file name suffix.
 			 */

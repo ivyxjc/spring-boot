@@ -16,14 +16,13 @@
 
 package org.springframework.boot.autoconfigure.jndi;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * An {@code InitialContextFactory} implementation to be used for testing JNDI.
@@ -34,16 +33,10 @@ public class TestableInitialContextFactory implements InitialContextFactory {
 
 	private static TestableContext context;
 
-	@Override
-	public Context getInitialContext(Hashtable<?, ?> environment) throws NamingException {
-		return getContext();
-	}
-
 	public static void bind(String name, Object obj) {
 		try {
 			getContext().bind(name, obj);
-		}
-		catch (NamingException ex) {
+		} catch (NamingException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -56,12 +49,16 @@ public class TestableInitialContextFactory implements InitialContextFactory {
 		if (context == null) {
 			try {
 				context = new TestableContext();
-			}
-			catch (NamingException ex) {
+			} catch (NamingException ex) {
 				throw new IllegalStateException(ex);
 			}
 		}
 		return context;
+	}
+
+	@Override
+	public Context getInitialContext(Hashtable<?, ?> environment) throws NamingException {
+		return getContext();
 	}
 
 	private static final class TestableContext extends InitialContext {
@@ -85,7 +82,7 @@ public class TestableInitialContextFactory implements InitialContextFactory {
 		@Override
 		public Hashtable<?, ?> getEnvironment() throws NamingException {
 			return new Hashtable<>(); // Used to detect if JNDI is
-										// available
+			// available
 		}
 
 		public void clearAll() {

@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.cassandra;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.PoolingOptions;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -67,9 +66,9 @@ public class CassandraAutoConfigurationTests {
 	public void customizerOverridesAutoConfig() {
 		this.contextRunner.withUserConfiguration(SimpleCustomizerConfig.class)
 				.withPropertyValues("spring.data.cassandra.cluster-name=testcluster").run((context) -> {
-					assertThat(context).hasSingleBean(Cluster.class);
-					assertThat(context.getBean(Cluster.class).getClusterName()).isEqualTo("overridden-name");
-				});
+			assertThat(context).hasSingleBean(Cluster.class);
+			assertThat(context.getBean(Cluster.class).getClusterName()).isEqualTo("overridden-name");
+		});
 	}
 
 	@Test
@@ -90,14 +89,14 @@ public class CassandraAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.data.cassandra.pool.idle-timeout=42",
 				"spring.data.cassandra.pool.pool-timeout=52", "spring.data.cassandra.pool.heartbeat-interval=62",
 				"spring.data.cassandra.pool.max-queue-size=72").run((context) -> {
-					assertThat(context).hasSingleBean(Cluster.class);
-					PoolingOptions poolingOptions = context.getBean(Cluster.class).getConfiguration()
-							.getPoolingOptions();
-					assertThat(poolingOptions.getIdleTimeoutSeconds()).isEqualTo(42);
-					assertThat(poolingOptions.getPoolTimeoutMillis()).isEqualTo(52);
-					assertThat(poolingOptions.getHeartbeatIntervalSeconds()).isEqualTo(62);
-					assertThat(poolingOptions.getMaxQueueSize()).isEqualTo(72);
-				});
+			assertThat(context).hasSingleBean(Cluster.class);
+			PoolingOptions poolingOptions = context.getBean(Cluster.class).getConfiguration()
+					.getPoolingOptions();
+			assertThat(poolingOptions.getIdleTimeoutSeconds()).isEqualTo(42);
+			assertThat(poolingOptions.getPoolTimeoutMillis()).isEqualTo(52);
+			assertThat(poolingOptions.getHeartbeatIntervalSeconds()).isEqualTo(62);
+			assertThat(poolingOptions.getMaxQueueSize()).isEqualTo(72);
+		});
 	}
 
 	@Configuration

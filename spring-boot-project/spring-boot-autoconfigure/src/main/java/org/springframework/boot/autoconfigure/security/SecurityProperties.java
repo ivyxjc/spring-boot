@@ -16,18 +16,13 @@
 
 package org.springframework.boot.autoconfigure.security;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.DispatcherType;
 import org.springframework.boot.web.servlet.filter.OrderedFilter;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * Configuration properties for Spring Security.

@@ -16,16 +16,15 @@
 
 package org.springframework.boot.test.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @JdbcTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.AUTO_CONFIGURED,
-		connection = EmbeddedDatabaseConnection.HSQL)
+						   connection = EmbeddedDatabaseConnection.HSQL)
 public class JdbcTestWithAutoConfigureTestDatabaseReplaceAutoConfiguredIntegrationTests {
 
 	@Autowired

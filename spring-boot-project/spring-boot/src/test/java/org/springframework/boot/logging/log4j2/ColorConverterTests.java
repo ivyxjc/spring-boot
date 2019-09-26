@@ -22,7 +22,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.springframework.boot.ansi.AnsiOutput;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +53,7 @@ public class ColorConverterTests {
 	}
 
 	private ColorConverter newConverter(String styling) {
-		return ColorConverter.newInstance(null, new String[] { this.in, styling });
+		return ColorConverter.newInstance(null, new String[]{this.in, styling});
 	}
 
 	@Test

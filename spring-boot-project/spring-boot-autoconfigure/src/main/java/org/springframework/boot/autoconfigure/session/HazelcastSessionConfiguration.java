@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.time.Duration;
-
 import com.hazelcast.core.HazelcastInstance;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,6 +27,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.hazelcast.HazelcastSessionRepository;
 import org.springframework.session.hazelcast.config.annotation.web.http.HazelcastHttpSessionConfiguration;
+
+import java.time.Duration;
 
 /**
  * Hazelcast backed session configuration.
@@ -52,7 +51,7 @@ class HazelcastSessionConfiguration {
 
 		@Autowired
 		public void customize(SessionProperties sessionProperties,
-				HazelcastSessionProperties hazelcastSessionProperties) {
+							  HazelcastSessionProperties hazelcastSessionProperties) {
 			Duration timeout = sessionProperties.getTimeout();
 			if (timeout != null) {
 				setMaxInactiveIntervalInSeconds((int) timeout.getSeconds());

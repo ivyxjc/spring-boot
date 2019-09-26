@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.mail;
 
-import java.util.Map;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -33,6 +31,8 @@ import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link MailHealthIndicator}.

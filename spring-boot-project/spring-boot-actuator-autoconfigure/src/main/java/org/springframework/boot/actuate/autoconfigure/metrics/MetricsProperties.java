@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link ConfigurationProperties} for configuring Micrometer-based metrics.
@@ -32,26 +32,22 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class MetricsProperties {
 
 	/**
+	 * Whether meter IDs starting-with the specified name should be enabled. The longest
+	 * match wins, the key `all` can also be used to configure all meters.
+	 */
+	private final Map<String, Boolean> enable = new LinkedHashMap<>();
+	/**
+	 * Common tags that are applied to every meter.
+	 */
+	private final Map<String, String> tags = new LinkedHashMap<>();
+	private final Web web = new Web();
+	private final Distribution distribution = new Distribution();
+	/**
 	 * Whether auto-configured MeterRegistry implementations should be bound to the global
 	 * static registry on Metrics. For testing, set this to 'false' to maximize test
 	 * independence.
 	 */
 	private boolean useGlobalRegistry = true;
-
-	/**
-	 * Whether meter IDs starting-with the specified name should be enabled. The longest
-	 * match wins, the key `all` can also be used to configure all meters.
-	 */
-	private final Map<String, Boolean> enable = new LinkedHashMap<>();
-
-	/**
-	 * Common tags that are applied to every meter.
-	 */
-	private final Map<String, String> tags = new LinkedHashMap<>();
-
-	private final Web web = new Web();
-
-	private final Distribution distribution = new Distribution();
 
 	public boolean isUseGlobalRegistry() {
 		return this.useGlobalRegistry;

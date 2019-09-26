@@ -16,6 +16,8 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import org.apache.commons.logging.Log;
+
 import java.io.File;
 import java.net.JarURLConnection;
 import java.net.URL;
@@ -23,8 +25,6 @@ import java.net.URLConnection;
 import java.security.CodeSource;
 import java.util.Arrays;
 import java.util.Locale;
-
-import org.apache.commons.logging.Log;
 
 /**
  * Manages a {@link ServletWebServerFactory} document root.
@@ -34,7 +34,7 @@ import org.apache.commons.logging.Log;
  */
 class DocumentRoot {
 
-	private static final String[] COMMON_DOC_ROOTS = { "src/main/webapp", "public", "static" };
+	private static final String[] COMMON_DOC_ROOTS = {"src/main/webapp", "public", "static"};
 
 	private final Log logger;
 
@@ -55,6 +55,7 @@ class DocumentRoot {
 	/**
 	 * Returns the absolute document root when it points to a valid directory, logging a
 	 * warning and returning {@code null} otherwise.
+	 *
 	 * @return the valid document root
 	 */
 	public final File getValidDirectory() {
@@ -64,8 +65,7 @@ class DocumentRoot {
 		file = (file != null) ? file : getCommonDocumentRoot();
 		if (file == null && this.logger.isDebugEnabled()) {
 			logNoDocumentRoots();
-		}
-		else if (this.logger.isDebugEnabled()) {
+		} else if (this.logger.isDebugEnabled()) {
 			this.logger.debug("Document root: " + file);
 		}
 		return file;
@@ -105,8 +105,7 @@ class DocumentRoot {
 			URLConnection connection = location.openConnection();
 			if (connection instanceof JarURLConnection) {
 				path = ((JarURLConnection) connection).getJarFile().getName();
-			}
-			else {
+			} else {
 				path = location.toURI().getPath();
 			}
 			int index = path.indexOf("!/");
@@ -114,8 +113,7 @@ class DocumentRoot {
 				path = path.substring(0, index);
 			}
 			return new File(path);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}

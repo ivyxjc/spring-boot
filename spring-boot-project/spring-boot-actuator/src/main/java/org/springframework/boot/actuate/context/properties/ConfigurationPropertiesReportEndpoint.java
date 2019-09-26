@@ -16,34 +16,17 @@
 
 package org.springframework.boot.actuate.context.properties;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.ser.BeanPropertyWriter;
-import com.fasterxml.jackson.databind.ser.BeanSerializerFactory;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.fasterxml.jackson.databind.ser.PropertyWriter;
-import com.fasterxml.jackson.databind.ser.SerializerFactory;
+import com.fasterxml.jackson.databind.ser.*;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.boot.actuate.endpoint.Sanitizer;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
@@ -54,6 +37,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * {@link Endpoint} to expose application properties from {@link ConfigurationProperties}
@@ -106,7 +91,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	}
 
 	private ContextConfigurationProperties describeConfigurationProperties(ApplicationContext context,
-			ObjectMapper mapper) {
+																		   ObjectMapper mapper) {
 		ConfigurationBeanFactoryMetadata beanFactoryMetadata = getBeanFactoryMetadata(context);
 		Map<String, Object> beans = getConfigurationPropertiesBeans(context, beanFactoryMetadata);
 		Map<String, ConfigurationPropertiesBeanDescriptor> beanDescriptors = new HashMap<>();
@@ -129,7 +114,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	}
 
 	private Map<String, Object> getConfigurationPropertiesBeans(ApplicationContext context,
-			ConfigurationBeanFactoryMetadata beanFactoryMetadata) {
+																ConfigurationBeanFactoryMetadata beanFactoryMetadata) {
 		Map<String, Object> beans = new HashMap<>();
 		beans.putAll(context.getBeansWithAnnotation(ConfigurationProperties.class));
 		if (beanFactoryMetadata != null) {
@@ -141,8 +126,9 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	/**
 	 * Cautiously serialize the bean to a map (returning a map with an error message
 	 * instead of throwing an exception if there is a problem).
+	 *
 	 * @param mapper the object mapper
-	 * @param bean the source bean
+	 * @param bean   the source bean
 	 * @param prefix the prefix
 	 * @return the serialized instance
 	 */
@@ -150,8 +136,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	private Map<String, Object> safeSerialize(ObjectMapper mapper, Object bean, String prefix) {
 		try {
 			return new HashMap<>(mapper.convertValue(bean, Map.class));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return new HashMap<>(Collections.singletonMap("error", "Cannot serialize '" + prefix + "'"));
 		}
 	}
@@ -159,6 +144,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	/**
 	 * Configure Jackson's {@link ObjectMapper} to be used to serialize the
 	 * {@link ConfigurationProperties} objects into a {@link Map} structure.
+	 *
 	 * @param mapper the object mapper
 	 */
 	protected void configureObjectMapper(ObjectMapper mapper) {
@@ -179,6 +165,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 
 	/**
 	 * Ensure only bindable and non-cyclic bean properties are reported.
+	 *
 	 * @param mapper the object mapper
 	 */
 	private void applySerializationModifier(ObjectMapper mapper) {
@@ -195,13 +182,14 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 
 	/**
 	 * Extract configuration prefix from {@link ConfigurationProperties} annotation.
-	 * @param context the application context
+	 *
+	 * @param context             the application context
 	 * @param beanFactoryMetaData the bean factory meta-data
-	 * @param beanName the bean name
+	 * @param beanName            the bean name
 	 * @return the prefix
 	 */
 	private String extractPrefix(ApplicationContext context, ConfigurationBeanFactoryMetadata beanFactoryMetaData,
-			String beanName) {
+								 String beanName) {
 		ConfigurationProperties annotation = context.findAnnotationOnBean(beanName, ConfigurationProperties.class);
 		if (beanFactoryMetaData != null) {
 			ConfigurationProperties override = beanFactoryMetaData.findFactoryAnnotation(beanName,
@@ -219,8 +207,9 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 	/**
 	 * Sanitize all unwanted configuration properties to avoid leaking of sensitive
 	 * information.
+	 *
 	 * @param prefix the property prefix
-	 * @param map the source map
+	 * @param map    the source map
 	 * @return the sanitized map
 	 */
 	@SuppressWarnings("unchecked")
@@ -229,11 +218,9 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 			String qualifiedKey = (prefix.isEmpty() ? prefix : prefix + ".") + key;
 			if (value instanceof Map) {
 				map.put(key, sanitize(qualifiedKey, (Map<String, Object>) value));
-			}
-			else if (value instanceof List) {
+			} else if (value instanceof List) {
 				map.put(key, sanitize(qualifiedKey, (List<Object>) value));
-			}
-			else {
+			} else {
 				value = this.sanitizer.sanitize(key, value);
 				value = this.sanitizer.sanitize(qualifiedKey, value);
 				map.put(key, value);
@@ -248,11 +235,9 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 		for (Object item : list) {
 			if (item instanceof Map) {
 				sanitized.add(sanitize(prefix, (Map<String, Object>) item));
-			}
-			else if (item instanceof List) {
+			} else if (item instanceof List) {
 				sanitized.add(sanitize(prefix, (List<Object>) item));
-			}
-			else {
+			} else {
 				sanitized.add(this.sanitizer.sanitize(prefix, item));
 			}
 		}
@@ -307,7 +292,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 
 		@Override
 		public void serializeAsField(Object pojo, JsonGenerator jgen, SerializerProvider provider,
-				PropertyWriter writer) throws Exception {
+									 PropertyWriter writer) throws Exception {
 			if (writer instanceof BeanPropertyWriter) {
 				try {
 					if (pojo == ((BeanPropertyWriter) writer).get(pojo)) {
@@ -317,8 +302,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 						}
 						return;
 					}
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					if (logger.isDebugEnabled()) {
 						logger.debug("Skipping '" + writer.getFullName() + "' on '" + pojo.getClass().getName()
 								+ "' as an exception " + "was thrown when retrieving its value", ex);
@@ -338,7 +322,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 
 		@Override
 		public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc,
-				List<BeanPropertyWriter> beanProperties) {
+														 List<BeanPropertyWriter> beanProperties) {
 			List<BeanPropertyWriter> result = new ArrayList<>();
 			for (BeanPropertyWriter writer : beanProperties) {
 				boolean readable = isReadable(beanDesc, writer);
@@ -366,11 +350,11 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 		private AnnotatedMethod findSetter(BeanDescription beanDesc, BeanPropertyWriter writer) {
 			String name = "set" + determineAccessorSuffix(writer.getName());
 			Class<?> type = writer.getType().getRawClass();
-			AnnotatedMethod setter = beanDesc.findMethod(name, new Class<?>[] { type });
+			AnnotatedMethod setter = beanDesc.findMethod(name, new Class<?>[]{type});
 			// The enabled property of endpoints returns a boolean primitive but is set
 			// using a Boolean class
 			if (setter == null && type.equals(Boolean.TYPE)) {
-				setter = beanDesc.findMethod(name, new Class<?>[] { Boolean.class });
+				setter = beanDesc.findMethod(name, new Class<?>[]{Boolean.class});
 			}
 			return setter;
 		}
@@ -379,6 +363,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 		 * Determine the accessor suffix of the specified {@code propertyName}, see
 		 * section 8.8 "Capitalization of inferred names" of the JavaBean specs for more
 		 * details.
+		 *
 		 * @param propertyName the property name to turn into an accessor suffix
 		 * @return the accessor suffix for {@code propertyName}
 		 */
@@ -420,7 +405,7 @@ public class ConfigurationPropertiesReportEndpoint implements ApplicationContext
 		private final String parentId;
 
 		private ContextConfigurationProperties(Map<String, ConfigurationPropertiesBeanDescriptor> beans,
-				String parentId) {
+											   String parentId) {
 			this.beans = beans;
 			this.parentId = parentId;
 		}

@@ -34,9 +34,10 @@ public final class ParameterMappingException extends InvalidEndpointRequestExcep
 	/**
 	 * Creates a new {@code ParameterMappingException} for a failure that occurred when
 	 * trying to map the given {@code input} to the given {@code type}.
+	 *
 	 * @param parameter the parameter being mapping
-	 * @param value the value being mapped
-	 * @param cause the cause of the mapping failure
+	 * @param value     the value being mapped
+	 * @param cause     the cause of the mapping failure
 	 */
 	public ParameterMappingException(OperationParameter parameter, Object value, Throwable cause) {
 		super("Failed to map " + value + " of type " + value.getClass() + " to " + parameter,
@@ -47,6 +48,7 @@ public final class ParameterMappingException extends InvalidEndpointRequestExcep
 
 	/**
 	 * Return the parameter being mapped.
+	 *
 	 * @return the parameter
 	 */
 	public OperationParameter getParameter() {
@@ -55,6 +57,7 @@ public final class ParameterMappingException extends InvalidEndpointRequestExcep
 
 	/**
 	 * Return the value being mapped.
+	 *
 	 * @return the value
 	 */
 	public Object getValue() {

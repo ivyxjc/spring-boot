@@ -16,9 +16,9 @@
 
 package org.springframework.boot.cli.command.run;
 
-import java.util.logging.Level;
-
 import org.junit.Test;
+
+import java.util.logging.Level;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
@@ -34,11 +34,11 @@ public class SpringApplicationRunnerTests {
 	@Test
 	public void exceptionMessageWhenSourcesContainsNoClasses() throws Exception {
 		SpringApplicationRunnerConfiguration configuration = mock(SpringApplicationRunnerConfiguration.class);
-		given(configuration.getClasspath()).willReturn(new String[] { "foo", "bar" });
+		given(configuration.getClasspath()).willReturn(new String[]{"foo", "bar"});
 		given(configuration.getLogLevel()).willReturn(Level.INFO);
 		assertThatExceptionOfType(RuntimeException.class)
 				.isThrownBy(
-						() -> new SpringApplicationRunner(configuration, new String[] { "foo", "bar" }).compileAndRun())
+						() -> new SpringApplicationRunner(configuration, new String[]{"foo", "bar"}).compileAndRun())
 				.withMessage("No classes found in '[foo, bar]'");
 	}
 

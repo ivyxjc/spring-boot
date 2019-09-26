@@ -19,7 +19,6 @@ package org.springframework.boot.testsupport.assertj;
 import org.assertj.core.api.Condition;
 import org.hamcrest.Matcher;
 import org.hamcrest.StringDescription;
-
 import org.springframework.util.Assert;
 
 /**
@@ -39,6 +38,14 @@ public final class Matched<T> extends Condition<T> {
 		this.matcher = matcher;
 	}
 
+	public static <T> Condition<T> when(Matcher<? extends T> matcher) {
+		return by(matcher);
+	}
+
+	public static <T> Condition<T> by(Matcher<? extends T> matcher) {
+		return new Matched<>(matcher);
+	}
+
 	@Override
 	public boolean matches(T value) {
 		if (this.matcher.matches(value)) {
@@ -48,14 +55,6 @@ public final class Matched<T> extends Condition<T> {
 		this.matcher.describeTo(description);
 		describedAs(description.toString());
 		return false;
-	}
-
-	public static <T> Condition<T> when(Matcher<? extends T> matcher) {
-		return by(matcher);
-	}
-
-	public static <T> Condition<T> by(Matcher<? extends T> matcher) {
-		return new Matched<>(matcher);
 	}
 
 }

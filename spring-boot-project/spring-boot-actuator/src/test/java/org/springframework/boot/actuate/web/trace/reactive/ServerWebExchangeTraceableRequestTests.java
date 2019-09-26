@@ -15,16 +15,15 @@
  */
 package org.springframework.boot.actuate.web.trace.reactive;
 
-import java.net.InetSocketAddress;
-import java.net.URI;
-import java.util.Collections;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
+
+import java.net.InetSocketAddress;
+import java.net.URI;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;

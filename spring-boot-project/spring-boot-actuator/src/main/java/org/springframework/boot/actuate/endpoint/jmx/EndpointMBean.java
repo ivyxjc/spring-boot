@@ -16,26 +16,17 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.AttributeNotFoundException;
-import javax.management.DynamicMBean;
-import javax.management.InvalidAttributeValueException;
-import javax.management.MBeanException;
-import javax.management.MBeanInfo;
-import javax.management.ReflectionException;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+import reactor.core.publisher.Mono;
+
+import javax.management.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Adapter to expose a {@link ExposableJmxEndpoint JMX endpoint} as a
@@ -94,8 +85,7 @@ public class EndpointMBean implements DynamicMBean {
 		ClassLoader previousClassLoader = overrideThreadContextClassLoader(this.classLoader);
 		try {
 			return invoke(operation, params);
-		}
-		finally {
+		} finally {
 			overrideThreadContextClassLoader(previousClassLoader);
 		}
 	}
@@ -104,8 +94,7 @@ public class EndpointMBean implements DynamicMBean {
 		if (classLoader != null) {
 			try {
 				return ClassUtils.overrideThreadContextClassLoader(classLoader);
-			}
-			catch (SecurityException ex) {
+			} catch (SecurityException ex) {
 				// can't set class loader, ignore it and proceed
 			}
 		}
@@ -123,11 +112,9 @@ public class EndpointMBean implements DynamicMBean {
 				result = ReactiveHandler.handle(result);
 			}
 			return this.responseMapper.mapResponse(result);
-		}
-		catch (InvalidEndpointRequestException ex) {
+		} catch (InvalidEndpointRequestException ex) {
 			throw new ReflectionException(new IllegalArgumentException(ex.getMessage()), ex.getMessage());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MBeanException(translateIfNecessary(ex), ex.getMessage());
 		}
 	}

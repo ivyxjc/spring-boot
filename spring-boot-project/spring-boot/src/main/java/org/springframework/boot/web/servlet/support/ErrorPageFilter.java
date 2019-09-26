@@ -16,29 +16,8 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.server.ErrorPageRegistrar;
 import org.springframework.boot.web.server.ErrorPageRegistry;
@@ -47,6 +26,14 @@ import org.springframework.core.annotation.Order;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.NestedServletException;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * A Servlet {@link Filter} that provides an {@link ErrorPageRegistry} for non-embedded
@@ -65,36 +52,29 @@ import org.springframework.web.util.NestedServletException;
 @Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 
-	private static final Log logger = LogFactory.getLog(ErrorPageFilter.class);
-
-	// From RequestDispatcher but not referenced to remain compatible with Servlet 2.5
-
-	private static final String ERROR_EXCEPTION = "javax.servlet.error.exception";
-
-	private static final String ERROR_EXCEPTION_TYPE = "javax.servlet.error.exception_type";
-
-	private static final String ERROR_MESSAGE = "javax.servlet.error.message";
-
 	/**
 	 * The name of the servlet attribute containing request URI.
 	 */
 	public static final String ERROR_REQUEST_URI = "javax.servlet.error.request_uri";
 
+	// From RequestDispatcher but not referenced to remain compatible with Servlet 2.5
+	private static final Log logger = LogFactory.getLog(ErrorPageFilter.class);
+	private static final String ERROR_EXCEPTION = "javax.servlet.error.exception";
+	private static final String ERROR_EXCEPTION_TYPE = "javax.servlet.error.exception_type";
+	private static final String ERROR_MESSAGE = "javax.servlet.error.message";
 	private static final String ERROR_STATUS_CODE = "javax.servlet.error.status_code";
 
 	private static final Set<Class<?>> CLIENT_ABORT_EXCEPTIONS;
+
 	static {
 		Set<Class<?>> clientAbortExceptions = new HashSet<>();
 		addClassIfPresent(clientAbortExceptions, "org.apache.catalina.connector.ClientAbortException");
 		CLIENT_ABORT_EXCEPTIONS = Collections.unmodifiableSet(clientAbortExceptions);
 	}
 
-	private String global;
-
 	private final Map<Integer, String> statuses = new HashMap<>();
-
 	private final Map<Class<?>, String> exceptions = new HashMap<>();
-
+	private String global;
 	private final OncePerRequestFilter delegate = new OncePerRequestFilter() {
 
 		@Override
@@ -109,6 +89,13 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 		}
 
 	};
+
+	private static void addClassIfPresent(Collection<Class<?>> collection, String className) {
+		try {
+			collection.add(ClassUtils.forName(className, null));
+		} catch (Throwable ex) {
+		}
+	}
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -129,12 +116,10 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 			if (wrapped.hasErrorToSend()) {
 				handleErrorStatus(request, response, wrapped.getStatus(), wrapped.getMessage());
 				response.flushBuffer();
-			}
-			else if (!request.isAsyncStarted() && !response.isCommitted()) {
+			} else if (!request.isAsyncStarted() && !response.isCommitted()) {
 				response.flushBuffer();
 			}
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			Throwable exceptionToHandle = ex;
 			if (ex instanceof NestedServletException) {
 				exceptionToHandle = ((NestedServletException) ex).getRootCause();
@@ -161,7 +146,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 	}
 
 	private void handleException(HttpServletRequest request, HttpServletResponse response, ErrorWrapperResponse wrapped,
-			Throwable ex) throws IOException, ServletException {
+								 Throwable ex) throws IOException, ServletException {
 		Class<?> type = ex.getClass();
 		String errorPath = getErrorPath(type);
 		if (errorPath == null) {
@@ -195,6 +180,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 	/**
 	 * Return the description for the given request. By default this method will return a
 	 * description based on the request {@code servletPath} and {@code pathInfo}.
+	 *
 	 * @param request the source request
 	 * @return the description
 	 * @since 1.5.0
@@ -216,8 +202,7 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 				+ " com.ibm.ws.webcontainer.invokeFlushAfterService to false";
 		if (ex == null) {
 			logger.error(message);
-		}
-		else {
+		} else {
 			// User might see the error page without all the data here but throwing the
 			// exception isn't going to help anyone (we'll log it to be on the safe side)
 			logger.error(message, ex);
@@ -281,11 +266,9 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 		for (ErrorPage errorPage : errorPages) {
 			if (errorPage.isGlobal()) {
 				this.global = errorPage.getPath();
-			}
-			else if (errorPage.getStatus() != null) {
+			} else if (errorPage.getStatus() != null) {
 				this.statuses.put(errorPage.getStatus().value(), errorPage.getPath());
-			}
-			else {
+			} else {
 				this.exceptions.put(errorPage.getException(), errorPage.getPath());
 			}
 		}
@@ -293,14 +276,6 @@ public class ErrorPageFilter implements Filter, ErrorPageRegistry {
 
 	@Override
 	public void destroy() {
-	}
-
-	private static void addClassIfPresent(Collection<Class<?>> collection, String className) {
-		try {
-			collection.add(ClassUtils.forName(className, null));
-		}
-		catch (Throwable ex) {
-		}
 	}
 
 	private static class ErrorWrapperResponse extends HttpServletResponseWrapper {

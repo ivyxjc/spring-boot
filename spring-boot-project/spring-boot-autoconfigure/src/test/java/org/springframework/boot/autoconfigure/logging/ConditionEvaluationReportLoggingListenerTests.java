@@ -16,15 +16,12 @@
 
 package org.springframework.boot.autoconfigure.logging;
 
-import java.util.Arrays;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.impl.StaticLoggerBinder;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -41,9 +38,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import java.util.Arrays;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link ConditionEvaluationReportLoggingListener}.
@@ -155,15 +152,14 @@ public class ConditionEvaluationReportLoggingListenerTests {
 		logger.setLevel(Level.DEBUG);
 		try {
 			runnable.run();
-		}
-		finally {
+		} finally {
 			logger.setLevel(currentLevel);
 		}
 	}
 
 	@Configuration
-	@Import({ WebMvcAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class })
+	@Import({WebMvcAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+					PropertyPlaceholderAutoConfiguration.class})
 	static class Config {
 
 	}

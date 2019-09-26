@@ -16,19 +16,6 @@
 
 package org.springframework.boot.web.servlet.context;
 
-import java.lang.reflect.Field;
-import java.util.EnumSet;
-import java.util.Properties;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -37,7 +24,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -69,17 +55,16 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.SessionScope;
 import org.springframework.web.filter.GenericFilterBean;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import javax.servlet.*;
+import java.lang.reflect.Field;
+import java.util.EnumSet;
+import java.util.Properties;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.atMost;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.withSettings;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link ServletWebServerApplicationContext}.
@@ -89,13 +74,18 @@ import static org.mockito.Mockito.withSettings;
  */
 public class ServletWebServerApplicationContextTests {
 
-	private ServletWebServerApplicationContext context;
-
 	@Rule
 	public OutputCapture output = new OutputCapture();
-
+	private ServletWebServerApplicationContext context;
 	@Captor
 	private ArgumentCaptor<Filter> filterCaptor;
+
+	public static <T> T getBean(T object) {
+		if (object instanceof RuntimeException) {
+			throw (RuntimeException) object;
+		}
+		return object;
+	}
 
 	@Before
 	public void setup() {
@@ -466,13 +456,6 @@ public class ServletWebServerApplicationContextTests {
 		constructorArguments.addGenericArgumentValue(bean);
 		beanDefinition.setConstructorArgumentValues(constructorArguments);
 		return beanDefinition;
-	}
-
-	public static <T> T getBean(T object) {
-		if (object instanceof RuntimeException) {
-			throw (RuntimeException) object;
-		}
-		return object;
 	}
 
 	public static class MockListener implements ApplicationListener<ServletWebServerInitializedEvent> {

@@ -16,21 +16,8 @@
 
 package org.springframework.boot.web.reactive.result.view;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.charset.Charset;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-
 import com.samskivert.mustache.Mustache.Compiler;
 import com.samskivert.mustache.Template;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -38,6 +25,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.io.*;
+import java.nio.charset.Charset;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Spring WebFlux {@link View} using the Mustache template engine.
@@ -55,6 +50,7 @@ public class MustacheView extends AbstractUrlBasedView {
 	 * Set the JMustache compiler to be used by this view. Typically this property is not
 	 * set directly. Instead a single {@link Compiler} is expected in the Spring
 	 * application context which is used to compile Mustache templates.
+	 *
 	 * @param compiler the Mustache compiler
 	 */
 	public void setCompiler(Compiler compiler) {
@@ -63,6 +59,7 @@ public class MustacheView extends AbstractUrlBasedView {
 
 	/**
 	 * Set the charset used for reading Mustache template files.
+	 *
 	 * @param charset the charset to use for reading template files
 	 */
 	public void setCharset(String charset) {
@@ -89,8 +86,7 @@ public class MustacheView extends AbstractUrlBasedView {
 				template.execute(model, writer);
 				writer.flush();
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			DataBufferUtils.release(dataBuffer);
 			return Mono.error(ex);
 		}

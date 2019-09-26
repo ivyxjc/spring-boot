@@ -16,12 +16,12 @@
 
 package org.springframework.boot.convert;
 
+import org.springframework.format.Formatter;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.Locale;
-
-import org.springframework.format.Formatter;
 
 /**
  * {@link Formatter} for {@link InetAddress}.
@@ -39,8 +39,7 @@ final class InetAddressFormatter implements Formatter<InetAddress> {
 	public InetAddress parse(String text, Locale locale) throws ParseException {
 		try {
 			return InetAddress.getByName(text);
-		}
-		catch (UnknownHostException ex) {
+		} catch (UnknownHostException ex) {
 			throw new IllegalStateException("Unknown host " + text, ex);
 		}
 	}

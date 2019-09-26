@@ -80,6 +80,7 @@ public final class WebEndpointResponse<T> {
 	/**
 	 * Creates a new {@code WebEndpointResponse} with no body and the given
 	 * {@code status}.
+	 *
 	 * @param status the HTTP status
 	 */
 	public WebEndpointResponse(int status) {
@@ -89,6 +90,7 @@ public final class WebEndpointResponse<T> {
 	/**
 	 * Creates a new {@code WebEndpointResponse} with then given body and a 200 (OK)
 	 * status.
+	 *
 	 * @param body the body
 	 */
 	public WebEndpointResponse(T body) {
@@ -97,7 +99,8 @@ public final class WebEndpointResponse<T> {
 
 	/**
 	 * Creates a new {@code WebEndpointResponse} with then given body and status.
-	 * @param body the body
+	 *
+	 * @param body   the body
 	 * @param status the HTTP status
 	 */
 	public WebEndpointResponse(T body, int status) {
@@ -107,6 +110,7 @@ public final class WebEndpointResponse<T> {
 
 	/**
 	 * Returns the body for the response.
+	 *
 	 * @return the body
 	 */
 	public T getBody() {
@@ -115,6 +119,7 @@ public final class WebEndpointResponse<T> {
 
 	/**
 	 * Returns the status for the response.
+	 *
 	 * @return the status
 	 */
 	public int getStatus() {

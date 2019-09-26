@@ -20,7 +20,6 @@ import ch.qos.logback.classic.Logger;
 import org.junit.After;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.ApplicationContext;

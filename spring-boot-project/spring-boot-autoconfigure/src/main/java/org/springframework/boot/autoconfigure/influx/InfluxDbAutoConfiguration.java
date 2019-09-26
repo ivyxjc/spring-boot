@@ -21,7 +21,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.influxdb.InfluxDB;
 import org.influxdb.impl.InfluxDBImpl;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -51,19 +50,18 @@ public class InfluxDbAutoConfiguration {
 	private final OkHttpClient.Builder builder;
 
 	public InfluxDbAutoConfiguration(InfluxDbProperties properties,
-			ObjectProvider<InfluxDbOkHttpClientBuilderProvider> builder,
-			ObjectProvider<OkHttpClient.Builder> deprecatedBuilder) {
+									 ObjectProvider<InfluxDbOkHttpClientBuilderProvider> builder,
+									 ObjectProvider<OkHttpClient.Builder> deprecatedBuilder) {
 		this.properties = properties;
 		this.builder = determineBuilder(builder.getIfAvailable(), deprecatedBuilder.getIfAvailable());
 	}
 
 	@Deprecated
 	private static OkHttpClient.Builder determineBuilder(InfluxDbOkHttpClientBuilderProvider builder,
-			OkHttpClient.Builder deprecatedBuilder) {
+														 OkHttpClient.Builder deprecatedBuilder) {
 		if (builder != null) {
 			return builder.get();
-		}
-		else if (deprecatedBuilder != null) {
+		} else if (deprecatedBuilder != null) {
 			logger.warn("InfluxDB client customizations using a OkHttpClient.Builder is deprecated, register a "
 					+ InfluxDbOkHttpClientBuilderProvider.class.getSimpleName() + " bean instead");
 			return deprecatedBuilder;

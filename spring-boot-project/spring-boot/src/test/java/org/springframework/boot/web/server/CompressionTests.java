@@ -19,7 +19,6 @@ package org.springframework.boot.web.server;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;

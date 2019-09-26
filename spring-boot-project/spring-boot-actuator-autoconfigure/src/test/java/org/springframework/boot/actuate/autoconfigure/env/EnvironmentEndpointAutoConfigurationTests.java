@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.env;
 
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.env.EnvironmentEndpoint;
 import org.springframework.boot.actuate.env.EnvironmentEndpoint.EnvironmentDescriptor;
 import org.springframework.boot.actuate.env.EnvironmentEndpoint.PropertySourceDescriptor;
@@ -28,6 +25,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ContextConsumer;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

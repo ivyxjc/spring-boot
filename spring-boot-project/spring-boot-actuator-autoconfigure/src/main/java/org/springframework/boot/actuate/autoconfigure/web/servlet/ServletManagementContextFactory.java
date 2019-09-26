@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.servlet;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -34,6 +29,11 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
 
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * A {@link ManagementContextFactory} for servlet-based web applications.
  *
@@ -43,7 +43,7 @@ class ServletManagementContextFactory implements ManagementContextFactory {
 
 	@Override
 	public ConfigurableWebServerApplicationContext createManagementContext(ApplicationContext parent,
-			Class<?>... configClasses) {
+																		   Class<?>... configClasses) {
 		AnnotationConfigServletWebServerApplicationContext child = new AnnotationConfigServletWebServerApplicationContext();
 		child.setParent(parent);
 		List<Class<?>> combinedClasses = new ArrayList<>(Arrays.asList(configClasses));
@@ -54,7 +54,7 @@ class ServletManagementContextFactory implements ManagementContextFactory {
 	}
 
 	private void registerServletWebServerFactory(ApplicationContext parent,
-			AnnotationConfigServletWebServerApplicationContext childContext) {
+												 AnnotationConfigServletWebServerApplicationContext childContext) {
 		try {
 			ConfigurableListableBeanFactory beanFactory = childContext.getBeanFactory();
 			if (beanFactory instanceof BeanDefinitionRegistry) {
@@ -62,8 +62,7 @@ class ServletManagementContextFactory implements ManagementContextFactory {
 				registry.registerBeanDefinition("ServletWebServerFactory",
 						new RootBeanDefinition(determineServletWebServerFactoryClass(parent)));
 			}
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Ignore and assume auto-configuration
 		}
 	}

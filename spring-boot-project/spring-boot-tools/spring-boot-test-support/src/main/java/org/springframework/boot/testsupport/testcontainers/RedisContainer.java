@@ -16,9 +16,9 @@
 
 package org.springframework.boot.testsupport.testcontainers;
 
-import java.time.Duration;
-
 import org.testcontainers.containers.GenericContainer;
+
+import java.time.Duration;
 
 /**
  * A {@link GenericContainer} for Redis.

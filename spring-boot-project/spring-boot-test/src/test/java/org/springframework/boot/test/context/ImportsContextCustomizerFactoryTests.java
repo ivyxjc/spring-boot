@@ -16,11 +16,7 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import org.junit.Test;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +24,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -96,6 +95,18 @@ public class ImportsContextCustomizerFactoryTests {
 				.isNotNull();
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@Import(ImportedBean.class)
+	@interface MetaImport {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@SelfAnnotating
+	@interface SelfAnnotating {
+
+	}
+
 	static class TestWithNoImport {
 
 	}
@@ -139,12 +150,6 @@ public class ImportsContextCustomizerFactoryTests {
 
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@Import(ImportedBean.class)
-	@interface MetaImport {
-
-	}
-
 	@Component
 	static class ImportedBean {
 
@@ -152,12 +157,6 @@ public class ImportsContextCustomizerFactoryTests {
 
 	@Component
 	static class AnotherImportedBean {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@SelfAnnotating
-	@interface SelfAnnotating {
 
 	}
 

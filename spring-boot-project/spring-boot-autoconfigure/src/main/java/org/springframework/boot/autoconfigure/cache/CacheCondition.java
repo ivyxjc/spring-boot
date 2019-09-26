@@ -54,8 +54,7 @@ class CacheCondition extends SpringBootCondition {
 			if (specified.get() == required) {
 				return ConditionOutcome.match(message.because(specified.get() + " cache type"));
 			}
-		}
-		catch (BindException ex) {
+		} catch (BindException ex) {
 		}
 		return ConditionOutcome.noMatch(message.because("unknown cache type"));
 	}

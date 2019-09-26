@@ -16,10 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.filter;
 
-import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -28,6 +24,10 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.util.ObjectUtils;
+
+import java.io.IOException;
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 /**
  * Abstract base class for a {@link TypeExcludeFilter} that can be customized using an
@@ -90,7 +90,7 @@ public abstract class AnnotationCustomizableTypeExcludeFilter extends TypeExclud
 
 	@SuppressWarnings("unchecked")
 	protected final boolean isTypeOrAnnotated(MetadataReader metadataReader,
-			MetadataReaderFactory metadataReaderFactory, Class<?> type) throws IOException {
+											  MetadataReaderFactory metadataReaderFactory, Class<?> type) throws IOException {
 		AnnotationTypeFilter annotationFilter = new AnnotationTypeFilter((Class<? extends Annotation>) type);
 		AssignableTypeFilter typeFilter = new AssignableTypeFilter(type);
 		return annotationFilter.match(metadataReader, metadataReaderFactory)
@@ -106,12 +106,6 @@ public abstract class AnnotationCustomizableTypeExcludeFilter extends TypeExclud
 	protected abstract Set<Class<?>> getDefaultIncludes();
 
 	protected abstract Set<Class<?>> getComponentIncludes();
-
-	protected enum FilterType {
-
-		INCLUDE, EXCLUDE
-
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -145,6 +139,12 @@ public abstract class AnnotationCustomizableTypeExcludeFilter extends TypeExclud
 		result = prime * result + ObjectUtils.nullSafeHashCode(getDefaultIncludes());
 		result = prime * result + ObjectUtils.nullSafeHashCode(getComponentIncludes());
 		return result;
+	}
+
+	protected enum FilterType {
+
+		INCLUDE, EXCLUDE
+
 	}
 
 }

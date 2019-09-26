@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.data.redis;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -30,6 +28,7 @@ import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import reactor.core.publisher.Flux;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Data's reactive Redis
@@ -40,7 +39,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class })
+@ConditionalOnClass({ReactiveRedisConnectionFactory.class, ReactiveRedisTemplate.class, Flux.class})
 @AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisReactiveAutoConfiguration {
 

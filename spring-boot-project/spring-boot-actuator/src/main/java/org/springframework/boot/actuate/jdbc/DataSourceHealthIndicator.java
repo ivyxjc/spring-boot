@@ -16,14 +16,6 @@
 
 package org.springframework.boot.actuate.jdbc;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
@@ -37,6 +29,13 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * {@link HealthIndicator} that tests the status of a {@link DataSource} and optionally
@@ -69,6 +68,7 @@ public class DataSourceHealthIndicator extends AbstractHealthIndicator implement
 	/**
 	 * Create a new {@link DataSourceHealthIndicator} using the specified
 	 * {@link DataSource}.
+	 *
 	 * @param dataSource the data source
 	 */
 	public DataSourceHealthIndicator(DataSource dataSource) {
@@ -78,8 +78,9 @@ public class DataSourceHealthIndicator extends AbstractHealthIndicator implement
 	/**
 	 * Create a new {@link DataSourceHealthIndicator} using the specified
 	 * {@link DataSource} and validation query.
+	 *
 	 * @param dataSource the data source
-	 * @param query the validation query to use (can be {@code null})
+	 * @param query      the validation query to use (can be {@code null})
 	 */
 	public DataSourceHealthIndicator(DataSource dataSource, String query) {
 		super("DataSource health check failed");
@@ -97,8 +98,7 @@ public class DataSourceHealthIndicator extends AbstractHealthIndicator implement
 	protected void doHealthCheck(Health.Builder builder) throws Exception {
 		if (this.dataSource == null) {
 			builder.up().withDetail("database", "unknown");
-		}
-		else {
+		} else {
 			doDataSourceHealthCheck(builder);
 		}
 	}
@@ -137,6 +137,7 @@ public class DataSourceHealthIndicator extends AbstractHealthIndicator implement
 
 	/**
 	 * Set the {@link DataSource} to use.
+	 *
 	 * @param dataSource the data source
 	 */
 	public void setDataSource(DataSource dataSource) {
@@ -145,20 +146,22 @@ public class DataSourceHealthIndicator extends AbstractHealthIndicator implement
 	}
 
 	/**
-	 * Set a specific validation query to use to validate a connection. If none is set, a
-	 * default validation query is used.
-	 * @param query the query
-	 */
-	public void setQuery(String query) {
-		this.query = query;
-	}
-
-	/**
 	 * Return the validation query or {@code null}.
+	 *
 	 * @return the query
 	 */
 	public String getQuery() {
 		return this.query;
+	}
+
+	/**
+	 * Set a specific validation query to use to validate a connection. If none is set, a
+	 * default validation query is used.
+	 *
+	 * @param query the query
+	 */
+	public void setQuery(String query) {
+		this.query = query;
 	}
 
 	/**

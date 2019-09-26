@@ -16,9 +16,6 @@
 
 package org.springframework.boot.cli.command.init;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -30,10 +27,12 @@ import org.apache.http.message.BasicHeader;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.mockito.ArgumentMatcher;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.isA;
@@ -112,8 +111,7 @@ public abstract class AbstractHttpClientMockTests {
 			given(entity.getContentType()).willReturn(contentTypeHeader);
 			given(response.getEntity()).willReturn(entity);
 			return entity;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException("Should not happen", ex);
 		}
 	}
@@ -159,10 +157,10 @@ public abstract class AbstractHttpClientMockTests {
 
 		String fileName;
 
-		byte[] content = new byte[] { 0, 0, 0, 0 };
+		byte[] content = new byte[]{0, 0, 0, 0};
 
 		public MockHttpProjectGenerationRequest(String contentType, String fileName) {
-			this(contentType, fileName, new byte[] { 0, 0, 0, 0 });
+			this(contentType, fileName, new byte[]{0, 0, 0, 0});
 		}
 
 		public MockHttpProjectGenerationRequest(String contentType, String fileName, byte[] content) {

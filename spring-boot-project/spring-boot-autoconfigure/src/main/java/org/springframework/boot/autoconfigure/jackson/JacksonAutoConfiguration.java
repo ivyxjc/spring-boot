@@ -16,17 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jackson;
 
-import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -42,7 +31,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.ListableBeanFactory;
@@ -59,6 +47,11 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Auto configuration for Jackson. The following auto-configuration will get applied:
@@ -109,8 +102,8 @@ public class JacksonAutoConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ Jackson2ObjectMapperBuilder.class, DateTime.class, DateTimeSerializer.class,
-			JacksonJodaDateFormat.class })
+	@ConditionalOnClass({Jackson2ObjectMapperBuilder.class, DateTime.class, DateTimeSerializer.class,
+								JacksonJodaDateFormat.class})
 	static class JodaDateTimeJacksonConfiguration {
 
 		private static final Log logger = LogFactory.getLog(JodaDateTimeJacksonConfiguration.class);
@@ -140,8 +133,7 @@ public class JacksonAutoConfiguration {
 				try {
 					return new JacksonJodaDateFormat(
 							DateTimeFormat.forPattern(this.jacksonProperties.getDateFormat()).withZoneUTC());
-				}
-				catch (IllegalArgumentException ex) {
+				} catch (IllegalArgumentException ex) {
 					if (logger.isWarnEnabled()) {
 						logger.warn("spring.jackson.date-format could not be used to "
 								+ "configure formatting of Joda's DateTime. You may want "
@@ -187,7 +179,7 @@ public class JacksonAutoConfiguration {
 		}
 
 		private void customize(Jackson2ObjectMapperBuilder builder,
-				List<Jackson2ObjectMapperBuilderCustomizer> customizers) {
+							   List<Jackson2ObjectMapperBuilderCustomizer> customizers) {
 			for (Jackson2ObjectMapperBuilderCustomizer customizer : customizers) {
 				customizer.customize(builder);
 			}
@@ -214,9 +206,13 @@ public class JacksonAutoConfiguration {
 			private final JacksonProperties jacksonProperties;
 
 			StandardJackson2ObjectMapperBuilderCustomizer(ApplicationContext applicationContext,
-					JacksonProperties jacksonProperties) {
+														  JacksonProperties jacksonProperties) {
 				this.applicationContext = applicationContext;
 				this.jacksonProperties = jacksonProperties;
+			}
+
+			private static <T> Collection<T> getBeans(ListableBeanFactory beanFactory, Class<T> type) {
+				return BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, type).values();
 			}
 
 			@Override
@@ -251,8 +247,7 @@ public class JacksonAutoConfiguration {
 					if (value != null) {
 						if (value) {
 							builder.featuresToEnable(feature);
-						}
-						else {
+						} else {
 							builder.featuresToDisable(feature);
 						}
 					}
@@ -260,7 +255,7 @@ public class JacksonAutoConfiguration {
 			}
 
 			private void configureVisibility(Jackson2ObjectMapperBuilder builder,
-					Map<PropertyAccessor, JsonAutoDetect.Visibility> visibilities) {
+											 Map<PropertyAccessor, JsonAutoDetect.Visibility> visibilities) {
 				visibilities.forEach(builder::visibility);
 			}
 
@@ -272,8 +267,7 @@ public class JacksonAutoConfiguration {
 					try {
 						Class<?> dateFormatClass = ClassUtils.forName(dateFormat, null);
 						builder.dateFormat((DateFormat) BeanUtils.instantiateClass(dateFormatClass));
-					}
-					catch (ClassNotFoundException ex) {
+					} catch (ClassNotFoundException ex) {
 						SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
 						// Since Jackson 2.6.3 we always need to set a TimeZone (see
 						// gh-4170). If none in our properties fallback to the Jackson's
@@ -297,15 +291,14 @@ public class JacksonAutoConfiguration {
 				if (strategy != null) {
 					try {
 						configurePropertyNamingStrategyClass(builder, ClassUtils.forName(strategy, null));
-					}
-					catch (ClassNotFoundException ex) {
+					} catch (ClassNotFoundException ex) {
 						configurePropertyNamingStrategyField(builder, strategy);
 					}
 				}
 			}
 
 			private void configurePropertyNamingStrategyClass(Jackson2ObjectMapperBuilder builder,
-					Class<?> propertyNamingStrategyClass) {
+															  Class<?> propertyNamingStrategyClass) {
 				builder.propertyNamingStrategy(
 						(PropertyNamingStrategy) BeanUtils.instantiateClass(propertyNamingStrategyClass));
 			}
@@ -319,8 +312,7 @@ public class JacksonAutoConfiguration {
 						+ PropertyNamingStrategy.class.getName());
 				try {
 					builder.propertyNamingStrategy((PropertyNamingStrategy) field.get(null));
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new IllegalStateException(ex);
 				}
 			}
@@ -335,10 +327,6 @@ public class JacksonAutoConfiguration {
 				if (locale != null) {
 					builder.locale(locale);
 				}
-			}
-
-			private static <T> Collection<T> getBeans(ListableBeanFactory beanFactory, Class<T> type) {
-				return BeanFactoryUtils.beansOfTypeIncludingAncestors(beanFactory, type).values();
 			}
 
 		}

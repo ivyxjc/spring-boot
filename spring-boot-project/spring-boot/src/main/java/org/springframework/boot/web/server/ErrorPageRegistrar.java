@@ -27,6 +27,7 @@ public interface ErrorPageRegistrar {
 
 	/**
 	 * Register pages as required with the given registry.
+	 *
 	 * @param registry the error page registry
 	 */
 	void registerErrorPages(ErrorPageRegistry registry);

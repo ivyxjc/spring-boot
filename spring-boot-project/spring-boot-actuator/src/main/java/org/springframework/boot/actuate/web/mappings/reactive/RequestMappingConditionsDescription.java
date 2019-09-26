@@ -16,15 +16,15 @@
 
 package org.springframework.boot.actuate.web.mappings.reactive;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.reactive.result.condition.MediaTypeExpression;
 import org.springframework.web.reactive.result.condition.NameValueExpression;
 import org.springframework.web.reactive.result.method.RequestMappingInfo;
 import org.springframework.web.util.pattern.PathPattern;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Description of the conditions of a {@link RequestMappingInfo}.

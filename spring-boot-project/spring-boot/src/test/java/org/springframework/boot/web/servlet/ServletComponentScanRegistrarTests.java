@@ -18,7 +18,6 @@ package org.springframework.boot.web.servlet;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -120,13 +119,13 @@ public class ServletComponentScanRegistrarTests {
 	}
 
 	@Configuration
-	@ServletComponentScan({ "com.example.foo", "com.example.bar" })
+	@ServletComponentScan({"com.example.foo", "com.example.bar"})
 	static class ValuePackages {
 
 	}
 
 	@Configuration
-	@ServletComponentScan(basePackages = { "com.example.foo", "com.example.bar" })
+	@ServletComponentScan(basePackages = {"com.example.foo", "com.example.bar"})
 	static class BasePackages {
 
 	}

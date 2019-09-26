@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
@@ -47,12 +46,12 @@ public class JerseyEndpointIntegrationTests {
 
 	@Test
 	public void linksAreProvidedToAllEndpointTypes() {
-		testJerseyEndpoints(new Class[] { EndpointsConfiguration.class, ResourceConfigConfiguration.class });
+		testJerseyEndpoints(new Class[]{EndpointsConfiguration.class, ResourceConfigConfiguration.class});
 	}
 
 	@Test
 	public void actuatorEndpointsWhenUserProvidedResourceConfigBeanNotAvailable() {
-		testJerseyEndpoints(new Class[] { EndpointsConfiguration.class });
+		testJerseyEndpoints(new Class[]{EndpointsConfiguration.class});
 	}
 
 	protected void testJerseyEndpoints(Class<?>[] userConfigurations) {
@@ -65,14 +64,14 @@ public class JerseyEndpointIntegrationTests {
 						BeansEndpointAutoConfiguration.class))
 				.withUserConfiguration(userConfigurations)
 				.withPropertyValues("management.endpoints.web.exposure.include:*", "server.port:0").run((context) -> {
-					int port = context
-							.getSourceApplicationContext(AnnotationConfigServletWebServerApplicationContext.class)
-							.getWebServer().getPort();
-					WebTestClient client = WebTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
-					client.get().uri("/actuator").exchange().expectStatus().isOk().expectBody().jsonPath("_links.beans")
-							.isNotEmpty().jsonPath("_links.restcontroller").doesNotExist().jsonPath("_links.controller")
-							.doesNotExist();
-				});
+			int port = context
+					.getSourceApplicationContext(AnnotationConfigServletWebServerApplicationContext.class)
+					.getWebServer().getPort();
+			WebTestClient client = WebTestClient.bindToServer().baseUrl("http://localhost:" + port).build();
+			client.get().uri("/actuator").exchange().expectStatus().isOk().expectBody().jsonPath("_links.beans")
+					.isNotEmpty().jsonPath("_links.restcontroller").doesNotExist().jsonPath("_links.controller")
+					.doesNotExist();
+		});
 	}
 
 	@ControllerEndpoint(id = "controller")

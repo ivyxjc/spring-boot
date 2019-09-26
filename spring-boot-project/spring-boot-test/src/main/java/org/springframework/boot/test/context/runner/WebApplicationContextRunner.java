@@ -16,9 +16,6 @@
 
 package org.springframework.boot.test.context.runner;
 
-import java.util.List;
-import java.util.function.Supplier;
-
 import org.springframework.boot.context.annotation.Configurations;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -28,6 +25,9 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * An {@link AbstractApplicationContextRunner ApplicationContext runner} for a Servlet
@@ -47,6 +47,7 @@ public final class WebApplicationContextRunner extends
 	 * Create a new {@link WebApplicationContextRunner} instance using an
 	 * {@link AnnotationConfigWebApplicationContext} with a {@link MockServletContext} as
 	 * the underlying source.
+	 *
 	 * @see #withMockServletContext(Supplier)
 	 */
 	public WebApplicationContextRunner() {
@@ -56,6 +57,7 @@ public final class WebApplicationContextRunner extends
 	/**
 	 * Create a new {@link WebApplicationContextRunner} instance using the specified
 	 * {@code contextFactory} as the underlying source.
+	 *
 	 * @param contextFactory a supplier that returns a new instance on each call
 	 */
 	public WebApplicationContextRunner(Supplier<ConfigurableWebApplicationContext> contextFactory) {
@@ -63,25 +65,17 @@ public final class WebApplicationContextRunner extends
 	}
 
 	private WebApplicationContextRunner(Supplier<ConfigurableWebApplicationContext> contextFactory,
-			List<ApplicationContextInitializer<? super ConfigurableWebApplicationContext>> initializers,
-			TestPropertyValues environmentProperties, TestPropertyValues systemProperties, ClassLoader classLoader,
-			ApplicationContext parent, List<Configurations> configurations) {
+										List<ApplicationContextInitializer<? super ConfigurableWebApplicationContext>> initializers,
+										TestPropertyValues environmentProperties, TestPropertyValues systemProperties, ClassLoader classLoader,
+										ApplicationContext parent, List<Configurations> configurations) {
 		super(contextFactory, initializers, environmentProperties, systemProperties, classLoader, parent,
 				configurations);
-	}
-
-	@Override
-	protected WebApplicationContextRunner newInstance(Supplier<ConfigurableWebApplicationContext> contextFactory,
-			List<ApplicationContextInitializer<? super ConfigurableWebApplicationContext>> initializers,
-			TestPropertyValues environmentProperties, TestPropertyValues systemProperties, ClassLoader classLoader,
-			ApplicationContext parent, List<Configurations> configurations) {
-		return new WebApplicationContextRunner(contextFactory, initializers, environmentProperties, systemProperties,
-				classLoader, parent, configurations);
 	}
 
 	/**
 	 * Decorate the specified {@code contextFactory} to set a {@link MockServletContext}
 	 * on each newly created {@link WebApplicationContext}.
+	 *
 	 * @param contextFactory the context factory to decorate
 	 * @return an updated supplier that will set the {@link MockServletContext}
 	 */
@@ -92,6 +86,15 @@ public final class WebApplicationContextRunner extends
 			context.setServletContext(new MockServletContext());
 			return context;
 		} : null;
+	}
+
+	@Override
+	protected WebApplicationContextRunner newInstance(Supplier<ConfigurableWebApplicationContext> contextFactory,
+													  List<ApplicationContextInitializer<? super ConfigurableWebApplicationContext>> initializers,
+													  TestPropertyValues environmentProperties, TestPropertyValues systemProperties, ClassLoader classLoader,
+													  ApplicationContext parent, List<Configurations> configurations) {
+		return new WebApplicationContextRunner(contextFactory, initializers, environmentProperties, systemProperties,
+				classLoader, parent, configurations);
 	}
 
 }

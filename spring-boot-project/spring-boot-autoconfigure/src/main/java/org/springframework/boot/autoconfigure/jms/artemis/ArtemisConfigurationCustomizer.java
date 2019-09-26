@@ -26,14 +26,15 @@ import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
  *
  * @author Eddú Meléndez
  * @author Phillip Webb
- * @since 1.3.0
  * @see ArtemisAutoConfiguration
+ * @since 1.3.0
  */
 @FunctionalInterface
 public interface ArtemisConfigurationCustomizer {
 
 	/**
 	 * Customize the configuration.
+	 *
 	 * @param configuration the configuration to customize
 	 */
 	void customize(Configuration configuration);

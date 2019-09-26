@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.time.Duration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,6 +28,8 @@ import org.springframework.session.SessionRepository;
 import org.springframework.session.data.mongo.MongoOperationsSessionRepository;
 import org.springframework.session.data.mongo.config.annotation.web.http.MongoHttpSessionConfiguration;
 
+import java.time.Duration;
+
 /**
  * Mongo-backed session configuration.
  *
@@ -37,7 +37,7 @@ import org.springframework.session.data.mongo.config.annotation.web.http.MongoHt
  * @author Stephane Nicoll
  */
 @Configuration
-@ConditionalOnClass({ MongoOperations.class, MongoOperationsSessionRepository.class })
+@ConditionalOnClass({MongoOperations.class, MongoOperationsSessionRepository.class})
 @ConditionalOnMissingBean(SessionRepository.class)
 @ConditionalOnBean(MongoOperations.class)
 @Conditional(ServletSessionCondition.class)

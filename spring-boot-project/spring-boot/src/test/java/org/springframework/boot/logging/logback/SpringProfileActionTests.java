@@ -16,9 +16,6 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.qos.logback.core.Context;
 import ch.qos.logback.core.ContextBase;
 import ch.qos.logback.core.joran.action.Action;
@@ -27,10 +24,12 @@ import ch.qos.logback.core.joran.spi.InterpretationContext;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import org.xml.sax.Attributes;
-
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+import org.xml.sax.Attributes;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

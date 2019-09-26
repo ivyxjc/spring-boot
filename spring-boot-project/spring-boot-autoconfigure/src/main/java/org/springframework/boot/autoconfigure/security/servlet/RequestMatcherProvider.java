@@ -29,6 +29,7 @@ public interface RequestMatcherProvider {
 
 	/**
 	 * Return the {@link RequestMatcher} to be used for the specified pattern.
+	 *
 	 * @param pattern the request pattern
 	 * @return a request matcher
 	 */

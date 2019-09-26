@@ -15,13 +15,12 @@
  */
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import javax.ws.rs.ApplicationPath;
-
 import org.glassfish.jersey.server.ResourceConfig;
-
 import org.springframework.boot.autoconfigure.jersey.JerseyProperties;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
+
+import javax.ws.rs.ApplicationPath;
 
 /**
  * Default implementation of {@link JerseyApplicationPath} that derives the path from
@@ -41,6 +40,14 @@ public class DefaultJerseyApplicationPath implements JerseyApplicationPath {
 		this.config = config;
 	}
 
+	private static String findApplicationPath(ApplicationPath annotation) {
+		// Jersey doesn't like to be the default servlet, so map to /* as a fallback
+		if (annotation == null) {
+			return "/*";
+		}
+		return annotation.value();
+	}
+
 	@Override
 	public String getPath() {
 		return resolveApplicationPath();
@@ -52,14 +59,6 @@ public class DefaultJerseyApplicationPath implements JerseyApplicationPath {
 		}
 		return findApplicationPath(
 				AnnotationUtils.findAnnotation(this.config.getApplication().getClass(), ApplicationPath.class));
-	}
-
-	private static String findApplicationPath(ApplicationPath annotation) {
-		// Jersey doesn't like to be the default servlet, so map to /* as a fallback
-		if (annotation == null) {
-			return "/*";
-		}
-		return annotation.value();
 	}
 
 }

@@ -16,27 +16,18 @@
 
 package org.springframework.boot;
 
-import java.io.PrintStream;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.ansi.AnsiPropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertyResolver;
-import org.springframework.core.env.PropertySourcesPropertyResolver;
+import org.springframework.core.env.*;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.StreamUtils;
+
+import java.io.PrintStream;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * Banner implementation that prints from a source text {@link Resource}.
@@ -67,8 +58,7 @@ public class ResourceBanner implements Banner {
 				banner = resolver.resolvePlaceholders(banner);
 			}
 			out.println(banner);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.warn(
 					"Banner not printable: " + this.resource + " (" + ex.getClass() + ": '" + ex.getMessage() + "')",
 					ex);

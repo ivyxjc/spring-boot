@@ -16,16 +16,16 @@
 
 package org.springframework.boot.cli.command.core;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.boot.cli.command.AbstractCommand;
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.CommandRunner;
 import org.springframework.boot.cli.command.options.OptionHelp;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.Log;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Internal {@link Command} to provide hints for shell auto-completion. Expects to be
@@ -57,13 +57,11 @@ public class HintCommand extends AbstractCommand {
 			}
 			if (index == 0) {
 				showCommandHints(starting);
-			}
-			else if (!arguments.isEmpty() && !starting.isEmpty()) {
+			} else if (!arguments.isEmpty() && !starting.isEmpty()) {
 				String command = arguments.remove(0);
 				showCommandOptionHints(command, Collections.unmodifiableList(arguments), starting);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Swallow and provide no hints
 			return ExitStatus.ERROR;
 		}

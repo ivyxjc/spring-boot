@@ -16,20 +16,19 @@
 
 package org.springframework.boot.test.autoconfigure.restdocs;
 
-import java.io.File;
-
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,14 +49,13 @@ public class RestAssuredRestDocsAutoConfigurationIntegrationTests {
 
 	@LocalServerPort
 	private int port;
+	@Autowired
+	private RequestSpecification documentationSpec;
 
 	@Before
 	public void deleteSnippets() {
 		FileSystemUtils.deleteRecursively(new File("target/generated-snippets"));
 	}
-
-	@Autowired
-	private RequestSpecification documentationSpec;
 
 	@Test
 	public void defaultSnippetsAreWritten() {

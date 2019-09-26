@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.influx;
 
-import java.util.Map;
-
 import org.influxdb.InfluxDB;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -34,6 +31,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.influx.InfluxDbAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link InfluxDbHealthIndicator}.

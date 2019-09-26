@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -86,12 +85,12 @@ public class AutoConfigurationImportSelectorIntegrationTests {
 
 	}
 
-	@ImportAutoConfiguration({ ConfigD.class, ConfigB.class })
+	@ImportAutoConfiguration({ConfigD.class, ConfigB.class})
 	static class Config {
 
 	}
 
-	@ImportAutoConfiguration({ ConfigC.class, ConfigA.class })
+	@ImportAutoConfiguration({ConfigC.class, ConfigA.class})
 	static class AnotherConfig {
 
 	}

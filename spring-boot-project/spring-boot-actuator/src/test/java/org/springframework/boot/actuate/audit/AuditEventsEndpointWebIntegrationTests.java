@@ -16,17 +16,16 @@
 
 package org.springframework.boot.actuate.audit;
 
-import java.time.Instant;
-import java.util.Collections;
-
 import net.minidev.json.JSONArray;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.actuate.endpoint.web.test.WebEndpointRunners;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.time.Instant;
+import java.util.Collections;
 
 /**
  * Integration tests for {@link AuditEventsEndpoint} exposed by Jersey, Spring MVC, and

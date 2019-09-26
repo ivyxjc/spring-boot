@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.batch;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.batch.core.JobExecution;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.context.ApplicationListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link ExitCodeGenerator} for {@link JobExecutionEvent}s.

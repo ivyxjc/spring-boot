@@ -16,14 +16,13 @@
 
 package org.springframework.boot.autoconfigure.web.reactive;
 
-import java.net.InetAddress;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.reactive.server.ConfigurableReactiveWebServerFactory;
 import org.springframework.boot.web.server.Ssl;
+
+import java.net.InetAddress;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

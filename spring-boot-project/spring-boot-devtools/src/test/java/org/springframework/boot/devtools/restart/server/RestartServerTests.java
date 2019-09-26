@@ -16,6 +16,14 @@
 
 package org.springframework.boot.devtools.restart.server;
 
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile;
+import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
+import org.springframework.boot.devtools.restart.classloader.ClassLoaderFiles;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URL;
@@ -23,15 +31,6 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile;
-import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
-import org.springframework.boot.devtools.restart.classloader.ClassLoaderFiles;
-import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -58,8 +57,8 @@ public class RestartServerTests {
 		URL url2 = new URL("file:/proj/module-b.jar!/");
 		URL url3 = new URL("file:/proj/module-c.jar!/");
 		URL url4 = new URL("file:/proj/module-d.jar!/");
-		URLClassLoader classLoaderA = new URLClassLoader(new URL[] { url1, url2 });
-		URLClassLoader classLoaderB = new URLClassLoader(new URL[] { url3, url4 }, classLoaderA);
+		URLClassLoader classLoaderA = new URLClassLoader(new URL[]{url1, url2});
+		URLClassLoader classLoaderB = new URLClassLoader(new URL[]{url3, url4}, classLoaderA);
 		SourceFolderUrlFilter filter = new DefaultSourceFolderUrlFilter();
 		MockRestartServer server = new MockRestartServer(filter, classLoaderB);
 		ClassLoaderFiles files = new ClassLoaderFiles();
@@ -81,7 +80,7 @@ public class RestartServerTests {
 		new FileOutputStream(jarFile).close();
 		jarFile.setLastModified(0);
 		URL url = jarFile.toURI().toURL();
-		URLClassLoader classLoader = new URLClassLoader(new URL[] { url });
+		URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
 		SourceFolderUrlFilter filter = new DefaultSourceFolderUrlFilter();
 		MockRestartServer server = new MockRestartServer(filter, classLoader);
 		ClassLoaderFiles files = new ClassLoaderFiles();
@@ -100,7 +99,7 @@ public class RestartServerTests {
 		File classFile = new File(folder, "ClassA.class");
 		FileCopyUtils.copy("abc".getBytes(), classFile);
 		URL url = folder.toURI().toURL();
-		URLClassLoader classLoader = new URLClassLoader(new URL[] { url });
+		URLClassLoader classLoader = new URLClassLoader(new URL[]{url});
 		SourceFolderUrlFilter filter = new DefaultSourceFolderUrlFilter();
 		MockRestartServer server = new MockRestartServer(filter, classLoader);
 		ClassLoaderFiles files = new ClassLoaderFiles();
@@ -112,13 +111,12 @@ public class RestartServerTests {
 
 	private static class MockRestartServer extends RestartServer {
 
+		private Set<URL> restartUrls;
+		private ClassLoaderFiles restartFiles;
+
 		MockRestartServer(SourceFolderUrlFilter sourceFolderUrlFilter, ClassLoader classLoader) {
 			super(sourceFolderUrlFilter, classLoader);
 		}
-
-		private Set<URL> restartUrls;
-
-		private ClassLoaderFiles restartFiles;
 
 		@Override
 		protected void restart(Set<URL> urls, ClassLoaderFiles files) {

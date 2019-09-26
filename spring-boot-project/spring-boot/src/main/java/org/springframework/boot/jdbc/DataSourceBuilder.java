@@ -16,11 +16,6 @@
 
 package org.springframework.boot.jdbc;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -29,6 +24,10 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 import org.springframework.util.ClassUtils;
+
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Convenience class for building a {@link DataSource} with common implementations and
@@ -46,14 +45,18 @@ import org.springframework.util.ClassUtils;
  */
 public final class DataSourceBuilder<T extends DataSource> {
 
-	private static final String[] DATA_SOURCE_TYPE_NAMES = new String[] { "com.zaxxer.hikari.HikariDataSource",
-			"org.apache.tomcat.jdbc.pool.DataSource", "org.apache.commons.dbcp2.BasicDataSource" };
+	private static final String[] DATA_SOURCE_TYPE_NAMES = new String[]{"com.zaxxer.hikari.HikariDataSource",
+			"org.apache.tomcat.jdbc.pool.DataSource", "org.apache.commons.dbcp2.BasicDataSource"};
 
 	private Class<? extends DataSource> type;
 
 	private ClassLoader classLoader;
 
 	private Map<String, String> properties = new HashMap<>();
+
+	private DataSourceBuilder(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
 
 	public static DataSourceBuilder<?> create() {
 		return new DataSourceBuilder<>(null);
@@ -63,8 +66,16 @@ public final class DataSourceBuilder<T extends DataSource> {
 		return new DataSourceBuilder<>(classLoader);
 	}
 
-	private DataSourceBuilder(ClassLoader classLoader) {
-		this.classLoader = classLoader;
+	@SuppressWarnings("unchecked")
+	public static Class<? extends DataSource> findType(ClassLoader classLoader) {
+		for (String name : DATA_SOURCE_TYPE_NAMES) {
+			try {
+				return (Class<? extends DataSource>) ClassUtils.forName(name, classLoader);
+			} catch (Exception ex) {
+				// Swallow and continue
+			}
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -117,19 +128,6 @@ public final class DataSourceBuilder<T extends DataSource> {
 	public DataSourceBuilder<T> password(String password) {
 		this.properties.put("password", password);
 		return this;
-	}
-
-	@SuppressWarnings("unchecked")
-	public static Class<? extends DataSource> findType(ClassLoader classLoader) {
-		for (String name : DATA_SOURCE_TYPE_NAMES) {
-			try {
-				return (Class<? extends DataSource>) ClassUtils.forName(name, classLoader);
-			}
-			catch (Exception ex) {
-				// Swallow and continue
-			}
-		}
-		return null;
 	}
 
 	private Class<? extends DataSource> getType() {

@@ -16,20 +16,19 @@
 
 package org.springframework.boot.maven;
 
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Execute;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.ResolutionScope;
-
 import org.springframework.boot.loader.tools.JavaExecutable;
 import org.springframework.boot.loader.tools.RunProcess;
+
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Run an executable archive application.
@@ -41,7 +40,7 @@ import org.springframework.boot.loader.tools.RunProcess;
  * @since 1.0.0
  */
 @Mojo(name = "run", requiresProject = true, defaultPhase = LifecyclePhase.VALIDATE,
-		requiresDependencyResolution = ResolutionScope.TEST)
+	  requiresDependencyResolution = ResolutionScope.TEST)
 @Execute(phase = LifecyclePhase.TEST_COMPILE)
 public class RunMojo extends AbstractRunMojo {
 
@@ -78,8 +77,7 @@ public class RunMojo extends AbstractRunMojo {
 				return;
 			}
 			throw new MojoExecutionException("Application finished with exit code: " + exitCode);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MojoExecutionException("Could not exec java", ex);
 		}
 	}
@@ -105,8 +103,7 @@ public class RunMojo extends AbstractRunMojo {
 					try {
 						hasNonDaemonThreads = true;
 						thread.join();
-					}
-					catch (InterruptedException ex) {
+					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}
 				}
@@ -128,8 +125,7 @@ public class RunMojo extends AbstractRunMojo {
 			try (URLClassLoader classLoader = new URLClassLoader(urls)) {
 				return (classLoader.findResource(RESTARTER_CLASS_LOCATION) != null);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		}
 	}

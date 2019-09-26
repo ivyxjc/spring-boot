@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.metrics.cache;
 
-import java.util.Collections;
-
 import com.hazelcast.core.IMap;
 import com.hazelcast.spring.cache.HazelcastCache;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.cache.HazelcastCacheMetrics;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

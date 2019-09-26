@@ -16,11 +16,11 @@
 
 package cli.command;
 
-import java.util.Collection;
-import java.util.Collections;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.CommandFactory;
+
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author Dave Syer

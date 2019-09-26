@@ -16,15 +16,11 @@
 
 package org.springframework.boot.actuate.endpoint.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.actuate.endpoint.EndpointFilter;
 import org.springframework.boot.actuate.endpoint.Operation;
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation primarily used as a meta-annotation to indicate that an annotation provides
@@ -55,12 +51,14 @@ public @interface EndpointExtension {
 
 	/**
 	 * The filter class used to determine when the extension applies.
+	 *
 	 * @return the filter class
 	 */
 	Class<? extends EndpointFilter<?>> filter();
 
 	/**
 	 * The class of the endpoint to extend.
+	 *
 	 * @return the class endpoint to extend
 	 */
 	Class<?> endpoint() default Void.class;

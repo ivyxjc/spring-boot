@@ -28,12 +28,9 @@ import org.springframework.boot.configurationsample.NestedConfigurationProperty;
 public class InnerClassProperties {
 
 	private final Foo first = new Foo();
-
-	private Foo second = new Foo();
-
 	@NestedConfigurationProperty
 	private final SimplePojo third = new SimplePojo();
-
+	private Foo second = new Foo();
 	private Fourth fourth;
 
 	public Foo getFirst() {
@@ -60,11 +57,16 @@ public class InnerClassProperties {
 		this.fourth = fourth;
 	}
 
+	public enum Fourth {
+
+		YES, NO
+
+	}
+
 	public static class Foo {
 
-		private String name;
-
 		private final Bar bar = new Bar();
+		private String name;
 
 		public String getName() {
 			return this.name;
@@ -91,12 +93,6 @@ public class InnerClassProperties {
 			}
 
 		}
-
-	}
-
-	public enum Fourth {
-
-		YES, NO
 
 	}
 

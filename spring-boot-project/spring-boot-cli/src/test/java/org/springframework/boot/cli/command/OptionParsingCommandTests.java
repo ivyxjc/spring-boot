@@ -17,7 +17,6 @@
 package org.springframework.boot.cli.command;
 
 import org.junit.Test;
-
 import org.springframework.boot.cli.command.options.OptionHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -16,9 +16,6 @@
 
 package org.springframework.boot.testsupport.testcontainers;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -26,6 +23,9 @@ import org.junit.runners.model.Statement;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.FailureDetectingExternalResource;
 import org.testcontainers.containers.GenericContainer;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * {@link TestRule} for working with an optional Docker environment. Spins up a
@@ -46,7 +46,7 @@ class Container implements TestRule {
 		this(dockerImageName, port, null);
 	}
 
-	@SuppressWarnings({ "unchecked", "resource" })
+	@SuppressWarnings({"unchecked", "resource"})
 	<T extends GenericContainer<T>> Container(String dockerImageName, int port, Consumer<T> customizer) {
 		this.port = port;
 		this.containerFactory = () -> {
@@ -62,8 +62,7 @@ class Container implements TestRule {
 	public Statement apply(Statement base, Description description) {
 		try {
 			DockerClientFactory.instance().client();
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return new SkipStatement();
 		}
 		this.container = this.containerFactory.get();

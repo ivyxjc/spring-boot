@@ -16,31 +16,22 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.Date;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.*;
+import java.util.Date;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -138,10 +129,10 @@ public class ConditionalOnBeanTests {
 	public void conditionEvaluationConsidersChangeInTypeWhenBeanIsOverridden() {
 		this.contextRunner.withUserConfiguration(OriginalDefinition.class, OverridingDefinition.class,
 				ConsumingConfiguration.class).run((context) -> {
-					assertThat(context).hasBean("testBean");
-					assertThat(context).hasSingleBean(Integer.class);
-					assertThat(context).doesNotHaveBean(ConsumingConfiguration.class);
-				});
+			assertThat(context).hasBean("testBean");
+			assertThat(context).hasSingleBean(Integer.class);
+			assertThat(context).doesNotHaveBean(ConsumingConfiguration.class);
+		});
 	}
 
 	@Test
@@ -219,6 +210,13 @@ public class ConditionalOnBeanTests {
 			String[] containers = context.getBeanNamesForType(TestParameterizedContainer.class);
 			assertThat(StringUtils.concatenateStringArrays(beans, containers)).containsOnly(names);
 		};
+	}
+
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface TestAnnotation {
+
 	}
 
 	@Configuration
@@ -342,7 +340,7 @@ public class ConditionalOnBeanTests {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-				BeanDefinitionRegistry registry) {
+											BeanDefinitionRegistry registry) {
 			RootBeanDefinition bd = new RootBeanDefinition();
 			bd.setBeanClassName("${mybeanclass}");
 			registry.registerBeanDefinition("mybean", bd);
@@ -501,13 +499,6 @@ public class ConditionalOnBeanTests {
 		public OtherExampleBean() {
 			super("other subclass");
 		}
-
-	}
-
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	public @interface TestAnnotation {
 
 	}
 

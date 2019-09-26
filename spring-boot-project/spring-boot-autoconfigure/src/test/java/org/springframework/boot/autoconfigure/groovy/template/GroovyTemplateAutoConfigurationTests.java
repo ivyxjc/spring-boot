@@ -16,20 +16,10 @@
 
 package org.springframework.boot.autoconfigure.groovy.template;
 
-import java.io.File;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import groovy.text.markup.MarkupTemplateEngine;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.io.ClassPathResource;
@@ -43,6 +33,14 @@ import org.springframework.web.servlet.support.RequestContext;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfig;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupViewResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -18,7 +18,6 @@ package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBeanOnContextHierarchyIntegrationTests.ChildConfig;
@@ -40,8 +39,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Phillip Webb
  */
 @RunWith(SpringRunner.class)
-@ContextHierarchy({ @ContextConfiguration(classes = ParentConfig.class),
-		@ContextConfiguration(classes = ChildConfig.class) })
+@ContextHierarchy({@ContextConfiguration(classes = ParentConfig.class),
+						  @ContextConfiguration(classes = ChildConfig.class)})
 public class MockBeanOnContextHierarchyIntegrationTests {
 
 	@Autowired

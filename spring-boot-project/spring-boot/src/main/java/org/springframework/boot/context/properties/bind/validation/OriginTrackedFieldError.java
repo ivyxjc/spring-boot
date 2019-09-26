@@ -37,6 +37,13 @@ final class OriginTrackedFieldError extends FieldError implements OriginProvider
 		this.origin = origin;
 	}
 
+	public static FieldError of(FieldError fieldError, Origin origin) {
+		if (fieldError == null || origin == null) {
+			return fieldError;
+		}
+		return new OriginTrackedFieldError(fieldError, origin);
+	}
+
 	@Override
 	public Origin getOrigin() {
 		return this.origin;
@@ -48,13 +55,6 @@ final class OriginTrackedFieldError extends FieldError implements OriginProvider
 			return super.toString();
 		}
 		return super.toString() + "; origin " + this.origin;
-	}
-
-	public static FieldError of(FieldError fieldError, Origin origin) {
-		if (fieldError == null || origin == null) {
-			return fieldError;
-		}
-		return new OriginTrackedFieldError(fieldError, origin);
 	}
 
 }

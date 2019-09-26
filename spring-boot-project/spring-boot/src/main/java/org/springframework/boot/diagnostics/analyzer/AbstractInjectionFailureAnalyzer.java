@@ -104,8 +104,9 @@ public abstract class AbstractInjectionFailureAnalyzer<T extends Throwable> exte
 	/**
 	 * Returns an analysis of the given {@code rootFailure}, or {@code null} if no
 	 * analysis was possible.
+	 *
 	 * @param rootFailure the root failure passed to the analyzer
-	 * @param cause the actual found cause
+	 * @param cause       the actual found cause
 	 * @param description the description of the injection point or {@code null}
 	 * @return the analysis or {@code null}
 	 */

@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.security.reactive;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,6 +33,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 /**
  * Default user {@link Configuration} for a reactive web application. Configures a
  * {@link ReactiveUserDetailsService} with a default user and generated password. This
@@ -47,8 +46,8 @@ import org.springframework.util.StringUtils;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ ReactiveAuthenticationManager.class })
-@ConditionalOnMissingBean({ ReactiveAuthenticationManager.class, ReactiveUserDetailsService.class })
+@ConditionalOnClass({ReactiveAuthenticationManager.class})
+@ConditionalOnMissingBean({ReactiveAuthenticationManager.class, ReactiveUserDetailsService.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 public class ReactiveUserDetailsServiceAutoConfiguration {
 
@@ -60,7 +59,7 @@ public class ReactiveUserDetailsServiceAutoConfiguration {
 
 	@Bean
 	public MapReactiveUserDetailsService reactiveUserDetailsService(SecurityProperties properties,
-			ObjectProvider<PasswordEncoder> passwordEncoder) {
+																	ObjectProvider<PasswordEncoder> passwordEncoder) {
 		SecurityProperties.User user = properties.getUser();
 		UserDetails userDetails = getUserDetails(user, getOrDeducePassword(user, passwordEncoder.getIfAvailable()));
 		return new MapReactiveUserDetailsService(userDetails);

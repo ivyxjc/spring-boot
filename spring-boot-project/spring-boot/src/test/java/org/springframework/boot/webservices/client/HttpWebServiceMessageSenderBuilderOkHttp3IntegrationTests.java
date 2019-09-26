@@ -16,12 +16,9 @@
 
 package org.springframework.boot.webservices.client;
 
-import java.time.Duration;
-
 import okhttp3.OkHttpClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -29,6 +26,8 @@ import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,16 +16,7 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.Date;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -35,18 +26,16 @@ import org.springframework.boot.autoconfigure.condition.scan.ScannedFactoryBeanW
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.*;
 import org.springframework.context.annotation.ComponentScan.Filter;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.*;
+import java.util.Date;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -222,18 +211,18 @@ public class ConditionalOnMissingBeanTests {
 	public void testOnMissingBeanConditionWithIgnoredSubclass() {
 		this.contextRunner.withUserConfiguration(CustomExampleBeanConfiguration.class,
 				ConditionalOnIgnoredSubclass.class, PropertyPlaceholderAutoConfiguration.class).run((context) -> {
-					assertThat(context).getBeans(ExampleBean.class).hasSize(2);
-					assertThat(context).getBeans(CustomExampleBean.class).hasSize(1);
-				});
+			assertThat(context).getBeans(ExampleBean.class).hasSize(2);
+			assertThat(context).getBeans(CustomExampleBean.class).hasSize(1);
+		});
 	}
 
 	@Test
 	public void testOnMissingBeanConditionWithIgnoredSubclassByName() {
 		this.contextRunner.withUserConfiguration(CustomExampleBeanConfiguration.class,
 				ConditionalOnIgnoredSubclassByName.class, PropertyPlaceholderAutoConfiguration.class).run((context) -> {
-					assertThat(context).getBeans(ExampleBean.class).hasSize(2);
-					assertThat(context).getBeans(CustomExampleBean.class).hasSize(1);
-				});
+			assertThat(context).getBeans(ExampleBean.class).hasSize(2);
+			assertThat(context).getBeans(CustomExampleBean.class).hasSize(1);
+		});
 	}
 
 	@Test
@@ -257,9 +246,9 @@ public class ConditionalOnMissingBeanTests {
 	public void beanProducedByFactoryBeanIsConsideredWhenMatchingOnAnnotation() {
 		this.contextRunner.withUserConfiguration(ConcreteFactoryBeanConfiguration.class,
 				OnAnnotationWithFactoryBeanConfiguration.class).run((context) -> {
-					assertThat(context).doesNotHaveBean("bar");
-					assertThat(context).hasSingleBean(ExampleBean.class);
-				});
+			assertThat(context).doesNotHaveBean("bar");
+			assertThat(context).hasSingleBean(ExampleBean.class);
+		});
 	}
 
 	@Test
@@ -335,6 +324,13 @@ public class ConditionalOnMissingBeanTests {
 		};
 	}
 
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	public @interface TestAnnotation {
+
+	}
+
 	@Configuration
 	protected static class OnBeanInAncestorsConfiguration {
 
@@ -381,16 +377,16 @@ public class ConditionalOnMissingBeanTests {
 
 	@Configuration
 	@ComponentScan(basePackages = "org.springframework.boot.autoconfigure.condition.scan",
-			includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE,
-					classes = ScannedFactoryBeanConfiguration.class))
+				   includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE,
+											classes = ScannedFactoryBeanConfiguration.class))
 	protected static class ComponentScannedFactoryBeanBeanMethodConfiguration {
 
 	}
 
 	@Configuration
 	@ComponentScan(basePackages = "org.springframework.boot.autoconfigure.condition.scan",
-			includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE,
-					classes = ScannedFactoryBeanWithBeanMethodArgumentsConfiguration.class))
+				   includeFilters = @Filter(type = FilterType.ASSIGNABLE_TYPE,
+											classes = ScannedFactoryBeanWithBeanMethodArgumentsConfiguration.class))
 	protected static class ComponentScannedFactoryBeanBeanMethodWithArgumentsConfiguration {
 
 	}
@@ -513,7 +509,7 @@ public class ConditionalOnMissingBeanTests {
 
 		@Bean
 		@ConditionalOnMissingBean(value = ExampleBean.class,
-				ignoredType = "org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBeanTests.CustomExampleBean")
+								  ignoredType = "org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBeanTests.CustomExampleBean")
 		public ExampleBean exampleBean() {
 			return new ExampleBean("test");
 		}
@@ -697,7 +693,7 @@ public class ConditionalOnMissingBeanTests {
 
 		@Bean
 		@ConditionalOnMissingBean(value = CustomExampleBean.class,
-				parameterizedContainer = TestParameterizedContainer.class)
+								  parameterizedContainer = TestParameterizedContainer.class)
 		public CustomExampleBean conditionalCustomExampleBean() {
 			return new CustomExampleBean();
 		}
@@ -755,13 +751,6 @@ public class ConditionalOnMissingBeanTests {
 		public OtherExampleBean() {
 			super("other subclass");
 		}
-
-	}
-
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	public @interface TestAnnotation {
 
 	}
 

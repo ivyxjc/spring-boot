@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A {@link ContextCustomizer} to add Mockito support.
@@ -39,7 +39,7 @@ class MockitoContextCustomizer implements ContextCustomizer {
 
 	@Override
 	public void customizeContext(ConfigurableApplicationContext context,
-			MergedContextConfiguration mergedContextConfiguration) {
+								 MergedContextConfiguration mergedContextConfiguration) {
 		if (context instanceof BeanDefinitionRegistry) {
 			MockitoPostProcessor.register((BeanDefinitionRegistry) context, this.definitions);
 		}

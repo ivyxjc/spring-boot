@@ -20,9 +20,9 @@ package org.springframework.boot.cli.command.status;
  * Encapsulation of the outcome of a command.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see ExitStatus#OK
  * @see ExitStatus#ERROR
+ * @since 1.0.0
  */
 public final class ExitStatus {
 
@@ -44,6 +44,7 @@ public final class ExitStatus {
 
 	/**
 	 * Create a new {@link ExitStatus} instance.
+	 *
 	 * @param code the exit code
 	 * @param name the name
 	 */
@@ -53,8 +54,9 @@ public final class ExitStatus {
 
 	/**
 	 * Create a new {@link ExitStatus} instance.
-	 * @param code the exit code
-	 * @param name the name
+	 *
+	 * @param code   the exit code
+	 * @param name   the name
 	 * @param hangup true if it is OK for the caller to hangup
 	 */
 	public ExitStatus(int code, String name, boolean hangup) {
@@ -65,6 +67,7 @@ public final class ExitStatus {
 
 	/**
 	 * An exit code appropriate for use in {@code System.exit()}.
+	 *
 	 * @return an exit code
 	 */
 	public int getCode() {
@@ -73,6 +76,7 @@ public final class ExitStatus {
 
 	/**
 	 * A name describing the outcome.
+	 *
 	 * @return a name
 	 */
 	public String getName() {
@@ -82,6 +86,7 @@ public final class ExitStatus {
 	/**
 	 * Flag to signal that the caller can (or should) hangup. A server process with
 	 * non-daemon threads should set this to false.
+	 *
 	 * @return the flag
 	 */
 	public boolean isHangup() {
@@ -90,6 +95,7 @@ public final class ExitStatus {
 
 	/**
 	 * Convert the existing code to a hangup.
+	 *
 	 * @return a new ExitStatus with hangup=true
 	 */
 	public ExitStatus hangup() {

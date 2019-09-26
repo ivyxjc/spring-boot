@@ -16,12 +16,12 @@
 
 package org.springframework.boot.docs.jdbc;
 
-import javax.sql.DataSource;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
 
 /**
  * Example configuration for configuring a very basic custom {@link DataSource}.

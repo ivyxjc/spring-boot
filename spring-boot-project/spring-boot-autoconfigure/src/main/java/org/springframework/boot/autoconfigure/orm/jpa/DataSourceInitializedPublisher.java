@@ -16,15 +16,6 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.Map;
-import java.util.function.Supplier;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.spi.PersistenceProvider;
-import javax.persistence.spi.PersistenceUnitInfo;
-import javax.sql.DataSource;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -40,6 +31,14 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.spi.PersistenceProvider;
+import javax.persistence.spi.PersistenceUnitInfo;
+import javax.sql.DataSource;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * {@link BeanPostProcessor} used to fire {@link DataSourceSchemaCreatedEvent}s. Should
@@ -129,7 +128,7 @@ class DataSourceInitializedPublisher implements BeanPostProcessor {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-				BeanDefinitionRegistry registry) {
+											BeanDefinitionRegistry registry) {
 			if (!registry.containsBeanDefinition(BEAN_NAME)) {
 				GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 				beanDefinition.setBeanClass(DataSourceInitializedPublisher.class);
@@ -150,7 +149,7 @@ class DataSourceInitializedPublisher implements BeanPostProcessor {
 		private final JpaVendorAdapter delegate;
 
 		private DataSourceSchemaCreatedPublisher(AsyncTaskExecutor bootstrapExecutor,
-				JpaVendorAdapter jpaVendorAdapter) {
+												 JpaVendorAdapter jpaVendorAdapter) {
 			this.bootstrapExecutor = bootstrapExecutor;
 			this.delegate = jpaVendorAdapter;
 		}

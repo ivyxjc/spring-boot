@@ -16,16 +16,16 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.jmx;
 
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.springframework.boot.actuate.endpoint.jmx.EndpointObjectNameFactory;
 import org.springframework.boot.actuate.endpoint.jmx.ExposableJmxEndpoint;
 import org.springframework.core.env.Environment;
 import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
 
 /**
  * A {@link EndpointObjectNameFactory} that generates standard {@link ObjectName} for
@@ -44,7 +44,7 @@ class DefaultEndpointObjectNameFactory implements EndpointObjectNameFactory {
 	private final boolean uniqueNames;
 
 	DefaultEndpointObjectNameFactory(JmxEndpointProperties properties, Environment environment, MBeanServer mBeanServer,
-			String contextId) {
+									 String contextId) {
 		this.properties = properties;
 		this.mBeanServer = mBeanServer;
 		this.contextId = contextId;

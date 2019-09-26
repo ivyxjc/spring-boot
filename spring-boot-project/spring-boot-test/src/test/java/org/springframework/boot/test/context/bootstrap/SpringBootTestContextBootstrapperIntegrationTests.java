@@ -18,7 +18,6 @@ package org.springframework.boot.test.context.bootstrap;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -39,13 +38,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @BootstrapWith(SpringBootTestContextBootstrapper.class)
 public class SpringBootTestContextBootstrapperIntegrationTests {
 
+	boolean defaultTestExecutionListenersPostProcessorCalled = false;
 	@Autowired
 	private ApplicationContext context;
-
 	@Autowired
 	private SpringBootTestContextBootstrapperExampleConfig config;
-
-	boolean defaultTestExecutionListenersPostProcessorCalled = false;
 
 	@Test
 	public void findConfigAutomatically() {

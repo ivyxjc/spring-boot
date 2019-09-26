@@ -16,11 +16,8 @@
 
 package org.springframework.boot.test.context;
 
-import javax.servlet.ServletContext;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -34,6 +31,8 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.ServletContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

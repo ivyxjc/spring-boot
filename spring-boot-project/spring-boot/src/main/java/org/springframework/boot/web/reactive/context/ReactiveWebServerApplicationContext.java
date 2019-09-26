@@ -16,10 +16,6 @@
 
 package org.springframework.boot.web.reactive.context;
 
-import java.util.function.Supplier;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.web.context.ConfigurableWebServerApplicationContext;
@@ -30,6 +26,9 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Mono;
+
+import java.util.function.Supplier;
 
 /**
  * A {@link GenericReactiveWebApplicationContext} that can be used to bootstrap itself
@@ -54,6 +53,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 	/**
 	 * Create a new {@link ReactiveWebServerApplicationContext} with the given
 	 * {@code DefaultListableBeanFactory}.
+	 *
 	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
 	 */
 	public ReactiveWebServerApplicationContext(DefaultListableBeanFactory beanFactory) {
@@ -64,8 +64,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 	public final void refresh() throws BeansException, IllegalStateException {
 		try {
 			super.refresh();
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			stopAndReleaseReactiveWebServer();
 			throw ex;
 		}
@@ -76,8 +75,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 		super.onRefresh();
 		try {
 			createWebServer();
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			throw new ApplicationContextException("Unable to start reactive web server", ex);
 		}
 	}
@@ -94,6 +92,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 	 * Return the {@link ReactiveWebServerFactory} that should be used to create the
 	 * reactive web server. By default this method searches for a suitable bean in the
 	 * context itself.
+	 *
 	 * @return a {@link ReactiveWebServerFactory} (never {@code null})
 	 */
 	protected ReactiveWebServerFactory getWebServerFactory() {
@@ -128,6 +127,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 	/**
 	 * Return the {@link HttpHandler} that should be used to process the reactive web
 	 * server. By default this method searches for a suitable bean in the context itself.
+	 *
 	 * @return a {@link HttpHandler} (never {@code null}
 	 */
 	protected HttpHandler getHttpHandler() {
@@ -155,8 +155,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 		ServerManager serverManager = this.serverManager;
 		try {
 			ServerManager.stop(serverManager);
-		}
-		finally {
+		} finally {
 			this.serverManager = null;
 		}
 	}
@@ -164,6 +163,7 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 	/**
 	 * Returns the {@link WebServer} that was created by the context or {@code null} if
 	 * the server has not yet been created.
+	 *
 	 * @return the web server
 	 */
 	@Override
@@ -196,19 +196,6 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 			this.server = factory.getWebServer(this);
 		}
 
-		private Mono<Void> handleUninitialized(ServerHttpRequest request, ServerHttpResponse response) {
-			throw new IllegalStateException("The HttpHandler has not yet been initialized");
-		}
-
-		@Override
-		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
-			return this.handler.handle(request, response);
-		}
-
-		public HttpHandler getHandler() {
-			return this.handler;
-		}
-
 		public static ServerManager get(ReactiveWebServerFactory factory) {
 			return new ServerManager(factory);
 		}
@@ -228,11 +215,23 @@ public class ReactiveWebServerApplicationContext extends GenericReactiveWebAppli
 			if (manager != null && manager.server != null) {
 				try {
 					manager.server.stop();
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new IllegalStateException(ex);
 				}
 			}
+		}
+
+		private Mono<Void> handleUninitialized(ServerHttpRequest request, ServerHttpResponse response) {
+			throw new IllegalStateException("The HttpHandler has not yet been initialized");
+		}
+
+		@Override
+		public Mono<Void> handle(ServerHttpRequest request, ServerHttpResponse response) {
+			return this.handler.handle(request, response);
+		}
+
+		public HttpHandler getHandler() {
+			return this.handler;
 		}
 
 	}

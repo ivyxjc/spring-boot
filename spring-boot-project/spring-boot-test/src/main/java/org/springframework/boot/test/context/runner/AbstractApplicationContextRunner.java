@@ -16,12 +16,6 @@
 
 package org.springframework.boot.test.context.runner;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 import org.springframework.boot.context.annotation.Configurations;
 import org.springframework.boot.context.annotation.UserConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -36,6 +30,12 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Utility design to run an {@link ApplicationContext} and provide AssertJ style
@@ -85,16 +85,16 @@ import org.springframework.util.Assert;
  * <p>
  *
  * @param <SELF> the "self" type for this runner
- * @param <C> the context type
- * @param <A> the application context assertion provider
+ * @param <C>    the context type
+ * @param <A>    the application context assertion provider
  * @author Stephane Nicoll
  * @author Andy Wilkinson
  * @author Phillip Webb
- * @since 2.0.0
  * @see ApplicationContextRunner
  * @see WebApplicationContextRunner
  * @see ReactiveWebApplicationContextRunner
  * @see ApplicationContextAssert
+ * @since 2.0.0
  */
 public abstract class AbstractApplicationContextRunner<SELF extends AbstractApplicationContextRunner<SELF, C, A>, C extends ConfigurableApplicationContext, A extends ApplicationContextAssertProvider<C>> {
 
@@ -114,6 +114,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 
 	/**
 	 * Create a new {@link AbstractApplicationContextRunner} instance.
+	 *
 	 * @param contextFactory the factory used to create the actual context
 	 */
 	protected AbstractApplicationContextRunner(Supplier<C> contextFactory) {
@@ -123,18 +124,19 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 
 	/**
 	 * Create a new {@link AbstractApplicationContextRunner} instance.
-	 * @param contextFactory the factory used to create the actual context
-	 * @param initializers the initializers
+	 *
+	 * @param contextFactory        the factory used to create the actual context
+	 * @param initializers          the initializers
 	 * @param environmentProperties the environment properties
-	 * @param systemProperties the system properties
-	 * @param classLoader the class loader
-	 * @param parent the parent
-	 * @param configurations the configuration
+	 * @param systemProperties      the system properties
+	 * @param classLoader           the class loader
+	 * @param parent                the parent
+	 * @param configurations        the configuration
 	 */
 	protected AbstractApplicationContextRunner(Supplier<C> contextFactory,
-			List<ApplicationContextInitializer<? super C>> initializers, TestPropertyValues environmentProperties,
-			TestPropertyValues systemProperties, ClassLoader classLoader, ApplicationContext parent,
-			List<Configurations> configurations) {
+											   List<ApplicationContextInitializer<? super C>> initializers, TestPropertyValues environmentProperties,
+											   TestPropertyValues systemProperties, ClassLoader classLoader, ApplicationContext parent,
+											   List<Configurations> configurations) {
 		Assert.notNull(contextFactory, "ContextFactory must not be null");
 		Assert.notNull(environmentProperties, "EnvironmentProperties must not be null");
 		Assert.notNull(systemProperties, "SystemProperties must not be null");
@@ -152,6 +154,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	/**
 	 * Add a {@link ApplicationContextInitializer} to be called when the context is
 	 * created.
+	 *
 	 * @param initializer the initializer to add
 	 * @return a new instance with the updated initializers
 	 */
@@ -165,8 +168,9 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	 * Add the specified {@link Environment} property pairs. Key-value pairs can be
 	 * specified with colon (":") or equals ("=") separators. Override matching keys that
 	 * might have been specified previously.
+	 *
 	 * @param pairs the key-value pairs for properties that need to be added to the
-	 * environment
+	 *              environment
 	 * @return a new instance with the updated property values
 	 * @see TestPropertyValues
 	 * @see #withSystemProperties(String...)
@@ -181,6 +185,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	 * with colon (":") or equals ("=") separators. System properties are added before the
 	 * context is {@link #run(ContextConsumer) run} and restored when the context is
 	 * closed.
+	 *
 	 * @param pairs the key-value pairs for properties that need to be added to the system
 	 * @return a new instance with the updated system properties
 	 * @see TestPropertyValues
@@ -194,6 +199,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	/**
 	 * Customize the {@link ClassLoader} that the {@link ApplicationContext} should use
 	 * for resource loading and bean class loading.
+	 *
 	 * @param classLoader the classloader to use (can be null to use the default)
 	 * @return a new instance with the updated class loader
 	 * @see FilteredClassLoader
@@ -206,6 +212,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	/**
 	 * Configure the {@link ConfigurableApplicationContext#setParent(ApplicationContext)
 	 * parent} of the {@link ApplicationContext}.
+	 *
 	 * @param parent the parent
 	 * @return a new instance with the updated parent
 	 */
@@ -217,6 +224,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	/**
 	 * Register the specified user configuration classes with the
 	 * {@link ApplicationContext}.
+	 *
 	 * @param configurationClasses the user configuration classes to add
 	 * @return a new instance with the updated configuration
 	 */
@@ -226,6 +234,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 
 	/**
 	 * Register the specified configuration classes with the {@link ApplicationContext}.
+	 *
 	 * @param configurations the configurations to add
 	 * @return a new instance with the updated configuration
 	 */
@@ -237,6 +246,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 
 	/**
 	 * Apply customization to this runner.
+	 *
 	 * @param customizer the customizer to call
 	 * @return a new instance with the customizations applied
 	 */
@@ -252,14 +262,15 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	}
 
 	protected abstract SELF newInstance(Supplier<C> contextFactory,
-			List<ApplicationContextInitializer<? super C>> initializers, TestPropertyValues environmentProperties,
-			TestPropertyValues systemProperties, ClassLoader classLoader, ApplicationContext parent,
-			List<Configurations> configurations);
+										List<ApplicationContextInitializer<? super C>> initializers, TestPropertyValues environmentProperties,
+										TestPropertyValues systemProperties, ClassLoader classLoader, ApplicationContext parent,
+										List<Configurations> configurations);
 
 	/**
 	 * Create and refresh a new {@link ApplicationContext} based on the current state of
 	 * this loader. The context is consumed by the specified {@code consumer} and closed
 	 * upon completion.
+	 *
 	 * @param consumer the consumer of the created {@link ApplicationContext}
 	 * @return this instance
 	 */
@@ -279,15 +290,13 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	private void withContextClassLoader(ClassLoader classLoader, Runnable action) {
 		if (classLoader == null) {
 			action.run();
-		}
-		else {
+		} else {
 			Thread currentThread = Thread.currentThread();
 			ClassLoader previous = currentThread.getContextClassLoader();
 			currentThread.setContextClassLoader(classLoader);
 			try {
 				action.run();
-			}
-			finally {
+			} finally {
 				currentThread.setContextClassLoader(previous);
 			}
 		}
@@ -306,8 +315,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 		try {
 			configureContext(context);
 			return context;
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			context.close();
 			throw ex;
 		}
@@ -333,8 +341,7 @@ public abstract class AbstractApplicationContextRunner<SELF extends AbstractAppl
 	private void accept(ContextConsumer<? super A> consumer, A context) {
 		try {
 			consumer.accept(context);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			rethrow(ex);
 		}
 	}

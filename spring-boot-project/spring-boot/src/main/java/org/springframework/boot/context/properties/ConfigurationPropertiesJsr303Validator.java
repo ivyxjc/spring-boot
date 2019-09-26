@@ -32,23 +32,13 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  */
 final class ConfigurationPropertiesJsr303Validator implements Validator {
 
-	private static final String[] VALIDATOR_CLASSES = { "javax.validation.Validator",
-			"javax.validation.ValidatorFactory", "javax.validation.bootstrap.GenericBootstrap" };
+	private static final String[] VALIDATOR_CLASSES = {"javax.validation.Validator",
+			"javax.validation.ValidatorFactory", "javax.validation.bootstrap.GenericBootstrap"};
 
 	private final Delegate delegate;
 
 	ConfigurationPropertiesJsr303Validator(ApplicationContext applicationContext) {
 		this.delegate = new Delegate(applicationContext);
-	}
-
-	@Override
-	public boolean supports(Class<?> type) {
-		return this.delegate.supports(type);
-	}
-
-	@Override
-	public void validate(Object target, Errors errors) {
-		this.delegate.validate(target, errors);
 	}
 
 	public static boolean isJsr303Present(ApplicationContext applicationContext) {
@@ -59,6 +49,16 @@ final class ConfigurationPropertiesJsr303Validator implements Validator {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public boolean supports(Class<?> type) {
+		return this.delegate.supports(type);
+	}
+
+	@Override
+	public void validate(Object target, Errors errors) {
+		this.delegate.validate(target, errors);
 	}
 
 	private static class Delegate extends LocalValidatorFactoryBean {

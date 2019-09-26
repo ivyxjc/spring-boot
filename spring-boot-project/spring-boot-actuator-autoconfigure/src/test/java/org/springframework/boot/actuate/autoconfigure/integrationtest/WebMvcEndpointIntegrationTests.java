@@ -16,13 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
-import java.util.function.Supplier;
-
-import javax.servlet.http.HttpServlet;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.audit.AuditAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
@@ -55,6 +50,9 @@ import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcConfigurer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+
+import javax.servlet.http.HttpServlet;
+import java.util.function.Supplier;
 
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.hasKey;
@@ -133,30 +131,30 @@ public class WebMvcEndpointIntegrationTests {
 		return builder.build();
 	}
 
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
-			ServletManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
-			ManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
-			DispatcherServletAutoConfiguration.class, BeansEndpointAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
+									 ServletManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
+									 PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
+									 ManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
+									 DispatcherServletAutoConfiguration.class, BeansEndpointAutoConfiguration.class})
 	static class DefaultConfiguration {
 
 	}
 
 	@Import(SecureConfiguration.class)
-	@ImportAutoConfiguration({ HypermediaAutoConfiguration.class })
+	@ImportAutoConfiguration({HypermediaAutoConfiguration.class})
 	static class SpringHateoasConfiguration {
 
 	}
 
 	@Import(SecureConfiguration.class)
-	@ImportAutoConfiguration({ HypermediaAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class })
+	@ImportAutoConfiguration({HypermediaAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class})
 	static class SpringDataRestConfiguration {
 
 	}
 
 	@Import(DefaultConfiguration.class)
-	@ImportAutoConfiguration({ SecurityAutoConfiguration.class })
+	@ImportAutoConfiguration({SecurityAutoConfiguration.class})
 	static class SecureConfiguration {
 
 	}

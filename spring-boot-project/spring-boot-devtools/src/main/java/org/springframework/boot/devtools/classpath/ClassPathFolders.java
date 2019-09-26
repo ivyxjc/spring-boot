@@ -16,17 +16,16 @@
 
 package org.springframework.boot.devtools.classpath;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.ResourceUtils;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.ResourceUtils;
 
 /**
  * Provides access to entries on the classpath that refer to folders.
@@ -56,8 +55,7 @@ public class ClassPathFolders implements Iterable<File> {
 		if (url.getProtocol().equals("file") && url.getPath().endsWith("/")) {
 			try {
 				this.folders.add(ResourceUtils.getFile(url));
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				logger.warn("Unable to get classpath URL " + url);
 				logger.trace("Unable to get classpath URL " + url, ex);
 			}

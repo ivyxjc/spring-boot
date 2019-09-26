@@ -19,7 +19,6 @@ package org.springframework.boot.test.mock.mockito;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.example.ExampleGenericStringServiceCaller;
 import org.springframework.boot.test.mock.mockito.example.SimpleExampleStringGenericService;

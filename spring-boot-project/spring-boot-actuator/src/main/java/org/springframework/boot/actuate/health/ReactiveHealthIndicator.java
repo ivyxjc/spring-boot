@@ -25,14 +25,15 @@ import reactor.core.publisher.Mono;
  * {@link HealthIndicator} for the traditional contract.
  *
  * @author Stephane Nicoll
- * @since 2.0.0
  * @see HealthIndicator
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface ReactiveHealthIndicator {
 
 	/**
 	 * Provide the indicator of health.
+	 *
 	 * @return a {@link Mono} that provides the {@link Health}
 	 */
 	Mono<Health> health();

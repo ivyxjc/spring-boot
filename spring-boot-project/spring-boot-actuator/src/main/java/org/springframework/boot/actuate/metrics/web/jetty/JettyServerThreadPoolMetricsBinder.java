@@ -16,19 +16,18 @@
 
 package org.springframework.boot.actuate.metrics.web.jetty;
 
-import java.util.Collections;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.jetty.JettyServerThreadPoolMetrics;
 import org.eclipse.jetty.util.thread.ThreadPool;
-
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.embedded.jetty.JettyWebServer;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+
+import java.util.Collections;
 
 /**
  * Binds {@link JettyServerThreadPoolMetrics} in response to the

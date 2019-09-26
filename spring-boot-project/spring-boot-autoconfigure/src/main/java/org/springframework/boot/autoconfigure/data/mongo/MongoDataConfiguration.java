@@ -15,8 +15,6 @@
  */
 package org.springframework.boot.autoconfigure.data.mongo;
 
-import java.util.Collections;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
@@ -29,6 +27,8 @@ import org.springframework.data.mapping.model.FieldNamingStrategy;
 import org.springframework.data.mongodb.core.convert.MongoCustomConversions;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+
+import java.util.Collections;
 
 /**
  * Base configuration class for Spring Data's mongo support.

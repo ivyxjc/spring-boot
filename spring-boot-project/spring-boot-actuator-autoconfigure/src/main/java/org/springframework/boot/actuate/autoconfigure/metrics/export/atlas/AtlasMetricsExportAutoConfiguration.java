@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.autoconfigure.metrics.export.atlas;
 import com.netflix.spectator.atlas.AtlasConfig;
 import io.micrometer.atlas.AtlasMeterRegistry;
 import io.micrometer.core.instrument.Clock;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
@@ -42,12 +41,12 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.0.0
  */
 @Configuration
-@AutoConfigureBefore({ CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class })
+@AutoConfigureBefore({CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class})
 @AutoConfigureAfter(MetricsAutoConfiguration.class)
 @ConditionalOnBean(Clock.class)
 @ConditionalOnClass(AtlasMeterRegistry.class)
 @ConditionalOnProperty(prefix = "management.metrics.export.atlas", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 @EnableConfigurationProperties(AtlasProperties.class)
 public class AtlasMetricsExportAutoConfiguration {
 

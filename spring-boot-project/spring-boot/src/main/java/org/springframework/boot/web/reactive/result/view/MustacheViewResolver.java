@@ -18,7 +18,6 @@ package org.springframework.boot.web.reactive.result.view;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
-
 import org.springframework.web.reactive.result.view.AbstractUrlBasedView;
 import org.springframework.web.reactive.result.view.UrlBasedViewResolver;
 import org.springframework.web.reactive.result.view.ViewResolver;
@@ -47,6 +46,7 @@ public class MustacheViewResolver extends UrlBasedViewResolver {
 	/**
 	 * Create a {@code MustacheViewResolver} backed by a custom instance of a
 	 * {@link Compiler}.
+	 *
 	 * @param compiler the Mustache compiler used to compile templates
 	 */
 	public MustacheViewResolver(Compiler compiler) {
@@ -56,6 +56,7 @@ public class MustacheViewResolver extends UrlBasedViewResolver {
 
 	/**
 	 * Set the charset.
+	 *
 	 * @param charset the charset
 	 */
 	public void setCharset(String charset) {

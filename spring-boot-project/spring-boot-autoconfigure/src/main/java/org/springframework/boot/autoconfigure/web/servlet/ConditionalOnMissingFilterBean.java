@@ -16,19 +16,14 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import javax.servlet.Filter;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.core.annotation.AliasFor;
+
+import javax.servlet.Filter;
+import java.lang.annotation.*;
 
 /**
  * {@link Conditional} that only matches when no {@link Filter} beans of the specified
@@ -59,7 +54,7 @@ import org.springframework.core.annotation.AliasFor;
  * @author Phillip Webb
  * @since 2.1.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @ConditionalOnMissingBean(parameterizedContainer = FilterRegistrationBean.class)
@@ -67,6 +62,7 @@ public @interface ConditionalOnMissingFilterBean {
 
 	/**
 	 * The filter bean type that must not be present.
+	 *
 	 * @return the bean type
 	 */
 	@AliasFor(annotation = ConditionalOnMissingBean.class)

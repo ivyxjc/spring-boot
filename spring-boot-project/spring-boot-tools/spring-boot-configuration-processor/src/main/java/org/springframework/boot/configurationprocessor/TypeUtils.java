@@ -16,29 +16,17 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.PrimitiveType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.*;
 import javax.lang.model.util.SimpleTypeVisitor8;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic.Kind;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Type Utilities.
@@ -49,6 +37,8 @@ import javax.tools.Diagnostic.Kind;
 class TypeUtils {
 
 	private static final Map<TypeKind, Class<?>> PRIMITIVE_WRAPPERS;
+	private static final Map<String, TypeKind> WRAPPER_TO_PRIMITIVE;
+	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("[\r\n]+");
 
 	static {
 		Map<TypeKind, Class<?>> wrappers = new EnumMap<>(TypeKind.class);
@@ -62,10 +52,6 @@ class TypeUtils {
 		wrappers.put(TypeKind.SHORT, Short.class);
 		PRIMITIVE_WRAPPERS = Collections.unmodifiableMap(wrappers);
 	}
-
-	private static final Map<String, TypeKind> WRAPPER_TO_PRIMITIVE;
-
-	private static final Pattern NEW_LINE_PATTERN = Pattern.compile("[\r\n]+");
 
 	static {
 		Map<String, TypeKind> primitives = new HashMap<>();
@@ -99,8 +85,7 @@ class TypeUtils {
 		TypeElement typeElement = this.env.getElementUtils().getTypeElement(typeClass.getName());
 		try {
 			return types.getDeclaredType(typeElement, typeArgs);
-		}
-		catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException ex) {
 			// Try again without generics for older Java versions
 			return types.getDeclaredType(typeElement);
 		}
@@ -108,6 +93,7 @@ class TypeUtils {
 
 	/**
 	 * Return the qualified name of the specified element.
+	 *
 	 * @param element the element to handle
 	 * @return the fully qualified name of the element, suitable for a call to
 	 * {@link Class#forName(String)}
@@ -119,8 +105,9 @@ class TypeUtils {
 	/**
 	 * Return the type of the specified {@link TypeMirror} including all its generic
 	 * information.
+	 *
 	 * @param element the {@link TypeElement} in which this {@code type} is declared
-	 * @param type the type to handle
+	 * @param type    the type to handle
 	 * @return a representation of the type including all its generic information
 	 */
 	public String getType(TypeElement element, TypeMirror type) {
@@ -192,8 +179,7 @@ class TypeUtils {
 				TypeElement element = (TypeElement) this.types.asElement(type);
 				process(descriptor, element.getSuperclass());
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			this.env.getMessager().printMessage(Kind.WARNING,
 					"Failed to generated type descriptor for " + type + ": " + ex.getMessage(),
 					this.types.asElement(type));
@@ -245,8 +231,7 @@ class TypeUtils {
 					if (!hasCycle(typeVariable)) {
 						return visit(typeVariable.getUpperBound(), descriptor);
 					}
-				}
-				else {
+				} else {
 					return visit(typeMirror, descriptor);
 				}
 			}

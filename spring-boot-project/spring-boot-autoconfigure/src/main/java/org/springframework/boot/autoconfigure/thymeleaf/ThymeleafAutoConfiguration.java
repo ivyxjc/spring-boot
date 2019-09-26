@@ -16,28 +16,10 @@
 
 package org.springframework.boot.autoconfigure.thymeleaf;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.DispatcherType;
-
 import com.github.mxab.thymeleaf.extras.dataattribute.dialect.DataAttributeDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.thymeleaf.dialect.IDialect;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
-import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
-import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ITemplateResolver;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -62,6 +44,22 @@ import org.springframework.core.Ordered;
 import org.springframework.util.MimeType;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
+import org.thymeleaf.dialect.IDialect;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.DispatcherType;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Thymeleaf.
@@ -78,8 +76,8 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
  */
 @Configuration
 @EnableConfigurationProperties(ThymeleafProperties.class)
-@ConditionalOnClass({ TemplateMode.class, SpringTemplateEngine.class })
-@AutoConfigureAfter({ WebMvcAutoConfiguration.class, WebFluxAutoConfiguration.class })
+@ConditionalOnClass({TemplateMode.class, SpringTemplateEngine.class})
+@AutoConfigureAfter({WebMvcAutoConfiguration.class, WebFluxAutoConfiguration.class})
 public class ThymeleafAutoConfiguration {
 
 	@Configuration
@@ -140,7 +138,7 @@ public class ThymeleafAutoConfiguration {
 		private final ObjectProvider<IDialect> dialects;
 
 		public ThymeleafDefaultConfiguration(ThymeleafProperties properties,
-				Collection<ITemplateResolver> templateResolvers, ObjectProvider<IDialect> dialectsProvider) {
+											 Collection<ITemplateResolver> templateResolvers, ObjectProvider<IDialect> dialectsProvider) {
 			this.properties = properties;
 			this.templateResolvers = templateResolvers;
 			this.dialects = dialectsProvider;
@@ -231,7 +229,7 @@ public class ThymeleafAutoConfiguration {
 		private final ObjectProvider<IDialect> dialects;
 
 		ThymeleafReactiveConfiguration(ThymeleafProperties properties, Collection<ITemplateResolver> templateResolvers,
-				ObjectProvider<IDialect> dialectsProvider) {
+									   ObjectProvider<IDialect> dialectsProvider) {
 			this.properties = properties;
 			this.templateResolvers = templateResolvers;
 			this.dialects = dialectsProvider;
@@ -317,7 +315,7 @@ public class ThymeleafAutoConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ SpringSecurityDialect.class })
+	@ConditionalOnClass({SpringSecurityDialect.class})
 	protected static class ThymeleafSecurityDialectConfiguration {
 
 		@Bean

@@ -16,17 +16,6 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.beans.PropertyEditor;
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.beans.SimpleTypeConverter;
@@ -40,6 +29,11 @@ import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.util.Assert;
 
+import java.beans.PropertyEditor;
+import java.lang.annotation.Annotation;
+import java.util.*;
+import java.util.function.Consumer;
+
 /**
  * Utility to handle any conversion needed during binding. This class is not thread-safe
  * and so a new instance is created for each top-level bind.
@@ -50,26 +44,38 @@ import org.springframework.util.Assert;
 final class BindConverter {
 
 	private static final Set<Class<?>> EXCLUDED_EDITORS;
+	private static BindConverter sharedInstance;
+
 	static {
 		Set<Class<?>> excluded = new HashSet<>();
 		excluded.add(FileEditor.class); // gh-12163
 		EXCLUDED_EDITORS = Collections.unmodifiableSet(excluded);
 	}
 
-	private static BindConverter sharedInstance;
-
 	private final ConversionService conversionService;
 
 	private BindConverter(ConversionService conversionService,
-			Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
+						  Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
 		Assert.notNull(conversionService, "ConversionService must not be null");
 		List<ConversionService> conversionServices = getConversionServices(conversionService,
 				propertyEditorInitializer);
 		this.conversionService = new CompositeConversionService(conversionServices);
 	}
 
+	static BindConverter get(ConversionService conversionService,
+							 Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
+		if (conversionService == ApplicationConversionService.getSharedInstance()
+				&& propertyEditorInitializer == null) {
+			if (sharedInstance == null) {
+				sharedInstance = new BindConverter(conversionService, propertyEditorInitializer);
+			}
+			return sharedInstance;
+		}
+		return new BindConverter(conversionService, propertyEditorInitializer);
+	}
+
 	private List<ConversionService> getConversionServices(ConversionService conversionService,
-			Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
+														  Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
 		List<ConversionService> services = new ArrayList<>();
 		services.add(new TypeConverterConversionService(propertyEditorInitializer));
 		services.add(conversionService);
@@ -95,18 +101,6 @@ final class BindConverter {
 		}
 		return (T) this.conversionService.convert(value, TypeDescriptor.forObject(value),
 				new ResolvableTypeDescriptor(type, annotations));
-	}
-
-	static BindConverter get(ConversionService conversionService,
-			Consumer<PropertyEditorRegistry> propertyEditorInitializer) {
-		if (conversionService == ApplicationConversionService.getSharedInstance()
-				&& propertyEditorInitializer == null) {
-			if (sharedInstance == null) {
-				sharedInstance = new BindConverter(conversionService, propertyEditorInitializer);
-			}
-			return sharedInstance;
-		}
-		return new BindConverter(conversionService, propertyEditorInitializer);
 	}
 
 	/**
@@ -163,8 +157,7 @@ final class BindConverter {
 					if (delegate.canConvert(sourceType, targetType)) {
 						return delegate.convert(source, sourceType, targetType);
 					}
-				}
-				catch (ConversionException ex) {
+				} catch (ConversionException ex) {
 				}
 			}
 			return this.delegates.get(this.delegates.size() - 1).convert(source, sourceType, targetType);

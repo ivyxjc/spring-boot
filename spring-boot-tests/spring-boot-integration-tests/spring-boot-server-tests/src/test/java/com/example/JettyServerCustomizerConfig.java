@@ -17,7 +17,6 @@
 package com.example;
 
 import org.eclipse.jetty.server.handler.ContextHandler;
-
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.context.annotation.Bean;

@@ -17,7 +17,6 @@
 package org.springframework.boot.origin;
 
 import org.junit.Test;
-
 import org.springframework.boot.origin.TextResourceOrigin.Location;
 import org.springframework.core.io.ClassPathResource;
 

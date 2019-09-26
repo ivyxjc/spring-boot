@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.integration.IntegrationGraphEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

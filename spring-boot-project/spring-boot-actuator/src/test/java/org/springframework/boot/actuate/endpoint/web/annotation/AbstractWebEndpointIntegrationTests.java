@@ -16,26 +16,9 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.net.InetSocketAddress;
-import java.security.Principal;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.endpoint.SecurityContext;
-import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
-import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
-import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
-import org.springframework.boot.actuate.endpoint.annotation.Selector;
-import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
+import org.springframework.boot.actuate.endpoint.annotation.*;
 import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -50,6 +33,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
+
+import java.net.InetSocketAddress;
+import java.security.Principal;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -73,7 +68,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	private final Consumer<T> authenticatedContextCustomizer;
 
 	protected AbstractWebEndpointIntegrationTests(Supplier<T> applicationContextSupplier,
-			Consumer<T> authenticatedContextCustomizer) {
+												  Consumer<T> authenticatedContextCustomizer) {
 		this.applicationContextSupplier = applicationContextSupplier;
 		this.authenticatedContextCustomizer = authenticatedContextCustomizer;
 	}
@@ -366,7 +361,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	protected abstract int getPort(T context);
 
 	protected void validateErrorBody(WebTestClient.BodyContentSpec body, HttpStatus status, String path,
-			String message) {
+									 String message) {
 		body.jsonPath("status").isEqualTo(status.value()).jsonPath("error").isEqualTo(status.getReasonPhrase())
 				.jsonPath("path").isEqualTo(path).jsonPath("message").isEqualTo(message);
 	}
@@ -390,7 +385,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 	}
 
 	private void load(Consumer<T> contextCustomizer, String endpointPath,
-			BiConsumer<ApplicationContext, WebTestClient> consumer) {
+					  BiConsumer<ApplicationContext, WebTestClient> consumer) {
 		T applicationContext = this.applicationContextSupplier.get();
 		contextCustomizer.accept(applicationContext);
 		applicationContext.getEnvironment().getPropertySources()
@@ -401,10 +396,19 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 			String url = "http://" + address.getHostString() + ":" + address.getPort() + endpointPath;
 			consumer.accept(applicationContext,
 					WebTestClient.bindToServer().baseUrl(url).responseTimeout(TIMEOUT).build());
-		}
-		finally {
+		} finally {
 			applicationContext.close();
 		}
+	}
+
+	public interface EndpointDelegate {
+
+		void write();
+
+		void write(String foo, String bar);
+
+		void delete();
+
 	}
 
 	@Configuration
@@ -724,7 +728,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 		@ReadOperation
 		public Resource read() {
-			return new ByteArrayResource(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 });
+			return new ByteArrayResource(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
 		}
 
 	}
@@ -734,7 +738,7 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 
 		@ReadOperation
 		public WebEndpointResponse<Resource> read() {
-			return new WebEndpointResponse<>(new ByteArrayResource(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }), 200);
+			return new WebEndpointResponse<>(new ByteArrayResource(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}), 200);
 		}
 
 	}
@@ -807,16 +811,6 @@ public abstract class AbstractWebEndpointIntegrationTests<T extends Configurable
 		public String read(SecurityContext securityContext, String role) {
 			return role + ": " + securityContext.isUserInRole(role);
 		}
-
-	}
-
-	public interface EndpointDelegate {
-
-		void write();
-
-		void write(String foo, String bar);
-
-		void delete();
 
 	}
 

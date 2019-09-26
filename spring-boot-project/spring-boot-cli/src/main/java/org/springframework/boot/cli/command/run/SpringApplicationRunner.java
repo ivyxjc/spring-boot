@@ -16,6 +16,10 @@
 
 package org.springframework.boot.cli.command.run;
 
+import org.springframework.boot.cli.app.SpringApplicationLauncher;
+import org.springframework.boot.cli.compiler.GroovyCompiler;
+import org.springframework.boot.cli.util.ResourceUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -26,10 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-
-import org.springframework.boot.cli.app.SpringApplicationLauncher;
-import org.springframework.boot.cli.compiler.GroovyCompiler;
-import org.springframework.boot.cli.util.ResourceUtils;
 
 /**
  * Compiles Groovy code running the resulting classes using a {@code SpringApplication}.
@@ -62,9 +62,10 @@ public class SpringApplicationRunner {
 
 	/**
 	 * Create a new {@link SpringApplicationRunner} instance.
+	 *
 	 * @param configuration the configuration
-	 * @param sources the files to compile/watch
-	 * @param args input arguments
+	 * @param sources       the files to compile/watch
+	 * @param args          input arguments
 	 */
 	SpringApplicationRunner(SpringApplicationRunnerConfiguration configuration, String[] sources, String... args) {
 		this.configuration = configuration;
@@ -75,11 +76,9 @@ public class SpringApplicationRunner {
 		if (level <= Level.FINER.intValue()) {
 			System.setProperty("org.springframework.boot.cli.compiler.grape.ProgressReporter", "detail");
 			System.setProperty("trace", "true");
-		}
-		else if (level <= Level.FINE.intValue()) {
+		} else if (level <= Level.FINE.intValue()) {
 			System.setProperty("debug", "true");
-		}
-		else if (level == Level.OFF.intValue()) {
+		} else if (level == Level.OFF.intValue()) {
 			System.setProperty("spring.main.banner-mode", "OFF");
 			System.setProperty("logging.level.ROOT", "OFF");
 			System.setProperty("org.springframework.boot.cli.compiler.grape.ProgressReporter", "none");
@@ -88,6 +87,7 @@ public class SpringApplicationRunner {
 
 	/**
 	 * Compile and run the application.
+	 *
 	 * @throws Exception on error
 	 */
 	public void compileAndRun() throws Exception {
@@ -100,12 +100,10 @@ public class SpringApplicationRunner {
 				this.runThread = new RunThread(compiledSources);
 				this.runThread.start();
 				this.runThread.join();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				if (this.fileWatchThread == null) {
 					throw ex;
-				}
-				else {
+				} else {
 					ex.printStackTrace();
 				}
 			}
@@ -149,6 +147,7 @@ public class SpringApplicationRunner {
 
 		/**
 		 * Create a new {@link RunThread} instance.
+		 *
 		 * @param compiledSources the sources to launch
 		 */
 		RunThread(Class<?>... compiledSources) {
@@ -166,8 +165,7 @@ public class SpringApplicationRunner {
 				try {
 					this.applicationContext = new SpringApplicationLauncher(getContextClassLoader())
 							.launch(this.compiledSources, SpringApplicationRunner.this.args);
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
@@ -182,14 +180,11 @@ public class SpringApplicationRunner {
 					try {
 						Method method = this.applicationContext.getClass().getMethod("close");
 						method.invoke(this.applicationContext);
-					}
-					catch (NoSuchMethodException ex) {
+					} catch (NoSuchMethodException ex) {
 						// Not an application context that we can close
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						ex.printStackTrace();
-					}
-					finally {
+					} finally {
 						this.applicationContext = null;
 					}
 				}
@@ -232,8 +227,7 @@ public class SpringApplicationRunner {
 						if ("file".equals(url.getProtocol())) {
 							sources.add(new File(url.getFile()));
 						}
-					}
-					catch (MalformedURLException ex) {
+					} catch (MalformedURLException ex) {
 						// Ignore
 					}
 				}
@@ -255,11 +249,9 @@ public class SpringApplicationRunner {
 							}
 						}
 					}
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					// Swallow, will be reported by compileAndRun
 				}
 			}

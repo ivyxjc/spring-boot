@@ -21,8 +21,8 @@ package org.springframework.boot.devtools.autoconfigure;
  *
  * @author Phillip Webb
  * @author Rob Winch
- * @since 1.3.0
  * @see DevToolsProperties
+ * @since 1.3.0
  */
 public class RemoteDevToolsProperties {
 

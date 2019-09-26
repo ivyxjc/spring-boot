@@ -16,15 +16,13 @@
 
 package org.springframework.boot.autoconfigure.liquibase;
 
-import java.util.stream.StreamSupport;
-
-import javax.sql.DataSource;
-
 import liquibase.integration.spring.SpringLiquibase;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.jdbc.SchemaManagement;
 import org.springframework.boot.jdbc.SchemaManagementProvider;
+
+import javax.sql.DataSource;
+import java.util.stream.StreamSupport;
 
 /**
  * A Liquibase {@link SchemaManagementProvider} that determines if the schema is managed

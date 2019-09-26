@@ -16,14 +16,8 @@
 
 package org.springframework.boot;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.util.Collections;
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiOutput.Enabled;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -31,6 +25,11 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -110,7 +109,7 @@ public class ResourceBannerTests {
 	}
 
 	private String printBanner(Resource resource, String bootVersion, String applicationVersion,
-			String applicationTitle) {
+							   String applicationTitle) {
 		ResourceBanner banner = new MockResourceBanner(resource, bootVersion, applicationVersion, applicationTitle);
 		ConfigurableEnvironment environment = new MockEnvironment();
 		Map<String, Object> source = Collections.singletonMap("a", "1");

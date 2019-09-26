@@ -16,11 +16,6 @@
 
 package org.springframework.boot.context.properties;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -40,6 +35,11 @@ import org.springframework.core.env.PropertySources;
 import org.springframework.util.Assert;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Internal class by the {@link ConfigurationPropertiesBindingPostProcessor} to handle the
@@ -79,7 +79,7 @@ class ConfigurationPropertiesBinder {
 	}
 
 	private Validator getConfigurationPropertiesValidator(ApplicationContext applicationContext,
-			String validatorBeanName) {
+														  String validatorBeanName) {
 		if (applicationContext.containsBean(validatorBeanName)) {
 			return applicationContext.getBean(validatorBeanName, Validator.class);
 		}

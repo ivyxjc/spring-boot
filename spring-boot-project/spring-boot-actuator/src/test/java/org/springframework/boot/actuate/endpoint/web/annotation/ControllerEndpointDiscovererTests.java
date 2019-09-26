@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
 import org.springframework.boot.actuate.endpoint.annotation.DiscoveredEndpoint;
@@ -37,6 +30,12 @@ import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -142,7 +141,7 @@ public class ControllerEndpointDiscovererTests {
 	}
 
 	@Configuration
-	@Import({ TestEndpoint.class, TestControllerEndpoint.class, TestRestControllerEndpoint.class })
+	@Import({TestEndpoint.class, TestControllerEndpoint.class, TestRestControllerEndpoint.class})
 	static class WithRegularEndpointConfiguration {
 
 	}

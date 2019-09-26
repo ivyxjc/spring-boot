@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.boot.launcher.it</groupId>
 	<artifactId>executable-props-lib</artifactId>
@@ -32,7 +32,8 @@
 									<mainClass>org.springframework.boot.loader.PropertiesLauncher</mainClass>
 								</manifest>
 								<manifestEntries>
-									<Start-Class>org.springframework.boot.launcher.it.props.EmbeddedJarStarter</Start-Class>
+									<Start-Class>org.springframework.boot.launcher.it.props.EmbeddedJarStarter
+									</Start-Class>
 								</manifestEntries>
 							</archive>
 						</configuration>
@@ -87,7 +88,8 @@
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/dependencies-assembly/BOOT-INF/lib</outputDirectory>
+							<outputDirectory>${project.build.directory}/dependencies-assembly/BOOT-INF/lib
+							</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

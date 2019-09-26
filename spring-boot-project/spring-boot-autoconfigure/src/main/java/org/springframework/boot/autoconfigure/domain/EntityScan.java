@@ -16,14 +16,10 @@
 
 package org.springframework.boot.autoconfigure.domain;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Configures the base packages used by auto-configuration when scanning for entity
@@ -52,8 +48,8 @@ import org.springframework.core.annotation.AliasFor;
  * annotation.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see EntityScanPackages
+ * @since 1.4.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -65,6 +61,7 @@ public @interface EntityScan {
 	 * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation
 	 * declarations e.g.: {@code @EntityScan("org.my.pkg")} instead of
 	 * {@code @EntityScan(basePackages="org.my.pkg")}.
+	 *
 	 * @return the base packages to scan
 	 */
 	@AliasFor("basePackages")
@@ -76,6 +73,7 @@ public @interface EntityScan {
 	 * <p>
 	 * Use {@link #basePackageClasses()} for a type-safe alternative to String-based
 	 * package names.
+	 *
 	 * @return the base packages to scan
 	 */
 	@AliasFor("value")
@@ -87,6 +85,7 @@ public @interface EntityScan {
 	 * <p>
 	 * Consider creating a special no-op marker class or interface in each package that
 	 * serves no purpose other than being referenced by this attribute.
+	 *
 	 * @return classes from the base packages to scan
 	 */
 	Class<?>[] basePackageClasses() default {};

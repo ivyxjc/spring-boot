@@ -34,6 +34,7 @@ public interface RestDocsRestAssuredConfigurationCustomizer {
 
 	/**
 	 * Customize the given {@code configurer}.
+	 *
 	 * @param configurer the configurer
 	 */
 	void customize(RestAssuredRestDocumentationConfigurer configurer);

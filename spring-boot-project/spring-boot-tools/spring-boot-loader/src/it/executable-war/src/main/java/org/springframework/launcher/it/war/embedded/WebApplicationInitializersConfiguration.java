@@ -16,14 +16,14 @@
 
 package org.springframework.boot.load.it.war.embedded;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.eclipse.jetty.webapp.AbstractConfiguration;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.springframework.util.Assert;
 import org.springframework.web.WebApplicationInitializer;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 /**
  * Jetty {@link Configuration} that allows Spring {@link WebApplicationInitializer} to be
@@ -37,7 +37,7 @@ public class WebApplicationInitializersConfiguration extends AbstractConfigurati
 	private Class<?>[] webApplicationInitializers;
 
 	public WebApplicationInitializersConfiguration(Class<?> webApplicationInitializer,
-			Class<?>... webApplicationInitializers) {
+												   Class<?>... webApplicationInitializers) {
 		this.webApplicationInitializers = new Class<?>[webApplicationInitializers.length + 1];
 		this.webApplicationInitializers[0] = webApplicationInitializer;
 		System.arraycopy(webApplicationInitializers, 0, this.webApplicationInitializers,
@@ -59,8 +59,7 @@ public class WebApplicationInitializersConfiguration extends AbstractConfigurati
 						WebApplicationInitializer initializer = (WebApplicationInitializer) webApplicationInitializer.newInstance();
 						initializer.onStartup(sce.getServletContext());
 					}
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
 			}

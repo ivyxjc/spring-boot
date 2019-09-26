@@ -21,7 +21,6 @@ import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.prometheus.client.CollectorRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
 import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusPushGatewayManager;
 import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusScrapeEndpoint;
@@ -105,7 +104,7 @@ public class PrometheusMetricsExportAutoConfigurationTests {
 	public void allowsCustomScrapeEndpointToBeUsed() {
 		this.contextRunner.withConfiguration(AutoConfigurations.of(ManagementContextAutoConfiguration.class))
 				.withUserConfiguration(CustomEndpointConfiguration.class).run((context) -> assertThat(context)
-						.hasBean("customEndpoint").hasSingleBean(PrometheusScrapeEndpoint.class));
+				.hasBean("customEndpoint").hasSingleBean(PrometheusScrapeEndpoint.class));
 	}
 
 	@Test
@@ -143,7 +142,7 @@ public class PrometheusMetricsExportAutoConfigurationTests {
 
 		@Bean
 		public PrometheusMeterRegistry customRegistry(PrometheusConfig config, CollectorRegistry collectorRegistry,
-				Clock clock) {
+													  Clock clock) {
 			return new PrometheusMeterRegistry(config, collectorRegistry, clock);
 		}
 

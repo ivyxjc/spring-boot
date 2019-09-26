@@ -33,6 +33,7 @@ public interface JedisClientConfigurationBuilderCustomizer {
 
 	/**
 	 * Customize the {@link JedisClientConfigurationBuilder}.
+	 *
 	 * @param clientConfigurationBuilder the builder to customize
 	 */
 	void customize(JedisClientConfigurationBuilder clientConfigurationBuilder);

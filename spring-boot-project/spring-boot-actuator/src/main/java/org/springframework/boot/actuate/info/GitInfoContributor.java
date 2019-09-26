@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.time.Instant;
-import java.util.Map;
-import java.util.Properties;
-
 import org.springframework.boot.info.GitProperties;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
+
+import java.time.Instant;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * An {@link InfoContributor} that exposes {@link GitProperties}.
@@ -60,6 +60,7 @@ public class GitInfoContributor extends InfoPropertiesInfoContributor<GitPropert
 	/**
 	 * Post-process the content to expose. By default, well known keys representing dates
 	 * are converted to {@link Instant} instances.
+	 *
 	 * @param content the content to expose
 	 */
 	@Override

@@ -54,11 +54,11 @@ class KafkaAnnotationDrivenConfiguration {
 	private final AfterRollbackProcessor<Object, Object> afterRollbackProcessor;
 
 	KafkaAnnotationDrivenConfiguration(KafkaProperties properties,
-			ObjectProvider<RecordMessageConverter> messageConverter,
-			ObjectProvider<KafkaTemplate<Object, Object>> kafkaTemplate,
-			ObjectProvider<KafkaAwareTransactionManager<Object, Object>> kafkaTransactionManager,
-			ObjectProvider<ErrorHandler> errorHandler,
-			ObjectProvider<AfterRollbackProcessor<Object, Object>> afterRollbackProcessor) {
+									   ObjectProvider<RecordMessageConverter> messageConverter,
+									   ObjectProvider<KafkaTemplate<Object, Object>> kafkaTemplate,
+									   ObjectProvider<KafkaAwareTransactionManager<Object, Object>> kafkaTransactionManager,
+									   ObjectProvider<ErrorHandler> errorHandler,
+									   ObjectProvider<AfterRollbackProcessor<Object, Object>> afterRollbackProcessor) {
 		this.properties = properties;
 		this.messageConverter = messageConverter.getIfUnique();
 		this.kafkaTemplate = kafkaTemplate.getIfUnique();

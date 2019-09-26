@@ -18,7 +18,6 @@ package org.springframework.boot;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -46,17 +45,17 @@ public class OverrideSourcesTests {
 
 	@Test
 	public void beanInjectedToMainConfiguration() {
-		this.context = SpringApplication.run(new Class<?>[] { MainConfiguration.class },
-				new String[] { "--spring.main.web-application-type=none" });
+		this.context = SpringApplication.run(new Class<?>[]{MainConfiguration.class},
+				new String[]{"--spring.main.web-application-type=none"});
 		assertThat(this.context.getBean(Service.class).bean.name).isEqualTo("foo");
 	}
 
 	@Test
 	public void primaryBeanInjectedProvingSourcesNotOverridden() {
-		this.context = SpringApplication.run(new Class<?>[] { MainConfiguration.class, TestConfiguration.class },
-				new String[] { "--spring.main.web-application-type=none",
+		this.context = SpringApplication.run(new Class<?>[]{MainConfiguration.class, TestConfiguration.class},
+				new String[]{"--spring.main.web-application-type=none",
 						"--spring.main.allow-bean-definition-overriding=true",
-						"--spring.main.sources=org.springframework.boot.OverrideSourcesTests.MainConfiguration" });
+						"--spring.main.sources=org.springframework.boot.OverrideSourcesTests.MainConfiguration"});
 		assertThat(this.context.getBean(Service.class).bean.name).isEqualTo("bar");
 	}
 

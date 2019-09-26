@@ -16,13 +16,13 @@
 
 package org.springframework.boot.launcher.it.props;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * Spring configuration.
@@ -40,7 +40,7 @@ public class SpringConfiguration implements InitializingBean {
 		Properties props = new Properties();
 		props.load(new ClassPathResource("application.properties").getInputStream());
 		String value = props.getProperty("message");
-		if (value!=null) {
+		if (value != null) {
 			this.message = value;
 		}
 

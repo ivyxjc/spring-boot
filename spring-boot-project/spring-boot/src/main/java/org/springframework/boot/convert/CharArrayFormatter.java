@@ -16,10 +16,10 @@
 
 package org.springframework.boot.convert;
 
+import org.springframework.format.Formatter;
+
 import java.text.ParseException;
 import java.util.Locale;
-
-import org.springframework.format.Formatter;
 
 /**
  * {@link Formatter} for {@code char[]}.

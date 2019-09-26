@@ -16,6 +16,24 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import io.undertow.Undertow;
+import io.undertow.Undertow.Builder;
+import io.undertow.servlet.api.DeploymentInfo;
+import io.undertow.servlet.api.ServletContainer;
+import org.apache.jasper.servlet.JspServlet;
+import org.junit.Test;
+import org.mockito.InOrder;
+import org.springframework.boot.testsupport.web.servlet.ExampleServlet;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.boot.web.server.PortInUseException;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactoryTests;
+import org.springframework.http.HttpStatus;
+import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
 import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
@@ -26,29 +44,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLHandshakeException;
-
-import io.undertow.Undertow;
-import io.undertow.Undertow.Builder;
-import io.undertow.servlet.api.DeploymentInfo;
-import io.undertow.servlet.api.ServletContainer;
-import org.apache.jasper.servlet.JspServlet;
-import org.junit.Test;
-import org.mockito.InOrder;
-
-import org.springframework.boot.testsupport.web.servlet.ExampleServlet;
-import org.springframework.boot.web.server.ErrorPage;
-import org.springframework.boot.web.server.PortInUseException;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactoryTests;
-import org.springframework.http.HttpStatus;
-import org.springframework.test.util.ReflectionTestUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIOException;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
@@ -196,36 +192,36 @@ public class UndertowServletWebServerFactoryTests extends AbstractServletWebServ
 	@Test
 	public void sslRestrictedProtocolsEmptyCipherFailure() throws Exception {
 		assertThatIOException()
-				.isThrownBy(() -> testRestrictedSSLProtocolsAndCipherSuites(new String[] { "TLSv1.2" },
-						new String[] { "TLS_EMPTY_RENEGOTIATION_INFO_SCSV" }))
+				.isThrownBy(() -> testRestrictedSSLProtocolsAndCipherSuites(new String[]{"TLSv1.2"},
+						new String[]{"TLS_EMPTY_RENEGOTIATION_INFO_SCSV"}))
 				.isInstanceOfAny(SSLException.class, SSLHandshakeException.class, SocketException.class);
 	}
 
 	@Test
 	public void sslRestrictedProtocolsECDHETLS1Failure() throws Exception {
 		assertThatIOException()
-				.isThrownBy(() -> testRestrictedSSLProtocolsAndCipherSuites(new String[] { "TLSv1" },
-						new String[] { "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256" }))
+				.isThrownBy(() -> testRestrictedSSLProtocolsAndCipherSuites(new String[]{"TLSv1"},
+						new String[]{"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"}))
 				.isInstanceOfAny(SSLException.class, SocketException.class);
 	}
 
 	@Test
 	public void sslRestrictedProtocolsECDHESuccess() throws Exception {
-		testRestrictedSSLProtocolsAndCipherSuites(new String[] { "TLSv1.2" },
-				new String[] { "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256" });
+		testRestrictedSSLProtocolsAndCipherSuites(new String[]{"TLSv1.2"},
+				new String[]{"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256"});
 	}
 
 	@Test
 	public void sslRestrictedProtocolsRSATLS12Success() throws Exception {
-		testRestrictedSSLProtocolsAndCipherSuites(new String[] { "TLSv1.2" },
-				new String[] { "TLS_RSA_WITH_AES_128_CBC_SHA256" });
+		testRestrictedSSLProtocolsAndCipherSuites(new String[]{"TLSv1.2"},
+				new String[]{"TLS_RSA_WITH_AES_128_CBC_SHA256"});
 	}
 
 	@Test
 	public void sslRestrictedProtocolsRSATLS11Failure() throws Exception {
 		assertThatIOException()
-				.isThrownBy(() -> testRestrictedSSLProtocolsAndCipherSuites(new String[] { "TLSv1.1" },
-						new String[] { "TLS_RSA_WITH_AES_128_CBC_SHA256" }))
+				.isThrownBy(() -> testRestrictedSSLProtocolsAndCipherSuites(new String[]{"TLSv1.1"},
+						new String[]{"TLS_RSA_WITH_AES_128_CBC_SHA256"}))
 				.isInstanceOfAny(SSLException.class, SocketException.class);
 	}
 
@@ -245,8 +241,7 @@ public class UndertowServletWebServerFactoryTests extends AbstractServletWebServ
 		UndertowServletWebServer container = (UndertowServletWebServer) getFactory().getWebServer();
 		try {
 			return container.getDeploymentManager().getDeployment().getServletContainer();
-		}
-		finally {
+		} finally {
 			container.stop();
 		}
 	}

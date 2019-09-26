@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.prometheus;
 
+import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusPushGatewayManager.ShutdownOperation;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.actuate.metrics.export.prometheus.PrometheusPushGatewayManager.ShutdownOperation;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link ConfigurationProperties} for configuring metrics export to Prometheus.
@@ -34,17 +34,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class PrometheusProperties {
 
 	/**
-	 * Whether to enable publishing descriptions as part of the scrape payload to
-	 * Prometheus. Turn this off to minimize the amount of data sent on each scrape.
-	 */
-	private boolean descriptions = true;
-
-	/**
 	 * Configuration options for using Prometheus Pushgateway, allowing metrics to be
 	 * pushed when they cannot be scraped.
 	 */
 	private final Pushgateway pushgateway = new Pushgateway();
-
+	/**
+	 * Whether to enable publishing descriptions as part of the scrape payload to
+	 * Prometheus. Turn this off to minimize the amount of data sent on each scrape.
+	 */
+	private boolean descriptions = true;
 	/**
 	 * Step size (i.e. reporting frequency) to use.
 	 */

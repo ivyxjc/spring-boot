@@ -16,10 +16,7 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.io.IOException;
-
 import org.junit.Test;
-
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.type.classreading.MetadataReader;
@@ -32,6 +29,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

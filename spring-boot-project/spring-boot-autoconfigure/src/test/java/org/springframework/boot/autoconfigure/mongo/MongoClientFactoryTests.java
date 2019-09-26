@@ -16,17 +16,16 @@
 
 package org.springframework.boot.autoconfigure.mongo;
 
-import java.util.List;
-
 import com.mongodb.MongoClient;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -130,7 +129,7 @@ public class MongoClientFactoryTests {
 	}
 
 	private void assertMongoCredential(MongoCredential credentials, String expectedUsername, String expectedPassword,
-			String expectedSource) {
+									   String expectedSource) {
 		assertThat(credentials.getUserName()).isEqualTo(expectedUsername);
 		assertThat(credentials.getPassword()).isEqualTo(expectedPassword.toCharArray());
 		assertThat(credentials.getSource()).isEqualTo(expectedSource);

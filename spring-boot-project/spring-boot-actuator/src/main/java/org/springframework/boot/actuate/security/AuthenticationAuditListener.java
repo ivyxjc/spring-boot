@@ -16,15 +16,15 @@
 
 package org.springframework.boot.actuate.security;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.web.authentication.switchuser.AuthenticationSwitchUserEvent;
 import org.springframework.util.ClassUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Default implementation of {@link AbstractAuthenticationAuditListener}.
@@ -65,11 +65,9 @@ public class AuthenticationAuditListener extends AbstractAuthenticationAuditList
 	public void onApplicationEvent(AbstractAuthenticationEvent event) {
 		if (event instanceof AbstractAuthenticationFailureEvent) {
 			onAuthenticationFailureEvent((AbstractAuthenticationFailureEvent) event);
-		}
-		else if (this.webListener != null && this.webListener.accepts(event)) {
+		} else if (this.webListener != null && this.webListener.accepts(event)) {
 			this.webListener.process(this, event);
-		}
-		else if (event instanceof AuthenticationSuccessEvent) {
+		} else if (event instanceof AuthenticationSuccessEvent) {
 			onAuthenticationSuccessEvent((AuthenticationSuccessEvent) event);
 		}
 	}

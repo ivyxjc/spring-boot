@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint.web;
 
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.regex.Pattern;
-
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * A predicate for a request to an operation on a web endpoint.
@@ -45,13 +45,14 @@ public final class WebOperationRequestPredicate {
 
 	/**
 	 * Creates a new {@code OperationRequestPredicate}.
-	 * @param path the path for the operation
+	 *
+	 * @param path       the path for the operation
 	 * @param httpMethod the HTTP method that the operation supports
-	 * @param produces the media types that the operation produces
-	 * @param consumes the media types that the operation consumes
+	 * @param produces   the media types that the operation produces
+	 * @param consumes   the media types that the operation consumes
 	 */
 	public WebOperationRequestPredicate(String path, WebEndpointHttpMethod httpMethod, Collection<String> consumes,
-			Collection<String> produces) {
+										Collection<String> produces) {
 		this.path = path;
 		this.canonicalPath = PATH_VAR_PATTERN.matcher(path).replaceAll("{*}");
 		this.httpMethod = httpMethod;
@@ -61,6 +62,7 @@ public final class WebOperationRequestPredicate {
 
 	/**
 	 * Returns the path for the operation.
+	 *
 	 * @return the path
 	 */
 	public String getPath() {
@@ -69,6 +71,7 @@ public final class WebOperationRequestPredicate {
 
 	/**
 	 * Returns the HTTP method for the operation.
+	 *
 	 * @return the HTTP method
 	 */
 	public WebEndpointHttpMethod getHttpMethod() {
@@ -77,6 +80,7 @@ public final class WebOperationRequestPredicate {
 
 	/**
 	 * Returns the media types that the operation consumes.
+	 *
 	 * @return the consumed media types
 	 */
 	public Collection<String> getConsumes() {
@@ -85,6 +89,7 @@ public final class WebOperationRequestPredicate {
 
 	/**
 	 * Returns the media types that the operation produces.
+	 *
 	 * @return the produced media types
 	 */
 	public Collection<String> getProduces() {

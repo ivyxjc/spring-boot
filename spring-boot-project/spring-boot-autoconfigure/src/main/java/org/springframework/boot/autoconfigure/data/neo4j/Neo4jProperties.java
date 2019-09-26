@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.data.neo4j;
 import org.neo4j.ogm.config.AutoIndexMode;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.config.Configuration.Builder;
-
 import org.springframework.beans.BeansException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
@@ -45,35 +44,28 @@ public class Neo4jProperties implements ApplicationContextAware {
 	static final String DEFAULT_BOLT_URI = "bolt://localhost:7687";
 
 	static final String BOLT_DRIVER = "org.neo4j.ogm.drivers.bolt.driver.BoltDriver";
-
+	private final Embedded embedded = new Embedded();
 	/**
 	 * URI used by the driver. Auto-detected by default.
 	 */
 	private String uri;
-
 	/**
 	 * Login user of the server.
 	 */
 	private String username;
-
 	/**
 	 * Login password of the server.
 	 */
 	private String password;
-
 	/**
 	 * Auto index mode.
 	 */
 	private AutoIndexMode autoIndex = AutoIndexMode.NONE;
-
 	/**
 	 * Register OpenSessionInViewInterceptor. Binds a Neo4j Session to the thread for the
 	 * entire processing of the request.",
 	 */
 	private Boolean openInView;
-
-	private final Embedded embedded = new Embedded();
-
 	private ClassLoader classLoader = Neo4jProperties.class.getClassLoader();
 
 	public String getUri() {
@@ -127,6 +119,7 @@ public class Neo4jProperties implements ApplicationContextAware {
 
 	/**
 	 * Create a {@link Configuration} based on the state of this instance.
+	 *
 	 * @return a configuration
 	 */
 	public Configuration createConfiguration() {
@@ -138,8 +131,7 @@ public class Neo4jProperties implements ApplicationContextAware {
 	private void configure(Builder builder) {
 		if (this.uri != null) {
 			builder.uri(this.uri);
-		}
-		else {
+		} else {
 			configureUriWithDefaults(builder);
 		}
 		if (this.username != null && this.password != null) {

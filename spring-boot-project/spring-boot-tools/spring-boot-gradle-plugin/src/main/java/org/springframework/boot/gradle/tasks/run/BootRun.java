@@ -34,6 +34,7 @@ public class BootRun extends JavaExec {
 	 * {@code sourceSet's} {@link SourceSet#getResources() resources} to the start of the
 	 * classpath in place of the {@link SourceSet#getOutput output's}
 	 * {@link SourceSetOutput#getResourcesDir() resources directory}.
+	 *
 	 * @param sourceSet the source set
 	 */
 	public void sourceResources(SourceSet sourceSet) {

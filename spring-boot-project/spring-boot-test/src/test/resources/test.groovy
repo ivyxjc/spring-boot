@@ -1,3 +1,3 @@
 beans {
-  foo String, "World"
+	foo String, "World"
 }

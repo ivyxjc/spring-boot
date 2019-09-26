@@ -16,13 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.servlet.error;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
@@ -33,13 +26,19 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Abstract base class for error {@link Controller} implementations.
  *
  * @author Dave Syer
  * @author Phillip Webb
- * @since 1.3.0
  * @see ErrorAttributes
+ * @since 1.3.0
  */
 public abstract class AbstractErrorController implements ErrorController {
 
@@ -86,8 +85,7 @@ public abstract class AbstractErrorController implements ErrorController {
 		}
 		try {
 			return HttpStatus.valueOf(statusCode);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 	}
@@ -95,16 +93,17 @@ public abstract class AbstractErrorController implements ErrorController {
 	/**
 	 * Resolve any specific error views. By default this method delegates to
 	 * {@link ErrorViewResolver ErrorViewResolvers}.
-	 * @param request the request
+	 *
+	 * @param request  the request
 	 * @param response the response
-	 * @param status the HTTP status
-	 * @param model the suggested model
+	 * @param status   the HTTP status
+	 * @param model    the suggested model
 	 * @return a specific {@link ModelAndView} or {@code null} if the default should be
 	 * used
 	 * @since 1.4.0
 	 */
 	protected ModelAndView resolveErrorView(HttpServletRequest request, HttpServletResponse response, HttpStatus status,
-			Map<String, Object> model) {
+											Map<String, Object> model) {
 		for (ErrorViewResolver resolver : this.errorViewResolvers) {
 			ModelAndView modelAndView = resolver.resolveErrorView(request, status, model);
 			if (modelAndView != null) {

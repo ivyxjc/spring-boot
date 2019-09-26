@@ -16,8 +16,6 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
-import java.util.Arrays;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleEvent;
 import org.apache.catalina.LifecycleListener;
@@ -29,16 +27,15 @@ import org.apache.catalina.valves.RemoteIpValve;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
-
 import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactoryTests;
 import org.springframework.http.server.reactive.HttpHandler;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link TomcatReactiveWebServerFactory}.
@@ -84,8 +81,7 @@ public class TomcatReactiveWebServerFactoryTests extends AbstractReactiveWebServ
 		if (AprLifecycleListener.isAprAvailable()) {
 			assertThat(factory.getContextLifecycleListeners()).hasSize(1).first()
 					.isInstanceOf(AprLifecycleListener.class);
-		}
-		else {
+		} else {
 			assertThat(factory.getContextLifecycleListeners()).isEmpty();
 		}
 	}

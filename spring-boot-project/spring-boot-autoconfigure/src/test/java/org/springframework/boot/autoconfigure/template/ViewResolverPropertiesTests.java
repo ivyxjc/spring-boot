@@ -16,11 +16,10 @@
 
 package org.springframework.boot.autoconfigure.template;
 
-import java.nio.charset.StandardCharsets;
-
 import org.junit.Test;
-
 import org.springframework.util.MimeTypeUtils;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

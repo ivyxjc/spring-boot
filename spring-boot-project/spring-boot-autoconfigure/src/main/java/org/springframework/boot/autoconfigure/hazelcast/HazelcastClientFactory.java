@@ -16,17 +16,16 @@
 
 package org.springframework.boot.autoconfigure.hazelcast;
 
-import java.io.IOException;
-import java.net.URL;
-
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.XmlClientConfigBuilder;
 import com.hazelcast.core.HazelcastInstance;
-
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Factory that can be used to create a client {@link HazelcastInstance}.
@@ -40,6 +39,7 @@ public class HazelcastClientFactory {
 
 	/**
 	 * Create a {@link HazelcastClientFactory} for the specified configuration location.
+	 *
 	 * @param clientConfigLocation the location of the configuration file
 	 * @throws IOException if the configuration location could not be read
 	 */
@@ -49,6 +49,7 @@ public class HazelcastClientFactory {
 
 	/**
 	 * Create a {@link HazelcastClientFactory} for the specified configuration.
+	 *
 	 * @param clientConfig the configuration
 	 */
 	public HazelcastClientFactory(ClientConfig clientConfig) {
@@ -63,6 +64,7 @@ public class HazelcastClientFactory {
 
 	/**
 	 * Get the {@link HazelcastInstance}.
+	 *
 	 * @return the {@link HazelcastInstance}
 	 */
 	public HazelcastInstance getHazelcastInstance() {

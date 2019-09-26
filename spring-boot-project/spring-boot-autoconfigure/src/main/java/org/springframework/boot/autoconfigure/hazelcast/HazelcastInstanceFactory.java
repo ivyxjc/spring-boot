@@ -16,18 +16,17 @@
 
 package org.springframework.boot.autoconfigure.hazelcast;
 
-import java.io.IOException;
-import java.net.URL;
-
 import com.hazelcast.config.Config;
 import com.hazelcast.config.XmlConfigBuilder;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Factory that can be used to create a {@link HazelcastInstance}.
@@ -42,6 +41,7 @@ public class HazelcastInstanceFactory {
 
 	/**
 	 * Create a {@link HazelcastInstanceFactory} for the specified configuration location.
+	 *
 	 * @param configLocation the location of the configuration file
 	 * @throws IOException if the configuration location could not be read
 	 */
@@ -52,6 +52,7 @@ public class HazelcastInstanceFactory {
 
 	/**
 	 * Create a {@link HazelcastInstanceFactory} for the specified configuration.
+	 *
 	 * @param config the configuration
 	 */
 	public HazelcastInstanceFactory(Config config) {
@@ -64,8 +65,7 @@ public class HazelcastInstanceFactory {
 		Config config = new XmlConfigBuilder(configUrl).build();
 		if (ResourceUtils.isFileURL(configUrl)) {
 			config.setConfigurationFile(configLocation.getFile());
-		}
-		else {
+		} else {
 			config.setConfigurationUrl(configUrl);
 		}
 		return config;
@@ -73,6 +73,7 @@ public class HazelcastInstanceFactory {
 
 	/**
 	 * Get the {@link HazelcastInstance}.
+	 *
 	 * @return the {@link HazelcastInstance}
 	 */
 	public HazelcastInstance getHazelcastInstance() {

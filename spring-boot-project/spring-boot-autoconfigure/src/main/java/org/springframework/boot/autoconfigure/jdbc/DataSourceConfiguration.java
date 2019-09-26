@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,6 +25,8 @@ import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
 
 /**
  * Actual DataSource configurations imported by {@link DataSourceAutoConfiguration}.
@@ -50,7 +49,7 @@ abstract class DataSourceConfiguration {
 	@ConditionalOnClass(org.apache.tomcat.jdbc.pool.DataSource.class)
 	@ConditionalOnMissingBean(DataSource.class)
 	@ConditionalOnProperty(name = "spring.datasource.type", havingValue = "org.apache.tomcat.jdbc.pool.DataSource",
-			matchIfMissing = true)
+						   matchIfMissing = true)
 	static class Tomcat {
 
 		@Bean
@@ -76,7 +75,7 @@ abstract class DataSourceConfiguration {
 	@ConditionalOnClass(HikariDataSource.class)
 	@ConditionalOnMissingBean(DataSource.class)
 	@ConditionalOnProperty(name = "spring.datasource.type", havingValue = "com.zaxxer.hikari.HikariDataSource",
-			matchIfMissing = true)
+						   matchIfMissing = true)
 	static class Hikari {
 
 		@Bean
@@ -98,7 +97,7 @@ abstract class DataSourceConfiguration {
 	@ConditionalOnClass(org.apache.commons.dbcp2.BasicDataSource.class)
 	@ConditionalOnMissingBean(DataSource.class)
 	@ConditionalOnProperty(name = "spring.datasource.type", havingValue = "org.apache.commons.dbcp2.BasicDataSource",
-			matchIfMissing = true)
+						   matchIfMissing = true)
 	static class Dbcp2 {
 
 		@Bean

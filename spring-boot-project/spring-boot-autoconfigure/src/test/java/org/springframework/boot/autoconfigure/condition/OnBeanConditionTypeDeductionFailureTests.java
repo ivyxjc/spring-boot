@@ -19,15 +19,10 @@ package org.springframework.boot.autoconfigure.condition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.autoconfigure.condition.OnBeanCondition.BeanTypeDeductionException;
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportSelector;
+import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotationMetadata;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,7 +82,7 @@ public class OnBeanConditionTypeDeductionFailureTests {
 
 		@Override
 		public String[] selectImports(AnnotationMetadata importingClassMetadata) {
-			return new String[] { OnMissingBeanConfiguration.class.getName() };
+			return new String[]{OnMissingBeanConfiguration.class.getName()};
 		}
 
 	}

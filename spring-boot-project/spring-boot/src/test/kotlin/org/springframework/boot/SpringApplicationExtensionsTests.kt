@@ -15,12 +15,8 @@
  */
 package org.springframework.boot
 
-import org.junit.Assert.assertArrayEquals
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
-
 import org.springframework.beans.factory.getBean
 import org.springframework.boot.web.servlet.server.MockServletWebServerFactory
 import org.springframework.context.annotation.Bean

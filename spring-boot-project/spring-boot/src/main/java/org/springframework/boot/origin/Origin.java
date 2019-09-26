@@ -28,14 +28,15 @@ import java.io.File;
  *
  * @author Madhura Bhave
  * @author Phillip Webb
- * @since 2.0.0
  * @see OriginProvider
+ * @since 2.0.0
  */
 public interface Origin {
 
 	/**
 	 * Find the {@link Origin} that an object originated from. Checks if the source object
 	 * is an {@link OriginProvider} and also searches exception stacks.
+	 *
 	 * @param source the source object or {@code null}
 	 * @return an optional {@link Origin}
 	 */

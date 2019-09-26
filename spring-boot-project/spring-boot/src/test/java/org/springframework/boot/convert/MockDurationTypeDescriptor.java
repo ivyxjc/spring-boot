@@ -16,12 +16,12 @@
 
 package org.springframework.boot.convert;
 
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.convert.TypeDescriptor;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.convert.TypeDescriptor;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -37,7 +37,7 @@ public final class MockDurationTypeDescriptor {
 	private MockDurationTypeDescriptor() {
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static TypeDescriptor get(ChronoUnit unit, DurationStyle style) {
 		TypeDescriptor descriptor = mock(TypeDescriptor.class);
 		if (unit != null) {

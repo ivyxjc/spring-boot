@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 
 /**
  * Factory to create a {@link HealthIndicatorRegistry}.
@@ -46,10 +46,11 @@ public class ReactiveHealthIndicatorRegistryFactory {
 	 * indicators. Each {@link HealthIndicator} are wrapped to a
 	 * {@link HealthIndicatorReactiveAdapter}. If two instances share the same name, the
 	 * reactive variant takes precedence.
+	 *
 	 * @param reactiveHealthIndicators the {@link ReactiveHealthIndicator} instances
-	 * mapped by name
-	 * @param healthIndicators the {@link HealthIndicator} instances mapped by name if
-	 * any.
+	 *                                 mapped by name
+	 * @param healthIndicators         the {@link HealthIndicator} instances mapped by name if
+	 *                                 any.
 	 * @return a {@link ReactiveHealthIndicator} that delegates to the specified
 	 * {@code reactiveHealthIndicators}.
 	 */
@@ -61,8 +62,8 @@ public class ReactiveHealthIndicatorRegistryFactory {
 	}
 
 	protected <T extends ReactiveHealthIndicatorRegistry> T initialize(T registry,
-			Map<String, ReactiveHealthIndicator> reactiveHealthIndicators,
-			Map<String, HealthIndicator> healthIndicators) {
+																	   Map<String, ReactiveHealthIndicator> reactiveHealthIndicators,
+																	   Map<String, HealthIndicator> healthIndicators) {
 		merge(reactiveHealthIndicators, healthIndicators).forEach((beanName, indicator) -> {
 			String name = this.healthIndicatorNameFactory.apply(beanName);
 			registry.register(name, indicator);
@@ -71,7 +72,7 @@ public class ReactiveHealthIndicatorRegistryFactory {
 	}
 
 	private Map<String, ReactiveHealthIndicator> merge(Map<String, ReactiveHealthIndicator> reactiveHealthIndicators,
-			Map<String, HealthIndicator> healthIndicators) {
+													   Map<String, HealthIndicator> healthIndicators) {
 		if (ObjectUtils.isEmpty(healthIndicators)) {
 			return reactiveHealthIndicators;
 		}

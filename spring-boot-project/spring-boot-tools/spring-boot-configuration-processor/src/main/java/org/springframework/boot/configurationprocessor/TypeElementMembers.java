@@ -16,24 +16,14 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.boot.configurationprocessor.fieldvalues.FieldValuesParser;
 
 import javax.annotation.processing.ProcessingEnvironment;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
-
-import org.springframework.boot.configurationprocessor.fieldvalues.FieldValuesParser;
+import java.util.*;
 
 /**
  * Provides access to relevant {@link TypeElement} members.
@@ -79,8 +69,7 @@ class TypeElementMembers {
 					this.fieldValues.put(name, value);
 				}
 			});
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// continue
 		}
 
@@ -95,8 +84,7 @@ class TypeElementMembers {
 			String name = method.getSimpleName().toString();
 			if (isGetter(method) && !this.publicGetters.containsKey(name)) {
 				this.publicGetters.put(getAccessorName(name), method);
-			}
-			else if (isSetter(method)) {
+			} else if (isSetter(method)) {
 				String propertyName = getAccessorName(name);
 				List<ExecutableElement> matchingSetters = this.publicSetters.get(propertyName);
 				if (matchingSetters == null) {

@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.reactor.core;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Hooks;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Hooks;
+import reactor.core.publisher.Mono;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Reactor Core.
@@ -34,7 +33,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ Mono.class, Flux.class })
+@ConditionalOnClass({Mono.class, Flux.class})
 @EnableConfigurationProperties(ReactorCoreProperties.class)
 public class ReactorCoreAutoConfiguration {
 

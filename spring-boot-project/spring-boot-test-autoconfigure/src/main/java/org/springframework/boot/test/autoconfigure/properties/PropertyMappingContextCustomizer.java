@@ -16,10 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.properties;
 
-import java.lang.annotation.Annotation;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -29,6 +25,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.ClassUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ContextCustomizer} to map annotation attributes to {@link Environment}
@@ -46,7 +46,7 @@ class PropertyMappingContextCustomizer implements ContextCustomizer {
 
 	@Override
 	public void customizeContext(ConfigurableApplicationContext context,
-			MergedContextConfiguration mergedContextConfiguration) {
+								 MergedContextConfiguration mergedContextConfiguration) {
 		if (!this.propertySource.isEmpty()) {
 			context.getEnvironment().getPropertySources().addFirst(this.propertySource);
 		}
@@ -102,8 +102,7 @@ class PropertyMappingContextCustomizer implements ContextCustomizer {
 			try {
 				return element.annotationType().equals(annotationType)
 						|| AnnotationUtils.findAnnotation(element.annotationType(), annotationType) != null;
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				return false;
 			}
 		}

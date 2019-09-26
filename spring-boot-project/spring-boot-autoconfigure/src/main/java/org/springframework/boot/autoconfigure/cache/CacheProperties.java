@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration properties for the cache abstraction.
@@ -35,28 +35,21 @@ import org.springframework.util.Assert;
 @ConfigurationProperties(prefix = "spring.cache")
 public class CacheProperties {
 
+	private final Caffeine caffeine = new Caffeine();
+	private final Couchbase couchbase = new Couchbase();
+	private final EhCache ehcache = new EhCache();
+	private final Infinispan infinispan = new Infinispan();
+	private final JCache jcache = new JCache();
+	private final Redis redis = new Redis();
 	/**
 	 * Cache type. By default, auto-detected according to the environment.
 	 */
 	private CacheType type;
-
 	/**
 	 * Comma-separated list of cache names to create if supported by the underlying cache
 	 * manager. Usually, this disables the ability to create additional caches on-the-fly.
 	 */
 	private List<String> cacheNames = new ArrayList<>();
-
-	private final Caffeine caffeine = new Caffeine();
-
-	private final Couchbase couchbase = new Couchbase();
-
-	private final EhCache ehcache = new EhCache();
-
-	private final Infinispan infinispan = new Infinispan();
-
-	private final JCache jcache = new JCache();
-
-	private final Redis redis = new Redis();
 
 	public CacheType getType() {
 		return this.type;
@@ -100,10 +93,11 @@ public class CacheProperties {
 
 	/**
 	 * Resolve the config location if set.
+	 *
 	 * @param config the config resource
 	 * @return the location or {@code null} if it is not set
 	 * @throws IllegalArgumentException if the config attribute is set to an unknown
-	 * location
+	 *                                  location
 	 */
 	public Resource resolveConfigLocation(Resource config) {
 		if (config != null) {

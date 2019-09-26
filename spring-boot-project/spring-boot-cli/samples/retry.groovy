@@ -20,7 +20,7 @@ class MyService {
 
 	@Retryable
 	String sayWorld() {
-		if (count++==0) {
+		if (count++ == 0) {
 			throw new IllegalStateException("Planned")
 		}
 		return "World!"

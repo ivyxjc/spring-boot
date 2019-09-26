@@ -29,7 +29,7 @@ final class AsciiBytes {
 
 	private static final String EMPTY_STRING = "";
 
-	private static final int[] INITIAL_BYTE_BITMASK = { 0x7F, 0x1F, 0x0F, 0x07 };
+	private static final int[] INITIAL_BYTE_BITMASK = {0x7F, 0x1F, 0x0F, 0x07};
 
 	private static final int SUBSEQUENT_BYTE_BITMASK = 0x3F;
 
@@ -45,6 +45,7 @@ final class AsciiBytes {
 
 	/**
 	 * Create a new {@link AsciiBytes} from the specified String.
+	 *
 	 * @param string the source string
 	 */
 	AsciiBytes(String string) {
@@ -55,6 +56,7 @@ final class AsciiBytes {
 	/**
 	 * Create a new {@link AsciiBytes} from the specified bytes. NOTE: underlying bytes
 	 * are not expected to change.
+	 *
 	 * @param bytes the source bytes
 	 */
 	AsciiBytes(byte[] bytes) {
@@ -64,7 +66,8 @@ final class AsciiBytes {
 	/**
 	 * Create a new {@link AsciiBytes} from the specified bytes. NOTE: underlying bytes
 	 * are not expected to change.
-	 * @param bytes the source bytes
+	 *
+	 * @param bytes  the source bytes
 	 * @param offset the offset
 	 * @param length the length
 	 */
@@ -75,6 +78,23 @@ final class AsciiBytes {
 		this.bytes = bytes;
 		this.offset = offset;
 		this.length = length;
+	}
+
+	static String toString(byte[] bytes) {
+		return new String(bytes, StandardCharsets.UTF_8);
+	}
+
+	public static int hashCode(CharSequence charSequence) {
+		// We're compatible with String's hashCode()
+		if (charSequence instanceof StringSequence) {
+			// ... but save making an unnecessary String for StringSequence
+			return charSequence.hashCode();
+		}
+		return charSequence.toString().hashCode();
+	}
+
+	public static int hashCode(int hash, char suffix) {
+		return (suffix != 0) ? (31 * hash + suffix) : hash;
 	}
 
 	public int length() {
@@ -140,8 +160,7 @@ final class AsciiBytes {
 				if (c != b) {
 					return false;
 				}
-			}
-			else {
+			} else {
 				if (c != ((b >> 0xA) + 0xD7C0)) {
 					return false;
 				}
@@ -211,8 +230,7 @@ final class AsciiBytes {
 				}
 				if (b <= 0xFFFF) {
 					hash = 31 * hash + b;
-				}
-				else {
+				} else {
 					hash = 31 * hash + ((b >> 0xA) + 0xD7C0);
 					hash = 31 * hash + ((b & 0x3FF) + 0xDC00);
 				}
@@ -227,29 +245,11 @@ final class AsciiBytes {
 		if (this.string == null) {
 			if (this.length == 0) {
 				this.string = EMPTY_STRING;
-			}
-			else {
+			} else {
 				this.string = new String(this.bytes, this.offset, this.length, StandardCharsets.UTF_8);
 			}
 		}
 		return this.string;
-	}
-
-	static String toString(byte[] bytes) {
-		return new String(bytes, StandardCharsets.UTF_8);
-	}
-
-	public static int hashCode(CharSequence charSequence) {
-		// We're compatible with String's hashCode()
-		if (charSequence instanceof StringSequence) {
-			// ... but save making an unnecessary String for StringSequence
-			return charSequence.hashCode();
-		}
-		return charSequence.toString().hashCode();
-	}
-
-	public static int hashCode(int hash, char suffix) {
-		return (suffix != 0) ? (31 * hash + suffix) : hash;
 	}
 
 }

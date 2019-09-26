@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.health;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
@@ -66,6 +65,7 @@ public final class Status {
 
 	/**
 	 * Create a new {@link Status} instance with the given code and an empty description.
+	 *
 	 * @param code the status code
 	 */
 	public Status(String code) {
@@ -74,7 +74,8 @@ public final class Status {
 
 	/**
 	 * Create a new {@link Status} instance with the given code and description.
-	 * @param code the status code
+	 *
+	 * @param code        the status code
 	 * @param description a description of the status
 	 */
 	public Status(String code, String description) {
@@ -86,6 +87,7 @@ public final class Status {
 
 	/**
 	 * Return the code for this status.
+	 *
 	 * @return the code
 	 */
 	@JsonProperty("status")
@@ -95,6 +97,7 @@ public final class Status {
 
 	/**
 	 * Return the description of this status.
+	 *
 	 * @return the description
 	 */
 	@JsonInclude(Include.NON_EMPTY)

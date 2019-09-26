@@ -16,19 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.security.reactive;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -45,6 +32,12 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Factory that can be used to create a {@link ServerWebExchangeMatcher} for actuator
@@ -68,6 +61,7 @@ public final class EndpointRequest {
 	 * example: <pre class="code">
 	 * EndpointRequest.toAnyEndpoint().excluding(ShutdownEndpoint.class)
 	 * </pre>
+	 *
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
 	public static EndpointServerWebExchangeMatcher toAnyEndpoint() {
@@ -79,6 +73,7 @@ public final class EndpointRequest {
 	 * For example: <pre class="code">
 	 * EndpointRequest.to(ShutdownEndpoint.class, HealthEndpoint.class)
 	 * </pre>
+	 *
 	 * @param endpoints the endpoints to include
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
@@ -91,6 +86,7 @@ public final class EndpointRequest {
 	 * For example: <pre class="code">
 	 * EndpointRequest.to("shutdown", "health")
 	 * </pre>
+	 *
 	 * @param endpoints the endpoints to include
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
@@ -108,6 +104,7 @@ public final class EndpointRequest {
 	 * <pre class="code">
 	 * EndpointRequest.toLinks()
 	 * </pre>
+	 *
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
 	public static LinksServerWebExchangeMatcher toLinks() {
@@ -148,6 +145,20 @@ public final class EndpointRequest {
 			this.includeLinks = includeLinks;
 		}
 
+		static boolean isManagementContext(ServerWebExchange exchange) {
+			ApplicationContext applicationContext = exchange.getApplicationContext();
+			if (ManagementPortType.get(applicationContext.getEnvironment()) == ManagementPortType.DIFFERENT) {
+				if (applicationContext.getParent() == null) {
+					return false;
+				}
+				String managementContextId = applicationContext.getParent().getId() + ":management";
+				if (!managementContextId.equals(applicationContext.getId())) {
+					return false;
+				}
+			}
+			return true;
+		}
+
 		public EndpointServerWebExchangeMatcher excluding(Class<?>... endpoints) {
 			List<Object> excludes = new ArrayList<>(this.excludes);
 			excludes.addAll(Arrays.asList((Object[]) endpoints));
@@ -172,8 +183,7 @@ public final class EndpointRequest {
 		private ServerWebExchangeMatcher createDelegate(Supplier<PathMappedEndpoints> pathMappedEndpoints) {
 			try {
 				return createDelegate(pathMappedEndpoints.get());
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return EMPTY_MATCHER;
 			}
 		}
@@ -226,20 +236,6 @@ public final class EndpointRequest {
 				return MatchResult.notMatch();
 			}
 			return this.delegate.matches(exchange);
-		}
-
-		static boolean isManagementContext(ServerWebExchange exchange) {
-			ApplicationContext applicationContext = exchange.getApplicationContext();
-			if (ManagementPortType.get(applicationContext.getEnvironment()) == ManagementPortType.DIFFERENT) {
-				if (applicationContext.getParent() == null) {
-					return false;
-				}
-				String managementContextId = applicationContext.getParent().getId() + ":management";
-				if (!managementContextId.equals(applicationContext.getId())) {
-					return false;
-				}
-			}
-			return true;
 		}
 
 	}

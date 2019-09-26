@@ -33,6 +33,18 @@ class SilentExitExceptionHandler implements UncaughtExceptionHandler {
 		this.delegate = delegate;
 	}
 
+	public static void setup(Thread thread) {
+		UncaughtExceptionHandler handler = thread.getUncaughtExceptionHandler();
+		if (!(handler instanceof SilentExitExceptionHandler)) {
+			handler = new SilentExitExceptionHandler(handler);
+			thread.setUncaughtExceptionHandler(handler);
+		}
+	}
+
+	public static void exitCurrentThread() {
+		throw new SilentExitException();
+	}
+
 	@Override
 	public void uncaughtException(Thread thread, Throwable exception) {
 		if (exception instanceof SilentExitException) {
@@ -76,18 +88,6 @@ class SilentExitExceptionHandler implements UncaughtExceptionHandler {
 
 	protected void preventNonZeroExitCode() {
 		System.exit(0);
-	}
-
-	public static void setup(Thread thread) {
-		UncaughtExceptionHandler handler = thread.getUncaughtExceptionHandler();
-		if (!(handler instanceof SilentExitExceptionHandler)) {
-			handler = new SilentExitExceptionHandler(handler);
-			thread.setUncaughtExceptionHandler(handler);
-		}
-	}
-
-	public static void exitCurrentThread() {
-		throw new SilentExitException();
 	}
 
 	private static class SilentExitException extends RuntimeException {

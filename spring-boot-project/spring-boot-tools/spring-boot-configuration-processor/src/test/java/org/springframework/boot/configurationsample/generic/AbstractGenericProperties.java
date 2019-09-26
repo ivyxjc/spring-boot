@@ -30,14 +30,13 @@ import java.util.Map;
 public class AbstractGenericProperties<A, B, C> {
 
 	/**
-	 * Generic name.
-	 */
-	private A name;
-
-	/**
 	 * Generic mappings.
 	 */
 	private final Map<B, C> mappings = new HashMap<>();
+	/**
+	 * Generic name.
+	 */
+	private A name;
 
 	public A getName() {
 		return this.name;

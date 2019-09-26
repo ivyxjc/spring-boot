@@ -23,8 +23,8 @@ import org.springframework.http.server.reactive.HttpHandler;
  * Factory interface that can be used to create a reactive {@link WebServer}.
  *
  * @author Brian Clozel
- * @since 2.0.0
  * @see WebServer
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface ReactiveWebServerFactory {
@@ -34,6 +34,7 @@ public interface ReactiveWebServerFactory {
 	 * not be able to connect to the returned server until {@link WebServer#start()} is
 	 * called (which happens when the {@code ApplicationContext} has been fully
 	 * refreshed).
+	 *
 	 * @param httpHandler the HTTP handler in charge of processing requests
 	 * @return a fully configured and started {@link WebServer}
 	 * @see WebServer#stop()

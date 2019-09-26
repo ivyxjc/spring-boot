@@ -31,7 +31,7 @@ class ExcludeFilterContextCustomizer implements ContextCustomizer {
 
 	@Override
 	public void customizeContext(ConfigurableApplicationContext context,
-			MergedContextConfiguration mergedContextConfiguration) {
+								 MergedContextConfiguration mergedContextConfiguration) {
 		context.getBeanFactory().registerSingleton(TestTypeExcludeFilter.class.getName(), new TestTypeExcludeFilter());
 	}
 

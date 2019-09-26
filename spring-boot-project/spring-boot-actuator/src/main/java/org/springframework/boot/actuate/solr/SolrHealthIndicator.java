@@ -20,7 +20,6 @@ import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
 import org.apache.solr.common.params.CoreAdminParams;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -64,8 +63,7 @@ public class SolrHealthIndicator extends AbstractHealthIndicator {
 		}
 		try {
 			return initializeStatusCheck(new RootStatusCheck());
-		}
-		catch (RemoteSolrException ex) {
+		} catch (RemoteSolrException ex) {
 			// 404 is thrown when SolrClient has a baseUrl pointing to a particular core.
 			if (ex.code() == HTTP_NOT_FOUND_STATUS) {
 				return initializeStatusCheck(new ParticularCoreStatusCheck());

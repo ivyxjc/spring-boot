@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.context;
 
-import java.util.Locale;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +25,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest("spring.messages.basename:test/messages")
-@ImportAutoConfiguration({ MessageSourceAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class })
+@ImportAutoConfiguration({MessageSourceAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
 @DirtiesContext
 public class MessageSourceAutoConfigurationIntegrationTests {
 

@@ -16,12 +16,6 @@
 
 package org.springframework.boot.context.properties;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -29,6 +23,12 @@ import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Utility class to memorize {@code @Bean} definition meta data during initialization of
@@ -43,10 +43,8 @@ public class ConfigurationBeanFactoryMetadata implements BeanFactoryPostProcesso
 	 * The bean name that this class is registered with.
 	 */
 	public static final String BEAN_NAME = ConfigurationBeanFactoryMetadata.class.getName();
-
-	private ConfigurableListableBeanFactory beanFactory;
-
 	private final Map<String, FactoryMetadata> beansFactoryMetadata = new HashMap<>();
+	private ConfigurableListableBeanFactory beanFactory;
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {

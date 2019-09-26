@@ -7,7 +7,7 @@ class Example implements CommandLineRunner {
 	private MyService myService
 
 	void run(String... args) {
-		println "Hello ${this.myService.sayWorld()} From ${getClass().getClassLoader().getResource('samples/app.groovy')}" 
+		println "Hello ${this.myService.sayWorld()} From ${getClass().getClassLoader().getResource('samples/app.groovy')}"
 	}
 }
 

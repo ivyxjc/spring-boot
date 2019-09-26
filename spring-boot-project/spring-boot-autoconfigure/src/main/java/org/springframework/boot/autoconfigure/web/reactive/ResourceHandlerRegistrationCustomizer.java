@@ -29,6 +29,7 @@ public interface ResourceHandlerRegistrationCustomizer {
 
 	/**
 	 * Customize the given {@link ResourceHandlerRegistration}.
+	 *
 	 * @param registration the registration to customize
 	 */
 	void customize(ResourceHandlerRegistration registration);

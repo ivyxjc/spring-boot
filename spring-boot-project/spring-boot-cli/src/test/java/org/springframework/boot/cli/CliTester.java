@@ -16,11 +16,20 @@
 
 package org.springframework.boot.cli;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.junit.Assume;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+import org.springframework.boot.cli.command.AbstractCommand;
+import org.springframework.boot.cli.command.OptionParsingCommand;
+import org.springframework.boot.cli.command.archive.JarCommand;
+import org.springframework.boot.cli.command.grab.GrabCommand;
+import org.springframework.boot.cli.command.run.RunCommand;
+import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.URL;
@@ -30,20 +39,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-
-import org.junit.Assume;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
-import org.springframework.boot.cli.command.AbstractCommand;
-import org.springframework.boot.cli.command.OptionParsingCommand;
-import org.springframework.boot.cli.command.archive.JarCommand;
-import org.springframework.boot.cli.command.grab.GrabCommand;
-import org.springframework.boot.cli.command.run.RunCommand;
-import org.springframework.boot.test.rule.OutputCapture;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * {@link TestRule} that can be used to invoke CLI commands.
@@ -55,12 +50,9 @@ import org.springframework.util.StringUtils;
 public class CliTester implements TestRule {
 
 	private final OutputCapture outputCapture = new OutputCapture();
-
-	private long timeout = TimeUnit.MINUTES.toMillis(6);
-
 	private final List<AbstractCommand> commands = new ArrayList<>();
-
 	private final String prefix;
+	private long timeout = TimeUnit.MINUTES.toMillis(6);
 
 	public CliTester(String prefix) {
 		this.prefix = prefix;
@@ -112,8 +104,7 @@ public class CliTester implements TestRule {
 			try {
 				command.run(sources);
 				return command;
-			}
-			finally {
+			} finally {
 				System.clearProperty("server.port");
 				System.clearProperty("spring.application.class.name");
 				System.clearProperty("portfile");
@@ -131,8 +122,7 @@ public class CliTester implements TestRule {
 			Field field = URL.class.getDeclaredField("factory");
 			field.setAccessible(true);
 			field.set(null, null);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -144,12 +134,10 @@ public class CliTester implements TestRule {
 			if (!arg.endsWith(".groovy") && !arg.endsWith(".xml")) {
 				if (new File(this.prefix + arg).isDirectory()) {
 					sources[i] = this.prefix + arg;
-				}
-				else {
+				} else {
 					sources[i] = arg;
 				}
-			}
-			else {
+			} else {
 				sources[i] = new File(arg).isAbsolute() ? arg : this.prefix + arg;
 			}
 		}
@@ -186,8 +174,7 @@ public class CliTester implements TestRule {
 			InputStream stream = URI.create("http://localhost:" + port + uri).toURL().openStream();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 			return reader.lines().collect(Collectors.joining());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -206,8 +193,7 @@ public class CliTester implements TestRule {
 			try {
 				try {
 					this.base.evaluate();
-				}
-				finally {
+				} finally {
 					for (AbstractCommand command : CliTester.this.commands) {
 						if (command != null && command instanceof RunCommand) {
 							((RunCommand) command).stop();
@@ -215,8 +201,7 @@ public class CliTester implements TestRule {
 					}
 					System.clearProperty("disableSpringSnapshotRepos");
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException(ex);
 			}
 		}

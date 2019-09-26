@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.metrics;
 
-import java.util.Collections;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.MockClock;
 import io.micrometer.core.instrument.Statistic;
@@ -28,8 +23,12 @@ import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.simple.SimpleConfig;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
+
+import java.util.Collections;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -184,11 +183,11 @@ public class MetricsEndpointTests {
 	}
 
 	private void assertMetricHasStatisticEqualTo(MeterRegistry registry, String metricName, Statistic stat,
-			Double value) {
+												 Double value) {
 		MetricsEndpoint endpoint = new MetricsEndpoint(registry);
 		assertThat(endpoint.metric(metricName, Collections.emptyList()).getMeasurements().stream()
 				.filter((sample) -> sample.getStatistic().equals(stat)).findAny())
-						.hasValueSatisfying((sample) -> assertThat(sample.getValue()).isEqualTo(value));
+				.hasValueSatisfying((sample) -> assertThat(sample.getValue()).isEqualTo(value));
 	}
 
 	private Optional<Double> getCount(MetricsEndpoint.MetricResponse response) {

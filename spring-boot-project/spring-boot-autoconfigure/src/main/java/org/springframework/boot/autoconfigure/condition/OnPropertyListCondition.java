@@ -16,15 +16,15 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.List;
-import java.util.function.Supplier;
-
 import org.springframework.boot.context.properties.bind.BindResult;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * {@link Condition} that checks if a property whose value is a list is defined in the
@@ -44,9 +44,10 @@ public class OnPropertyListCondition extends SpringBootCondition {
 
 	/**
 	 * Create a new instance with the property to check and the message builder to use.
-	 * @param propertyName the name of the property
+	 *
+	 * @param propertyName   the name of the property
 	 * @param messageBuilder a message builder supplier that should provide a fresh
-	 * instance on each call
+	 *                       instance on each call
 	 */
 	protected OnPropertyListCondition(String propertyName, Supplier<ConditionMessage.Builder> messageBuilder) {
 		this.propertyName = propertyName;

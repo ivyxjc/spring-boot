@@ -16,10 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.jms;
 
-import java.util.Map;
-
-import javax.jms.ConnectionFactory;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -36,6 +32,9 @@ import org.springframework.boot.autoconfigure.jms.artemis.ArtemisAutoConfigurati
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.jms.ConnectionFactory;
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link JmsHealthIndicator}.
  *
@@ -47,7 +46,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(ConnectionFactory.class)
 @ConditionalOnEnabledHealthIndicator("jms")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)
-@AutoConfigureAfter({ ActiveMQAutoConfiguration.class, ArtemisAutoConfiguration.class })
+@AutoConfigureAfter({ActiveMQAutoConfiguration.class, ArtemisAutoConfiguration.class})
 public class JmsHealthIndicatorAutoConfiguration
 		extends CompositeHealthIndicatorConfiguration<JmsHealthIndicator, ConnectionFactory> {
 

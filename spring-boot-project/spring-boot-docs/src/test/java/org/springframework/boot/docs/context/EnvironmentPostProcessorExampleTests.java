@@ -17,7 +17,6 @@
 package org.springframework.boot.docs.context;
 
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.core.env.StandardEnvironment;
 

@@ -16,14 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.web.servlet;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpoint;
 import org.springframework.boot.actuate.endpoint.web.annotation.ExposableControllerEndpoint;
@@ -34,6 +26,9 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.mvc.condition.PatternsRequestCondition;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * {@link HandlerMapping} that exposes {@link ControllerEndpoint @ControllerEndpoint} and
@@ -54,12 +49,13 @@ public class ControllerEndpointHandlerMapping extends RequestMappingHandlerMappi
 	/**
 	 * Create a new {@link ControllerEndpointHandlerMapping} instance providing mappings
 	 * for the specified endpoints.
-	 * @param endpointMapping the base mapping for all endpoints
-	 * @param endpoints the web endpoints
+	 *
+	 * @param endpointMapping   the base mapping for all endpoints
+	 * @param endpoints         the web endpoints
 	 * @param corsConfiguration the CORS configuration for the endpoints or {@code null}
 	 */
 	public ControllerEndpointHandlerMapping(EndpointMapping endpointMapping,
-			Collection<ExposableControllerEndpoint> endpoints, CorsConfiguration corsConfiguration) {
+											Collection<ExposableControllerEndpoint> endpoints, CorsConfiguration corsConfiguration) {
 		Assert.notNull(endpointMapping, "EndpointMapping must not be null");
 		Assert.notNull(endpoints, "Endpoints must not be null");
 		this.endpointMapping = endpointMapping;
@@ -88,7 +84,7 @@ public class ControllerEndpointHandlerMapping extends RequestMappingHandlerMappi
 	}
 
 	private RequestMappingInfo withEndpointMappedPatterns(ExposableControllerEndpoint endpoint,
-			RequestMappingInfo mapping) {
+														  RequestMappingInfo mapping) {
 		Set<String> patterns = mapping.getPatternsCondition().getPatterns();
 		if (patterns.isEmpty()) {
 			patterns = Collections.singleton("");

@@ -16,20 +16,18 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
+import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
+import org.eclipse.jetty.util.component.AbstractLifeCycle;
+import org.eclipse.jetty.webapp.WebAppContext;
+import org.springframework.util.ClassUtils;
+
+import javax.servlet.ServletContainerInitializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
-
-import javax.servlet.ServletContainerInitializer;
-
-import org.apache.catalina.webresources.TomcatURLStreamHandlerFactory;
-import org.eclipse.jetty.util.component.AbstractLifeCycle;
-import org.eclipse.jetty.webapp.WebAppContext;
-
-import org.springframework.util.ClassUtils;
 
 /**
  * Jetty {@link AbstractLifeCycle} to initialize Jasper.
@@ -39,8 +37,8 @@ import org.springframework.util.ClassUtils;
  */
 class JasperInitializer extends AbstractLifeCycle {
 
-	private static final String[] INITIALIZER_CLASSES = { "org.eclipse.jetty.apache.jsp.JettyJasperInitializer",
-			"org.apache.jasper.servlet.JasperInitializer" };
+	private static final String[] INITIALIZER_CLASSES = {"org.eclipse.jetty.apache.jsp.JettyJasperInitializer",
+			"org.apache.jasper.servlet.JasperInitializer"};
 
 	private final WebAppContext context;
 
@@ -56,8 +54,7 @@ class JasperInitializer extends AbstractLifeCycle {
 			try {
 				Class<?> initializerClass = ClassUtils.forName(className, null);
 				return (ServletContainerInitializer) initializerClass.newInstance();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore
 			}
 		}
@@ -72,12 +69,10 @@ class JasperInitializer extends AbstractLifeCycle {
 		if (ClassUtils.isPresent("org.apache.catalina.webresources.TomcatURLStreamHandlerFactory",
 				getClass().getClassLoader())) {
 			TomcatURLStreamHandlerFactory.register();
-		}
-		else {
+		} else {
 			try {
 				URL.setURLStreamHandlerFactory(new WarUrlStreamHandlerFactory());
-			}
-			catch (Error ex) {
+			} catch (Error ex) {
 				// Ignore
 			}
 		}
@@ -87,12 +82,10 @@ class JasperInitializer extends AbstractLifeCycle {
 			try {
 				setExtendedListenerTypes(true);
 				this.initializer.onStartup(null, this.context.getServletContext());
-			}
-			finally {
+			} finally {
 				setExtendedListenerTypes(false);
 			}
-		}
-		finally {
+		} finally {
 			Thread.currentThread().setContextClassLoader(classLoader);
 		}
 	}
@@ -100,8 +93,7 @@ class JasperInitializer extends AbstractLifeCycle {
 	private void setExtendedListenerTypes(boolean extended) {
 		try {
 			this.context.getServletContext().setExtendedListenerTypes(extended);
-		}
-		catch (NoSuchMethodError ex) {
+		} catch (NoSuchMethodError ex) {
 			// Not available on Jetty 8
 		}
 	}

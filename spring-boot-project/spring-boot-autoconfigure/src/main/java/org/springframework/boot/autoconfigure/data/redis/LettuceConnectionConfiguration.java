@@ -16,13 +16,10 @@
 
 package org.springframework.boot.autoconfigure.data.redis;
 
-import java.net.UnknownHostException;
-
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.resource.ClientResources;
 import io.lettuce.core.resource.DefaultClientResources;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,6 +34,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceClientConfigurat
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettucePoolingClientConfiguration;
 import org.springframework.util.StringUtils;
+
+import java.net.UnknownHostException;
 
 /**
  * Redis connection configuration using Lettuce.
@@ -53,9 +52,9 @@ class LettuceConnectionConfiguration extends RedisConnectionConfiguration {
 	private final ObjectProvider<LettuceClientConfigurationBuilderCustomizer> builderCustomizers;
 
 	LettuceConnectionConfiguration(RedisProperties properties,
-			ObjectProvider<RedisSentinelConfiguration> sentinelConfigurationProvider,
-			ObjectProvider<RedisClusterConfiguration> clusterConfigurationProvider,
-			ObjectProvider<LettuceClientConfigurationBuilderCustomizer> builderCustomizers) {
+								   ObjectProvider<RedisSentinelConfiguration> sentinelConfigurationProvider,
+								   ObjectProvider<RedisClusterConfiguration> clusterConfigurationProvider,
+								   ObjectProvider<LettuceClientConfigurationBuilderCustomizer> builderCustomizers) {
 		super(properties, sentinelConfigurationProvider, clusterConfigurationProvider);
 		this.properties = properties;
 		this.builderCustomizers = builderCustomizers;

@@ -16,11 +16,7 @@
 
 package org.springframework.boot.autoconfigure.diagnostics.analyzer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoUniqueBeanDefinitionException;
@@ -40,6 +36,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ClassUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -50,6 +49,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class NoSuchBeanDefinitionFailureAnalyzerTests {
 
 	private final NoSuchBeanDefinitionFailureAnalyzer analyzer = new NoSuchBeanDefinitionFailureAnalyzer();
+
+	private static void addExclusions(NoSuchBeanDefinitionFailureAnalyzer analyzer, Class<?>... classes) {
+		ConditionEvaluationReport report = (ConditionEvaluationReport) ReflectionTestUtils.getField(analyzer, "report");
+		List<String> exclusions = new ArrayList<>(report.getExclusions());
+		for (Class<?> c : classes) {
+			exclusions.add(c.getName());
+		}
+		report.recordExclusions(exclusions);
+	}
 
 	@Test
 	public void failureAnalysisForMultipleBeans() {
@@ -156,7 +164,7 @@ public class NoSuchBeanDefinitionFailureAnalyzerTests {
 	}
 
 	private void assertDescriptionConstructorMissingType(FailureAnalysis analysis, Class<?> component, int index,
-			Class<?> type) {
+														 Class<?> type) {
 		String expected = String.format(
 				"Parameter %s of constructor in %s required a bean of " + "type '%s' that could not be found.", index,
 				component.getName(), type.getName());
@@ -176,7 +184,7 @@ public class NoSuchBeanDefinitionFailureAnalyzerTests {
 	}
 
 	private void assertBeanMethodDisabled(FailureAnalysis analysis, String description, Class<?> target,
-			String methodName) {
+										  String methodName) {
 		String expected = String.format("Bean method '%s' in '%s' not loaded because", methodName,
 				ClassUtils.getShortName(target));
 		assertThat(analysis.getDescription()).contains(expected);
@@ -184,27 +192,18 @@ public class NoSuchBeanDefinitionFailureAnalyzerTests {
 	}
 
 	private void assertClassDisabled(FailureAnalysis analysis, String description, String methodName,
-			String className) {
+									 String className) {
 		String expected = String.format("Bean method '%s' in '%s' not loaded because", methodName, className);
 		assertThat(analysis.getDescription()).contains(expected);
 		assertThat(analysis.getDescription()).contains(description);
 	}
 
 	private void assertUserDefinedBean(FailureAnalysis analysis, String description, Class<?> target,
-			String methodName) {
+									   String methodName) {
 		String expected = String.format("User-defined bean method '%s' in '%s' ignored", methodName,
 				ClassUtils.getShortName(target));
 		assertThat(analysis.getDescription()).contains(expected);
 		assertThat(analysis.getDescription()).contains(description);
-	}
-
-	private static void addExclusions(NoSuchBeanDefinitionFailureAnalyzer analyzer, Class<?>... classes) {
-		ConditionEvaluationReport report = (ConditionEvaluationReport) ReflectionTestUtils.getField(analyzer, "report");
-		List<String> exclusions = new ArrayList<>(report.getExclusions());
-		for (Class<?> c : classes) {
-			exclusions.add(c.getName());
-		}
-		report.recordExclusions(exclusions);
 	}
 
 	private FatalBeanException createFailure(Class<?> config, String... environment) {
@@ -214,8 +213,7 @@ public class NoSuchBeanDefinitionFailureAnalyzerTests {
 			context.register(config);
 			context.refresh();
 			return null;
-		}
-		catch (FatalBeanException ex) {
+		} catch (FatalBeanException ex) {
 			return ex;
 		}
 	}
@@ -250,7 +248,7 @@ public class NoSuchBeanDefinitionFailureAnalyzerTests {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ TestPropertyAutoConfiguration.class, TestTypeClassAutoConfiguration.class })
+	@ImportAutoConfiguration({TestPropertyAutoConfiguration.class, TestTypeClassAutoConfiguration.class})
 	@Import(StringHandler.class)
 	protected static class SeveralAutoConfigurationTypeConfiguration {
 

@@ -16,17 +16,6 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.function.Function;
-
 import org.gradle.api.file.FileCopyDetails;
 import org.gradle.api.file.FileTreeElement;
 import org.gradle.api.file.RelativePath;
@@ -40,6 +29,13 @@ import org.gradle.api.tasks.WorkResult;
 import org.gradle.api.tasks.bundling.Jar;
 import org.gradle.api.tasks.util.PatternSet;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.function.Function;
+
 /**
  * Support class for implementations of {@link BootArchive}.
  *
@@ -47,7 +43,7 @@ import org.gradle.api.tasks.util.PatternSet;
  */
 class BootArchiveSupport {
 
-	private static final byte[] ZIP_FILE_HEADER = new byte[] { 'P', 'K', 3, 4 };
+	private static final byte[] ZIP_FILE_HEADER = new byte[]{'P', 'K', 3, 4};
 
 	private static final Set<String> DEFAULT_LAUNCHER_CLASSES;
 
@@ -136,8 +132,7 @@ class BootArchiveSupport {
 			try (FileInputStream fileInputStream = new FileInputStream(file)) {
 				return isZip(fileInputStream);
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return false;
 		}
 	}

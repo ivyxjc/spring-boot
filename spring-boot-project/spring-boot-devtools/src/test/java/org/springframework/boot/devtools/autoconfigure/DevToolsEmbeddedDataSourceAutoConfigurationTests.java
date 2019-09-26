@@ -16,18 +16,16 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;

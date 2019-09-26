@@ -49,6 +49,7 @@ public class Jsp {
 	 * Return the class name of the servlet to use for JSPs. If {@link #getRegistered()
 	 * registered} is {@code true} and this class is on the classpath then it will be
 	 * registered.
+	 *
 	 * @return the class name of the servlet to use for JSPs
 	 */
 	public String getClassName() {
@@ -61,6 +62,7 @@ public class Jsp {
 
 	/**
 	 * Return the init parameters used to configure the JSP servlet.
+	 *
 	 * @return the init parameters
 	 */
 	public Map<String, String> getInitParameters() {
@@ -73,6 +75,7 @@ public class Jsp {
 
 	/**
 	 * Return whether the JSP servlet is registered.
+	 *
 	 * @return {@code true} to register the JSP servlet
 	 */
 	public boolean getRegistered() {

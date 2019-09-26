@@ -18,7 +18,6 @@ package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.CustomScopeConfigurer;
@@ -26,11 +25,7 @@ import org.springframework.boot.test.mock.mockito.SpyBeanOnTestFieldForExistingS
 import org.springframework.boot.test.mock.mockito.example.ExampleService;
 import org.springframework.boot.test.mock.mockito.example.ExampleServiceCaller;
 import org.springframework.boot.test.mock.mockito.example.SimpleExampleService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.context.annotation.*;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -60,14 +55,8 @@ public class SpyBeanOnTestFieldForExistingScopedBeanIntegrationTests {
 	}
 
 	@Configuration
-	@Import({ ExampleServiceCaller.class })
+	@Import({ExampleServiceCaller.class})
 	static class SpyBeanOnTestFieldForExistingScopedBeanConfig {
-
-		@Bean
-		@Scope(scopeName = "custom", proxyMode = ScopedProxyMode.TARGET_CLASS)
-		SimpleExampleService simpleExampleService() {
-			return new SimpleExampleService();
-		}
 
 		@Bean
 		static CustomScopeConfigurer customScopeConfigurer() {
@@ -106,6 +95,12 @@ public class SpyBeanOnTestFieldForExistingScopedBeanIntegrationTests {
 
 			});
 			return configurer;
+		}
+
+		@Bean
+		@Scope(scopeName = "custom", proxyMode = ScopedProxyMode.TARGET_CLASS)
+		SimpleExampleService simpleExampleService() {
+			return new SimpleExampleService();
 		}
 
 	}

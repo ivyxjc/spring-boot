@@ -16,21 +16,17 @@
 
 package org.springframework.boot.context.embedded;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 /**
  * {@link AbstractApplicationLauncher} that launches a Spring Boot application with a
@@ -75,8 +71,7 @@ class IdeApplicationLauncher extends AbstractApplicationLauncher {
 			classpath.add(resourcesProject.getAbsolutePath());
 			return Arrays.asList("-cp", StringUtils.collectionToDelimitedString(classpath, File.pathSeparator),
 					"com.example.ResourceHandlingApplication");
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -142,8 +137,7 @@ class IdeApplicationLauncher extends AbstractApplicationLauncher {
 			File extracted = new File(destination, jarEntry.getName());
 			if (jarEntry.isDirectory()) {
 				extracted.mkdirs();
-			}
-			else {
+			} else {
 				FileOutputStream extractedOutputStream = new FileOutputStream(extracted);
 				StreamUtils.copy(jarFile.getInputStream(jarEntry), extractedOutputStream);
 				extractedOutputStream.close();

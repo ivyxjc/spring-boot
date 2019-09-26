@@ -16,18 +16,6 @@
 
 package org.springframework.boot.context.annotation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportSelector;
@@ -36,6 +24,10 @@ import org.springframework.core.Ordered;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A set of {@link Configuration @Configuration} classes that can be registered in
@@ -51,8 +43,8 @@ import org.springframework.util.ClassUtils;
  * {@link Ordered}.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see UserConfigurations
+ * @since 2.0.0
  */
 public abstract class Configurations {
 
@@ -68,40 +60,9 @@ public abstract class Configurations {
 	}
 
 	/**
-	 * Sort configuration classes into the order that they should be applied.
-	 * @param classes the classes to sort
-	 * @return a sorted set of classes
-	 */
-	protected Collection<Class<?>> sort(Collection<Class<?>> classes) {
-		return classes;
-	}
-
-	protected final Set<Class<?>> getClasses() {
-		return this.classes;
-	}
-
-	/**
-	 * Merge configurations from another source of the same type.
-	 * @param other the other {@link Configurations} (must be of the same type as this
-	 * instance)
-	 * @return a new configurations instance (must be of the same type as this instance)
-	 */
-	protected Configurations merge(Configurations other) {
-		Set<Class<?>> mergedClasses = new LinkedHashSet<>(getClasses());
-		mergedClasses.addAll(other.getClasses());
-		return merge(mergedClasses);
-	}
-
-	/**
-	 * Merge configurations.
-	 * @param mergedClasses the merged classes
-	 * @return a new configurations instance (must be of the same type as this instance)
-	 */
-	protected abstract Configurations merge(Set<Class<?>> mergedClasses);
-
-	/**
 	 * Return the classes from all the specified configurations in the order that they
 	 * would be registered.
+	 *
 	 * @param configurations the source configuration
 	 * @return configuration classes in registration order
 	 */
@@ -112,6 +73,7 @@ public abstract class Configurations {
 	/**
 	 * Return the classes from all the specified configurations in the order that they
 	 * would be registered.
+	 *
 	 * @param configurations the source configuration
 	 * @return configuration classes in registration order
 	 */
@@ -133,12 +95,46 @@ public abstract class Configurations {
 		for (Configurations item : orderedConfigurations) {
 			if (collated.isEmpty() || collated.getLast().getClass() != item.getClass()) {
 				collated.add(item);
-			}
-			else {
+			} else {
 				collated.set(collated.size() - 1, collated.getLast().merge(item));
 			}
 		}
 		return collated;
 	}
+
+	/**
+	 * Sort configuration classes into the order that they should be applied.
+	 *
+	 * @param classes the classes to sort
+	 * @return a sorted set of classes
+	 */
+	protected Collection<Class<?>> sort(Collection<Class<?>> classes) {
+		return classes;
+	}
+
+	protected final Set<Class<?>> getClasses() {
+		return this.classes;
+	}
+
+	/**
+	 * Merge configurations from another source of the same type.
+	 *
+	 * @param other the other {@link Configurations} (must be of the same type as this
+	 *              instance)
+	 * @return a new configurations instance (must be of the same type as this instance)
+	 */
+	protected Configurations merge(Configurations other) {
+		Set<Class<?>> mergedClasses = new LinkedHashSet<>(getClasses());
+		mergedClasses.addAll(other.getClasses());
+		return merge(mergedClasses);
+	}
+
+	/**
+	 * Merge configurations.
+	 *
+	 * @param mergedClasses the merged classes
+	 * @return a new configurations instance (must be of the same type as this instance)
+	 */
+	protected abstract Configurations merge(Set<Class<?>> mergedClasses);
 
 }

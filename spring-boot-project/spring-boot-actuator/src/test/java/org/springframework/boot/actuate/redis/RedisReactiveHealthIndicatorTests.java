@@ -16,19 +16,18 @@
 
 package org.springframework.boot.actuate.redis;
 
-import java.util.Properties;
-
 import io.lettuce.core.RedisConnectionException;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.data.redis.connection.ReactiveRedisConnection;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.connection.ReactiveServerCommands;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -88,7 +87,7 @@ public class RedisReactiveHealthIndicatorTests {
 	}
 
 	private RedisReactiveHealthIndicator createHealthIndicator(ReactiveRedisConnection redisConnection,
-			ReactiveServerCommands serverCommands) {
+															   ReactiveServerCommands serverCommands) {
 
 		ReactiveRedisConnectionFactory redisConnectionFactory = mock(ReactiveRedisConnectionFactory.class);
 		given(redisConnectionFactory.getReactiveConnection()).willReturn(redisConnection);

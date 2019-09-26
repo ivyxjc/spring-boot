@@ -16,19 +16,14 @@
 
 package org.springframework.boot.web.server;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
+
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -152,7 +147,7 @@ public class WebServerFactoryCustomizerBeanPostProcessorTests {
 		addMockBeans(beans);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private void addMockBeans(Map<String, ?> beans) {
 		given(this.beanFactory.getBeansOfType(WebServerFactoryCustomizer.class, false, false))
 				.willReturn((Map<String, WebServerFactoryCustomizer>) beans);

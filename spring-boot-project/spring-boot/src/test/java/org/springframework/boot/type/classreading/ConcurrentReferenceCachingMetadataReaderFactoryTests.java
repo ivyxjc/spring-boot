@@ -17,17 +17,13 @@
 package org.springframework.boot.type.classreading;
 
 import org.junit.Test;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.classreading.MetadataReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.sameInstance;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link ConcurrentReferenceCachingMetadataReaderFactory}.

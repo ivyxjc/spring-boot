@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.condition;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.type.AnnotatedTypeMetadata;
@@ -40,6 +39,15 @@ public abstract class SpringBootCondition implements Condition {
 
 	private final Log logger = LogFactory.getLog(getClass());
 
+	private static String getClassOrMethodName(AnnotatedTypeMetadata metadata) {
+		if (metadata instanceof ClassMetadata) {
+			ClassMetadata classMetadata = (ClassMetadata) metadata;
+			return classMetadata.getClassName();
+		}
+		MethodMetadata methodMetadata = (MethodMetadata) metadata;
+		return methodMetadata.getDeclaringClassName() + "#" + methodMetadata.getMethodName();
+	}
+
 	@Override
 	public final boolean matches(ConditionContext context, AnnotatedTypeMetadata metadata) {
 		String classOrMethodName = getClassOrMethodName(metadata);
@@ -48,15 +56,13 @@ public abstract class SpringBootCondition implements Condition {
 			logOutcome(classOrMethodName, outcome);
 			recordEvaluation(context, classOrMethodName, outcome);
 			return outcome.isMatch();
-		}
-		catch (NoClassDefFoundError ex) {
+		} catch (NoClassDefFoundError ex) {
 			throw new IllegalStateException("Could not evaluate condition on " + classOrMethodName + " due to "
 					+ ex.getMessage() + " not " + "found. Make sure your own configuration does not rely on "
 					+ "that class. This can also happen if you are "
 					+ "@ComponentScanning a springframework package (e.g. if you "
 					+ "put a @ComponentScan in the default package by mistake)", ex);
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			throw new IllegalStateException("Error processing condition on " + getName(metadata), ex);
 		}
 	}
@@ -70,15 +76,6 @@ public abstract class SpringBootCondition implements Condition {
 			return methodMetadata.getDeclaringClassName() + "." + methodMetadata.getMethodName();
 		}
 		return metadata.toString();
-	}
-
-	private static String getClassOrMethodName(AnnotatedTypeMetadata metadata) {
-		if (metadata instanceof ClassMetadata) {
-			ClassMetadata classMetadata = (ClassMetadata) metadata;
-			return classMetadata.getClassName();
-		}
-		MethodMetadata methodMetadata = (MethodMetadata) metadata;
-		return methodMetadata.getDeclaringClassName() + "#" + methodMetadata.getMethodName();
 	}
 
 	protected final void logOutcome(String classOrMethodName, ConditionOutcome outcome) {
@@ -110,7 +107,8 @@ public abstract class SpringBootCondition implements Condition {
 
 	/**
 	 * Determine the outcome of the match along with suitable log output.
-	 * @param context the condition context
+	 *
+	 * @param context  the condition context
 	 * @param metadata the annotation metadata
 	 * @return the condition outcome
 	 */
@@ -118,13 +116,14 @@ public abstract class SpringBootCondition implements Condition {
 
 	/**
 	 * Return true if any of the specified conditions match.
-	 * @param context the context
-	 * @param metadata the annotation meta-data
+	 *
+	 * @param context    the context
+	 * @param metadata   the annotation meta-data
 	 * @param conditions conditions to test
 	 * @return {@code true} if any condition matches.
 	 */
 	protected final boolean anyMatches(ConditionContext context, AnnotatedTypeMetadata metadata,
-			Condition... conditions) {
+									   Condition... conditions) {
 		for (Condition condition : conditions) {
 			if (matches(context, metadata, condition)) {
 				return true;
@@ -135,8 +134,9 @@ public abstract class SpringBootCondition implements Condition {
 
 	/**
 	 * Return true if any of the specified condition matches.
-	 * @param context the context
-	 * @param metadata the annotation meta-data
+	 *
+	 * @param context   the context
+	 * @param metadata  the annotation meta-data
 	 * @param condition condition to test
 	 * @return {@code true} if the condition matches.
 	 */

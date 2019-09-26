@@ -17,12 +17,7 @@
 package org.springframework.boot.test.web.client;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -51,7 +46,7 @@ class TestRestTemplateContextCustomizer implements ContextCustomizer {
 
 	@Override
 	public void customizeContext(ConfigurableApplicationContext context,
-			MergedContextConfiguration mergedContextConfiguration) {
+								 MergedContextConfiguration mergedContextConfiguration) {
 		SpringBootTest annotation = AnnotatedElementUtils.getMergedAnnotation(mergedContextConfiguration.getTestClass(),
 				SpringBootTest.class);
 		if (annotation.webEnvironment().isEmbedded()) {
@@ -128,7 +123,7 @@ class TestRestTemplateContextCustomizer implements ContextCustomizer {
 
 		private static final HttpClientOption[] DEFAULT_OPTIONS = {};
 
-		private static final HttpClientOption[] SSL_OPTIONS = { HttpClientOption.SSL };
+		private static final HttpClientOption[] SSL_OPTIONS = {HttpClientOption.SSL};
 
 		private TestRestTemplate template;
 
@@ -149,8 +144,7 @@ class TestRestTemplateContextCustomizer implements ContextCustomizer {
 				AbstractServletWebServerFactory webServerFactory = context
 						.getBean(AbstractServletWebServerFactory.class);
 				return webServerFactory.getSsl() != null && webServerFactory.getSsl().isEnabled();
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return false;
 			}
 		}
@@ -158,8 +152,7 @@ class TestRestTemplateContextCustomizer implements ContextCustomizer {
 		private RestTemplateBuilder getRestTemplateBuilder(ApplicationContext applicationContext) {
 			try {
 				return applicationContext.getBean(RestTemplateBuilder.class);
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return new RestTemplateBuilder();
 			}
 		}

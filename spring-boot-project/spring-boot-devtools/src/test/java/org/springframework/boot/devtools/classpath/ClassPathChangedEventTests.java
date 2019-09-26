@@ -16,12 +16,11 @@
 
 package org.springframework.boot.devtools.classpath;
 
+import org.junit.Test;
+import org.springframework.boot.devtools.filewatch.ChangedFiles;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.junit.Test;
-
-import org.springframework.boot.devtools.filewatch.ChangedFiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

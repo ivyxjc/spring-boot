@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.audit.AuditAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
@@ -67,11 +66,11 @@ public class ControllerEndpointWebFluxIntegrationTests {
 		webClient.get().uri("/actuator/example").exchange().expectStatus().isOk();
 	}
 
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
-			ReactiveManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class, WebFluxAutoConfiguration.class,
-			ManagementContextAutoConfiguration.class, BeansEndpointAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
+									 ReactiveManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
+									 PropertyPlaceholderAutoConfiguration.class, WebFluxAutoConfiguration.class,
+									 ManagementContextAutoConfiguration.class, BeansEndpointAutoConfiguration.class})
 	static class DefaultConfiguration {
 
 	}

@@ -17,7 +17,6 @@
 package org.springframework.boot.test.json;
 
 import org.junit.Test;
-
 import org.springframework.core.ResolvableType;
 
 import static org.assertj.core.api.Assertions.assertThat;

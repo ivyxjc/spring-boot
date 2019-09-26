@@ -16,15 +16,15 @@
 
 package org.springframework.boot.maven;
 
+import org.apache.maven.plugins.shade.relocation.Relocator;
+import org.apache.maven.plugins.shade.resource.ResourceTransformer;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
-
-import org.apache.maven.plugins.shade.relocation.Relocator;
-import org.apache.maven.plugins.shade.resource.ResourceTransformer;
 
 /**
  * Extension for the <a href="https://maven.apache.org/plugins/maven-shade-plugin/">Maven
@@ -37,13 +37,13 @@ import org.apache.maven.plugins.shade.resource.ResourceTransformer;
  */
 public class PropertiesMergingResourceTransformer implements ResourceTransformer {
 
+	private final Properties data = new Properties();
 	// Set this in pom configuration with <resource>...</resource>
 	private String resource;
 
-	private final Properties data = new Properties();
-
 	/**
 	 * Return the data the properties being merged.
+	 *
 	 * @return the data
 	 */
 	public Properties getData() {

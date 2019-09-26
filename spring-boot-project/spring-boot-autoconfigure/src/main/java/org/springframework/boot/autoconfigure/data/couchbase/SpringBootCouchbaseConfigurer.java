@@ -20,7 +20,6 @@ import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.cluster.ClusterInfo;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
-
 import org.springframework.data.couchbase.config.CouchbaseConfigurer;
 
 /**
@@ -40,7 +39,7 @@ public class SpringBootCouchbaseConfigurer implements CouchbaseConfigurer {
 	private final Bucket bucket;
 
 	public SpringBootCouchbaseConfigurer(CouchbaseEnvironment env, Cluster cluster, ClusterInfo clusterInfo,
-			Bucket bucket) {
+										 Bucket bucket) {
 		this.env = env;
 		this.cluster = cluster;
 		this.clusterInfo = clusterInfo;

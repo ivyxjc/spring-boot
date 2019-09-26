@@ -16,20 +16,19 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.jar.JarFile;
-
 import org.gradle.testkit.runner.InvalidRunnerConfigurationException;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.gradle.testkit.runner.UnexpectedBuildFailure;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.gradle.junit.GradleCompatibilitySuite;
 import org.springframework.boot.gradle.testkit.GradleBuild;
 import org.springframework.boot.loader.tools.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,10 +40,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(GradleCompatibilitySuite.class)
 public abstract class AbstractBootArchiveIntegrationTests {
 
+	private final String taskName;
 	@Rule
 	public GradleBuild gradleBuild;
-
-	private final String taskName;
 
 	protected AbstractBootArchiveIntegrationTests(String taskName) {
 		this.taskName = taskName;

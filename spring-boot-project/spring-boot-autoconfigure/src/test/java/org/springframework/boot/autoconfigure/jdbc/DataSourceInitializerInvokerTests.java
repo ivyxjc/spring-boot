@@ -16,18 +16,8 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
@@ -45,6 +35,14 @@ import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.util.ClassUtils;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Random;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -76,9 +74,9 @@ public class DataSourceInitializerInvokerTests {
 	public void initializationAppliesToCustomDataSource() {
 		this.contextRunner.withUserConfiguration(OneDataSource.class)
 				.withPropertyValues("spring.datasource.initialization-mode:always").run((context) -> {
-					assertThat(context).hasSingleBean(DataSource.class);
-					assertDataSourceIsInitialized(context.getBean(DataSource.class));
-				});
+			assertThat(context).hasSingleBean(DataSource.class);
+			assertDataSourceIsInitialized(context.getBean(DataSource.class));
+		});
 	}
 
 	private void assertDataSourceIsInitialized(DataSource dataSource) {
@@ -91,12 +89,12 @@ public class DataSourceInitializerInvokerTests {
 		this.contextRunner.withPropertyValues("spring.datasource.initialization-mode:always",
 				"spring.datasource.schema:" + getRelativeLocationFor("schema.sql"),
 				"spring.datasource.data:" + getRelativeLocationFor("data.sql")).run((context) -> {
-					DataSource dataSource = context.getBean(DataSource.class);
-					assertThat(dataSource).isInstanceOf(HikariDataSource.class);
-					assertThat(dataSource).isNotNull();
-					JdbcOperations template = new JdbcTemplate(dataSource);
-					assertThat(template.queryForObject("SELECT COUNT(*) from FOO", Integer.class)).isEqualTo(1);
-				});
+			DataSource dataSource = context.getBean(DataSource.class);
+			assertThat(dataSource).isInstanceOf(HikariDataSource.class);
+			assertThat(dataSource).isNotNull();
+			JdbcOperations template = new JdbcTemplate(dataSource);
+			assertThat(template.queryForObject("SELECT COUNT(*) from FOO", Integer.class)).isEqualTo(1);
+		});
 	}
 
 	@Test
@@ -105,13 +103,13 @@ public class DataSourceInitializerInvokerTests {
 				"spring.datasource.schema:" + getRelativeLocationFor("schema.sql") + ","
 						+ getRelativeLocationFor("another.sql"),
 				"spring.datasource.data:" + getRelativeLocationFor("data.sql")).run((context) -> {
-					DataSource dataSource = context.getBean(DataSource.class);
-					assertThat(dataSource).isInstanceOf(HikariDataSource.class);
-					assertThat(dataSource).isNotNull();
-					JdbcOperations template = new JdbcTemplate(dataSource);
-					assertThat(template.queryForObject("SELECT COUNT(*) from FOO", Integer.class)).isEqualTo(1);
-					assertThat(template.queryForObject("SELECT COUNT(*) from SPAM", Integer.class)).isEqualTo(0);
-				});
+			DataSource dataSource = context.getBean(DataSource.class);
+			assertThat(dataSource).isInstanceOf(HikariDataSource.class);
+			assertThat(dataSource).isNotNull();
+			JdbcOperations template = new JdbcTemplate(dataSource);
+			assertThat(template.queryForObject("SELECT COUNT(*) from FOO", Integer.class)).isEqualTo(1);
+			assertThat(template.queryForObject("SELECT COUNT(*) from SPAM", Integer.class)).isEqualTo(0);
+		});
 	}
 
 	@Test
@@ -120,16 +118,16 @@ public class DataSourceInitializerInvokerTests {
 				"spring.datasource.sqlScriptEncoding:UTF-8",
 				"spring.datasource.schema:" + getRelativeLocationFor("encoding-schema.sql"),
 				"spring.datasource.data:" + getRelativeLocationFor("encoding-data.sql")).run((context) -> {
-					DataSource dataSource = context.getBean(DataSource.class);
-					assertThat(dataSource).isInstanceOf(HikariDataSource.class);
-					assertThat(dataSource).isNotNull();
-					JdbcOperations template = new JdbcTemplate(dataSource);
-					assertThat(template.queryForObject("SELECT COUNT(*) from BAR", Integer.class)).isEqualTo(2);
-					assertThat(template.queryForObject("SELECT name from BAR WHERE id=1", String.class))
-							.isEqualTo("bar");
-					assertThat(template.queryForObject("SELECT name from BAR WHERE id=2", String.class))
-							.isEqualTo("ばー");
-				});
+			DataSource dataSource = context.getBean(DataSource.class);
+			assertThat(dataSource).isInstanceOf(HikariDataSource.class);
+			assertThat(dataSource).isNotNull();
+			JdbcOperations template = new JdbcTemplate(dataSource);
+			assertThat(template.queryForObject("SELECT COUNT(*) from BAR", Integer.class)).isEqualTo(2);
+			assertThat(template.queryForObject("SELECT name from BAR WHERE id=1", String.class))
+					.isEqualTo("bar");
+			assertThat(template.queryForObject("SELECT name from BAR WHERE id=2", String.class))
+					.isEqualTo("ばー");
+		});
 	}
 
 	@Test
@@ -141,10 +139,10 @@ public class DataSourceInitializerInvokerTests {
 	public void initializationDoesNotApplyWithSeveralDataSources() {
 		this.contextRunner.withUserConfiguration(TwoDataSources.class)
 				.withPropertyValues("spring.datasource.initialization-mode:always").run((context) -> {
-					assertThat(context.getBeanNamesForType(DataSource.class)).hasSize(2);
-					assertDataSourceNotInitialized(context.getBean("oneDataSource", DataSource.class));
-					assertDataSourceNotInitialized(context.getBean("twoDataSource", DataSource.class));
-				});
+			assertThat(context.getBeanNamesForType(DataSource.class)).hasSize(2);
+			assertDataSourceNotInitialized(context.getBean("oneDataSource", DataSource.class));
+			assertDataSourceNotInitialized(context.getBean("twoDataSource", DataSource.class));
+		});
 	}
 
 	private ContextConsumer<AssertableApplicationContext> assertInitializationIsDisabled() {
@@ -219,11 +217,11 @@ public class DataSourceInitializerInvokerTests {
 	public void testDataSourceInitializedWithInvalidSchemaResource() {
 		this.contextRunner.withPropertyValues("spring.datasource.initialization-mode:always",
 				"spring.datasource.schema:classpath:does/not/exist.sql").run((context) -> {
-					assertThat(context).hasFailed();
-					assertThat(context.getStartupFailure()).isInstanceOf(BeanCreationException.class);
-					assertThat(context.getStartupFailure()).hasMessageContaining("does/not/exist.sql");
-					assertThat(context.getStartupFailure()).hasMessageContaining("spring.datasource.schema");
-				});
+			assertThat(context).hasFailed();
+			assertThat(context.getStartupFailure()).isInstanceOf(BeanCreationException.class);
+			assertThat(context.getStartupFailure()).hasMessageContaining("does/not/exist.sql");
+			assertThat(context.getStartupFailure()).hasMessageContaining("spring.datasource.schema");
+		});
 	}
 
 	@Test
@@ -231,11 +229,11 @@ public class DataSourceInitializerInvokerTests {
 		this.contextRunner.withPropertyValues("spring.datasource.initialization-mode:always",
 				"spring.datasource.schema:" + getRelativeLocationFor("schema.sql"),
 				"spring.datasource.data:classpath:does/not/exist.sql").run((context) -> {
-					assertThat(context).hasFailed();
-					assertThat(context.getStartupFailure()).isInstanceOf(BeanCreationException.class);
-					assertThat(context.getStartupFailure()).hasMessageContaining("does/not/exist.sql");
-					assertThat(context.getStartupFailure()).hasMessageContaining("spring.datasource.data");
-				});
+			assertThat(context).hasFailed();
+			assertThat(context.getStartupFailure()).isInstanceOf(BeanCreationException.class);
+			assertThat(context.getStartupFailure()).hasMessageContaining("does/not/exist.sql");
+			assertThat(context.getStartupFailure()).hasMessageContaining("spring.datasource.data");
+		});
 	}
 
 	private String getRelativeLocationFor(String resource) {

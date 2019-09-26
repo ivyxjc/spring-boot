@@ -16,16 +16,16 @@
 
 package org.springframework.boot.test.autoconfigure.filter;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * {@link ContextCustomizerFactory} to support
@@ -38,7 +38,7 @@ class TypeExcludeFiltersContextCustomizerFactory implements ContextCustomizerFac
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
-			List<ContextConfigurationAttributes> configurationAttributes) {
+													 List<ContextConfigurationAttributes> configurationAttributes) {
 		TypeExcludeFilters annotation = AnnotatedElementUtils.findMergedAnnotation(testClass, TypeExcludeFilters.class);
 		if (annotation != null) {
 			Set<Class<? extends TypeExcludeFilter>> filterClasses = new LinkedHashSet<>(

@@ -16,6 +16,14 @@
 
 package org.springframework.boot.context.embedded;
 
+import org.junit.Assume;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -23,15 +31,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.junit.Assume;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,14 +44,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EmbeddedServletContainerWarPackagingIntegrationTests
 		extends AbstractEmbeddedServletContainerIntegrationTests {
 
+	public EmbeddedServletContainerWarPackagingIntegrationTests(String name, AbstractApplicationLauncher launcher) {
+		super(name, launcher);
+	}
+
 	@Parameters(name = "{0}")
 	public static Object[] parameters() {
 		return AbstractEmbeddedServletContainerIntegrationTests.parameters("war",
 				Arrays.asList(PackagedApplicationLauncher.class, ExplodedApplicationLauncher.class));
-	}
-
-	public EmbeddedServletContainerWarPackagingIntegrationTests(String name, AbstractApplicationLauncher launcher) {
-		super(name, launcher);
 	}
 
 	@Test
@@ -121,8 +120,7 @@ public class EmbeddedServletContainerWarPackagingIntegrationTests
 		}
 		try (BufferedReader reader = new BufferedReader(new StringReader(input))) {
 			return reader.lines().collect(Collectors.toList());
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException("Failed to read lines from input '" + input + "'");
 		}
 	}

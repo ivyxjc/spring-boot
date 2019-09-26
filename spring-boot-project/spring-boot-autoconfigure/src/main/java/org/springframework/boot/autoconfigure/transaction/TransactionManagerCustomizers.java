@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.transaction;
 
+import org.springframework.boot.util.LambdaSafe;
+import org.springframework.transaction.PlatformTransactionManager;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.boot.util.LambdaSafe;
-import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * A collection of {@link PlatformTransactionManagerCustomizer}.

@@ -16,20 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jersey;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -44,6 +33,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import java.lang.annotation.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,6 +61,16 @@ public class JerseyAutoConfigurationCustomServletPathTests {
 		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Configuration
+	@Import({ServletWebServerFactoryAutoConfiguration.class, JerseyAutoConfiguration.class,
+					PropertyPlaceholderAutoConfiguration.class})
+	protected @interface MinimalWebConfiguration {
+
+	}
+
 	@MinimalWebConfiguration
 	@ApplicationPath("/rest")
 	@Path("/hello")
@@ -74,11 +78,6 @@ public class JerseyAutoConfigurationCustomServletPathTests {
 
 		@Value("${message:World}")
 		private String msg;
-
-		@GET
-		public String message() {
-			return "Hello " + this.msg;
-		}
 
 		public Application() {
 			register(Application.class);
@@ -88,15 +87,10 @@ public class JerseyAutoConfigurationCustomServletPathTests {
 			SpringApplication.run(Application.class, args);
 		}
 
-	}
-
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Configuration
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, JerseyAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class })
-	protected @interface MinimalWebConfiguration {
+		@GET
+		public String message() {
+			return "Hello " + this.msg;
+		}
 
 	}
 

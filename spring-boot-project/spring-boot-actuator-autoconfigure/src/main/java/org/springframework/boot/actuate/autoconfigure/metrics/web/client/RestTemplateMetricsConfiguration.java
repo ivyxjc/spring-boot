@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.metrics.web.client;
 
 import io.micrometer.core.instrument.MeterRegistry;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.boot.actuate.metrics.web.client.DefaultRestTemplateExchangeTagsProvider;
 import org.springframework.boot.actuate.metrics.web.client.MetricsRestTemplateCustomizer;
@@ -52,7 +51,7 @@ class RestTemplateMetricsConfiguration {
 
 	@Bean
 	public MetricsRestTemplateCustomizer metricsRestTemplateCustomizer(MeterRegistry meterRegistry,
-			RestTemplateExchangeTagsProvider restTemplateTagConfigurer) {
+																	   RestTemplateExchangeTagsProvider restTemplateTagConfigurer) {
 		return new MetricsRestTemplateCustomizer(meterRegistry, restTemplateTagConfigurer,
 				this.properties.getWeb().getClient().getRequestsMetricName());
 	}

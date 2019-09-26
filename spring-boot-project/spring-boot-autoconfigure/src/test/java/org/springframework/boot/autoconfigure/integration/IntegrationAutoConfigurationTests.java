@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.integration;
 
-import javax.management.MBeanServer;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration.IntegrationComponentScanConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -42,6 +39,8 @@ import org.springframework.integration.support.channel.HeaderChannelRegistry;
 import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jmx.export.MBeanExporter;
+
+import javax.management.MBeanServer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -170,12 +169,12 @@ public class IntegrationAutoConfigurationTests {
 				.withConfiguration(AutoConfigurations.of(DataSourceTransactionManagerAutoConfiguration.class,
 						JdbcTemplateAutoConfiguration.class, IntegrationAutoConfiguration.class))
 				.withPropertyValues("spring.datasource.generate-unique-name=true").run((context) -> {
-					IntegrationProperties properties = context.getBean(IntegrationProperties.class);
-					assertThat(properties.getJdbc().getInitializeSchema())
-							.isEqualTo(DataSourceInitializationMode.EMBEDDED);
-					JdbcOperations jdbc = context.getBean(JdbcOperations.class);
-					assertThat(jdbc.queryForList("select * from INT_MESSAGE")).isEmpty();
-				});
+			IntegrationProperties properties = context.getBean(IntegrationProperties.class);
+			assertThat(properties.getJdbc().getInitializeSchema())
+					.isEqualTo(DataSourceInitializationMode.EMBEDDED);
+			JdbcOperations jdbc = context.getBean(JdbcOperations.class);
+			assertThat(jdbc.queryForList("select * from INT_MESSAGE")).isEmpty();
+		});
 	}
 
 	@Test
@@ -184,6 +183,11 @@ public class IntegrationAutoConfigurationTests {
 			assertThat(context).hasBean("myMessageSource");
 			assertThat(((MessageProcessorMessageSource) context.getBean("myMessageSource")).isCountsEnabled()).isTrue();
 		});
+	}
+
+	@MessagingGateway
+	public interface TestGateway extends RequestReplyExchanger {
+
 	}
 
 	@Configuration
@@ -200,11 +204,6 @@ public class IntegrationAutoConfigurationTests {
 	@Configuration
 	@IntegrationComponentScan
 	static class CustomIntegrationComponentScanConfiguration {
-
-	}
-
-	@MessagingGateway
-	public interface TestGateway extends RequestReplyExchanger {
 
 	}
 

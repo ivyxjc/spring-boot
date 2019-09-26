@@ -16,14 +16,13 @@
 
 package org.springframework.boot.cli.util;
 
+import org.junit.Test;
+import org.springframework.util.ClassUtils;
+
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
-
-import org.junit.Test;
-
-import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,8 +42,8 @@ public class ResourceUtilsTests {
 
 	@Test
 	public void duplicateResource() throws Exception {
-		URLClassLoader loader = new URLClassLoader(new URL[] { new URL("file:./src/test/resources/"),
-				new File("src/test/resources/").getAbsoluteFile().toURI().toURL() });
+		URLClassLoader loader = new URLClassLoader(new URL[]{new URL("file:./src/test/resources/"),
+				new File("src/test/resources/").getAbsoluteFile().toURI().toURL()});
 		List<String> urls = ResourceUtils.getUrls("classpath:init.groovy", loader);
 		assertThat(urls).hasSize(1);
 		assertThat(urls.get(0).startsWith("file:")).isTrue();

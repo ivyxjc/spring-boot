@@ -16,11 +16,11 @@
 
 package org.springframework.boot.logging;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Deferred {@link Log} that can be used to store messages that shouldn't be written until
@@ -31,9 +31,56 @@ import org.apache.commons.logging.LogFactory;
  */
 public class DeferredLog implements Log {
 
+	private final List<Line> lines = new ArrayList<>();
 	private volatile Log destination;
 
-	private final List<Line> lines = new ArrayList<>();
+	/**
+	 * Replay from a source log to a destination log when the source is deferred.
+	 *
+	 * @param source      the source logger
+	 * @param destination the destination logger class
+	 * @return the destination
+	 */
+	public static Log replay(Log source, Class<?> destination) {
+		return replay(source, LogFactory.getLog(destination));
+	}
+
+	/**
+	 * Replay from a source log to a destination log when the source is deferred.
+	 *
+	 * @param source      the source logger
+	 * @param destination the destination logger
+	 * @return the destination
+	 */
+	public static Log replay(Log source, Log destination) {
+		if (source instanceof DeferredLog) {
+			((DeferredLog) source).replayTo(destination);
+		}
+		return destination;
+	}
+
+	private static void logTo(Log log, LogLevel level, Object message, Throwable throwable) {
+		switch (level) {
+			case TRACE:
+				log.trace(message, throwable);
+				return;
+			case DEBUG:
+				log.debug(message, throwable);
+				return;
+			case INFO:
+				log.info(message, throwable);
+				return;
+			case WARN:
+				log.warn(message, throwable);
+				return;
+			case ERROR:
+				log.error(message, throwable);
+				return;
+			case FATAL:
+				log.fatal(message, throwable);
+				return;
+		}
+	}
 
 	@Override
 	public boolean isTraceEnabled() {
@@ -141,8 +188,7 @@ public class DeferredLog implements Log {
 		synchronized (this.lines) {
 			if (this.destination != null) {
 				logTo(this.destination, level, message, t);
-			}
-			else {
+			} else {
 				this.lines.add(new Line(level, message, t));
 			}
 		}
@@ -150,6 +196,7 @@ public class DeferredLog implements Log {
 
 	/**
 	 * Switch from deferred logging to immediate logging to the specified destination.
+	 *
 	 * @param destination the new log destination
 	 * @since 2.1.0
 	 */
@@ -159,6 +206,7 @@ public class DeferredLog implements Log {
 
 	/**
 	 * Switch from deferred logging to immediate logging to the specified destination.
+	 *
 	 * @param destination the new log destination
 	 * @since 2.1.0
 	 */
@@ -171,6 +219,7 @@ public class DeferredLog implements Log {
 
 	/**
 	 * Replay deferred logging to the specified destination.
+	 *
 	 * @param destination the destination for the deferred log messages
 	 */
 	public void replayTo(Class<?> destination) {
@@ -179,6 +228,7 @@ public class DeferredLog implements Log {
 
 	/**
 	 * Replay deferred logging to the specified destination.
+	 *
 	 * @param destination the destination for the deferred log messages
 	 */
 	public void replayTo(Log destination) {
@@ -187,52 +237,6 @@ public class DeferredLog implements Log {
 				logTo(destination, line.getLevel(), line.getMessage(), line.getThrowable());
 			}
 			this.lines.clear();
-		}
-	}
-
-	/**
-	 * Replay from a source log to a destination log when the source is deferred.
-	 * @param source the source logger
-	 * @param destination the destination logger class
-	 * @return the destination
-	 */
-	public static Log replay(Log source, Class<?> destination) {
-		return replay(source, LogFactory.getLog(destination));
-	}
-
-	/**
-	 * Replay from a source log to a destination log when the source is deferred.
-	 * @param source the source logger
-	 * @param destination the destination logger
-	 * @return the destination
-	 */
-	public static Log replay(Log source, Log destination) {
-		if (source instanceof DeferredLog) {
-			((DeferredLog) source).replayTo(destination);
-		}
-		return destination;
-	}
-
-	private static void logTo(Log log, LogLevel level, Object message, Throwable throwable) {
-		switch (level) {
-		case TRACE:
-			log.trace(message, throwable);
-			return;
-		case DEBUG:
-			log.debug(message, throwable);
-			return;
-		case INFO:
-			log.info(message, throwable);
-			return;
-		case WARN:
-			log.warn(message, throwable);
-			return;
-		case ERROR:
-			log.error(message, throwable);
-			return;
-		case FATAL:
-			log.fatal(message, throwable);
-			return;
 		}
 	}
 

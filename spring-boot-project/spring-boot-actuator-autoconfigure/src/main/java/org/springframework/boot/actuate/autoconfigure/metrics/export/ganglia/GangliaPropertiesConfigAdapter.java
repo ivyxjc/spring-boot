@@ -16,13 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.ganglia;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
 import info.ganglia.gmetric4j.gmetric.GMetric;
 import io.micrometer.ganglia.GangliaConfig;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.PropertiesConfigAdapter;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Adapter to convert {@link GangliaProperties} to a {@link GangliaConfig}.

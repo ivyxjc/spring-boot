@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.web.trace.servlet;
 
+import org.springframework.boot.actuate.trace.http.TraceableResponse;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.boot.actuate.trace.http.TraceableResponse;
 
 /**
  * An adapter that exposes an {@link HttpServletResponse} as a {@link TraceableResponse}.

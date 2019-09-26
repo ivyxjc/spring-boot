@@ -16,13 +16,10 @@
 
 package org.springframework.boot.actuate.logging;
 
-import java.io.File;
-
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.actuate.endpoint.web.test.WebEndpointRunners;
 import org.springframework.boot.logging.LogFile;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +28,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.FileCopyUtils;
+
+import java.io.File;
 
 /**
  * Integration tests for {@link LogFileWebEndpoint} exposed by Jersey, Spring MVC, and
@@ -41,11 +40,9 @@ import org.springframework.util.FileCopyUtils;
 @RunWith(WebEndpointRunners.class)
 public class LogFileWebEndpointWebIntegrationTests {
 
-	private static WebTestClient client;
-
 	@ClassRule
 	public static final TemporaryFolder temp = new TemporaryFolder();
-
+	private static WebTestClient client;
 	private static File logFile;
 
 	@Test

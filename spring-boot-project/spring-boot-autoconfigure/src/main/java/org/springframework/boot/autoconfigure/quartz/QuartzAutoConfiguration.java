@@ -16,26 +16,16 @@
 
 package org.springframework.boot.autoconfigure.quartz;
 
-import java.util.Map;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import liquibase.integration.spring.SpringLiquibase;
 import org.quartz.Calendar;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.Trigger;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AbstractDependsOnBeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -51,6 +41,10 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
+import java.util.Map;
+import java.util.Properties;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Quartz Scheduler.
  *
@@ -59,10 +53,10 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ Scheduler.class, SchedulerFactoryBean.class, PlatformTransactionManager.class })
+@ConditionalOnClass({Scheduler.class, SchedulerFactoryBean.class, PlatformTransactionManager.class})
 @EnableConfigurationProperties(QuartzProperties.class)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
-		LiquibaseAutoConfiguration.class, FlywayAutoConfiguration.class })
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
+							LiquibaseAutoConfiguration.class, FlywayAutoConfiguration.class})
 public class QuartzAutoConfiguration {
 
 	private final QuartzProperties properties;
@@ -78,9 +72,9 @@ public class QuartzAutoConfiguration {
 	private final ApplicationContext applicationContext;
 
 	public QuartzAutoConfiguration(QuartzProperties properties,
-			ObjectProvider<SchedulerFactoryBeanCustomizer> customizers, ObjectProvider<JobDetail[]> jobDetails,
-			Map<String, Calendar> calendars, ObjectProvider<Trigger[]> triggers,
-			ApplicationContext applicationContext) {
+								   ObjectProvider<SchedulerFactoryBeanCustomizer> customizers, ObjectProvider<JobDetail[]> jobDetails,
+								   Map<String, Calendar> calendars, ObjectProvider<Trigger[]> triggers,
+								   ApplicationContext applicationContext) {
 		this.properties = properties;
 		this.customizers = customizers;
 		this.jobDetails = jobDetails.getIfAvailable();
@@ -137,8 +131,9 @@ public class QuartzAutoConfiguration {
 		@Bean
 		@Order(0)
 		public SchedulerFactoryBeanCustomizer dataSourceCustomizer(QuartzProperties properties, DataSource dataSource,
-				@QuartzDataSource ObjectProvider<DataSource> quartzDataSource,
-				ObjectProvider<PlatformTransactionManager> transactionManager) {
+																   @QuartzDataSource
+																		   ObjectProvider<DataSource> quartzDataSource,
+																   ObjectProvider<PlatformTransactionManager> transactionManager) {
 			return (schedulerFactoryBean) -> {
 				DataSource dataSourceToUse = getDataSource(dataSource, quartzDataSource);
 				schedulerFactoryBean.setDataSource(dataSourceToUse);
@@ -157,8 +152,9 @@ public class QuartzAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		public QuartzDataSourceInitializer quartzDataSourceInitializer(DataSource dataSource,
-				@QuartzDataSource ObjectProvider<DataSource> quartzDataSource, ResourceLoader resourceLoader,
-				QuartzProperties properties) {
+																	   @QuartzDataSource
+																			   ObjectProvider<DataSource> quartzDataSource, ResourceLoader resourceLoader,
+																	   QuartzProperties properties) {
 			DataSource dataSourceToUse = getDataSource(dataSource, quartzDataSource);
 			return new QuartzDataSourceInitializer(dataSourceToUse, resourceLoader, properties);
 

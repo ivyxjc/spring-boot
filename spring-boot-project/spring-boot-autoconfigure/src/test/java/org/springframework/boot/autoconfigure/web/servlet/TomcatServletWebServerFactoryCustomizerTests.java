@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.web.servlet;
 import org.apache.catalina.Context;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;

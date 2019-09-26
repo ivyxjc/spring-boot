@@ -16,14 +16,14 @@
 
 package org.springframework.boot.maven;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.shared.artifact.filter.collection.ArtifactFilterException;
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.shared.artifact.filter.collection.ArtifactFilterException;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -35,7 +35,7 @@ import static org.mockito.Mockito.mock;
  * @author Stephane Nicoll
  * @author David Turanski
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ExcludeFilterTests {
 
 	@Test

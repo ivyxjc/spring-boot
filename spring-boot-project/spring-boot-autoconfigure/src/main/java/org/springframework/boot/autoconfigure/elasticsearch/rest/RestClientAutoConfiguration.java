@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.elasticsearch.rest;
 
 import org.elasticsearch.client.RestClient;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,9 +33,9 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @ConditionalOnClass(RestClient.class)
 @EnableConfigurationProperties(RestClientProperties.class)
-@Import({ RestClientConfigurations.RestClientBuilderConfiguration.class,
-		RestClientConfigurations.RestHighLevelClientConfiguration.class,
-		RestClientConfigurations.RestClientFallbackConfiguration.class })
+@Import({RestClientConfigurations.RestClientBuilderConfiguration.class,
+				RestClientConfigurations.RestHighLevelClientConfiguration.class,
+				RestClientConfigurations.RestClientFallbackConfiguration.class})
 public class RestClientAutoConfiguration {
 
 }

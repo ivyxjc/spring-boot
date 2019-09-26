@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.context.properties;
 
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint.ApplicationConfigurationProperties;
 import org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint.ConfigurationPropertiesBeanDescriptor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -35,6 +32,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,8 +55,14 @@ public class ConfigurationPropertiesReportEndpointProxyTests {
 					.getBean(ConfigurationPropertiesReportEndpoint.class).configurationProperties();
 			assertThat(applicationProperties.getContexts().get(context.getId()).getBeans().values().stream()
 					.map(ConfigurationPropertiesBeanDescriptor::getPrefix).filter("executor.sql"::equals).findFirst())
-							.isNotEmpty();
+					.isNotEmpty();
 		});
+	}
+
+	public interface Executor {
+
+		void execute();
+
 	}
 
 	@Configuration
@@ -79,12 +84,6 @@ public class ConfigurationPropertiesReportEndpointProxyTests {
 		public DataSource dataSource() {
 			return new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.HSQL).build();
 		}
-
-	}
-
-	public interface Executor {
-
-		void execute();
 
 	}
 

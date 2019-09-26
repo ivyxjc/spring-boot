@@ -16,19 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.web.servlet;
 
-import java.util.Collections;
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.test.MetricsRun;
 import org.springframework.boot.actuate.autoconfigure.metrics.web.TestController;
@@ -50,6 +41,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.EnumSet;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,11 +59,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 public class WebMvcMetricsAutoConfigurationTests {
 
-	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner().with(MetricsRun.simple())
-			.withConfiguration(AutoConfigurations.of(WebMvcMetricsAutoConfiguration.class));
-
 	@Rule
 	public OutputCapture output = new OutputCapture();
+	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner().with(MetricsRun.simple())
+			.withConfiguration(AutoConfigurations.of(WebMvcMetricsAutoConfiguration.class));
 
 	@Test
 	public void backsOffWhenMeterRegistryIsMissing() {
@@ -106,11 +103,11 @@ public class WebMvcMetricsAutoConfigurationTests {
 		this.contextRunner.withUserConfiguration(TestController.class)
 				.withConfiguration(AutoConfigurations.of(MetricsAutoConfiguration.class, WebMvcAutoConfiguration.class))
 				.withPropertyValues("management.metrics.web.server.max-uri-tags=2").run((context) -> {
-					MeterRegistry registry = getInitializedMeterRegistry(context);
-					assertThat(registry.get("http.server.requests").meters()).hasSize(2);
-					assertThat(this.output.toString())
-							.contains("Reached the maximum number of URI tags " + "for 'http.server.requests'");
-				});
+			MeterRegistry registry = getInitializedMeterRegistry(context);
+			assertThat(registry.get("http.server.requests").meters()).hasSize(2);
+			assertThat(this.output.toString())
+					.contains("Reached the maximum number of URI tags " + "for 'http.server.requests'");
+		});
 	}
 
 	@Test
@@ -118,11 +115,11 @@ public class WebMvcMetricsAutoConfigurationTests {
 		this.contextRunner.withUserConfiguration(TestController.class)
 				.withConfiguration(AutoConfigurations.of(MetricsAutoConfiguration.class, WebMvcAutoConfiguration.class))
 				.withPropertyValues("management.metrics.web.server.max-uri-tags=5").run((context) -> {
-					MeterRegistry registry = getInitializedMeterRegistry(context);
-					assertThat(registry.get("http.server.requests").meters()).hasSize(3);
-					assertThat(this.output.toString())
-							.doesNotContain("Reached the maximum number of URI tags " + "for 'http.server.requests'");
-				});
+			MeterRegistry registry = getInitializedMeterRegistry(context);
+			assertThat(registry.get("http.server.requests").meters()).hasSize(3);
+			assertThat(this.output.toString())
+					.doesNotContain("Reached the maximum number of URI tags " + "for 'http.server.requests'");
+		});
 	}
 
 	@Test
@@ -160,7 +157,7 @@ public class WebMvcMetricsAutoConfigurationTests {
 
 		@Override
 		public Iterable<Tag> getTags(HttpServletRequest request, HttpServletResponse response, Object handler,
-				Throwable exception) {
+									 Throwable exception) {
 			return Collections.emptyList();
 		}
 

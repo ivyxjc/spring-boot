@@ -16,10 +16,10 @@
 
 package org.springframework.boot.context.properties.source;
 
-import java.util.Collections;
-
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.util.Collections;
 
 /**
  * Test {@link PropertyMapper} implementation.

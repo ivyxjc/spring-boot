@@ -16,10 +16,10 @@
 
 package org.springframework.boot.cli.compiler.dependencies;
 
+import org.springframework.util.Assert;
+
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.util.Assert;
 
 /**
  * A single dependency.
@@ -39,9 +39,10 @@ public final class Dependency {
 
 	/**
 	 * Create a new {@link Dependency} instance.
-	 * @param groupId the group ID
+	 *
+	 * @param groupId    the group ID
 	 * @param artifactId the artifact ID
-	 * @param version the version
+	 * @param version    the version
 	 */
 	public Dependency(String groupId, String artifactId, String version) {
 		this(groupId, artifactId, version, Collections.emptyList());
@@ -49,9 +50,10 @@ public final class Dependency {
 
 	/**
 	 * Create a new {@link Dependency} instance.
-	 * @param groupId the group ID
+	 *
+	 * @param groupId    the group ID
 	 * @param artifactId the artifact ID
-	 * @param version the version
+	 * @param version    the version
 	 * @param exclusions the exclusions
 	 */
 	public Dependency(String groupId, String artifactId, String version, List<Exclusion> exclusions) {
@@ -67,6 +69,7 @@ public final class Dependency {
 
 	/**
 	 * Return the dependency group id.
+	 *
 	 * @return the group ID
 	 */
 	public String getGroupId() {
@@ -75,6 +78,7 @@ public final class Dependency {
 
 	/**
 	 * Return the dependency artifact id.
+	 *
 	 * @return the artifact ID
 	 */
 	public String getArtifactId() {
@@ -83,6 +87,7 @@ public final class Dependency {
 
 	/**
 	 * Return the dependency version.
+	 *
 	 * @return the version
 	 */
 	public String getVersion() {
@@ -91,6 +96,7 @@ public final class Dependency {
 
 	/**
 	 * Return the dependency exclusions.
+	 *
 	 * @return the exclusions
 	 */
 	public List<Exclusion> getExclusions() {
@@ -151,6 +157,7 @@ public final class Dependency {
 
 		/**
 		 * Return the exclusion artifact ID.
+		 *
 		 * @return the exclusion artifact ID
 		 */
 		public String getArtifactId() {
@@ -159,6 +166,7 @@ public final class Dependency {
 
 		/**
 		 * Return the exclusion group ID.
+		 *
 		 * @return the exclusion group ID
 		 */
 		public String getGroupId() {

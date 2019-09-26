@@ -16,17 +16,9 @@
 
 package org.springframework.boot.autoconfigure.transaction.jta;
 
-import java.io.File;
-import java.util.Properties;
-
-import javax.jms.Message;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-
 import com.atomikos.icatch.config.UserTransactionService;
 import com.atomikos.icatch.config.UserTransactionServiceImp;
 import com.atomikos.icatch.jta.UserTransactionManager;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -45,6 +37,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.StringUtils;
 
+import javax.jms.Message;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import java.io.File;
+import java.util.Properties;
+
 /**
  * JTA Configuration for <A href="https://www.atomikos.com/">Atomikos</a>.
  *
@@ -55,8 +53,8 @@ import org.springframework.util.StringUtils;
  * @author Kazuki Shimizu
  */
 @Configuration
-@EnableConfigurationProperties({ AtomikosProperties.class, JtaProperties.class })
-@ConditionalOnClass({ JtaTransactionManager.class, UserTransactionManager.class })
+@EnableConfigurationProperties({AtomikosProperties.class, JtaProperties.class})
+@ConditionalOnClass({JtaTransactionManager.class, UserTransactionManager.class})
 @ConditionalOnMissingBean(PlatformTransactionManager.class)
 class AtomikosJtaConfiguration {
 
@@ -65,9 +63,15 @@ class AtomikosJtaConfiguration {
 	private final TransactionManagerCustomizers transactionManagerCustomizers;
 
 	AtomikosJtaConfiguration(JtaProperties jtaProperties,
-			ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
+							 ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
 		this.jtaProperties = jtaProperties;
 		this.transactionManagerCustomizers = transactionManagerCustomizers.getIfAvailable();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public static AtomikosDependsOnBeanFactoryPostProcessor atomikosDependsOnBeanFactoryPostProcessor() {
+		return new AtomikosDependsOnBeanFactoryPostProcessor();
 	}
 
 	@Bean(initMethod = "init", destroyMethod = "shutdownWait")
@@ -107,14 +111,8 @@ class AtomikosJtaConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean
-	public static AtomikosDependsOnBeanFactoryPostProcessor atomikosDependsOnBeanFactoryPostProcessor() {
-		return new AtomikosDependsOnBeanFactoryPostProcessor();
-	}
-
-	@Bean
 	public JtaTransactionManager transactionManager(UserTransaction userTransaction,
-			TransactionManager transactionManager) {
+													TransactionManager transactionManager) {
 		JtaTransactionManager jtaTransactionManager = new JtaTransactionManager(userTransaction, transactionManager);
 		if (this.transactionManagerCustomizers != null) {
 			this.transactionManagerCustomizers.customize(jtaTransactionManager);

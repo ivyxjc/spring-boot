@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.cassandra;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -49,6 +45,9 @@ import org.springframework.data.cassandra.core.convert.MappingCassandraConverter
 import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
 import org.springframework.data.cassandra.core.mapping.SimpleUserTypeResolver;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Data's Cassandra support.
  *
@@ -59,7 +58,7 @@ import org.springframework.data.cassandra.core.mapping.SimpleUserTypeResolver;
  * @since 1.3.0
  */
 @Configuration
-@ConditionalOnClass({ Cluster.class, CassandraAdminOperations.class })
+@ConditionalOnClass({Cluster.class, CassandraAdminOperations.class})
 @ConditionalOnBean(Cluster.class)
 @EnableConfigurationProperties(CassandraProperties.class)
 @AutoConfigureAfter(CassandraAutoConfiguration.class)
@@ -74,7 +73,7 @@ public class CassandraDataAutoConfiguration {
 	private final Environment environment;
 
 	public CassandraDataAutoConfiguration(BeanFactory beanFactory, CassandraProperties properties, Cluster cluster,
-			Environment environment) {
+										  Environment environment) {
 		this.beanFactory = beanFactory;
 		this.properties = properties;
 		this.cluster = cluster;
@@ -106,7 +105,7 @@ public class CassandraDataAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public CassandraConverter cassandraConverter(CassandraMappingContext mapping,
-			CassandraCustomConversions conversions) {
+												 CassandraCustomConversions conversions) {
 		MappingCassandraConverter converter = new MappingCassandraConverter(mapping);
 		converter.setCustomConversions(conversions);
 		return converter;

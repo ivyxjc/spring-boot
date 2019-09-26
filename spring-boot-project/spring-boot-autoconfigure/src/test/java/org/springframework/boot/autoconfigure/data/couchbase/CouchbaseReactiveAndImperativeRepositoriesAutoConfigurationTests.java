@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.couchbase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseAutoConfiguration;
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseAutoConfigurationTests;
@@ -37,6 +33,9 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 import org.springframework.data.couchbase.repository.config.EnableReactiveCouchbaseRepositories;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,7 +73,7 @@ public class CouchbaseReactiveAndImperativeRepositoriesAutoConfigurationTests {
 	}
 
 	@Configuration
-	@Import({ CouchbaseTestConfigurer.class, Registrar.class })
+	@Import({CouchbaseTestConfigurer.class, Registrar.class})
 	protected static class BaseConfiguration {
 
 	}
@@ -84,10 +83,10 @@ public class CouchbaseReactiveAndImperativeRepositoriesAutoConfigurationTests {
 		@Override
 		public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 			List<String> names = new ArrayList<>();
-			for (Class<?> type : new Class<?>[] { CouchbaseAutoConfiguration.class,
+			for (Class<?> type : new Class<?>[]{CouchbaseAutoConfiguration.class,
 					CouchbaseDataAutoConfiguration.class, CouchbaseRepositoriesAutoConfiguration.class,
 					CouchbaseReactiveDataAutoConfiguration.class,
-					CouchbaseReactiveRepositoriesAutoConfiguration.class }) {
+					CouchbaseReactiveRepositoriesAutoConfiguration.class}) {
 				names.add(type.getName());
 			}
 			return StringUtils.toStringArray(names);

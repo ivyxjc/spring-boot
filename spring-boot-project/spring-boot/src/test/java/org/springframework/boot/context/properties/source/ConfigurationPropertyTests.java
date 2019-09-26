@@ -17,7 +17,6 @@
 package org.springframework.boot.context.properties.source;
 
 import org.junit.Test;
-
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginProvider;
 

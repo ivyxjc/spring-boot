@@ -16,9 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet.mockmvc;
 
-import java.util.UUID;
-
 import org.springframework.core.convert.converter.GenericConverter;
+
+import java.util.UUID;
 
 /**
  * An example attribute that requires a {@link GenericConverter}.

@@ -30,6 +30,7 @@ public interface CodecCustomizer {
 
 	/**
 	 * Callback to customize a {@link CodecConfigurer} instance.
+	 *
 	 * @param configurer codec configurer to customize
 	 */
 	void customize(CodecConfigurer configurer);

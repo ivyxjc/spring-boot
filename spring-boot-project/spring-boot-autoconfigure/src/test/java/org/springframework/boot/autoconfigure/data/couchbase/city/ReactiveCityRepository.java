@@ -16,9 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.couchbase.city;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.data.repository.Repository;
+import reactor.core.publisher.Mono;
 
 public interface ReactiveCityRepository extends Repository<City, Long> {
 

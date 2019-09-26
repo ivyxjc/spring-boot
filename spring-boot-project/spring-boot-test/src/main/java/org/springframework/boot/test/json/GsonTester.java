@@ -16,14 +16,13 @@
 
 package org.springframework.boot.test.json;
 
-import java.io.IOException;
-import java.io.Reader;
-
 import com.google.gson.Gson;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  * AssertJ based JSON tester backed by Gson. Usually instantiated via
@@ -46,7 +45,7 @@ import org.springframework.util.Assert;
  *
  * }
  * </pre>
- *
+ * <p>
  * See {@link AbstractJsonMarshalTester} for more details.
  *
  * @param <T> the type under test
@@ -59,6 +58,7 @@ public class GsonTester<T> extends AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Create a new uninitialized {@link GsonTester} instance.
+	 *
 	 * @param gson the Gson instance
 	 */
 	protected GsonTester(Gson gson) {
@@ -68,15 +68,38 @@ public class GsonTester<T> extends AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Create a new {@link GsonTester} instance.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param type the type under test
-	 * @param gson the Gson instance
+	 * @param type              the type under test
+	 * @param gson              the Gson instance
 	 * @see #initFields(Object, Gson)
 	 */
 	public GsonTester(Class<?> resourceLoadClass, ResolvableType type, Gson gson) {
 		super(resourceLoadClass, type);
 		Assert.notNull(gson, "Gson must not be null");
 		this.gson = gson;
+	}
+
+	/**
+	 * Utility method to initialize {@link GsonTester} fields. See {@link GsonTester
+	 * class-level documentation} for example usage.
+	 *
+	 * @param testInstance the test instance
+	 * @param gson         the Gson instance
+	 */
+	public static void initFields(Object testInstance, Gson gson) {
+		new GsonFieldInitializer().initFields(testInstance, gson);
+	}
+
+	/**
+	 * Utility method to initialize {@link GsonTester} fields. See {@link GsonTester
+	 * class-level documentation} for example usage.
+	 *
+	 * @param testInstance the test instance
+	 * @param gson         an object factory to create the Gson instance
+	 */
+	public static void initFields(Object testInstance, ObjectFactory<Gson> gson) {
+		new GsonFieldInitializer().initFields(testInstance, gson);
 	}
 
 	@Override
@@ -90,26 +113,6 @@ public class GsonTester<T> extends AbstractJsonMarshalTester<T> {
 	}
 
 	/**
-	 * Utility method to initialize {@link GsonTester} fields. See {@link GsonTester
-	 * class-level documentation} for example usage.
-	 * @param testInstance the test instance
-	 * @param gson the Gson instance
-	 */
-	public static void initFields(Object testInstance, Gson gson) {
-		new GsonFieldInitializer().initFields(testInstance, gson);
-	}
-
-	/**
-	 * Utility method to initialize {@link GsonTester} fields. See {@link GsonTester
-	 * class-level documentation} for example usage.
-	 * @param testInstance the test instance
-	 * @param gson an object factory to create the Gson instance
-	 */
-	public static void initFields(Object testInstance, ObjectFactory<Gson> gson) {
-		new GsonFieldInitializer().initFields(testInstance, gson);
-	}
-
-	/**
 	 * {@link FieldInitializer} for Gson.
 	 */
 	private static class GsonFieldInitializer extends FieldInitializer<Gson> {
@@ -120,7 +123,7 @@ public class GsonTester<T> extends AbstractJsonMarshalTester<T> {
 
 		@Override
 		protected AbstractJsonMarshalTester<Object> createTester(Class<?> resourceLoadClass, ResolvableType type,
-				Gson marshaller) {
+																 Gson marshaller) {
 			return new GsonTester<>(resourceLoadClass, type, marshaller);
 		}
 

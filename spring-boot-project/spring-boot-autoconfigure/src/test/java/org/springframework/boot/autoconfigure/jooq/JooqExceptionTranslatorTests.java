@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jooq;
 
-import java.sql.SQLException;
-
 import org.jooq.Configuration;
 import org.jooq.ExecuteContext;
 import org.jooq.SQLDialect;
@@ -26,8 +24,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 import org.mockito.ArgumentCaptor;
-
 import org.springframework.jdbc.BadSqlGrammarException;
+
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -48,18 +47,23 @@ public class JooqExceptionTranslatorTests {
 
 	private final SQLException sqlException;
 
+	public JooqExceptionTranslatorTests(SQLDialect dialect, SQLException sqlException) {
+		this.dialect = dialect;
+		this.sqlException = sqlException;
+	}
+
 	@Parameters(name = "{0}")
 	public static Object[] parameters() {
-		return new Object[] { new Object[] { SQLDialect.DERBY, sqlException("42802") },
-				new Object[] { SQLDialect.H2, sqlException(42000) },
-				new Object[] { SQLDialect.HSQLDB, sqlException(-22) },
-				new Object[] { SQLDialect.MARIADB, sqlException(1054) },
-				new Object[] { SQLDialect.MYSQL, sqlException(1054) },
-				new Object[] { SQLDialect.POSTGRES, sqlException("03000") },
-				new Object[] { SQLDialect.POSTGRES_9_3, sqlException("03000") },
-				new Object[] { SQLDialect.POSTGRES_9_4, sqlException("03000") },
-				new Object[] { SQLDialect.POSTGRES_9_5, sqlException("03000") },
-				new Object[] { SQLDialect.SQLITE, sqlException("21000") } };
+		return new Object[]{new Object[]{SQLDialect.DERBY, sqlException("42802")},
+				new Object[]{SQLDialect.H2, sqlException(42000)},
+				new Object[]{SQLDialect.HSQLDB, sqlException(-22)},
+				new Object[]{SQLDialect.MARIADB, sqlException(1054)},
+				new Object[]{SQLDialect.MYSQL, sqlException(1054)},
+				new Object[]{SQLDialect.POSTGRES, sqlException("03000")},
+				new Object[]{SQLDialect.POSTGRES_9_3, sqlException("03000")},
+				new Object[]{SQLDialect.POSTGRES_9_4, sqlException("03000")},
+				new Object[]{SQLDialect.POSTGRES_9_5, sqlException("03000")},
+				new Object[]{SQLDialect.SQLITE, sqlException("21000")}};
 	}
 
 	private static SQLException sqlException(String sqlState) {
@@ -69,11 +73,6 @@ public class JooqExceptionTranslatorTests {
 	private static SQLException sqlException(int vendorCode) {
 		return new SQLException(null, null, vendorCode);
 
-	}
-
-	public JooqExceptionTranslatorTests(SQLDialect dialect, SQLException sqlException) {
-		this.dialect = dialect;
-		this.sqlException = sqlException;
 	}
 
 	@Test

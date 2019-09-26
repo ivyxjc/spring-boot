@@ -16,13 +16,10 @@
 
 package org.springframework.boot.autoconfigure.cassandra;
 
-import java.time.Duration;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.PoolingOptions;
 import com.datastax.driver.core.QueryOptions;
 import com.datastax.driver.core.SocketOptions;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -34,6 +31,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import java.time.Duration;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Cassandra.
  *
@@ -44,7 +43,7 @@ import org.springframework.util.StringUtils;
  * @since 1.3.0
  */
 @Configuration
-@ConditionalOnClass({ Cluster.class })
+@ConditionalOnClass({Cluster.class})
 @EnableConfigurationProperties(CassandraProperties.class)
 public class CassandraAutoConfiguration {
 
@@ -53,7 +52,7 @@ public class CassandraAutoConfiguration {
 	private final ObjectProvider<ClusterBuilderCustomizer> builderCustomizers;
 
 	public CassandraAutoConfiguration(CassandraProperties properties,
-			ObjectProvider<ClusterBuilderCustomizer> builderCustomizers) {
+									  ObjectProvider<ClusterBuilderCustomizer> builderCustomizers) {
 		this.properties = properties;
 		this.builderCustomizers = builderCustomizers;
 	}

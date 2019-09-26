@@ -16,11 +16,7 @@
 
 package org.springframework.boot.builder;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.*;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.Ordered;
 
@@ -35,21 +31,20 @@ import org.springframework.core.Ordered;
 public class ParentContextApplicationContextInitializer
 		implements ApplicationContextInitializer<ConfigurableApplicationContext>, Ordered {
 
-	private int order = Ordered.HIGHEST_PRECEDENCE;
-
 	private final ApplicationContext parent;
+	private int order = Ordered.HIGHEST_PRECEDENCE;
 
 	public ParentContextApplicationContextInitializer(ApplicationContext parent) {
 		this.parent = parent;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
 	@Override
 	public int getOrder() {
 		return this.order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	@Override

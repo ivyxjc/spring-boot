@@ -16,17 +16,17 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.info.InfoProperties;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * A base {@link InfoContributor} to expose an {@link InfoProperties}.
@@ -51,6 +51,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Return the properties that this instance manages.
+	 *
 	 * @return the info properties
 	 */
 	protected final T getProperties() {
@@ -59,6 +60,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Return the mode that should be used to expose the content.
+	 *
 	 * @return the mode
 	 */
 	protected final Mode getMode() {
@@ -67,6 +69,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Return a {@link PropertySource} for the {@link Mode#SIMPLE SIMPLE} mode.
+	 *
 	 * @return the property source for the simple model
 	 * @see #toPropertySource()
 	 */
@@ -74,6 +77,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Extract the content to contribute to the info endpoint.
+	 *
 	 * @return the content to expose
 	 * @see #extractContent(PropertySource)
 	 * @see #postProcessContent(Map)
@@ -86,6 +90,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Extract the raw content based on the specified {@link PropertySource}.
+	 *
 	 * @param propertySource the property source to use
 	 * @return the raw content
 	 */
@@ -96,6 +101,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Post-process the content to expose. Elements can be added, changed or removed.
+	 *
 	 * @param content the content to expose
 	 */
 	protected void postProcessContent(Map<String, Object> content) {
@@ -104,6 +110,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Return the {@link PropertySource} to use based on the chosen {@link Mode}.
+	 *
 	 * @return the property source
 	 */
 	protected PropertySource<?> toPropertySource() {
@@ -115,8 +122,9 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Copy the specified key to the target {@link Properties} if it is set.
+	 *
 	 * @param target the target properties to update
-	 * @param key the key
+	 * @param key    the key
 	 */
 	protected void copyIfSet(Properties target, String key) {
 		String value = this.properties.get(key);
@@ -127,9 +135,10 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 
 	/**
 	 * Replace the {@code value} for the specified key if the value is not {@code null}.
+	 *
 	 * @param content the content to expose
-	 * @param key the property to replace
-	 * @param value the new value
+	 * @param key     the property to replace
+	 * @param value   the new value
 	 */
 	protected void replaceValue(Map<String, Object> content, String key, Object value) {
 		if (content.containsKey(key) && value != null) {
@@ -140,6 +149,7 @@ public abstract class InfoPropertiesInfoContributor<T extends InfoProperties> im
 	/**
 	 * Return the nested map with the specified key or empty map if the specified map
 	 * contains no mapping for the key.
+	 *
 	 * @param map the content
 	 * @param key the key of a nested map
 	 * @return the nested map

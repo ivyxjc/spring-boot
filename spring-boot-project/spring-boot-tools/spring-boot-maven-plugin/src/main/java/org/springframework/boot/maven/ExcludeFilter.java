@@ -16,10 +16,10 @@
 
 package org.springframework.boot.maven;
 
+import org.apache.maven.artifact.Artifact;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.maven.artifact.Artifact;
 
 /**
  * An {DependencyFilter} that filters out any artifact matching an {@link Exclude}.

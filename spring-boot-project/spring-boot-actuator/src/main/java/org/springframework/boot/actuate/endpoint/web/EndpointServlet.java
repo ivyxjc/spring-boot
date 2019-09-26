@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.endpoint.web;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.Servlet;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import javax.servlet.Servlet;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Contains details of a servlet that is exposed as an actuator endpoint.

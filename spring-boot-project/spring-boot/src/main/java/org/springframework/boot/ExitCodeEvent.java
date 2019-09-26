@@ -31,7 +31,8 @@ public class ExitCodeEvent extends ApplicationEvent {
 
 	/**
 	 * Create a new {@link ExitCodeEvent} instance.
-	 * @param source the source of the event
+	 *
+	 * @param source   the source of the event
 	 * @param exitCode the exit code
 	 */
 	public ExitCodeEvent(Object source, int exitCode) {
@@ -41,6 +42,7 @@ public class ExitCodeEvent extends ApplicationEvent {
 
 	/**
 	 * Return the exit code that will be used to exit the JVM.
+	 *
 	 * @return the exit code
 	 */
 	public int getExitCode() {

@@ -16,10 +16,10 @@
 
 package org.springframework.boot.cli.command;
 
+import org.springframework.boot.cli.command.options.OptionHelp;
+
 import java.util.Collection;
 import java.util.Collections;
-
-import org.springframework.boot.cli.command.options.OptionHelp;
 
 /**
  * Abstract {@link Command} implementation.
@@ -36,7 +36,8 @@ public abstract class AbstractCommand implements Command {
 
 	/**
 	 * Create a new {@link AbstractCommand} instance.
-	 * @param name the name of the command
+	 *
+	 * @param name        the name of the command
 	 * @param description the command description
 	 */
 	protected AbstractCommand(String name, String description) {

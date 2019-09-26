@@ -16,25 +16,26 @@
 
 package org.springframework.boot.loader.archive;
 
+import org.springframework.boot.loader.Launcher;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.jar.Manifest;
 
-import org.springframework.boot.loader.Launcher;
-
 /**
  * An archive that can be launched by the {@link Launcher}.
  *
  * @author Phillip Webb
- * @since 1.0.0
  * @see JarFileArchive
+ * @since 1.0.0
  */
 public interface Archive extends Iterable<Archive.Entry> {
 
 	/**
 	 * Returns a URL that can be used to load the archive.
+	 *
 	 * @return the archive URL
 	 * @throws MalformedURLException if the URL is malformed
 	 */
@@ -42,6 +43,7 @@ public interface Archive extends Iterable<Archive.Entry> {
 
 	/**
 	 * Returns the manifest of the archive.
+	 *
 	 * @return the manifest
 	 * @throws IOException if the manifest cannot be read
 	 */
@@ -49,6 +51,7 @@ public interface Archive extends Iterable<Archive.Entry> {
 
 	/**
 	 * Returns nested {@link Archive}s for entries that match the specified filter.
+	 *
 	 * @param filter the filter used to limit entries
 	 * @return nested archives
 	 * @throws IOException if nested archives cannot be read
@@ -62,12 +65,14 @@ public interface Archive extends Iterable<Archive.Entry> {
 
 		/**
 		 * Returns {@code true} if the entry represents a directory.
+		 *
 		 * @return if the entry is a directory
 		 */
 		boolean isDirectory();
 
 		/**
 		 * Returns the name of the entry.
+		 *
 		 * @return the name of the entry
 		 */
 		String getName();
@@ -81,6 +86,7 @@ public interface Archive extends Iterable<Archive.Entry> {
 
 		/**
 		 * Apply the jar entry filter.
+		 *
 		 * @param entry the entry to filter
 		 * @return {@code true} if the filter matches
 		 */

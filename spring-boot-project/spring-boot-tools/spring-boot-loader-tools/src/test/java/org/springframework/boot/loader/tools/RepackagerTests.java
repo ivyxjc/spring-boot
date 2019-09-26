@@ -16,17 +16,24 @@
 
 package org.springframework.boot.loader.tools;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipFile;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.loader.tools.sample.ClassWithMainMethod;
+import org.springframework.boot.loader.tools.sample.ClassWithoutMainMethod;
+import org.springframework.util.FileCopyUtils;
+import org.zeroturnaround.zip.ZipUtil;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -35,21 +42,7 @@ import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipFile;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-import org.zeroturnaround.zip.ZipUtil;
-
-import org.springframework.boot.loader.tools.sample.ClassWithMainMethod;
-import org.springframework.boot.loader.tools.sample.ClassWithoutMainMethod;
-import org.springframework.util.FileCopyUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -280,7 +273,7 @@ public class RepackagerTests {
 		File libJarFile = libJar.getFile();
 		File libJarFileToUnpack = libJar.getFile();
 		File libNonJarFile = this.temporaryFolder.newFile();
-		FileCopyUtils.copy(new byte[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, libNonJarFile);
+		FileCopyUtils.copy(new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8}, libNonJarFile);
 		this.testJarFile.addClass("a/b/C.class", ClassWithMainMethod.class);
 		this.testJarFile.addFile("BOOT-INF/lib/" + libJarFileToUnpack.getName(), libJarFileToUnpack);
 		File file = this.testJarFile.getFile();
@@ -427,8 +420,7 @@ public class RepackagerTests {
 		assertThat(hasLauncherClasses(dest)).isTrue();
 		try {
 			assertThat(Files.getPosixFilePermissions(dest.toPath())).contains(PosixFilePermission.OWNER_EXECUTE);
-		}
-		catch (UnsupportedOperationException ex) {
+		} catch (UnsupportedOperationException ex) {
 			// Probably running the test on Windows
 		}
 	}

@@ -16,11 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.web.reactive;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.boot.test.autoconfigure.filter.AnnotationCustomizableTypeExcludeFilter;
@@ -34,6 +29,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.server.WebExceptionHandler;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * {@link TypeExcludeFilter} for {@link WebFluxTest @WebFluxTest}.
  *
@@ -42,6 +42,7 @@ import org.springframework.web.server.WebExceptionHandler;
 class WebFluxTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 
 	private static final Set<Class<?>> DEFAULT_INCLUDES;
+	private static final Set<Class<?>> DEFAULT_INCLUDES_AND_CONTROLLER;
 
 	static {
 		Set<Class<?>> includes = new LinkedHashSet<>();
@@ -53,8 +54,6 @@ class WebFluxTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 		includes.add(WebExceptionHandler.class);
 		DEFAULT_INCLUDES = Collections.unmodifiableSet(includes);
 	}
-
-	private static final Set<Class<?>> DEFAULT_INCLUDES_AND_CONTROLLER;
 
 	static {
 		Set<Class<?>> includes = new LinkedHashSet<>(DEFAULT_INCLUDES);
@@ -76,10 +75,10 @@ class WebFluxTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 	@Override
 	protected ComponentScan.Filter[] getFilters(FilterType type) {
 		switch (type) {
-		case INCLUDE:
-			return this.annotation.includeFilters();
-		case EXCLUDE:
-			return this.annotation.excludeFilters();
+			case INCLUDE:
+				return this.annotation.includeFilters();
+			case EXCLUDE:
+				return this.annotation.excludeFilters();
 		}
 		throw new IllegalStateException("Unsupported type " + type);
 	}

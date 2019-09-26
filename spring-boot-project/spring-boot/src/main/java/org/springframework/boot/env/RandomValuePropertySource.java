@@ -16,17 +16,16 @@
 
 package org.springframework.boot.env;
 
-import java.util.Random;
-import java.util.UUID;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Random;
+import java.util.UUID;
 
 /**
  * {@link PropertySource} that returns a random value for any property that starts with
@@ -68,6 +67,12 @@ public class RandomValuePropertySource extends PropertySource<Random> {
 
 	public RandomValuePropertySource() {
 		this(RANDOM_PROPERTY_SOURCE_NAME);
+	}
+
+	public static void addToEnvironment(ConfigurableEnvironment environment) {
+		environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
+				new RandomValuePropertySource(RANDOM_PROPERTY_SOURCE_NAME));
+		logger.trace("RandomValuePropertySource add to Environment");
 	}
 
 	@Override
@@ -135,12 +140,6 @@ public class RandomValuePropertySource extends PropertySource<Random> {
 		byte[] bytes = new byte[32];
 		getSource().nextBytes(bytes);
 		return DigestUtils.md5DigestAsHex(bytes);
-	}
-
-	public static void addToEnvironment(ConfigurableEnvironment environment) {
-		environment.getPropertySources().addAfter(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME,
-				new RandomValuePropertySource(RANDOM_PROPERTY_SOURCE_NAME));
-		logger.trace("RandomValuePropertySource add to Environment");
 	}
 
 }

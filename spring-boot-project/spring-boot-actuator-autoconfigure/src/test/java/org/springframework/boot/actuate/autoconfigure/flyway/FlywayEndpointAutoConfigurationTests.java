@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.flyway;
 
 import org.flywaydb.core.Flyway;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.flyway.FlywayEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;

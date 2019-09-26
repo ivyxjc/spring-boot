@@ -15,12 +15,8 @@
  */
 package org.springframework.boot.autoconfigure.http.codec;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpProperties;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -31,6 +27,9 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.http.codec.CodecConfigurer;
 import org.springframework.http.codec.support.DefaultClientCodecConfigurer;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

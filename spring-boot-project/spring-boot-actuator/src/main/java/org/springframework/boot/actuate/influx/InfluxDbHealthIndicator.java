@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.influx;
 
 import org.influxdb.InfluxDB;
 import org.influxdb.dto.Pong;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;

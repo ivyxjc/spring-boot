@@ -16,16 +16,16 @@
 
 package org.springframework.boot.gradle.plugin;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.ModuleVersionSelector;
 import org.gradle.api.artifacts.UnresolvedDependency;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * An analyzer for {@link UnresolvedDependency unresolvable dependencies} that logs a

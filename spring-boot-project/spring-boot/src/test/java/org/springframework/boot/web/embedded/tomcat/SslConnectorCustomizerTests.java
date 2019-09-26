@@ -16,14 +16,6 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
@@ -33,7 +25,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.SslStoreProvider;
@@ -41,6 +32,14 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -54,12 +53,10 @@ import static org.mockito.Mockito.mock;
  */
 public class SslConnectorCustomizerTests {
 
-	private Tomcat tomcat;
-
-	private Connector connector;
-
 	@Rule
 	public OutputCapture output = new OutputCapture();
+	private Tomcat tomcat;
+	private Connector connector;
 
 	@Before
 	public void setup() {
@@ -82,7 +79,7 @@ public class SslConnectorCustomizerTests {
 		Ssl ssl = new Ssl();
 		ssl.setKeyStore("test.jks");
 		ssl.setKeyStorePassword("secret");
-		ssl.setCiphers(new String[] { "ALPHA", "BRAVO", "CHARLIE" });
+		ssl.setCiphers(new String[]{"ALPHA", "BRAVO", "CHARLIE"});
 		SslConnectorCustomizer customizer = new SslConnectorCustomizer(ssl, null);
 		Connector connector = this.tomcat.getConnector();
 		customizer.customize(connector);
@@ -96,8 +93,8 @@ public class SslConnectorCustomizerTests {
 		Ssl ssl = new Ssl();
 		ssl.setKeyPassword("password");
 		ssl.setKeyStore("src/test/resources/test.jks");
-		ssl.setEnabledProtocols(new String[] { "TLSv1.1", "TLSv1.2" });
-		ssl.setCiphers(new String[] { "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "BRAVO" });
+		ssl.setEnabledProtocols(new String[]{"TLSv1.1", "TLSv1.2"});
+		ssl.setCiphers(new String[]{"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "BRAVO"});
 		SslConnectorCustomizer customizer = new SslConnectorCustomizer(ssl, null);
 		Connector connector = this.tomcat.getConnector();
 		customizer.customize(connector);
@@ -112,8 +109,8 @@ public class SslConnectorCustomizerTests {
 		Ssl ssl = new Ssl();
 		ssl.setKeyPassword("password");
 		ssl.setKeyStore("src/test/resources/test.jks");
-		ssl.setEnabledProtocols(new String[] { "TLSv1.2" });
-		ssl.setCiphers(new String[] { "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "BRAVO" });
+		ssl.setEnabledProtocols(new String[]{"TLSv1.2"});
+		ssl.setCiphers(new String[]{"TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256", "BRAVO"});
 		SslConnectorCustomizer customizer = new SslConnectorCustomizer(ssl, null);
 		Connector connector = this.tomcat.getConnector();
 		customizer.customize(connector);

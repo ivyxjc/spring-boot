@@ -16,14 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.jdbc;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+
+import java.lang.annotation.*;
 
 /**
  * {@link ImportAutoConfiguration Auto-configuration imports} for typical jdbc tests. Most
@@ -31,8 +26,8 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
  * annotation directly.
  *
  * @author Stephane Nicoll
- * @since 1.5.0
  * @see JdbcTest
+ * @since 1.5.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

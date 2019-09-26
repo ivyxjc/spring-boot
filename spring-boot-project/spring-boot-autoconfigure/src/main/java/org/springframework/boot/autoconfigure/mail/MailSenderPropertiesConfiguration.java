@@ -16,15 +16,15 @@
 
 package org.springframework.boot.autoconfigure.mail;
 
-import java.util.Map;
-import java.util.Properties;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * Auto-configure a {@link MailSender} based on properties configuration.

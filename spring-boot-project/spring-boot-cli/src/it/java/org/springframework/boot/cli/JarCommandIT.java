@@ -16,21 +16,16 @@
 
 package org.springframework.boot.cli;
 
-import java.io.File;
-
 import org.junit.Test;
-
 import org.springframework.boot.cli.command.archive.JarCommand;
 import org.springframework.boot.cli.infrastructure.CommandLineInvoker;
 import org.springframework.boot.cli.infrastructure.CommandLineInvoker.Invocation;
 import org.springframework.boot.loader.tools.JavaExecutable;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import java.io.File;
+
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Integration test for {@link JarCommand}.
@@ -45,6 +40,15 @@ public class JarCommandIT {
 
 	private final CommandLineInvoker cli = new CommandLineInvoker(
 			new File("src/it/resources/jar-command"));
+
+	private static boolean isClassPresent(String name) {
+		try {
+			Class.forName(name);
+			return true;
+		} catch (Exception ex) {
+			return false;
+		}
+	}
 
 	@Test
 	public void noArguments() throws Exception {
@@ -154,16 +158,6 @@ public class JarCommandIT {
 		assertThat(invocation.getStandardOutput(),
 				containsString("/templates/template.txt"));
 		assertThat(invocation.getStandardOutput(), containsString("Goodbye Mama"));
-	}
-
-	private static boolean isClassPresent(String name) {
-		try {
-			Class.forName(name);
-			return true;
-		}
-		catch (Exception ex) {
-			return false;
-		}
 	}
 
 }

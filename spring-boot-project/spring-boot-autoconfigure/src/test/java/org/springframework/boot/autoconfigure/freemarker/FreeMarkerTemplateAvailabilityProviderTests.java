@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.freemarker;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;

@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.context.filter;
 
-import java.io.IOException;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+
+import java.io.IOException;
 
 /**
  * {@link TypeExcludeFilter} to exclude classes annotated with {@link TestComponent} as
@@ -32,11 +32,11 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
  */
 class TestTypeExcludeFilter extends TypeExcludeFilter {
 
-	private static final String[] CLASS_ANNOTATIONS = { "org.junit.runner.RunWith",
-			"org.junit.jupiter.api.extension.ExtendWith" };
+	private static final String[] CLASS_ANNOTATIONS = {"org.junit.runner.RunWith",
+			"org.junit.jupiter.api.extension.ExtendWith"};
 
-	private static final String[] METHOD_ANNOTATIONS = { "org.junit.Test",
-			"org.junit.platform.commons.annotation.Testable" };
+	private static final String[] METHOD_ANNOTATIONS = {"org.junit.Test",
+			"org.junit.platform.commons.annotation.Testable"};
 
 	@Override
 	public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory)
@@ -53,8 +53,7 @@ class TestTypeExcludeFilter extends TypeExcludeFilter {
 				if (match(metadataReaderFactory.getMetadataReader(enclosing), metadataReaderFactory)) {
 					return true;
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore
 			}
 		}

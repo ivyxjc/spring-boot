@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.audit;
 
-import java.util.Collections;
-
 import org.json.JSONObject;
 import org.junit.Test;
-
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

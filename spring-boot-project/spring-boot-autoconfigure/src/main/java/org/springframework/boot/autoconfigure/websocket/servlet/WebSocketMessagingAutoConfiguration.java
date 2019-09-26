@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.websocket.servlet;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -28,15 +25,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.ByteArrayMessageConverter;
-import org.springframework.messaging.converter.DefaultContentTypeResolver;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
-import org.springframework.messaging.converter.MessageConverter;
-import org.springframework.messaging.converter.StringMessageConverter;
+import org.springframework.messaging.converter.*;
 import org.springframework.messaging.simp.config.AbstractMessageBrokerConfiguration;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.socket.config.annotation.DelegatingWebSocketMessageBrokerConfiguration;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+
+import java.util.List;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for WebSocket-based messaging.
@@ -51,8 +46,8 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketMessagingAutoConfiguration {
 
 	@Configuration
-	@ConditionalOnBean({ DelegatingWebSocketMessageBrokerConfiguration.class, ObjectMapper.class })
-	@ConditionalOnClass({ ObjectMapper.class, AbstractMessageBrokerConfiguration.class })
+	@ConditionalOnBean({DelegatingWebSocketMessageBrokerConfiguration.class, ObjectMapper.class})
+	@ConditionalOnClass({ObjectMapper.class, AbstractMessageBrokerConfiguration.class})
 	static class WebSocketMessageConverterConfiguration implements WebSocketMessageBrokerConfigurer {
 
 		private final ObjectMapper objectMapper;

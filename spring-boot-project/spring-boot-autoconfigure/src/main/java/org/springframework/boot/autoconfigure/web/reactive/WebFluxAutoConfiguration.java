@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.reactive;
 
-import java.time.Duration;
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -53,18 +49,15 @@ import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.util.ClassUtils;
 import org.springframework.validation.Validator;
 import org.springframework.web.filter.reactive.HiddenHttpMethodFilter;
-import org.springframework.web.reactive.config.DelegatingWebFluxConfiguration;
-import org.springframework.web.reactive.config.EnableWebFlux;
-import org.springframework.web.reactive.config.ResourceHandlerRegistration;
-import org.springframework.web.reactive.config.ResourceHandlerRegistry;
-import org.springframework.web.reactive.config.ViewResolverRegistry;
-import org.springframework.web.reactive.config.WebFluxConfigurationSupport;
-import org.springframework.web.reactive.config.WebFluxConfigurer;
+import org.springframework.web.reactive.config.*;
 import org.springframework.web.reactive.result.method.HandlerMethodArgumentResolver;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.reactive.result.method.annotation.RequestMappingHandlerMapping;
 import org.springframework.web.reactive.result.view.ViewResolver;
+
+import java.time.Duration;
+import java.util.Collection;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link EnableWebFlux WebFlux}.
@@ -81,9 +74,9 @@ import org.springframework.web.reactive.result.view.ViewResolver;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnClass(WebFluxConfigurer.class)
-@ConditionalOnMissingBean({ WebFluxConfigurationSupport.class })
-@AutoConfigureAfter({ ReactiveWebServerFactoryAutoConfiguration.class, CodecsAutoConfiguration.class,
-		ValidationAutoConfiguration.class })
+@ConditionalOnMissingBean({WebFluxConfigurationSupport.class})
+@AutoConfigureAfter({ReactiveWebServerFactoryAutoConfiguration.class, CodecsAutoConfiguration.class,
+							ValidationAutoConfiguration.class})
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
 public class WebFluxAutoConfiguration {
 
@@ -95,8 +88,8 @@ public class WebFluxAutoConfiguration {
 	}
 
 	@Configuration
-	@EnableConfigurationProperties({ ResourceProperties.class, WebFluxProperties.class })
-	@Import({ EnableWebFluxConfiguration.class })
+	@EnableConfigurationProperties({ResourceProperties.class, WebFluxProperties.class})
+	@Import({EnableWebFluxConfiguration.class})
 	public static class WebFluxConfig implements WebFluxConfigurer {
 
 		private static final Log logger = LogFactory.getLog(WebFluxConfig.class);
@@ -116,10 +109,10 @@ public class WebFluxAutoConfiguration {
 		private final ObjectProvider<ViewResolver> viewResolvers;
 
 		public WebFluxConfig(ResourceProperties resourceProperties, WebFluxProperties webFluxProperties,
-				ListableBeanFactory beanFactory, ObjectProvider<HandlerMethodArgumentResolver> resolvers,
-				ObjectProvider<CodecCustomizer> codecCustomizers,
-				ObjectProvider<ResourceHandlerRegistrationCustomizer> resourceHandlerRegistrationCustomizer,
-				ObjectProvider<ViewResolver> viewResolvers) {
+							 ListableBeanFactory beanFactory, ObjectProvider<HandlerMethodArgumentResolver> resolvers,
+							 ObjectProvider<CodecCustomizer> codecCustomizers,
+							 ObjectProvider<ResourceHandlerRegistrationCustomizer> resourceHandlerRegistrationCustomizer,
+							 ObjectProvider<ViewResolver> viewResolvers) {
 			this.resourceProperties = resourceProperties;
 			this.webFluxProperties = webFluxProperties;
 			this.beanFactory = beanFactory;
@@ -211,7 +204,7 @@ public class WebFluxAutoConfiguration {
 		private final WebFluxRegistrations webFluxRegistrations;
 
 		public EnableWebFluxConfiguration(WebFluxProperties webFluxProperties,
-				ObjectProvider<WebFluxRegistrations> webFluxRegistrations) {
+										  ObjectProvider<WebFluxRegistrations> webFluxRegistrations) {
 			this.webFluxProperties = webFluxProperties;
 			this.webFluxRegistrations = webFluxRegistrations.getIfUnique();
 		}

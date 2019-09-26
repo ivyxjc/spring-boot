@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.autoconfigure.jolokia;
 
-import java.util.Map;
-import java.util.function.Supplier;
-
 import org.jolokia.http.AgentServlet;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.web.EndpointServlet;
 import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpoint;
+
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * {@link Endpoint} to expose a Jolokia {@link AgentServlet}.

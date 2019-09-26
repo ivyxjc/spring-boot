@@ -29,6 +29,7 @@ public interface FailureAnalyzer {
 	/**
 	 * Returns an analysis of the given {@code failure}, or {@code null} if no analysis
 	 * was possible.
+	 *
 	 * @param failure the failure
 	 * @return the analysis or {@code null}
 	 */

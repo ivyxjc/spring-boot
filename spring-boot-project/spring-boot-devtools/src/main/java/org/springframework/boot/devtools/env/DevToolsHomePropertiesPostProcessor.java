@@ -16,10 +16,6 @@
 
 package org.springframework.boot.devtools.env;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -27,6 +23,10 @@ import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * {@link EnvironmentPostProcessor} to add devtools properties from the user's home
@@ -50,8 +50,7 @@ public class DevToolsHomePropertiesPostProcessor implements EnvironmentPostProce
 			try {
 				properties = PropertiesLoaderUtils.loadProperties(resource);
 				environment.getPropertySources().addFirst(new PropertiesPropertySource("devtools-local", properties));
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new IllegalStateException("Unable to load " + FILE_NAME, ex);
 			}
 		}

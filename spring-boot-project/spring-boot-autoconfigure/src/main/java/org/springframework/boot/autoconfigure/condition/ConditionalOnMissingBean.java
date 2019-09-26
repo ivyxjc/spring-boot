@@ -16,15 +16,10 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.Conditional;
+
+import java.lang.annotation.*;
 
 /**
  * {@link Conditional} that only matches when no beans meeting the specified requirements
@@ -58,7 +53,7 @@ import org.springframework.context.annotation.Conditional;
  * @author Andy Wilkinson
  * @since 1.0.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Conditional(OnBeanCondition.class)
@@ -67,6 +62,7 @@ public @interface ConditionalOnMissingBean {
 	/**
 	 * The class types of beans that should be checked. The condition matches when no bean
 	 * of each class specified is contained in the {@link BeanFactory}.
+	 *
 	 * @return the class types of beans to check
 	 */
 	Class<?>[] value() default {};
@@ -74,12 +70,14 @@ public @interface ConditionalOnMissingBean {
 	/**
 	 * The class type names of beans that should be checked. The condition matches when no
 	 * bean of each class specified is contained in the {@link BeanFactory}.
+	 *
 	 * @return the class type names of beans to check
 	 */
 	String[] type() default {};
 
 	/**
 	 * The class types of beans that should be ignored when identifying matching beans.
+	 *
 	 * @return the class types of beans to ignore
 	 * @since 1.2.5
 	 */
@@ -88,6 +86,7 @@ public @interface ConditionalOnMissingBean {
 	/**
 	 * The class type names of beans that should be ignored when identifying matching
 	 * beans.
+	 *
 	 * @return the class type names of beans to ignore
 	 * @since 1.2.5
 	 */
@@ -97,6 +96,7 @@ public @interface ConditionalOnMissingBean {
 	 * The annotation type decorating a bean that should be checked. The condition matches
 	 * when each annotation specified is missing from all beans in the
 	 * {@link BeanFactory}.
+	 *
 	 * @return the class-level annotation types to check
 	 */
 	Class<? extends Annotation>[] annotation() default {};
@@ -104,6 +104,7 @@ public @interface ConditionalOnMissingBean {
 	/**
 	 * The names of beans to check. The condition matches when each bean name specified is
 	 * missing in the {@link BeanFactory}.
+	 *
 	 * @return the names of beans to check
 	 */
 	String[] name() default {};
@@ -111,6 +112,7 @@ public @interface ConditionalOnMissingBean {
 	/**
 	 * Strategy to decide if the application context hierarchy (parent contexts) should be
 	 * considered.
+	 *
 	 * @return the search strategy
 	 */
 	SearchStrategy search() default SearchStrategy.ALL;
@@ -120,6 +122,7 @@ public @interface ConditionalOnMissingBean {
 	 * parameters. For example, an annotation declaring {@code value=Name.class} and
 	 * {@code parameterizedContainer=NameRegistration.class} would detect both
 	 * {@code Name} and {@code NameRegistration<Name>}.
+	 *
 	 * @return the container types
 	 * @since 2.1.0
 	 */

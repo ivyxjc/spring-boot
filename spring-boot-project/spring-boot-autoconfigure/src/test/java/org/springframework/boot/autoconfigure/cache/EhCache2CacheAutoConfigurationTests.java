@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.cache;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfigurationTests.DefaultCacheAndCustomizersConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfigurationTests.DefaultCacheConfiguration;
@@ -47,11 +46,11 @@ public class EhCache2CacheAutoConfigurationTests extends AbstractCacheAutoConfig
 	public void ehCacheWithCaches() {
 		this.contextRunner.withUserConfiguration(DefaultCacheConfiguration.class)
 				.withPropertyValues("spring.cache.type=ehcache").run((context) -> {
-					EhCacheCacheManager cacheManager = getCacheManager(context, EhCacheCacheManager.class);
-					assertThat(cacheManager.getCacheNames()).containsOnly("cacheTest1", "cacheTest2");
-					assertThat(context.getBean(net.sf.ehcache.CacheManager.class))
-							.isEqualTo(cacheManager.getCacheManager());
-				});
+			EhCacheCacheManager cacheManager = getCacheManager(context, EhCacheCacheManager.class);
+			assertThat(cacheManager.getCacheNames()).containsOnly("cacheTest1", "cacheTest2");
+			assertThat(context.getBean(net.sf.ehcache.CacheManager.class))
+					.isEqualTo(cacheManager.getCacheManager());
+		});
 	}
 
 	@Test
@@ -76,9 +75,9 @@ public class EhCache2CacheAutoConfigurationTests extends AbstractCacheAutoConfig
 	public void ehCacheWithExistingCacheManager() {
 		this.contextRunner.withUserConfiguration(EhCacheCustomCacheManager.class)
 				.withPropertyValues("spring.cache.type=ehcache").run((context) -> {
-					EhCacheCacheManager cacheManager = getCacheManager(context, EhCacheCacheManager.class);
-					assertThat(cacheManager.getCacheManager()).isEqualTo(context.getBean("customEhCacheCacheManager"));
-				});
+			EhCacheCacheManager cacheManager = getCacheManager(context, EhCacheCacheManager.class);
+			assertThat(cacheManager.getCacheManager()).isEqualTo(context.getBean("customEhCacheCacheManager"));
+		});
 	}
 
 }

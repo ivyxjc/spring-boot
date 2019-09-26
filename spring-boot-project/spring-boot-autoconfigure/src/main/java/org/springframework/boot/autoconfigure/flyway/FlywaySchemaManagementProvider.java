@@ -16,14 +16,12 @@
 
 package org.springframework.boot.autoconfigure.flyway;
 
-import java.util.stream.StreamSupport;
-
-import javax.sql.DataSource;
-
 import org.flywaydb.core.Flyway;
-
 import org.springframework.boot.jdbc.SchemaManagement;
 import org.springframework.boot.jdbc.SchemaManagementProvider;
+
+import javax.sql.DataSource;
+import java.util.stream.StreamSupport;
 
 /**
  * A Flyway {@link SchemaManagementProvider} that determines if the schema is managed by

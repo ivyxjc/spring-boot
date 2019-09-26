@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.jmx;
 
-import java.time.Duration;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * {@link ConfigurationProperties} for configuring JMX metrics export.

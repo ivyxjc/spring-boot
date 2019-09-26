@@ -16,16 +16,13 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import javax.servlet.ServletContext;
-
 import org.junit.Test;
-
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import javax.servlet.ServletContext;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link ServletContextApplicationContextInitializer}.

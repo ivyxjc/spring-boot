@@ -16,26 +16,21 @@
 
 package org.springframework.boot.logging.log4j2;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.layout.PatternLayout;
-import org.apache.logging.log4j.core.pattern.ConverterKeys;
-import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
-import org.apache.logging.log4j.core.pattern.PatternConverter;
-import org.apache.logging.log4j.core.pattern.PatternFormatter;
-import org.apache.logging.log4j.core.pattern.PatternParser;
-
+import org.apache.logging.log4j.core.pattern.*;
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiElement;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Log4j2 {@link LogEventPatternConverter} colors output using the {@link AnsiOutput}
@@ -46,10 +41,11 @@ import org.springframework.boot.ansi.AnsiStyle;
  * @since 1.3.0
  */
 @Plugin(name = "color", category = PatternConverter.CATEGORY)
-@ConverterKeys({ "clr", "color" })
+@ConverterKeys({"clr", "color"})
 public final class ColorConverter extends LogEventPatternConverter {
 
 	private static final Map<String, AnsiElement> ELEMENTS;
+	private static final Map<Integer, AnsiElement> LEVELS;
 
 	static {
 		Map<String, AnsiElement> ansiElements = new HashMap<>();
@@ -62,8 +58,6 @@ public final class ColorConverter extends LogEventPatternConverter {
 		ansiElements.put("cyan", AnsiColor.CYAN);
 		ELEMENTS = Collections.unmodifiableMap(ansiElements);
 	}
-
-	private static final Map<Integer, AnsiElement> LEVELS;
 
 	static {
 		Map<Integer, AnsiElement> ansiLevels = new HashMap<>();
@@ -85,7 +79,8 @@ public final class ColorConverter extends LogEventPatternConverter {
 
 	/**
 	 * Creates a new instance of the class. Required by Log4J2.
-	 * @param config the configuration
+	 *
+	 * @param config  the configuration
 	 * @param options the options
 	 * @return a new instance, or {@code null} if the options are invalid
 	 */

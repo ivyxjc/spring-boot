@@ -16,9 +16,9 @@
 
 package org.springframework.boot.web.servlet.filter;
 
-import javax.servlet.Filter;
-
 import org.springframework.core.Ordered;
+
+import javax.servlet.Filter;
 
 /**
  * An {@link Ordered} {@link javax.servlet.Filter}.

@@ -16,16 +16,15 @@
 
 package org.springframework.boot.context.embedded;
 
-import java.util.Arrays;
-
 import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,14 +38,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EmbeddedServletContainerJarDevelopmentIntegrationTests
 		extends AbstractEmbeddedServletContainerIntegrationTests {
 
+	public EmbeddedServletContainerJarDevelopmentIntegrationTests(String name, AbstractApplicationLauncher launcher) {
+		super(name, launcher);
+	}
+
 	@Parameters(name = "{0}")
 	public static Object[] parameters() {
 		return AbstractEmbeddedServletContainerIntegrationTests.parameters("jar",
 				Arrays.asList(BootRunApplicationLauncher.class, IdeApplicationLauncher.class));
-	}
-
-	public EmbeddedServletContainerJarDevelopmentIntegrationTests(String name, AbstractApplicationLauncher launcher) {
-		super(name, launcher);
 	}
 
 	@Test

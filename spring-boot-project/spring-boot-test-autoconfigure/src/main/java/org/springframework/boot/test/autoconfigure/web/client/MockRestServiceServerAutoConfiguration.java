@@ -16,30 +16,26 @@
 
 package org.springframework.boot.test.autoconfigure.web.client;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.test.web.client.MockServerRestTemplateCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.test.web.client.ExpectedCount;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.test.web.client.RequestExpectationManager;
-import org.springframework.test.web.client.RequestMatcher;
-import org.springframework.test.web.client.ResponseActions;
+import org.springframework.test.web.client.*;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.Map;
 
 /**
  * Auto-configuration for {@link MockRestServiceServer} support.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see AutoConfigureMockRestServiceServer
+ * @since 1.4.0
  */
 @Configuration
 @ConditionalOnProperty(prefix = "spring.test.webclient.mockrestserviceserver", name = "enabled")
@@ -54,8 +50,7 @@ public class MockRestServiceServerAutoConfiguration {
 	public MockRestServiceServer mockRestServiceServer(MockServerRestTemplateCustomizer customizer) {
 		try {
 			return createDeferredMockRestServiceServer(customizer);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

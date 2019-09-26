@@ -16,15 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.health.CompositeReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.DefaultReactiveHealthIndicatorRegistry;
-import org.springframework.boot.actuate.health.HealthAggregator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicatorRegistry;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.core.ResolvableType;
+
+import java.util.Map;
 
 /**
  * Reactive variant of {@link CompositeHealthIndicatorConfiguration}.
@@ -56,8 +52,7 @@ public abstract class CompositeReactiveHealthIndicatorConfiguration<H extends Re
 		Class<S> sourceClass = (Class<S>) generics[1];
 		try {
 			return indicatorClass.getConstructor(sourceClass).newInstance(source);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(
 					"Unable to create indicator " + indicatorClass + " for source " + sourceClass, ex);
 		}

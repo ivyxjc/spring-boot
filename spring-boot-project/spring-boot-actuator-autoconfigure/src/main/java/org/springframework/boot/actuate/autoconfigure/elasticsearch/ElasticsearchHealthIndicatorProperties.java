@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.elasticsearch;
 
+import org.springframework.boot.actuate.elasticsearch.ElasticsearchHealthIndicator;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.boot.actuate.elasticsearch.ElasticsearchHealthIndicator;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * External configuration properties for {@link ElasticsearchHealthIndicator}.

@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.web.reactive;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.reactive.ReactiveWebServerFactoryAutoConfiguration;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebServerApplicationContext;
 import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;

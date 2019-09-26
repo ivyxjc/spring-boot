@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Configuration properties for some health properties.
@@ -32,15 +32,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class HealthIndicatorProperties {
 
 	/**
-	 * Comma-separated list of health statuses in order of severity.
-	 */
-	private List<String> order = null;
-
-	/**
 	 * Mapping of health statuses to HTTP status codes. By default, registered health
 	 * statuses map to sensible defaults (for example, UP maps to 200).
 	 */
 	private final Map<String, Integer> httpMapping = new HashMap<>();
+	/**
+	 * Comma-separated list of health statuses in order of severity.
+	 */
+	private List<String> order = null;
 
 	public List<String> getOrder() {
 		return this.order;

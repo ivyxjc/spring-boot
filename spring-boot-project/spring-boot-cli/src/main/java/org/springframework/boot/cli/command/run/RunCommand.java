@@ -16,14 +16,8 @@
 
 package org.springframework.boot.cli.command.run;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.OptionParsingCommand;
 import org.springframework.boot.cli.command.options.CompilerOptionHandler;
@@ -34,14 +28,19 @@ import org.springframework.boot.cli.compiler.GroovyCompilerScope;
 import org.springframework.boot.cli.compiler.RepositoryConfigurationFactory;
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+
 /**
  * {@link Command} to 'run' a groovy script or scripts.
  *
  * @author Phillip Webb
  * @author Dave Syer
  * @author Andy Wilkinson
- * @since 1.0.0
  * @see SpringApplicationRunner
+ * @since 1.0.0
  */
 public class RunCommand extends OptionParsingCommand {
 
@@ -122,7 +121,7 @@ public class RunCommand extends OptionParsingCommand {
 				implements SpringApplicationRunnerConfiguration {
 
 			SpringApplicationRunnerConfigurationAdapter(OptionSet options, CompilerOptionHandler optionHandler,
-					List<RepositoryConfiguration> repositoryConfiguration) {
+														List<RepositoryConfiguration> repositoryConfiguration) {
 				super(options, optionHandler, repositoryConfiguration);
 			}
 

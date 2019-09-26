@@ -16,9 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.web.reactive.webclient;
 
-import java.util.UUID;
-
 import org.springframework.core.convert.converter.Converter;
+
+import java.util.UUID;
 
 /**
  * An example attribute that requires a {@link Converter}.

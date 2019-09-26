@@ -16,10 +16,7 @@
 
 package org.springframework.boot.cli.command.grab;
 
-import java.util.List;
-
 import joptsimple.OptionSet;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.OptionParsingCommand;
 import org.springframework.boot.cli.command.options.CompilerOptionHandler;
@@ -30,6 +27,8 @@ import org.springframework.boot.cli.compiler.GroovyCompiler;
 import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
 import org.springframework.boot.cli.compiler.RepositoryConfigurationFactory;
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration;
+
+import java.util.List;
 
 /**
  * {@link Command} to grab the dependencies of one or more Groovy scripts.

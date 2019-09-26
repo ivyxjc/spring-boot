@@ -16,10 +16,10 @@
 
 package org.springframework.boot.test.context.assertj;
 
-import java.util.function.Supplier;
-
 import org.springframework.boot.web.reactive.context.ConfigurableReactiveWebApplicationContext;
 import org.springframework.boot.web.reactive.context.ReactiveWebApplicationContext;
+
+import java.util.function.Supplier;
 
 /**
  * A {@link ReactiveWebApplicationContext} that additionally supports AssertJ style
@@ -29,9 +29,9 @@ import org.springframework.boot.web.reactive.context.ReactiveWebApplicationConte
  * See {@link ApplicationContextAssertProvider} for more details.
  *
  * @author Phillip Webb
+ * @see ReactiveWebApplicationContext
+ * @see ReactiveWebApplicationContext
  * @since 2.0.0
- * @see ReactiveWebApplicationContext
- * @see ReactiveWebApplicationContext
  */
 public interface AssertableReactiveWebApplicationContext
 		extends ApplicationContextAssertProvider<ConfigurableReactiveWebApplicationContext>,
@@ -40,9 +40,10 @@ public interface AssertableReactiveWebApplicationContext
 	/**
 	 * Factory method to create a new {@link AssertableReactiveWebApplicationContext}
 	 * instance.
+	 *
 	 * @param contextSupplier a supplier that will either return a fully configured
-	 * {@link ConfigurableReactiveWebApplicationContext} or throw an exception if the
-	 * context fails to start.
+	 *                        {@link ConfigurableReactiveWebApplicationContext} or throw an exception if the
+	 *                        context fails to start.
 	 * @return a {@link AssertableReactiveWebApplicationContext} instance
 	 */
 	static AssertableReactiveWebApplicationContext get(

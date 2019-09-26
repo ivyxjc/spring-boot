@@ -16,9 +16,6 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -28,8 +25,10 @@ import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.pattern.Converter;
 import ch.qos.logback.core.spi.ContextAware;
 import ch.qos.logback.core.spi.LifeCycle;
-
 import org.springframework.util.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Allows programmatic configuration of logback which is usually faster than parsing XML.
@@ -53,7 +52,7 @@ class LogbackConfigurator {
 		return this.context.getConfigurationLock();
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void conversionRule(String conversionWord, Class<? extends Converter> converterClass) {
 		Assert.hasLength(conversionWord, "Conversion word must not be empty");
 		Assert.notNull(converterClass, "Converter class must not be null");

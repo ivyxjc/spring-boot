@@ -19,17 +19,17 @@ education: |
     BSc in the Internet of Things
 example:
     foo:
-      - name: springboot
-        url: https://springboot.example.com/
-        bar:
-          - bar1: baz
-          - bar2: bling
+        -   name: springboot
+            url: https://springboot.example.com/
+            bar:
+                -   bar1: baz
+                -   bar2: bling
 empty: ""
 null-value: null
 ---
 
 spring:
-  profiles: development
+    profiles: development
 name: Test Name
 
 ---

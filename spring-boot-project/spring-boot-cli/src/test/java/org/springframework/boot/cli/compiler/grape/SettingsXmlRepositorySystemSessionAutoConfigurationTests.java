@@ -16,23 +16,18 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.io.File;
-
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.internal.impl.SimpleLocalRepositoryManagerFactory;
-import org.eclipse.aether.repository.Authentication;
-import org.eclipse.aether.repository.AuthenticationContext;
-import org.eclipse.aether.repository.LocalRepository;
-import org.eclipse.aether.repository.Proxy;
-import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.repository.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.test.util.TestPropertyValues;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -106,14 +101,14 @@ public class SettingsXmlRepositorySystemSessionAutoConfigurationTests {
 	}
 
 	private void assertMirrorSelectorConfiguration(DefaultRepositorySystemSession session,
-			RemoteRepository repository) {
+												   RemoteRepository repository) {
 		RemoteRepository mirror = session.getMirrorSelector().getMirror(repository);
 		assertThat(mirror).as("Mirror configured for repository " + repository.getId()).isNotNull();
 		assertThat(mirror.getHost()).isEqualTo("maven.example.com");
 	}
 
 	private void assertAuthenticationSelectorConfiguration(DefaultRepositorySystemSession session,
-			RemoteRepository repository) {
+														   RemoteRepository repository) {
 		Authentication authentication = session.getAuthenticationSelector().getAuthentication(repository);
 		repository = new RemoteRepository.Builder(repository).setAuthentication(authentication).build();
 		AuthenticationContext authenticationContext = AuthenticationContext.forRepository(session, repository);

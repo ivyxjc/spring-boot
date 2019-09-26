@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.elasticsearch.jest;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import io.searchbox.action.Action;
 import io.searchbox.client.JestClient;
@@ -31,7 +27,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchNodeTemplate;
@@ -42,6 +37,10 @@ import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRu
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -85,18 +84,18 @@ public class JestAutoConfigurationTests {
 	public void customGson() {
 		this.contextRunner.withUserConfiguration(CustomGson.class)
 				.withPropertyValues("spring.elasticsearch.jest.uris=http://localhost:9200").run((context) -> {
-					JestHttpClient client = (JestHttpClient) context.getBean(JestClient.class);
-					assertThat(client.getGson()).isSameAs(context.getBean("customGson"));
-				});
+			JestHttpClient client = (JestHttpClient) context.getBean(JestClient.class);
+			assertThat(client.getGson()).isSameAs(context.getBean("customGson"));
+		});
 	}
 
 	@Test
 	public void customizerOverridesAutoConfig() {
 		this.contextRunner.withUserConfiguration(BuilderCustomizer.class)
 				.withPropertyValues("spring.elasticsearch.jest.uris=http://localhost:9200").run((context) -> {
-					JestHttpClient client = (JestHttpClient) context.getBean(JestClient.class);
-					assertThat(client.getGson()).isSameAs(context.getBean(BuilderCustomizer.class).getGson());
-				});
+			JestHttpClient client = (JestHttpClient) context.getBean(JestClient.class);
+			assertThat(client.getGson()).isSameAs(context.getBean(BuilderCustomizer.class).getGson());
+		});
 	}
 
 	@Test
@@ -128,15 +127,13 @@ public class JestAutoConfigurationTests {
 		for (int i = 0; i < 2; i++) {
 			try {
 				return client.execute(action);
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				// Continue
 			}
 		}
 		try {
 			return client.execute(action);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}

@@ -16,6 +16,15 @@
 
 package org.springframework.boot.gradle.plugin;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.gradle.testkit.runner.TaskOutcome;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.gradle.junit.GradleCompatibilitySuite;
+import org.springframework.boot.gradle.testkit.GradleBuild;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,16 +34,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.gradle.testkit.runner.TaskOutcome;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.springframework.boot.gradle.junit.GradleCompatibilitySuite;
-import org.springframework.boot.gradle.testkit.GradleBuild;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -150,8 +149,7 @@ public class ApplicationPluginActionIntegrationTests {
 			int filePermissions = entry.getMode() & 0777;
 			if (entry.isFile() && !entry.getName().startsWith(name + "-boot/bin/")) {
 				assertThat(filePermissions).isEqualTo(0644);
-			}
-			else {
+			} else {
 				assertThat(filePermissions).isEqualTo(0755);
 			}
 		});

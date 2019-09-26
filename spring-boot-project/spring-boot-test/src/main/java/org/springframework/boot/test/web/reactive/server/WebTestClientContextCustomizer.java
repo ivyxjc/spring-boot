@@ -16,15 +16,8 @@
 
 package org.springframework.boot.test.web.reactive.server;
 
-import java.util.Collection;
-
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -44,6 +37,8 @@ import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
+
+import java.util.Collection;
 
 /**
  * {@link ContextCustomizer} for {@link WebTestClient}.
@@ -166,8 +161,7 @@ class WebTestClientContextCustomizer implements ContextCustomizer {
 				AbstractReactiveWebServerFactory webServerFactory = context
 						.getBean(AbstractReactiveWebServerFactory.class);
 				return webServerFactory.getSsl() != null && webServerFactory.getSsl().isEnabled();
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return false;
 			}
 		}

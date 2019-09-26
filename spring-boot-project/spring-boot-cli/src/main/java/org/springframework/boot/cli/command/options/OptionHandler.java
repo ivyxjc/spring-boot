@@ -16,36 +16,22 @@
 
 package org.springframework.boot.cli.command.options;
 
+import joptsimple.*;
+import org.springframework.boot.cli.command.OptionParsingCommand;
+import org.springframework.boot.cli.command.status.ExitStatus;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
-import joptsimple.BuiltinHelpFormatter;
-import joptsimple.HelpFormatter;
-import joptsimple.OptionDescriptor;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import joptsimple.OptionSpecBuilder;
-
-import org.springframework.boot.cli.command.OptionParsingCommand;
-import org.springframework.boot.cli.command.status.ExitStatus;
+import java.util.*;
 
 /**
  * Delegate used by {@link OptionParsingCommand} to parse options and run the command.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see OptionParsingCommand
  * @see #run(OptionSet)
+ * @since 1.0.0
  */
 public class OptionHandler {
 
@@ -87,6 +73,7 @@ public class OptionHandler {
 
 	/**
 	 * Run the command using the specified parsed {@link OptionSet}.
+	 *
 	 * @param options the parsed option set
 	 * @return an ExitStatus
 	 * @throws Exception in case of errors
@@ -101,8 +88,7 @@ public class OptionHandler {
 			OutputStream out = new ByteArrayOutputStream();
 			try {
 				getParser().printHelpOn(out);
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				return "Help not available";
 			}
 			this.help = out.toString().replace(" --cp ", " -cp  ");
@@ -116,8 +102,7 @@ public class OptionHandler {
 			getParser().formatHelpWith(formatter);
 			try {
 				getParser().printHelpOn(new ByteArrayOutputStream());
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore and provide no hints
 			}
 			this.optionHelp = formatter.getOptionHelp();

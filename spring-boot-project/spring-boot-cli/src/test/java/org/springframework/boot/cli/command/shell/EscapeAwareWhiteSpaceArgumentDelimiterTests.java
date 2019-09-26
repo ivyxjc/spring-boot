@@ -76,7 +76,7 @@ public class EscapeAwareWhiteSpaceArgumentDelimiterTests {
 	public void escapedQuotes() {
 		String s = "\\'a b";
 		ArgumentList argumentList = this.delimiter.delimit(s, 0);
-		assertThat(argumentList.getArguments()).isEqualTo(new String[] { "\\'a", "b" });
+		assertThat(argumentList.getArguments()).isEqualTo(new String[]{"\\'a", "b"});
 		assertThat(this.delimiter.parseArguments(s)).containsExactly("'a", "b");
 	}
 

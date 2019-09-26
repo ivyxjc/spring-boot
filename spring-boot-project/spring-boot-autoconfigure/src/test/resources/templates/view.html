@@ -1,10 +1,11 @@
-<html xmlns:th="https://www.thymeleaf.org" xmlns:layout="https://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
-  <head>
+<html layout:decorator="layout" xmlns:layout="https://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:th="https://www.thymeleaf.org">
+<head>
     <title layout:fragment="title">Content</title>
-  </head>
-  <body>
-    <div layout:fragment="content">
-    	<span th:text="${foo}">foo</span>
-    </div>
-  </body>
+</head>
+<body>
+<div layout:fragment="content">
+    <span th:text="${foo}">foo</span>
+</div>
+</body>
 </html>

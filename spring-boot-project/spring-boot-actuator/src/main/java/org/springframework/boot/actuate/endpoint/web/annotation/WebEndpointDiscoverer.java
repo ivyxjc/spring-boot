@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.boot.actuate.endpoint.EndpointFilter;
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.annotation.DiscoveredOperationMethod;
@@ -26,13 +23,11 @@ import org.springframework.boot.actuate.endpoint.annotation.EndpointDiscoverer;
 import org.springframework.boot.actuate.endpoint.invoke.OperationInvoker;
 import org.springframework.boot.actuate.endpoint.invoke.OperationInvokerAdvisor;
 import org.springframework.boot.actuate.endpoint.invoke.ParameterValueMapper;
-import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
-import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
-import org.springframework.boot.actuate.endpoint.web.PathMapper;
-import org.springframework.boot.actuate.endpoint.web.WebEndpointsSupplier;
-import org.springframework.boot.actuate.endpoint.web.WebOperation;
-import org.springframework.boot.actuate.endpoint.web.WebOperationRequestPredicate;
+import org.springframework.boot.actuate.endpoint.web.*;
 import org.springframework.context.ApplicationContext;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link EndpointDiscoverer} for {@link ExposableWebEndpoint web endpoints}.
@@ -49,17 +44,18 @@ public class WebEndpointDiscoverer extends EndpointDiscoverer<ExposableWebEndpoi
 
 	/**
 	 * Create a new {@link WebEndpointDiscoverer} instance.
-	 * @param applicationContext the source application context
+	 *
+	 * @param applicationContext   the source application context
 	 * @param parameterValueMapper the parameter value mapper
-	 * @param endpointMediaTypes the endpoint media types
-	 * @param endpointPathMappers the endpoint path mappers
-	 * @param invokerAdvisors invoker advisors to apply
-	 * @param filters filters to apply
+	 * @param endpointMediaTypes   the endpoint media types
+	 * @param endpointPathMappers  the endpoint path mappers
+	 * @param invokerAdvisors      invoker advisors to apply
+	 * @param filters              filters to apply
 	 */
 	public WebEndpointDiscoverer(ApplicationContext applicationContext, ParameterValueMapper parameterValueMapper,
-			EndpointMediaTypes endpointMediaTypes, List<PathMapper> endpointPathMappers,
-			Collection<OperationInvokerAdvisor> invokerAdvisors,
-			Collection<EndpointFilter<ExposableWebEndpoint>> filters) {
+								 EndpointMediaTypes endpointMediaTypes, List<PathMapper> endpointPathMappers,
+								 Collection<OperationInvokerAdvisor> invokerAdvisors,
+								 Collection<EndpointFilter<ExposableWebEndpoint>> filters) {
 		super(applicationContext, parameterValueMapper, invokerAdvisors, filters);
 		this.endpointPathMappers = endpointPathMappers;
 		this.requestPredicateFactory = new RequestPredicateFactory(endpointMediaTypes);
@@ -67,14 +63,14 @@ public class WebEndpointDiscoverer extends EndpointDiscoverer<ExposableWebEndpoi
 
 	@Override
 	protected ExposableWebEndpoint createEndpoint(Object endpointBean, EndpointId id, boolean enabledByDefault,
-			Collection<WebOperation> operations) {
+												  Collection<WebOperation> operations) {
 		String rootPath = PathMapper.getRootPath(this.endpointPathMappers, id);
 		return new DiscoveredWebEndpoint(this, endpointBean, id, rootPath, enabledByDefault, operations);
 	}
 
 	@Override
 	protected WebOperation createOperation(EndpointId endpointId, DiscoveredOperationMethod operationMethod,
-			OperationInvoker invoker) {
+										   OperationInvoker invoker) {
 		String rootPath = PathMapper.getRootPath(this.endpointPathMappers, endpointId);
 		WebOperationRequestPredicate requestPredicate = this.requestPredicateFactory.getRequestPredicate(endpointId,
 				rootPath, operationMethod);

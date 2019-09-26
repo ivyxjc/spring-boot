@@ -16,25 +16,11 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.servlet.Filter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.boot.web.servlet.AbstractFilterRegistrationBean;
-import org.springframework.boot.web.servlet.DelegatingFilterProxyRegistrationBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.RegistrationBean;
-import org.springframework.boot.web.servlet.ServletContextInitializerBeans;
+import org.springframework.boot.web.servlet.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.web.servlet.MvcResult;
@@ -45,6 +31,14 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.Filter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link MockMvcBuilderCustomizer} for a typical Spring Boot application. Usually applied
@@ -67,6 +61,7 @@ public class SpringBootMockMvcBuilderCustomizer implements MockMvcBuilderCustomi
 
 	/**
 	 * Create a new {@link SpringBootMockMvcBuilderCustomizer} instance.
+	 *
 	 * @param context the source application context
 	 */
 	public SpringBootMockMvcBuilderCustomizer(WebApplicationContext context) {
@@ -119,34 +114,42 @@ public class SpringBootMockMvcBuilderCustomizer implements MockMvcBuilderCustomi
 		Collection<String> urls = registration.getUrlPatterns();
 		if (urls.isEmpty()) {
 			builder.addFilters(filter);
-		}
-		else {
+		} else {
 			builder.addFilter(filter, StringUtils.toStringArray(urls));
 		}
-	}
-
-	public void setAddFilters(boolean addFilters) {
-		this.addFilters = addFilters;
 	}
 
 	public boolean isAddFilters() {
 		return this.addFilters;
 	}
 
-	public void setPrint(MockMvcPrint print) {
-		this.print = print;
+	public void setAddFilters(boolean addFilters) {
+		this.addFilters = addFilters;
 	}
 
 	public MockMvcPrint getPrint() {
 		return this.print;
 	}
 
-	public void setPrintOnlyOnFailure(boolean printOnlyOnFailure) {
-		this.printOnlyOnFailure = printOnlyOnFailure;
+	public void setPrint(MockMvcPrint print) {
+		this.print = print;
 	}
 
 	public boolean isPrintOnlyOnFailure() {
 		return this.printOnlyOnFailure;
+	}
+
+	public void setPrintOnlyOnFailure(boolean printOnlyOnFailure) {
+		this.printOnlyOnFailure = printOnlyOnFailure;
+	}
+
+	/**
+	 * Strategy interface to write MVC result lines.
+	 */
+	interface LinesWriter {
+
+		void write(List<String> lines);
+
 	}
 
 	/**
@@ -207,15 +210,6 @@ public class SpringBootMockMvcBuilderCustomizer implements MockMvcBuilderCustomi
 	}
 
 	/**
-	 * Strategy interface to write MVC result lines.
-	 */
-	interface LinesWriter {
-
-		void write(List<String> lines);
-
-	}
-
-	/**
 	 * {@link LinesWriter} used to defer writing until errors are detected.
 	 *
 	 * @see MockMvcPrintOnlyOnFailureTestExecutionListener
@@ -235,6 +229,14 @@ public class SpringBootMockMvcBuilderCustomizer implements MockMvcBuilderCustomi
 			this.delegate = delegate;
 		}
 
+		public static DeferredLinesWriter get(ApplicationContext applicationContext) {
+			try {
+				return applicationContext.getBean(BEAN_NAME, DeferredLinesWriter.class);
+			} catch (NoSuchBeanDefinitionException ex) {
+				return null;
+			}
+		}
+
 		@Override
 		public void write(List<String> lines) {
 			this.lines.addAll(lines);
@@ -242,15 +244,6 @@ public class SpringBootMockMvcBuilderCustomizer implements MockMvcBuilderCustomi
 
 		public void writeDeferredResult() {
 			this.delegate.write(this.lines);
-		}
-
-		public static DeferredLinesWriter get(ApplicationContext applicationContext) {
-			try {
-				return applicationContext.getBean(BEAN_NAME, DeferredLinesWriter.class);
-			}
-			catch (NoSuchBeanDefinitionException ex) {
-				return null;
-			}
 		}
 
 		void clear() {

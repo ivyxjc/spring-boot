@@ -16,21 +16,11 @@
 
 package org.springframework.boot.autoconfigure.mustache;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -49,6 +39,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.lang.annotation.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -94,10 +89,23 @@ public class MustacheAutoConfigurationServletIntegrationTests {
 		assertThat(body.contains("Hello World")).isTrue();
 	}
 
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Import({ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+					PropertyPlaceholderAutoConfiguration.class})
+	protected @interface MinimalWebConfiguration {
+
+	}
+
 	@Configuration
 	@MinimalWebConfiguration
 	@Controller
 	public static class Application {
+
+		public static void main(String[] args) {
+			SpringApplication.run(Application.class, args);
+		}
 
 		@RequestMapping("/")
 		public String home(Map<String, Object> model) {
@@ -124,19 +132,6 @@ public class MustacheAutoConfigurationServletIntegrationTests {
 			resolver.setSuffix(".html");
 			return resolver;
 		}
-
-		public static void main(String[] args) {
-			SpringApplication.run(Application.class, args);
-		}
-
-	}
-
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class })
-	protected @interface MinimalWebConfiguration {
 
 	}
 

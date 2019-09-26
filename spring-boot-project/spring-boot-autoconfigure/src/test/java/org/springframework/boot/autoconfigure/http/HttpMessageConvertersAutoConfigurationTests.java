@@ -16,12 +16,9 @@
 
 package org.springframework.boot.autoconfigure.http;
 
-import javax.json.bind.Jsonb;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
@@ -45,6 +42,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.http.converter.xml.MappingJackson2XmlHttpMessageConverter;
+
+import javax.json.bind.Jsonb;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -173,11 +172,11 @@ public class HttpMessageConvertersAutoConfigurationTests {
 	public void typeConstrainedConverterDoesNotPreventAutoConfigurationOfJacksonConverter() {
 		this.contextRunner.withUserConfiguration(JacksonObjectMapperBuilderConfig.class,
 				TypeConstrainedConverterConfiguration.class).run((context) -> {
-					BeanDefinition beanDefinition = ((GenericApplicationContext) context.getSourceApplicationContext())
-							.getBeanDefinition("mappingJackson2HttpMessageConverter");
-					assertThat(beanDefinition.getFactoryBeanName())
-							.isEqualTo(MappingJackson2HttpMessageConverterConfiguration.class.getName());
-				});
+			BeanDefinition beanDefinition = ((GenericApplicationContext) context.getSourceApplicationContext())
+					.getBeanDefinition("mappingJackson2HttpMessageConverter");
+			assertThat(beanDefinition.getFactoryBeanName())
+					.isEqualTo(MappingJackson2HttpMessageConverterConfiguration.class.getName());
+		});
 	}
 
 	@Test
@@ -240,7 +239,7 @@ public class HttpMessageConvertersAutoConfigurationTests {
 	}
 
 	private void assertConverterBeanRegisteredWithHttpMessageConverters(AssertableApplicationContext context,
-			Class<? extends HttpMessageConverter<?>> type) {
+																		Class<? extends HttpMessageConverter<?>> type) {
 		HttpMessageConverter<?> converter = context.getBean(type);
 		HttpMessageConverters converters = context.getBean(HttpMessageConverters.class);
 		assertThat(converters.getConverters()).contains(converter);

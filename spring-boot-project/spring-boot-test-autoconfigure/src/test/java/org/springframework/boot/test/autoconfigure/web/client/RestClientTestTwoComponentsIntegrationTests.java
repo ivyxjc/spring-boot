@@ -18,7 +18,6 @@ package org.springframework.boot.test.autoconfigure.web.client;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.MockServerRestTemplateCustomizer;
 import org.springframework.http.MediaType;
@@ -36,7 +35,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  * @author Phillip Webb
  */
 @RunWith(SpringRunner.class)
-@RestClientTest({ ExampleRestClient.class, AnotherExampleRestClient.class })
+@RestClientTest({ExampleRestClient.class, AnotherExampleRestClient.class})
 public class RestClientTestTwoComponentsIntegrationTests {
 
 	@Autowired

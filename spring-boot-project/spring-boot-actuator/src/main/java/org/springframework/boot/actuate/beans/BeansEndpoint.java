@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.beans;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -27,6 +24,9 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link Endpoint} to expose details of an application's beans, grouped by application
@@ -44,11 +44,20 @@ public class BeansEndpoint {
 	/**
 	 * Creates a new {@code BeansEndpoint} that will describe the beans in the given
 	 * {@code context} and all of its ancestors.
+	 *
 	 * @param context the application context
 	 * @see ConfigurableApplicationContext#getParent()
 	 */
 	public BeansEndpoint(ConfigurableApplicationContext context) {
 		this.context = context;
+	}
+
+	private static ConfigurableApplicationContext getConfigurableParent(ConfigurableApplicationContext context) {
+		ApplicationContext parent = context.getParent();
+		if (parent instanceof ConfigurableApplicationContext) {
+			return (ConfigurableApplicationContext) parent;
+		}
+		return null;
 	}
 
 	@ReadOperation
@@ -60,14 +69,6 @@ public class BeansEndpoint {
 			context = getConfigurableParent(context);
 		}
 		return new ApplicationBeans(contexts);
-	}
-
-	private static ConfigurableApplicationContext getConfigurableParent(ConfigurableApplicationContext context) {
-		ApplicationContext parent = context.getParent();
-		if (parent instanceof ConfigurableApplicationContext) {
-			return (ConfigurableApplicationContext) parent;
-		}
-		return null;
 	}
 
 	/**
@@ -103,14 +104,6 @@ public class BeansEndpoint {
 			this.parentId = parentId;
 		}
 
-		public String getParentId() {
-			return this.parentId;
-		}
-
-		public Map<String, BeanDescriptor> getBeans() {
-			return this.beans;
-		}
-
 		private static ContextBeans describing(ConfigurableApplicationContext context) {
 			if (context == null) {
 				return null;
@@ -131,7 +124,7 @@ public class BeansEndpoint {
 		}
 
 		private static BeanDescriptor describeBean(String name, BeanDefinition definition,
-				ConfigurableListableBeanFactory factory) {
+												   ConfigurableListableBeanFactory factory) {
 			return new BeanDescriptor(factory.getAliases(name), definition.getScope(), factory.getType(name),
 					definition.getResourceDescription(), factory.getDependenciesForBean(name));
 		}
@@ -139,6 +132,14 @@ public class BeansEndpoint {
 		private static boolean isBeanEligible(String beanName, BeanDefinition bd, ConfigurableBeanFactory bf) {
 			return (bd.getRole() != BeanDefinition.ROLE_INFRASTRUCTURE
 					&& (!bd.isLazyInit() || bf.containsSingleton(beanName)));
+		}
+
+		public String getParentId() {
+			return this.parentId;
+		}
+
+		public Map<String, BeanDescriptor> getBeans() {
+			return this.beans;
 		}
 
 	}

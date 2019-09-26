@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.trace.http;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.boot.actuate.trace.http.Include;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Configuration properties for HTTP tracing.

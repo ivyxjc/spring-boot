@@ -32,6 +32,7 @@ public class JobExecutionEvent extends ApplicationEvent {
 
 	/**
 	 * Create a new {@link JobExecutionEvent} instance.
+	 *
 	 * @param execution the job execution
 	 */
 	public JobExecutionEvent(JobExecution execution) {
@@ -41,6 +42,7 @@ public class JobExecutionEvent extends ApplicationEvent {
 
 	/**
 	 * Return the job execution.
+	 *
 	 * @return the job execution
 	 */
 	public JobExecution getJobExecution() {

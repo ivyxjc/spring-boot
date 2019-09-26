@@ -16,9 +16,8 @@
 
 package org.springframework.boot.actuate.web.mappings.servlet;
 
-import java.util.Collection;
-
 import javax.servlet.ServletRegistration;
+import java.util.Collection;
 
 /**
  * A mapping description derived from a {@link ServletRegistration}.
@@ -31,6 +30,7 @@ public class ServletRegistrationMappingDescription extends RegistrationMappingDe
 	/**
 	 * Creates a new {@code ServletRegistrationMappingDescription} derived from the given
 	 * {@code servletRegistration}.
+	 *
 	 * @param servletRegistration the servlet registration
 	 */
 	public ServletRegistrationMappingDescription(ServletRegistration servletRegistration) {
@@ -39,6 +39,7 @@ public class ServletRegistrationMappingDescription extends RegistrationMappingDe
 
 	/**
 	 * Returns the mappings for the registered servlet.
+	 *
 	 * @return the mappings
 	 */
 	public Collection<String> getMappings() {

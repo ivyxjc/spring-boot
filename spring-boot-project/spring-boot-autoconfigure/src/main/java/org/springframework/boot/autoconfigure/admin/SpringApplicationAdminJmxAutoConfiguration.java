@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.admin;
 
-import javax.management.MalformedObjectNameException;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.admin.SpringApplicationAdminMXBean;
 import org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar;
@@ -30,19 +28,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jmx.export.MBeanExporter;
 
+import javax.management.MalformedObjectNameException;
+
 /**
  * Register a JMX component that allows to administer the current application. Intended
  * for internal use only.
  *
  * @author Stephane Nicoll
  * @author Andy Wilkinson
- * @since 1.3.0
  * @see SpringApplicationAdminMXBean
+ * @since 1.3.0
  */
 @Configuration
 @AutoConfigureAfter(JmxAutoConfiguration.class)
 @ConditionalOnProperty(prefix = "spring.application.admin", value = "enabled", havingValue = "true",
-		matchIfMissing = false)
+					   matchIfMissing = false)
 public class SpringApplicationAdminJmxAutoConfiguration {
 
 	/**
@@ -61,7 +61,7 @@ public class SpringApplicationAdminJmxAutoConfiguration {
 	private final Environment environment;
 
 	public SpringApplicationAdminJmxAutoConfiguration(ObjectProvider<MBeanExporter> mbeanExporters,
-			Environment environment) {
+													  Environment environment) {
 		this.mbeanExporters = mbeanExporters;
 		this.environment = environment;
 	}

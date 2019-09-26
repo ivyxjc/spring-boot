@@ -16,10 +16,6 @@
 
 package org.springframework.boot.jackson;
 
-import java.io.InputStream;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -28,12 +24,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.NullNode;
 import org.junit.Test;
-
 import org.springframework.boot.jackson.NameAndAgeJsonComponent.Deserializer;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
@@ -185,7 +182,7 @@ public class JsonObjectDeserializerTests {
 
 		@Override
 		protected T deserializeObject(JsonParser jsonParser, DeserializationContext context, ObjectCodec codec,
-				JsonNode tree) {
+									  JsonNode tree) {
 			return null;
 		}
 

@@ -44,18 +44,17 @@ public class WarLauncher extends ExecutableArchiveLauncher {
 		super(archive);
 	}
 
+	public static void main(String[] args) throws Exception {
+		new WarLauncher().launch(args);
+	}
+
 	@Override
 	public boolean isNestedArchive(Archive.Entry entry) {
 		if (entry.isDirectory()) {
 			return entry.getName().equals(WEB_INF_CLASSES);
-		}
-		else {
+		} else {
 			return entry.getName().startsWith(WEB_INF_LIB) || entry.getName().startsWith(WEB_INF_LIB_PROVIDED);
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		new WarLauncher().launch(args);
 	}
 
 }

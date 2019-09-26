@@ -18,7 +18,6 @@ package org.springframework.boot.test.web.client;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -37,7 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestRestTemplateContextCustomizerWithFactoryBeanTests.TestClassWithFactoryBean.class,
-		webEnvironment = WebEnvironment.RANDOM_PORT)
+				webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext
 public class TestRestTemplateContextCustomizerWithFactoryBeanTests {
 

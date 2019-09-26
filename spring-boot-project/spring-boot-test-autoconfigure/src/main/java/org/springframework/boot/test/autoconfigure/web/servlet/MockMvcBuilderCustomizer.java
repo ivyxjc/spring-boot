@@ -25,14 +25,15 @@ import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
  * {@link #customize called} to customize the auto-configured {@link MockMvcBuilder}.
  *
  * @author Andy Wilkinson
- * @since 1.4.0
  * @see MockMvcAutoConfiguration
+ * @since 1.4.0
  */
 @FunctionalInterface
 public interface MockMvcBuilderCustomizer {
 
 	/**
 	 * Customize the given {@code builder}.
+	 *
 	 * @param builder the builder
 	 */
 	void customize(ConfigurableMockMvcBuilder<?> builder);

@@ -16,16 +16,7 @@
 
 package org.springframework.boot.actuate.context.properties;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiConsumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint.ConfigurationPropertiesBeanDescriptor;
 import org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint.ContextConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -36,6 +27,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -189,7 +183,7 @@ public class ConfigurationPropertiesReportEndpointTests {
 	}
 
 	private void load(List<String> keysToSanitize,
-			BiConsumer<ApplicationContext, ContextConfigurationProperties> properties) {
+					  BiConsumer<ApplicationContext, ContextConfigurationProperties> properties) {
 		ApplicationContextRunner contextRunner = new ApplicationContextRunner().withUserConfiguration(Config.class);
 		contextRunner.run((context) -> {
 			ConfigurationPropertiesReportEndpoint endpoint = context

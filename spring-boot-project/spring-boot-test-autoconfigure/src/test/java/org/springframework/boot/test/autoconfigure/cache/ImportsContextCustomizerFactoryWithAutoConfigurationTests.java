@@ -16,13 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.cache;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import org.junit.Test;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -33,6 +29,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -76,6 +75,16 @@ public class ImportsContextCustomizerFactoryWithAutoConfigurationTests {
 		new SpringJUnit4ClassRunner(DataJpaTest4.class).run(notifier);
 		ApplicationContext test2Context = contextFromTest;
 		assertThat(test1Context).isNotSameAs(test2Context);
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Unrelated1 {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Unrelated2 {
+
 	}
 
 	@DataJpaTest
@@ -135,16 +144,6 @@ public class ImportsContextCustomizerFactoryWithAutoConfigurationTests {
 		public void test() {
 			contextFromTest = this.context;
 		}
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface Unrelated1 {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface Unrelated2 {
 
 	}
 

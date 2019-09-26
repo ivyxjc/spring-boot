@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -33,6 +31,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
  * {@link DataSourceTransactionManager}.
@@ -44,7 +44,7 @@ import org.springframework.transaction.PlatformTransactionManager;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ JdbcTemplate.class, PlatformTransactionManager.class })
+@ConditionalOnClass({JdbcTemplate.class, PlatformTransactionManager.class})
 @AutoConfigureOrder(Ordered.LOWEST_PRECEDENCE)
 @EnableConfigurationProperties(DataSourceProperties.class)
 public class DataSourceTransactionManagerAutoConfiguration {
@@ -58,7 +58,7 @@ public class DataSourceTransactionManagerAutoConfiguration {
 		private final TransactionManagerCustomizers transactionManagerCustomizers;
 
 		DataSourceTransactionManagerConfiguration(DataSource dataSource,
-				ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
+												  ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
 			this.dataSource = dataSource;
 			this.transactionManagerCustomizers = transactionManagerCustomizers.getIfAvailable();
 		}

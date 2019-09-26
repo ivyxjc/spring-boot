@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import org.springframework.context.ApplicationEvent;
+
+import javax.sql.DataSource;
 
 /**
  * {@link ApplicationEvent} used internally to indicate that the schema of a new
@@ -34,6 +34,7 @@ public class DataSourceSchemaCreatedEvent extends ApplicationEvent {
 
 	/**
 	 * Create a new {@link DataSourceSchemaCreatedEvent}.
+	 *
 	 * @param source the source {@link DataSource}.
 	 */
 	public DataSourceSchemaCreatedEvent(DataSource source) {

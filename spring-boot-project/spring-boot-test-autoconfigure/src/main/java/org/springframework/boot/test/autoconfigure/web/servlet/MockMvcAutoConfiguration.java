@@ -16,8 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.util.List;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -38,6 +36,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import java.util.List;
+
 /**
  * Auto-configuration for {@link MockMvc}.
  *
@@ -50,7 +50,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 @Configuration
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
-@EnableConfigurationProperties({ ServerProperties.class, WebMvcProperties.class })
+@EnableConfigurationProperties({ServerProperties.class, WebMvcProperties.class})
 public class MockMvcAutoConfiguration {
 
 	private final WebApplicationContext context;

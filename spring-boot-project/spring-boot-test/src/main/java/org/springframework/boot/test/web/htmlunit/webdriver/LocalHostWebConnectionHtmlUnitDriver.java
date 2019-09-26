@@ -18,7 +18,6 @@ package org.springframework.boot.test.web.htmlunit.webdriver;
 
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import org.openqa.selenium.Capabilities;
-
 import org.springframework.core.env.Environment;
 import org.springframework.test.web.servlet.htmlunit.webdriver.WebConnectionHtmlUnitDriver;
 import org.springframework.util.Assert;

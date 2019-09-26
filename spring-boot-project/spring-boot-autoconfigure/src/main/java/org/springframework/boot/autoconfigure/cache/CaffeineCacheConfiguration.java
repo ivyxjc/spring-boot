@@ -16,12 +16,9 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.util.List;
-
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.CaffeineSpec;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -33,15 +30,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Caffeine cache configuration.
  *
  * @author Eddú Meléndez
  */
 @Configuration
-@ConditionalOnClass({ Caffeine.class, CaffeineCacheManager.class })
+@ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 @ConditionalOnMissingBean(CacheManager.class)
-@Conditional({ CacheCondition.class })
+@Conditional({CacheCondition.class})
 class CaffeineCacheConfiguration {
 
 	private final CacheProperties cacheProperties;
@@ -55,8 +54,8 @@ class CaffeineCacheConfiguration {
 	private final CacheLoader<Object, Object> cacheLoader;
 
 	CaffeineCacheConfiguration(CacheProperties cacheProperties, CacheManagerCustomizers customizers,
-			ObjectProvider<Caffeine<Object, Object>> caffeine, ObjectProvider<CaffeineSpec> caffeineSpec,
-			ObjectProvider<CacheLoader<Object, Object>> cacheLoader) {
+							   ObjectProvider<Caffeine<Object, Object>> caffeine, ObjectProvider<CaffeineSpec> caffeineSpec,
+							   ObjectProvider<CacheLoader<Object, Object>> cacheLoader) {
 		this.cacheProperties = cacheProperties;
 		this.customizers = customizers;
 		this.caffeine = caffeine.getIfAvailable();
@@ -87,11 +86,9 @@ class CaffeineCacheConfiguration {
 		String specification = this.cacheProperties.getCaffeine().getSpec();
 		if (StringUtils.hasText(specification)) {
 			cacheManager.setCacheSpecification(specification);
-		}
-		else if (this.caffeineSpec != null) {
+		} else if (this.caffeineSpec != null) {
 			cacheManager.setCaffeineSpec(this.caffeineSpec);
-		}
-		else if (this.caffeine != null) {
+		} else if (this.caffeine != null) {
 			cacheManager.setCaffeine(this.caffeine);
 		}
 	}

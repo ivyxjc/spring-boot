@@ -16,14 +16,14 @@
 
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.core.env.PropertySource;
+import org.springframework.core.env.StandardEnvironment;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
-
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.StandardEnvironment;
 
 /**
  * Function used to determine if a {@link ConfigurationPropertySource} should be included

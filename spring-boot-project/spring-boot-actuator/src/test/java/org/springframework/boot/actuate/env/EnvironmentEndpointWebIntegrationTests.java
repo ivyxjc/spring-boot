@@ -16,13 +16,9 @@
 
 package org.springframework.boot.actuate.env;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.actuate.endpoint.web.test.WebEndpointRunners;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -31,6 +27,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RunWith(WebEndpointRunners.class)
 public class EnvironmentEndpointWebIntegrationTests {

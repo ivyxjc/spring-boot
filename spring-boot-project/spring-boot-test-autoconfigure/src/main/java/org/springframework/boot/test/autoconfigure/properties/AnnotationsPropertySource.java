@@ -16,25 +16,18 @@
 
 package org.springframework.boot.test.autoconfigure.properties;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * {@link EnumerablePropertySource} to adapt annotations marked with
@@ -106,7 +99,7 @@ public class AnnotationsPropertySource extends EnumerablePropertySource<Class<?>
 	}
 
 	private void collectProperties(Annotation annotation, Method attribute, PropertyMapping typeMapping,
-			Map<String, Object> properties) {
+								   Map<String, Object> properties) {
 		PropertyMapping attributeMapping = AnnotationUtils.getAnnotation(attribute, PropertyMapping.class);
 		SkipPropertyMapping skip = getMappingType(typeMapping, attributeMapping);
 		if (skip == SkipPropertyMapping.YES) {
@@ -166,8 +159,7 @@ public class AnnotationsPropertySource extends EnumerablePropertySource<Class<?>
 			for (int i = 0; i < array.length; i++) {
 				properties.put(name + "[" + i + "]", array[i]);
 			}
-		}
-		else {
+		} else {
 			properties.put(name, value);
 		}
 	}

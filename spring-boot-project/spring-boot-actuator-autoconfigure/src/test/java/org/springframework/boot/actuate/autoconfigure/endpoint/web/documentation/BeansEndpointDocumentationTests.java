@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.beans.BeansEndpoint;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +25,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.ResponseFieldsSnippet;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -57,7 +56,7 @@ public class BeansEndpointDocumentationTests extends MockMvcEndpointDocumentatio
 		ResponseFieldsSnippet responseFields = responseFields(
 				fieldWithPath("contexts").description("Application contexts keyed by id."), parentIdField(),
 				fieldWithPath("contexts.*.beans").description("Beans in the application context keyed by name."))
-						.andWithPrefix("contexts.*.beans.*.", beanFields);
+				.andWithPrefix("contexts.*.beans.*.", beanFields);
 		this.mockMvc.perform(get("/actuator/beans")).andExpect(status().isOk())
 				.andDo(document("beans",
 						preprocessResponse(

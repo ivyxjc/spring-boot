@@ -16,13 +16,13 @@
 
 package org.springframework.boot.devtools.restart.server;
 
+import org.junit.Test;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

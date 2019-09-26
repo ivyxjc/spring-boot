@@ -16,15 +16,6 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.classic.joran.JoranConfigurator;
@@ -41,18 +32,20 @@ import org.slf4j.Logger;
 import org.slf4j.Marker;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.slf4j.impl.StaticLoggerBinder;
-
-import org.springframework.boot.logging.LogFile;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingInitializationContext;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.LoggingSystemProperties;
-import org.springframework.boot.logging.Slf4JLoggingSystem;
+import org.springframework.boot.logging.*;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
 
 /**
  * {@link LoggingSystem} for <a href="https://logback.qos.ch">logback</a>.
@@ -68,6 +61,15 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 	private static final String CONFIGURATION_FILE_PROPERTY = "logback.configurationFile";
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
+	private static final TurboFilter FILTER = new TurboFilter() {
+
+		@Override
+		public FilterReply decide(Marker marker, ch.qos.logback.classic.Logger logger, Level level, String format,
+								  Object[] params, Throwable t) {
+			return FilterReply.DENY;
+		}
+
+	};
 
 	static {
 		LEVELS.map(LogLevel.TRACE, Level.TRACE);
@@ -80,23 +82,13 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 		LEVELS.map(LogLevel.OFF, Level.OFF);
 	}
 
-	private static final TurboFilter FILTER = new TurboFilter() {
-
-		@Override
-		public FilterReply decide(Marker marker, ch.qos.logback.classic.Logger logger, Level level, String format,
-				Object[] params, Throwable t) {
-			return FilterReply.DENY;
-		}
-
-	};
-
 	public LogbackLoggingSystem(ClassLoader classLoader) {
 		super(classLoader);
 	}
 
 	@Override
 	protected String[] getStandardConfigLocations() {
-		return new String[] { "logback-test.groovy", "logback-test.xml", "logback.groovy", "logback.xml" };
+		return new String[]{"logback-test.groovy", "logback-test.xml", "logback.groovy", "logback.xml"};
 	}
 
 	@Override
@@ -145,14 +137,13 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+									 LogFile logFile) {
 		super.loadConfiguration(initializationContext, location, logFile);
 		LoggerContext loggerContext = getLoggerContext();
 		stopAndReset(loggerContext);
 		try {
 			configureByResourceUrl(initializationContext, loggerContext, ResourceUtils.getURL(location));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Could not initialize Logback logging from " + location, ex);
 		}
 		List<Status> statuses = loggerContext.getStatusManager().getCopyOfStatusList();
@@ -169,13 +160,12 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 	}
 
 	private void configureByResourceUrl(LoggingInitializationContext initializationContext, LoggerContext loggerContext,
-			URL url) throws JoranException {
+										URL url) throws JoranException {
 		if (url.toString().endsWith("xml")) {
 			JoranConfigurator configurator = new SpringBootJoranConfigurator(initializationContext);
 			configurator.setContext(loggerContext);
 			configurator.doConfigure(url);
-		}
-		else {
+		} else {
 			new ContextInitializer(loggerContext).configureByResource(url);
 		}
 	}
@@ -295,8 +285,7 @@ public class LogbackLoggingSystem extends Slf4JLoggingSystem {
 			if (codeSource != null) {
 				return codeSource.getLocation();
 			}
-		}
-		catch (SecurityException ex) {
+		} catch (SecurityException ex) {
 			// Unable to determine location
 		}
 		return "unknown location";

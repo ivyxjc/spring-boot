@@ -16,18 +16,17 @@
 
 package org.springframework.boot.actuate.audit;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.util.Assert;
+
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.ApplicationEventPublisherAware;
-import org.springframework.util.Assert;
 
 /**
  * A value object representing an audit event: at a particular time, a particular user or
@@ -40,8 +39,8 @@ import org.springframework.util.Assert;
  * (wrappers for AuditEvent).
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see AuditEventRepository
+ * @since 1.0.0
  */
 @JsonInclude(Include.NON_EMPTY)
 public class AuditEvent implements Serializable {
@@ -56,9 +55,10 @@ public class AuditEvent implements Serializable {
 
 	/**
 	 * Create a new audit event for the current time.
+	 *
 	 * @param principal the user principal responsible
-	 * @param type the event type
-	 * @param data the event data
+	 * @param type      the event type
+	 * @param data      the event data
 	 */
 	public AuditEvent(String principal, String type, Map<String, Object> data) {
 		this(Instant.now(), principal, type, data);
@@ -67,9 +67,10 @@ public class AuditEvent implements Serializable {
 	/**
 	 * Create a new audit event for the current time from data provided as name-value
 	 * pairs.
+	 *
 	 * @param principal the user principal responsible
-	 * @param type the event type
-	 * @param data the event data in the form 'key=value' or simply 'key'
+	 * @param type      the event type
+	 * @param data      the event data in the form 'key=value' or simply 'key'
 	 */
 	public AuditEvent(String principal, String type, String... data) {
 		this(Instant.now(), principal, type, convert(data));
@@ -77,10 +78,11 @@ public class AuditEvent implements Serializable {
 
 	/**
 	 * Create a new audit event.
+	 *
 	 * @param timestamp the date/time of the event
 	 * @param principal the user principal responsible
-	 * @param type the event type
-	 * @param data the event data
+	 * @param type      the event type
+	 * @param data      the event data
 	 */
 	public AuditEvent(Instant timestamp, String principal, String type, Map<String, Object> data) {
 		Assert.notNull(timestamp, "Timestamp must not be null");
@@ -97,8 +99,7 @@ public class AuditEvent implements Serializable {
 			int index = entry.indexOf('=');
 			if (index != -1) {
 				result.put(entry.substring(0, index), entry.substring(index + 1));
-			}
-			else {
+			} else {
 				result.put(entry, null);
 			}
 		}
@@ -107,6 +108,7 @@ public class AuditEvent implements Serializable {
 
 	/**
 	 * Returns the date/time that the event was logged.
+	 *
 	 * @return the timestamp
 	 */
 	public Instant getTimestamp() {
@@ -116,6 +118,7 @@ public class AuditEvent implements Serializable {
 	/**
 	 * Returns the user principal responsible for the event or an empty String if the
 	 * principal is not available.
+	 *
 	 * @return the principal
 	 */
 	public String getPrincipal() {
@@ -124,6 +127,7 @@ public class AuditEvent implements Serializable {
 
 	/**
 	 * Returns the type of event.
+	 *
 	 * @return the event type
 	 */
 	public String getType() {
@@ -132,6 +136,7 @@ public class AuditEvent implements Serializable {
 
 	/**
 	 * Returns the event data.
+	 *
 	 * @return the event data
 	 */
 	public Map<String, Object> getData() {

@@ -30,6 +30,7 @@ public interface HibernatePropertiesCustomizer {
 
 	/**
 	 * Customize the specified JPA vendor properties.
+	 *
 	 * @param hibernateProperties the JPA vendor properties to customize
 	 */
 	void customize(Map<String, Object> hibernateProperties);

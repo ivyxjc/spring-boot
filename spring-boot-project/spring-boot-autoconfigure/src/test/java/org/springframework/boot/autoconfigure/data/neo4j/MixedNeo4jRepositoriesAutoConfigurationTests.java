@@ -20,7 +20,6 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver;
-
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.city.City;

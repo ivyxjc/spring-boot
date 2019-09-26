@@ -16,31 +16,19 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-
-import javax.management.Attribute;
-import javax.management.AttributeList;
-import javax.management.AttributeNotFoundException;
-import javax.management.InvalidAttributeValueException;
-import javax.management.MBeanException;
-import javax.management.MBeanInfo;
-import javax.management.ReflectionException;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.FatalBeanException;
 import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.util.ClassUtils;
+import reactor.core.publisher.Mono;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import javax.management.*;
+import java.net.URL;
+import java.net.URLClassLoader;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link EndpointMBean}.
@@ -186,7 +174,7 @@ public class EndpointMBeanTests {
 	@Test
 	public void getAttributesShouldReturnEmptyAttributeList() {
 		EndpointMBean bean = createEndpointMBean();
-		AttributeList attributes = bean.getAttributes(new String[] { "test" });
+		AttributeList attributes = bean.getAttributes(new String[]{"test"});
 		assertThat(attributes).isEmpty();
 	}
 

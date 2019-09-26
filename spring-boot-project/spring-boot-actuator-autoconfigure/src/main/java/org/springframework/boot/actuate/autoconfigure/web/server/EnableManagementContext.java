@@ -16,14 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.server;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.actuate.autoconfigure.web.ManagementContextType;
 import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
 
 /**
  * Enables the management context.
@@ -38,6 +34,7 @@ import org.springframework.context.annotation.Import;
 
 	/**
 	 * The management context type that should be enabled.
+	 *
 	 * @return the management context type
 	 */
 	ManagementContextType value();

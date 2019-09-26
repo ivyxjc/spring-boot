@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.mongo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.data.mongo.city.CityRepository;
 import org.springframework.boot.autoconfigure.data.mongo.city.ReactiveCityRepository;
@@ -37,6 +33,9 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -84,9 +83,9 @@ public class MongoReactiveAndBlockingRepositoriesAutoConfigurationTests {
 		@Override
 		public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 			List<String> names = new ArrayList<>();
-			for (Class<?> type : new Class<?>[] { MongoAutoConfiguration.class, MongoReactiveAutoConfiguration.class,
+			for (Class<?> type : new Class<?>[]{MongoAutoConfiguration.class, MongoReactiveAutoConfiguration.class,
 					MongoDataAutoConfiguration.class, MongoRepositoriesAutoConfiguration.class,
-					MongoReactiveDataAutoConfiguration.class, MongoReactiveRepositoriesAutoConfiguration.class }) {
+					MongoReactiveDataAutoConfiguration.class, MongoReactiveRepositoriesAutoConfiguration.class}) {
 				names.add(type.getName());
 			}
 			return StringUtils.toStringArray(names);

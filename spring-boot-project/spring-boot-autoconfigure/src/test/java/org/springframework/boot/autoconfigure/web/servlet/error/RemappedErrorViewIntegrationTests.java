@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.web.servlet.error;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
@@ -71,11 +70,17 @@ public class RemappedErrorViewIntegrationTests {
 	}
 
 	@Configuration
-	@Import({ PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
-			HttpMessageConvertersAutoConfiguration.class, ServletWebServerFactoryAutoConfiguration.class,
-			DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class })
+	@Import({PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
+					HttpMessageConvertersAutoConfiguration.class, ServletWebServerFactoryAutoConfiguration.class,
+					DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class})
 	@Controller
 	public static class TestConfiguration implements ErrorPageRegistrar {
+
+		// For manual testing
+		public static void main(String[] args) {
+			new SpringApplicationBuilder(TestConfiguration.class).properties("spring.mvc.servlet.path:spring/*")
+					.run(args);
+		}
 
 		@RequestMapping("/")
 		public String home() {
@@ -85,12 +90,6 @@ public class RemappedErrorViewIntegrationTests {
 		@Override
 		public void registerErrorPages(ErrorPageRegistry errorPageRegistry) {
 			errorPageRegistry.addErrorPages(new ErrorPage("/spring/error"));
-		}
-
-		// For manual testing
-		public static void main(String[] args) {
-			new SpringApplicationBuilder(TestConfiguration.class).properties("spring.mvc.servlet.path:spring/*")
-					.run(args);
 		}
 
 	}

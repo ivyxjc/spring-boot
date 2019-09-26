@@ -16,12 +16,12 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Collections;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+
+import java.util.Collections;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -36,7 +36,7 @@ public final class MockDataSizeTypeDescriptor {
 	private MockDataSizeTypeDescriptor() {
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static TypeDescriptor get(DataUnit unit) {
 		TypeDescriptor descriptor = mock(TypeDescriptor.class);
 		if (unit != null) {

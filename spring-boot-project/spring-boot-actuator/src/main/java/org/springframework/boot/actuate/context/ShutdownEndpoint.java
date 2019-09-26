@@ -16,15 +16,15 @@
 
 package org.springframework.boot.actuate.context;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.springframework.beans.BeansException;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * {@link Endpoint} to shutdown the {@link ApplicationContext}.
@@ -52,8 +52,7 @@ public class ShutdownEndpoint implements ApplicationContextAware {
 		}
 		try {
 			return SHUTDOWN_MESSAGE;
-		}
-		finally {
+		} finally {
 			Thread thread = new Thread(this::performShutdown);
 			thread.setContextClassLoader(getClass().getClassLoader());
 			thread.start();
@@ -63,8 +62,7 @@ public class ShutdownEndpoint implements ApplicationContextAware {
 	private void performShutdown() {
 		try {
 			Thread.sleep(500L);
-		}
-		catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 		this.context.close();

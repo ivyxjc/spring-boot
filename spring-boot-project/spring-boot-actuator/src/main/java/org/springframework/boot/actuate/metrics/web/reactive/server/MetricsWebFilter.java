@@ -16,19 +16,18 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.server;
 
-import java.util.concurrent.TimeUnit;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Intercepts incoming HTTP requests handled by Spring WebFlux handlers.
@@ -50,9 +49,10 @@ public class MetricsWebFilter implements WebFilter {
 
 	/**
 	 * Create a new {@code MetricsWebFilter}.
-	 * @param registry the registry to which metrics are recorded
+	 *
+	 * @param registry     the registry to which metrics are recorded
 	 * @param tagsProvider provider for metrics tags
-	 * @param metricName name of the metric to record
+	 * @param metricName   name of the metric to record
 	 * @deprecated since 2.0.6 in favor of
 	 * {@link #MetricsWebFilter(MeterRegistry, WebFluxTagsProvider, String, boolean)}
 	 */
@@ -62,7 +62,7 @@ public class MetricsWebFilter implements WebFilter {
 	}
 
 	public MetricsWebFilter(MeterRegistry registry, WebFluxTagsProvider tagsProvider, String metricName,
-			boolean autoTimeRequests) {
+							boolean autoTimeRequests) {
 		this.registry = registry;
 		this.tagsProvider = tagsProvider;
 		this.metricName = metricName;
@@ -83,8 +83,7 @@ public class MetricsWebFilter implements WebFilter {
 		return call.doOnSuccess((done) -> success(exchange, start)).doOnError((cause) -> {
 			if (response.isCommitted()) {
 				error(exchange, start, cause);
-			}
-			else {
+			} else {
 				response.beforeCommit(() -> {
 					error(exchange, start, cause);
 					return Mono.empty();

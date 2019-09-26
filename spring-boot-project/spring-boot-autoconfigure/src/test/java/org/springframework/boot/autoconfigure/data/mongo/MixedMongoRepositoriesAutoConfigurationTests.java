@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.mongo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.city.City;
@@ -42,6 +38,9 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -153,10 +152,10 @@ public class MixedMongoRepositoriesAutoConfigurationTests {
 		@Override
 		public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 			List<String> names = new ArrayList<>();
-			for (Class<?> type : new Class<?>[] { DataSourceAutoConfiguration.class,
+			for (Class<?> type : new Class<?>[]{DataSourceAutoConfiguration.class,
 					HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class,
 					MongoAutoConfiguration.class, MongoDataAutoConfiguration.class,
-					MongoRepositoriesAutoConfiguration.class }) {
+					MongoRepositoriesAutoConfiguration.class}) {
 				names.add(type.getName());
 			}
 			return StringUtils.toStringArray(names);

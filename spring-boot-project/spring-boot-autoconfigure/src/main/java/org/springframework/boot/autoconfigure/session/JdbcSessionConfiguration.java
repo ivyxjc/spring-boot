@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.time.Duration;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -34,6 +30,9 @@ import org.springframework.session.SessionRepository;
 import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 import org.springframework.session.jdbc.config.annotation.web.http.JdbcHttpSessionConfiguration;
 
+import javax.sql.DataSource;
+import java.time.Duration;
+
 /**
  * JDBC backed session configuration.
  *
@@ -42,7 +41,7 @@ import org.springframework.session.jdbc.config.annotation.web.http.JdbcHttpSessi
  * @author Vedran Pavic
  */
 @Configuration
-@ConditionalOnClass({ JdbcTemplate.class, JdbcOperationsSessionRepository.class })
+@ConditionalOnClass({JdbcTemplate.class, JdbcOperationsSessionRepository.class})
 @ConditionalOnMissingBean(SessionRepository.class)
 @ConditionalOnBean(DataSource.class)
 @Conditional(ServletSessionCondition.class)
@@ -52,7 +51,7 @@ class JdbcSessionConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public JdbcSessionDataSourceInitializer jdbcSessionDataSourceInitializer(DataSource dataSource,
-			ResourceLoader resourceLoader, JdbcSessionProperties properties) {
+																			 ResourceLoader resourceLoader, JdbcSessionProperties properties) {
 		return new JdbcSessionDataSourceInitializer(dataSource, resourceLoader, properties);
 	}
 

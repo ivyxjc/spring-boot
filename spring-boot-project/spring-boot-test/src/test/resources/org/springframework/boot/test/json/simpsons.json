@@ -1,19 +1,19 @@
 {
-   "familyMembers":[
-      {
-         "name":"Homer"
-      },
-      {
-         "name":"Marge"
-      },
-      {
-         "name":"Bart"
-      },
-      {
-         "name":"Lisa"
-      },
-      {
-         "name":"Maggie"
-      }
-   ]
+  "familyMembers": [
+    {
+      "name": "Homer"
+    },
+    {
+      "name": "Marge"
+    },
+    {
+      "name": "Bart"
+    },
+    {
+      "name": "Lisa"
+    },
+    {
+      "name": "Maggie"
+    }
+  ]
 }

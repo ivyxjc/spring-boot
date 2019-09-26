@@ -16,15 +16,15 @@
 
 package org.springframework.boot.convert;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.Collections;
-import java.util.Set;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ReflectionUtils;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * {@link Converter} to convert from a {@link Duration} to a {@link Number}.
@@ -57,8 +57,7 @@ final class DurationToNumberConverter implements GenericConverter {
 		try {
 			return type.getConstructor(String.class)
 					.newInstance(String.valueOf(DurationStyle.Unit.fromChronoUnit(unit).longValue(source)));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			ReflectionUtils.rethrowRuntimeException(ex);
 			throw new IllegalStateException(ex);
 		}

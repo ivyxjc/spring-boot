@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.redis;
 
-import java.util.Map;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -34,6 +32,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link RedisHealthIndicator}.
  *
@@ -48,7 +48,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 @ConditionalOnBean(RedisConnectionFactory.class)
 @ConditionalOnEnabledHealthIndicator("redis")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)
-@AutoConfigureAfter({ RedisAutoConfiguration.class, RedisReactiveHealthIndicatorAutoConfiguration.class })
+@AutoConfigureAfter({RedisAutoConfiguration.class, RedisReactiveHealthIndicatorAutoConfiguration.class})
 public class RedisHealthIndicatorAutoConfiguration
 		extends CompositeHealthIndicatorConfiguration<RedisHealthIndicator, RedisConnectionFactory> {
 

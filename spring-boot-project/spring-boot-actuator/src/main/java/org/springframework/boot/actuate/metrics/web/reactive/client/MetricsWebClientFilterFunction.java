@@ -16,17 +16,16 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.client;
 
-import java.util.concurrent.TimeUnit;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
-import reactor.core.publisher.Mono;
-
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
+import reactor.core.publisher.Mono;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link ExchangeFilterFunction} applied via a {@link MetricsWebClientCustomizer} to
@@ -47,7 +46,7 @@ public class MetricsWebClientFilterFunction implements ExchangeFilterFunction {
 	private final String metricName;
 
 	public MetricsWebClientFilterFunction(MeterRegistry meterRegistry, WebClientExchangeTagsProvider tagProvider,
-			String metricName) {
+										  String metricName) {
 		this.meterRegistry = meterRegistry;
 		this.tagProvider = tagProvider;
 		this.metricName = metricName;

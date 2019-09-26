@@ -16,9 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.mongo.city;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.data.repository.Repository;
+import reactor.core.publisher.Flux;
 
 public interface ReactiveCityRepository extends Repository<City, Long> {
 

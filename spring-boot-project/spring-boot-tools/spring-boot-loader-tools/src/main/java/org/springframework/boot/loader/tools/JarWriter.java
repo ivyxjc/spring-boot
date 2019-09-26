@@ -16,17 +16,11 @@
 
 package org.springframework.boot.loader.tools;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilterInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
+import org.apache.commons.compress.archivers.jar.JarArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.UnixStat;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -41,10 +35,6 @@ import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
-
-import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
-import org.apache.commons.compress.archivers.jar.JarArchiveOutputStream;
-import org.apache.commons.compress.archivers.zip.UnixStat;
 
 /**
  * Writes JAR content, ensuring valid directory entries are always created and duplicate
@@ -68,8 +58,9 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Create a new {@link JarWriter} instance.
+	 *
 	 * @param file the file to write
-	 * @throws IOException if the file cannot be opened
+	 * @throws IOException           if the file cannot be opened
 	 * @throws FileNotFoundException if the file cannot be found
 	 */
 	public JarWriter(File file) throws FileNotFoundException, IOException {
@@ -78,9 +69,10 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Create a new {@link JarWriter} instance.
-	 * @param file the file to write
+	 *
+	 * @param file         the file to write
 	 * @param launchScript an optional launch script to prepend to the front of the jar
-	 * @throws IOException if the file cannot be opened
+	 * @throws IOException           if the file cannot be opened
 	 * @throws FileNotFoundException if the file cannot be found
 	 */
 	public JarWriter(File file, LaunchScript launchScript) throws FileNotFoundException, IOException {
@@ -99,14 +91,14 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 			Set<PosixFilePermission> permissions = new HashSet<>(Files.getPosixFilePermissions(path));
 			permissions.add(PosixFilePermission.OWNER_EXECUTE);
 			Files.setPosixFilePermissions(path, permissions);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			// Ignore and continue creating the jar
 		}
 	}
 
 	/**
 	 * Write the specified manifest.
+	 *
 	 * @param manifest the manifest to write
 	 * @throws IOException of the manifest cannot be written
 	 */
@@ -117,6 +109,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Write all entries from the specified jar file.
+	 *
 	 * @param jarFile the source jar file
 	 * @throws IOException if the entries cannot be written
 	 */
@@ -148,8 +141,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 		try (ZipHeaderPeekInputStream inputStream = new ZipHeaderPeekInputStream(jarFile.getInputStream(entry))) {
 			if (inputStream.hasZipHeader() && entry.getMethod() != ZipEntry.STORED) {
 				new CrcAndSize(inputStream).setupStoredEntry(entry);
-			}
-			else {
+			} else {
 				entry.setCompressedSize(-1);
 			}
 		}
@@ -157,7 +149,8 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Writes an entry. The {@code inputStream} is closed once the entry has been written
-	 * @param entryName the name of the entry
+	 *
+	 * @param entryName   the name of the entry
 	 * @param inputStream the stream from which the entry's data can be read
 	 * @throws IOException if the write fails
 	 */
@@ -166,16 +159,16 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 		JarArchiveEntry entry = new JarArchiveEntry(entryName);
 		try {
 			writeEntry(entry, new InputStreamEntryWriter(inputStream));
-		}
-		finally {
+		} finally {
 			inputStream.close();
 		}
 	}
 
 	/**
 	 * Write a nested library.
+	 *
 	 * @param destination the destination of the library
-	 * @param library the library
+	 * @param library     the library
 	 * @throws IOException if the write fails
 	 */
 	public void writeNestedLibrary(String destination, Library library) throws IOException {
@@ -199,8 +192,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 					}
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Ignore and just use the source file timestamp
 		}
 		return file.lastModified();
@@ -208,6 +200,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Write the required spring-boot-loader classes to the JAR.
+	 *
 	 * @throws IOException if the classes cannot be written
 	 */
 	@Override
@@ -217,8 +210,9 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Write the required spring-boot-loader classes to the JAR.
+	 *
 	 * @param loaderJarResourceName the name of the resource containing the loader classes
-	 * to be written
+	 *                              to be written
 	 * @throws IOException if the classes cannot be written
 	 */
 	@Override
@@ -236,6 +230,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 	/**
 	 * Close the writer.
+	 *
 	 * @throws IOException if the file cannot be closed
 	 */
 	@Override
@@ -250,8 +245,9 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 	/**
 	 * Perform the actual write of a {@link JarEntry}. All other write methods delegate to
 	 * this one.
-	 * @param entry the entry to write
-	 * @param entryWriter the entry writer or {@code null} if there is no content
+	 *
+	 * @param entry         the entry to write
+	 * @param entryWriter   the entry writer or {@code null} if there is no content
 	 * @param unpackHandler handles possible unpacking for the entry
 	 * @throws IOException in case of I/O errors
 	 */
@@ -261,8 +257,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 		if (parent.endsWith("/")) {
 			parent = parent.substring(0, parent.length() - 1);
 			entry.setUnixMode(UnixStat.DIR_FLAG | UnixStat.DEFAULT_DIR_PERM);
-		}
-		else {
+		} else {
 			entry.setUnixMode(UnixStat.FILE_FLAG | UnixStat.DEFAULT_FILE_PERM);
 		}
 		if (parent.lastIndexOf('/') != -1) {
@@ -283,7 +278,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 	}
 
 	private EntryWriter addUnpackCommentIfNecessary(JarArchiveEntry entry, EntryWriter entryWriter,
-			UnpackHandler unpackHandler) throws IOException {
+													UnpackHandler unpackHandler) throws IOException {
 		if (entryWriter == null || !unpackHandler.requiresUnpack(entry.getName())) {
 			return entryWriter;
 		}
@@ -300,10 +295,33 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 
 		/**
 		 * Write entry data to the specified output stream.
+		 *
 		 * @param outputStream the destination for the data
 		 * @throws IOException in case of I/O errors
 		 */
 		void write(OutputStream outputStream) throws IOException;
+
+	}
+
+	/**
+	 * An {@code EntryTransformer} enables the transformation of {@link JarEntry jar
+	 * entries} during the writing process.
+	 */
+	interface EntryTransformer {
+
+		JarArchiveEntry transform(JarArchiveEntry jarEntry);
+
+	}
+
+	/**
+	 * An {@code UnpackHandler} determines whether or not unpacking is required and
+	 * provides a SHA1 hash if required.
+	 */
+	interface UnpackHandler {
+
+		boolean requiresUnpack(String name);
+
+		String sha1Hash(String name) throws IOException;
 
 	}
 
@@ -335,7 +353,7 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 	 */
 	static class ZipHeaderPeekInputStream extends FilterInputStream {
 
-		private static final byte[] ZIP_HEADER = new byte[] { 0x50, 0x4b, 0x03, 0x04 };
+		private static final byte[] ZIP_HEADER = new byte[]{0x50, 0x4b, 0x03, 0x04};
 
 		private final byte[] header;
 
@@ -441,16 +459,6 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 	}
 
 	/**
-	 * An {@code EntryTransformer} enables the transformation of {@link JarEntry jar
-	 * entries} during the writing process.
-	 */
-	interface EntryTransformer {
-
-		JarArchiveEntry transform(JarArchiveEntry jarEntry);
-
-	}
-
-	/**
 	 * An {@code EntryTransformer} that returns the entry unchanged.
 	 */
 	private static final class IdentityEntryTransformer implements EntryTransformer {
@@ -459,18 +467,6 @@ public class JarWriter implements LoaderClassesWriter, AutoCloseable {
 		public JarArchiveEntry transform(JarArchiveEntry jarEntry) {
 			return jarEntry;
 		}
-
-	}
-
-	/**
-	 * An {@code UnpackHandler} determines whether or not unpacking is required and
-	 * provides a SHA1 hash if required.
-	 */
-	interface UnpackHandler {
-
-		boolean requiresUnpack(String name);
-
-		String sha1Hash(String name) throws IOException;
 
 	}
 

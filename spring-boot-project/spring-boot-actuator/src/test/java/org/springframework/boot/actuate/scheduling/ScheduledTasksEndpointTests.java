@@ -16,18 +16,8 @@
 
 package org.springframework.boot.actuate.scheduling;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
-import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint.CronTaskDescription;
-import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint.CustomTriggerTaskDescription;
-import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint.FixedDelayTaskDescription;
-import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint.FixedRateTaskDescription;
-import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint.ScheduledTasksReport;
+import org.springframework.boot.actuate.scheduling.ScheduledTasksEndpoint.*;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,6 +29,11 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
+
+import java.util.Collection;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

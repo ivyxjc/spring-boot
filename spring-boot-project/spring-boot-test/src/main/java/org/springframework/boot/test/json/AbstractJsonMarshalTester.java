@@ -16,27 +16,15 @@
 
 package org.springframework.boot.test.json;
 
-import java.io.BufferedReader;
-import java.io.Closeable;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.lang.reflect.Field;
-
 import org.assertj.core.api.Assertions;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.ResolvableType;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+
+import java.io.*;
+import java.lang.reflect.Field;
 
 /**
  * Base class for AssertJ based JSON marshal testers. Exposes specific Asserts following a
@@ -62,9 +50,9 @@ import org.springframework.util.ReflectionUtils;
  *
  * @param <T> the type under test
  * @author Phillip Webb
- * @since 1.4.0
  * @see JsonContentAssert
  * @see ObjectContentAssert
+ * @since 1.4.0
  */
 public abstract class AbstractJsonMarshalTester<T> {
 
@@ -80,9 +68,10 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Create a new {@link AbstractJsonMarshalTester} instance.
+	 *
 	 * @param resourceLoadClass the source class used when loading relative classpath
-	 * resources
-	 * @param type the type under test
+	 *                          resources
+	 * @param type              the type under test
 	 */
 	public AbstractJsonMarshalTester(Class<?> resourceLoadClass, ResolvableType type) {
 		Assert.notNull(resourceLoadClass, "ResourceLoadClass must not be null");
@@ -92,9 +81,10 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Initialize the marshal tester for use.
+	 *
 	 * @param resourceLoadClass the source class used when loading relative classpath
-	 * resources
-	 * @param type the type under test
+	 *                          resources
+	 * @param type              the type under test
 	 */
 	protected final void initialize(Class<?> resourceLoadClass, ResolvableType type) {
 		if (this.resourceLoadClass == null && this.type == null) {
@@ -105,6 +95,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the type under test.
+	 *
 	 * @return the type under test
 	 */
 	protected final ResolvableType getType() {
@@ -113,6 +104,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return class used to load relative resources.
+	 *
 	 * @return the resource load class
 	 */
 	protected final Class<?> getResourceLoadClass() {
@@ -121,6 +113,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link JsonContent} from writing the specific value.
+	 *
 	 * @param value the value to write
 	 * @return the {@link JsonContent}
 	 * @throws IOException on write error
@@ -135,6 +128,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 	/**
 	 * Factory method used to get a {@link JsonContent} instance from a source JSON
 	 * string.
+	 *
 	 * @param json the source JSON
 	 * @return a new {@link JsonContent} instance
 	 * @since 2.1.5
@@ -145,6 +139,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from parsing the specific JSON bytes.
+	 *
 	 * @param jsonBytes the source JSON bytes
 	 * @return the resulting object
 	 * @throws IOException on parse error
@@ -156,6 +151,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from parsing the specific JSON bytes.
+	 *
 	 * @param jsonBytes the source JSON bytes
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on parse error
@@ -168,6 +164,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from parsing the specific JSON String.
+	 *
 	 * @param jsonString the source JSON string
 	 * @return the resulting object
 	 * @throws IOException on parse error
@@ -179,6 +176,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from parsing the specific JSON String.
+	 *
 	 * @param jsonString the source JSON string
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on parse error
@@ -191,8 +189,9 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from reading from the specified classpath resource.
+	 *
 	 * @param resourcePath the source resource path. May be a full path or a path relative
-	 * to the {@code resourceLoadClass} passed to the constructor
+	 *                     to the {@code resourceLoadClass} passed to the constructor
 	 * @return the resulting object
 	 * @throws IOException on read error
 	 */
@@ -203,8 +202,9 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from reading from the specified classpath resource.
+	 *
 	 * @param resourcePath the source resource path. May be a full path or a path relative
-	 * to the {@code resourceLoadClass} passed to the constructor
+	 *                     to the {@code resourceLoadClass} passed to the constructor
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on read error
 	 */
@@ -216,6 +216,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from reading from the specified file.
+	 *
 	 * @param file the source file
 	 * @return the resulting object
 	 * @throws IOException on read error
@@ -227,6 +228,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from reading from the specified file.
+	 *
 	 * @param file the source file
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on read error
@@ -239,6 +241,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from reading from the specified input stream.
+	 *
 	 * @param inputStream the source input stream
 	 * @return the resulting object
 	 * @throws IOException on read error
@@ -250,6 +253,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from reading from the specified input stream.
+	 *
 	 * @param inputStream the source input stream
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on read error
@@ -262,6 +266,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from reading from the specified resource.
+	 *
 	 * @param resource the source resource
 	 * @return the resulting object
 	 * @throws IOException on read error
@@ -273,6 +278,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from reading from the specified resource.
+	 *
 	 * @param resource the source resource
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on read error
@@ -288,6 +294,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return the object created from reading from the specified reader.
+	 *
 	 * @param reader the source reader
 	 * @return the resulting object
 	 * @throws IOException on read error
@@ -299,6 +306,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Return {@link ObjectContent} from reading from the specified reader.
+	 *
 	 * @param reader the source reader
 	 * @return the {@link ObjectContent}
 	 * @throws IOException on read error
@@ -314,8 +322,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 	private void closeQuietly(Closeable closeable) {
 		try {
 			closeable.close();
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 		}
 	}
 
@@ -326,8 +333,9 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Write the specified object to a JSON string.
+	 *
 	 * @param value the source value (never {@code null})
-	 * @param type the resulting type (never {@code null})
+	 * @param type  the resulting type (never {@code null})
 	 * @return the JSON string
 	 * @throws IOException on write error
 	 */
@@ -336,8 +344,9 @@ public abstract class AbstractJsonMarshalTester<T> {
 	/**
 	 * Read from the specified input stream to create an object of the specified type. The
 	 * default implementation delegates to {@link #readObject(Reader, ResolvableType)}.
+	 *
 	 * @param inputStream the source input stream (never {@code null})
-	 * @param type the resulting type (never {@code null})
+	 * @param type        the resulting type (never {@code null})
 	 * @return the resulting object
 	 * @throws IOException on read error
 	 */
@@ -348,8 +357,9 @@ public abstract class AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Read from the specified reader to create an object of the specified type.
+	 *
 	 * @param reader the source reader (never {@code null})
-	 * @param type the resulting type (never {@code null})
+	 * @param type   the resulting type (never {@code null})
 	 * @return the resulting object
 	 * @throws IOException on read error
 	 */
@@ -400,7 +410,7 @@ public abstract class AbstractJsonMarshalTester<T> {
 		}
 
 		protected abstract AbstractJsonMarshalTester<Object> createTester(Class<?> resourceLoadClass,
-				ResolvableType type, M marshaller);
+																		  ResolvableType type, M marshaller);
 
 	}
 

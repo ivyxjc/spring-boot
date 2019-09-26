@@ -18,7 +18,6 @@ package org.springframework.boot.cli.command;
 
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.cli.command.run.RunCommand;
 import org.springframework.boot.test.rule.OutputCapture;
 

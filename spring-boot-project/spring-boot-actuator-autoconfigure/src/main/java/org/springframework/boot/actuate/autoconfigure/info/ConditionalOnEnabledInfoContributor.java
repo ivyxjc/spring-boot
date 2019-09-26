@@ -16,13 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.info;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.annotation.Conditional;
+
+import java.lang.annotation.*;
 
 /**
  * {@link Conditional} that checks whether or not a default info contributor is enabled.
@@ -35,13 +31,14 @@ import org.springframework.context.annotation.Conditional;
  * @since 2.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Documented
 @Conditional(OnEnabledInfoContributorCondition.class)
 public @interface ConditionalOnEnabledInfoContributor {
 
 	/**
 	 * The name of the info contributor.
+	 *
 	 * @return the name of the info contributor
 	 */
 	String value();

@@ -16,10 +16,10 @@
 
 package org.springframework.boot.web.servlet;
 
+import org.springframework.util.Assert;
+
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
-
-import org.springframework.util.Assert;
 
 /**
  * A {@link ServletContextInitializer} to register {@link Filter}s in a Servlet 3.0+
@@ -35,15 +35,16 @@ import org.springframework.util.Assert;
  *
  * @param <T> the type of {@link Filter} to register
  * @author Phillip Webb
- * @since 1.4.0
  * @see ServletContextInitializer
  * @see ServletContext#addFilter(String, Filter)
  * @see DelegatingFilterProxyRegistrationBean
+ * @since 1.4.0
  */
 public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegistrationBean<T> {
 
 	/**
 	 * Filters that wrap the servlet request should be ordered less than or equal to this.
+	 *
 	 * @deprecated since 2.1.0 in favor of
 	 * {@code OrderedFilter.REQUEST_WRAPPER_FILTER_MAX_ORDER}
 	 */
@@ -61,7 +62,8 @@ public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegi
 	/**
 	 * Create a new {@link FilterRegistrationBean} instance to be registered with the
 	 * specified {@link ServletRegistrationBean}s.
-	 * @param filter the filter to register
+	 *
+	 * @param filter                   the filter to register
 	 * @param servletRegistrationBeans associate {@link ServletRegistrationBean}s
 	 */
 	public FilterRegistrationBean(T filter, ServletRegistrationBean<?>... servletRegistrationBeans) {
@@ -77,6 +79,7 @@ public class FilterRegistrationBean<T extends Filter> extends AbstractFilterRegi
 
 	/**
 	 * Set the filter to be registered.
+	 *
 	 * @param filter the filter
 	 */
 	public void setFilter(T filter) {

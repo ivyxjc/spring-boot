@@ -16,9 +16,9 @@
 
 package org.springframework.boot.jdbc.metadata;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.dbcp2.BasicDataSource;
+
+import javax.sql.DataSource;
 
 /**
  * {@link DataSourcePoolMetadata} for an Apache Commons DBCP2 {@link DataSource}.

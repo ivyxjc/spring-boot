@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.function.Supplier;
-
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
 import org.springframework.boot.actuate.endpoint.web.annotation.EndpointWebExtension;
+
+import java.util.function.Supplier;
 
 /**
  * {@link EndpointWebExtension} for the {@link HealthEndpoint}.
@@ -61,7 +61,8 @@ public class HealthEndpointWebExtension {
 
 	@ReadOperation
 	public WebEndpointResponse<Health> healthForComponentInstance(SecurityContext securityContext,
-			@Selector String component, @Selector String instance) {
+																  @Selector String component,
+																  @Selector String instance) {
 		Supplier<Health> health = () -> this.delegate.healthForComponentInstance(component, instance);
 		return this.responseMapper.mapDetails(health, securityContext);
 	}

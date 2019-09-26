@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.Collections;
-
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

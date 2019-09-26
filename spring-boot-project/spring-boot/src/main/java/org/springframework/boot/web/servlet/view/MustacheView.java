@@ -16,21 +16,19 @@
 
 package org.springframework.boot.web.servlet.view;
 
+import com.samskivert.mustache.Mustache.Compiler;
+import com.samskivert.mustache.Template;
+import org.springframework.core.io.Resource;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.AbstractTemplateView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.Locale;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.samskivert.mustache.Mustache.Compiler;
-import com.samskivert.mustache.Template;
-
-import org.springframework.core.io.Resource;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.AbstractTemplateView;
 
 /**
  * Spring MVC {@link View} using the Mustache template engine.
@@ -52,6 +50,7 @@ public class MustacheView extends AbstractTemplateView {
 	 * Typically this property is not set directly. Instead a single {@link Compiler} is
 	 * expected in the Spring application context which is used to compile Mustache
 	 * templates.
+	 *
 	 * @param compiler the Mustache compiler
 	 */
 	public void setCompiler(Compiler compiler) {
@@ -60,6 +59,7 @@ public class MustacheView extends AbstractTemplateView {
 
 	/**
 	 * Set the charset used for reading Mustache template files.
+	 *
 	 * @param charset the charset to use for reading template files
 	 */
 	public void setCharset(String charset) {
@@ -74,7 +74,7 @@ public class MustacheView extends AbstractTemplateView {
 
 	@Override
 	protected void renderMergedTemplateModel(Map<String, Object> model, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+											 HttpServletResponse response) throws Exception {
 		Template template = createTemplate(getApplicationContext().getResource(this.getUrl()));
 		if (template != null) {
 			template.execute(model, response.getWriter());

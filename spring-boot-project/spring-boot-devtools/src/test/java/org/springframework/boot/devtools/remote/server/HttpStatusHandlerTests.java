@@ -18,7 +18,6 @@ package org.springframework.boot.devtools.remote.server;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;

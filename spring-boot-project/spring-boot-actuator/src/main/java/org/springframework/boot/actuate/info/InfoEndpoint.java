@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.util.Assert;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@link Endpoint} to expose arbitrary application information.
@@ -38,6 +38,7 @@ public class InfoEndpoint {
 
 	/**
 	 * Create a new {@link InfoEndpoint} instance.
+	 *
 	 * @param infoContributors the info contributors to use
 	 */
 	public InfoEndpoint(List<InfoContributor> infoContributors) {

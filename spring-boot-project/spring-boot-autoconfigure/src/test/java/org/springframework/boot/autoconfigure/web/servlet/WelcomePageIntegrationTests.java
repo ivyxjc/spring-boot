@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.net.URI;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.thymeleaf.ThymeleafAutoConfiguration;
@@ -35,6 +32,8 @@ import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.net.URI;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -44,8 +43,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-		properties = { "spring.resources.chain.strategy.content.enabled=true",
-				"spring.thymeleaf.prefix=classpath:/templates/thymeleaf/" })
+				properties = {"spring.resources.chain.strategy.content.enabled=true",
+						"spring.thymeleaf.prefix=classpath:/templates/thymeleaf/"})
 public class WelcomePageIntegrationTests {
 
 	@LocalServerPort
@@ -62,9 +61,9 @@ public class WelcomePageIntegrationTests {
 	}
 
 	@Configuration
-	@Import({ PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
-			HttpMessageConvertersAutoConfiguration.class, ServletWebServerFactoryAutoConfiguration.class,
-			DispatcherServletAutoConfiguration.class, ThymeleafAutoConfiguration.class })
+	@Import({PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
+					HttpMessageConvertersAutoConfiguration.class, ServletWebServerFactoryAutoConfiguration.class,
+					DispatcherServletAutoConfiguration.class, ThymeleafAutoConfiguration.class})
 	public static class TestConfiguration {
 
 		public static void main(String[] args) {

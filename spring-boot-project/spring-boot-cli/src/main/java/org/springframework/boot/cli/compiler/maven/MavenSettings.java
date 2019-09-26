@@ -16,16 +16,6 @@
 
 package org.springframework.boot.cli.compiler.maven;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.maven.model.ActivationFile;
 import org.apache.maven.model.ActivationOS;
 import org.apache.maven.model.ActivationProperty;
@@ -38,29 +28,26 @@ import org.apache.maven.model.profile.activation.FileProfileActivator;
 import org.apache.maven.model.profile.activation.JdkVersionProfileActivator;
 import org.apache.maven.model.profile.activation.OperatingSystemProfileActivator;
 import org.apache.maven.model.profile.activation.PropertyProfileActivator;
-import org.apache.maven.settings.Activation;
-import org.apache.maven.settings.Mirror;
-import org.apache.maven.settings.Profile;
-import org.apache.maven.settings.Proxy;
-import org.apache.maven.settings.Server;
-import org.apache.maven.settings.Settings;
+import org.apache.maven.settings.*;
 import org.apache.maven.settings.crypto.SettingsDecryptionResult;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.AuthenticationSelector;
 import org.eclipse.aether.repository.MirrorSelector;
 import org.eclipse.aether.repository.ProxySelector;
-import org.eclipse.aether.util.repository.AuthenticationBuilder;
-import org.eclipse.aether.util.repository.ConservativeAuthenticationSelector;
-import org.eclipse.aether.util.repository.DefaultAuthenticationSelector;
-import org.eclipse.aether.util.repository.DefaultMirrorSelector;
-import org.eclipse.aether.util.repository.DefaultProxySelector;
+import org.eclipse.aether.util.repository.*;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * An encapsulation of settings read from a user's Maven settings.xml.
  *
  * @author Andy Wilkinson
- * @since 1.3.0
  * @see MavenSettingsReader
+ * @since 1.3.0
  */
 public class MavenSettings {
 
@@ -78,7 +65,8 @@ public class MavenSettings {
 
 	/**
 	 * Create a new {@link MavenSettings} instance.
-	 * @param settings the source settings
+	 *
+	 * @param settings          the source settings
 	 * @param decryptedSettings the decrypted settings
 	 */
 	public MavenSettings(Settings settings, SettingsDecryptionResult decryptedSettings) {
@@ -262,7 +250,7 @@ public class MavenSettings {
 			return Collections.emptyList();
 		}
 
-		@SuppressWarnings({ "unchecked", "rawtypes" })
+		@SuppressWarnings({"unchecked", "rawtypes"})
 		@Override
 		public Map<String, String> getSystemProperties() {
 			return (Map) System.getProperties();

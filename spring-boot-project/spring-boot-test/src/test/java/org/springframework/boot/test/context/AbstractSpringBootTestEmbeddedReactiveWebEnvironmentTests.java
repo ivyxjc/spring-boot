@@ -17,8 +17,6 @@
 package org.springframework.boot.test.context;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -33,6 +31,7 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -92,6 +91,11 @@ public abstract class AbstractSpringBootTestEmbeddedReactiveWebEnvironmentTests 
 		private int port = 8080;
 
 		@Bean
+		public static PropertySourcesPlaceholderConfigurer propertyPlaceholder() {
+			return new PropertySourcesPlaceholderConfigurer();
+		}
+
+		@Bean
 		public HttpHandler httpHandler(ApplicationContext applicationContext) {
 			return WebHttpHandlerBuilder.applicationContext(applicationContext).build();
 		}
@@ -101,11 +105,6 @@ public abstract class AbstractSpringBootTestEmbeddedReactiveWebEnvironmentTests 
 			TomcatReactiveWebServerFactory factory = new TomcatReactiveWebServerFactory();
 			factory.setPort(this.port);
 			return factory;
-		}
-
-		@Bean
-		public static PropertySourcesPlaceholderConfigurer propertyPlaceholder() {
-			return new PropertySourcesPlaceholderConfigurer();
 		}
 
 		@RequestMapping("/")

@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 /**
@@ -33,6 +32,7 @@ public interface Jackson2ObjectMapperBuilderCustomizer {
 
 	/**
 	 * Customize the JacksonObjectMapperBuilder.
+	 *
 	 * @param jacksonObjectMapperBuilder the JacksonObjectMapperBuilder to customize
 	 */
 	void customize(Jackson2ObjectMapperBuilder jacksonObjectMapperBuilder);

@@ -16,15 +16,10 @@
 
 package org.springframework.boot.logging;
 
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * Common abstraction over logging systems.
@@ -67,82 +62,8 @@ public abstract class LoggingSystem {
 	}
 
 	/**
-	 * Reset the logging system to be limit output. This method may be called before
-	 * {@link #initialize(LoggingInitializationContext, String, LogFile)} to reduce
-	 * logging noise until the system has been fully initialized.
-	 */
-	public abstract void beforeInitialize();
-
-	/**
-	 * Fully initialize the logging system.
-	 * @param initializationContext the logging initialization context
-	 * @param configLocation a log configuration location or {@code null} if default
-	 * initialization is required
-	 * @param logFile the log output file that should be written or {@code null} for
-	 * console only output
-	 */
-	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
-	}
-
-	/**
-	 * Clean up the logging system. The default implementation does nothing. Subclasses
-	 * should override this method to perform any logging system-specific cleanup.
-	 */
-	public void cleanUp() {
-	}
-
-	/**
-	 * Returns a {@link Runnable} that can handle shutdown of this logging system when the
-	 * JVM exits. The default implementation returns {@code null}, indicating that no
-	 * shutdown is required.
-	 * @return the shutdown handler, or {@code null}
-	 */
-	public Runnable getShutdownHandler() {
-		return null;
-	}
-
-	/**
-	 * Returns a set of the {@link LogLevel LogLevels} that are actually supported by the
-	 * logging system.
-	 * @return the supported levels
-	 */
-	public Set<LogLevel> getSupportedLogLevels() {
-		return EnumSet.allOf(LogLevel.class);
-	}
-
-	/**
-	 * Sets the logging level for a given logger.
-	 * @param loggerName the name of the logger to set ({@code null} can be used for the
-	 * root logger).
-	 * @param level the log level ({@code null} can be used to remove any custom level for
-	 * the logger and use the default configuration instead)
-	 */
-	public void setLogLevel(String loggerName, LogLevel level) {
-		throw new UnsupportedOperationException("Unable to set log level");
-	}
-
-	/**
-	 * Returns a collection of the current configuration for all a {@link LoggingSystem}'s
-	 * loggers.
-	 * @return the current configurations
-	 * @since 1.5.0
-	 */
-	public List<LoggerConfiguration> getLoggerConfigurations() {
-		throw new UnsupportedOperationException("Unable to get logger configurations");
-	}
-
-	/**
-	 * Returns the current configuration for a {@link LoggingSystem}'s logger.
-	 * @param loggerName the name of the logger
-	 * @return the current configuration
-	 * @since 1.5.0
-	 */
-	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
-		throw new UnsupportedOperationException("Unable to get logger configuration");
-	}
-
-	/**
 	 * Detect and return the logging system in use. Supports Logback and Java Logging.
+	 *
 	 * @param classLoader the classloader
 	 * @return the logging system
 	 */
@@ -163,10 +84,90 @@ public abstract class LoggingSystem {
 		try {
 			Class<?> systemClass = ClassUtils.forName(loggingSystemClass, classLoader);
 			return (LoggingSystem) systemClass.getConstructor(ClassLoader.class).newInstance(classLoader);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
+	}
+
+	/**
+	 * Reset the logging system to be limit output. This method may be called before
+	 * {@link #initialize(LoggingInitializationContext, String, LogFile)} to reduce
+	 * logging noise until the system has been fully initialized.
+	 */
+	public abstract void beforeInitialize();
+
+	/**
+	 * Fully initialize the logging system.
+	 *
+	 * @param initializationContext the logging initialization context
+	 * @param configLocation        a log configuration location or {@code null} if default
+	 *                              initialization is required
+	 * @param logFile               the log output file that should be written or {@code null} for
+	 *                              console only output
+	 */
+	public void initialize(LoggingInitializationContext initializationContext, String configLocation, LogFile logFile) {
+	}
+
+	/**
+	 * Clean up the logging system. The default implementation does nothing. Subclasses
+	 * should override this method to perform any logging system-specific cleanup.
+	 */
+	public void cleanUp() {
+	}
+
+	/**
+	 * Returns a {@link Runnable} that can handle shutdown of this logging system when the
+	 * JVM exits. The default implementation returns {@code null}, indicating that no
+	 * shutdown is required.
+	 *
+	 * @return the shutdown handler, or {@code null}
+	 */
+	public Runnable getShutdownHandler() {
+		return null;
+	}
+
+	/**
+	 * Returns a set of the {@link LogLevel LogLevels} that are actually supported by the
+	 * logging system.
+	 *
+	 * @return the supported levels
+	 */
+	public Set<LogLevel> getSupportedLogLevels() {
+		return EnumSet.allOf(LogLevel.class);
+	}
+
+	/**
+	 * Sets the logging level for a given logger.
+	 *
+	 * @param loggerName the name of the logger to set ({@code null} can be used for the
+	 *                   root logger).
+	 * @param level      the log level ({@code null} can be used to remove any custom level for
+	 *                   the logger and use the default configuration instead)
+	 */
+	public void setLogLevel(String loggerName, LogLevel level) {
+		throw new UnsupportedOperationException("Unable to set log level");
+	}
+
+	/**
+	 * Returns a collection of the current configuration for all a {@link LoggingSystem}'s
+	 * loggers.
+	 *
+	 * @return the current configurations
+	 * @since 1.5.0
+	 */
+	public List<LoggerConfiguration> getLoggerConfigurations() {
+		throw new UnsupportedOperationException("Unable to get logger configurations");
+	}
+
+	/**
+	 * Returns the current configuration for a {@link LoggingSystem}'s logger.
+	 *
+	 * @param loggerName the name of the logger
+	 * @return the current configuration
+	 * @since 1.5.0
+	 */
+	public LoggerConfiguration getLoggerConfiguration(String loggerName) {
+		throw new UnsupportedOperationException("Unable to get logger configuration");
 	}
 
 	/**

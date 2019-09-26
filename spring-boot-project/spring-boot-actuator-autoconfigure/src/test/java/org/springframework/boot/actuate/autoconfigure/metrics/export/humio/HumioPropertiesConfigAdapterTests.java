@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.humio;
 
-import java.util.Collections;
-
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

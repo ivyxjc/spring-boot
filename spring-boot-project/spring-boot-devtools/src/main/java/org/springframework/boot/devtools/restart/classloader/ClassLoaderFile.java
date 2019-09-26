@@ -16,17 +16,17 @@
 
 package org.springframework.boot.devtools.restart.classloader;
 
-import java.io.Serializable;
-
 import org.springframework.util.Assert;
+
+import java.io.Serializable;
 
 /**
  * A single file that may be served from a {@link ClassLoader}. Can be used to represent
  * files that have been added, modified or deleted since the original JAR was created.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see ClassLoaderFileRepository
+ * @since 1.3.0
  */
 public class ClassLoaderFile implements Serializable {
 
@@ -40,7 +40,8 @@ public class ClassLoaderFile implements Serializable {
 
 	/**
 	 * Create a new {@link ClassLoaderFile} instance.
-	 * @param kind the kind of file
+	 *
+	 * @param kind     the kind of file
 	 * @param contents the file contents
 	 */
 	public ClassLoaderFile(Kind kind, byte[] contents) {
@@ -49,9 +50,10 @@ public class ClassLoaderFile implements Serializable {
 
 	/**
 	 * Create a new {@link ClassLoaderFile} instance.
-	 * @param kind the kind of file
+	 *
+	 * @param kind         the kind of file
 	 * @param lastModified the last modified time
-	 * @param contents the file contents
+	 * @param contents     the file contents
 	 */
 	public ClassLoaderFile(Kind kind, long lastModified, byte[] contents) {
 		Assert.notNull(kind, "Kind must not be null");
@@ -64,6 +66,7 @@ public class ClassLoaderFile implements Serializable {
 
 	/**
 	 * Return the file {@link Kind} (added, modified, deleted).
+	 *
 	 * @return the kind
 	 */
 	public Kind getKind() {
@@ -72,6 +75,7 @@ public class ClassLoaderFile implements Serializable {
 
 	/**
 	 * Return the time that the file was last modified.
+	 *
 	 * @return the last modified time
 	 */
 	public long getLastModified() {
@@ -81,6 +85,7 @@ public class ClassLoaderFile implements Serializable {
 	/**
 	 * Return the contents of the file as a byte array or {@code null} if
 	 * {@link #getKind()} is {@link Kind#DELETED}.
+	 *
 	 * @return the contents or {@code null}
 	 */
 	public byte[] getContents() {

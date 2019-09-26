@@ -16,12 +16,12 @@
 
 package org.springframework.boot.env;
 
-import java.util.Map;
-
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
 import org.springframework.boot.origin.OriginTrackedValue;
 import org.springframework.core.env.MapPropertySource;
+
+import java.util.Map;
 
 /**
  * {@link OriginLookup} backed by a {@link Map} containing {@link OriginTrackedValue
@@ -29,12 +29,12 @@ import org.springframework.core.env.MapPropertySource;
  *
  * @author Madhura Bhave
  * @author Phillip Webb
- * @since 2.0.0
  * @see OriginTrackedValue
+ * @since 2.0.0
  */
 public final class OriginTrackedMapPropertySource extends MapPropertySource implements OriginLookup<String> {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public OriginTrackedMapPropertySource(String name, Map source) {
 		super(name, source);
 	}

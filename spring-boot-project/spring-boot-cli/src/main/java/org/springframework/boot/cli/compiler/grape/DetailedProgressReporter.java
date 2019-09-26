@@ -16,13 +16,13 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.io.PrintStream;
-
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.transfer.AbstractTransferListener;
 import org.eclipse.aether.transfer.TransferCancelledException;
 import org.eclipse.aether.transfer.TransferEvent;
 import org.eclipse.aether.transfer.TransferResource;
+
+import java.io.PrintStream;
 
 /**
  * Provide detailed progress feedback for long running resolves.

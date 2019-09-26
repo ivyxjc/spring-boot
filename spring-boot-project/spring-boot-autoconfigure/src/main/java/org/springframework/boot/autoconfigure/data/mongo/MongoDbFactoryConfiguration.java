@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data.mongo;
 
 import com.mongodb.MongoClient;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,7 +43,7 @@ class MongoDbFactoryConfiguration {
 
 	@Bean
 	public MongoDbFactorySupport<?> mongoDbFactory(ObjectProvider<MongoClient> mongo,
-			ObjectProvider<com.mongodb.client.MongoClient> mongoClient, MongoProperties properties) {
+												   ObjectProvider<com.mongodb.client.MongoClient> mongoClient, MongoProperties properties) {
 		MongoClient preferredClient = mongo.getIfAvailable();
 		if (preferredClient != null) {
 			return new SimpleMongoDbFactory(preferredClient, properties.getMongoClientDatabase());

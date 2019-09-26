@@ -16,13 +16,12 @@
 
 package org.springframework.boot.actuate.metrics.web.client;
 
-import java.util.Arrays;
-
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
 
 /**
  * Default implementation of {@link RestTemplateExchangeTagsProvider}.

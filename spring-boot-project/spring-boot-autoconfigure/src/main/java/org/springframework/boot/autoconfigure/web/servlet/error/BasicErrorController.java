@@ -16,13 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.servlet.error;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ErrorProperties.IncludeStacktrace;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -35,6 +28,12 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Basic global error {@link Controller}, rendering {@link ErrorAttributes}. More specific
  * errors can be handled either using Spring MVC abstractions (e.g.
@@ -45,9 +44,9 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Phillip Webb
  * @author Michael Stummvoll
  * @author Stephane Nicoll
- * @since 1.0.0
  * @see ErrorAttributes
  * @see ErrorProperties
+ * @since 1.0.0
  */
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
@@ -57,6 +56,7 @@ public class BasicErrorController extends AbstractErrorController {
 
 	/**
 	 * Create a new {@link BasicErrorController} instance.
+	 *
 	 * @param errorAttributes the error attributes
 	 * @param errorProperties configuration properties
 	 */
@@ -66,12 +66,13 @@ public class BasicErrorController extends AbstractErrorController {
 
 	/**
 	 * Create a new {@link BasicErrorController} instance.
-	 * @param errorAttributes the error attributes
-	 * @param errorProperties configuration properties
+	 *
+	 * @param errorAttributes    the error attributes
+	 * @param errorProperties    configuration properties
 	 * @param errorViewResolvers error view resolvers
 	 */
 	public BasicErrorController(ErrorAttributes errorAttributes, ErrorProperties errorProperties,
-			List<ErrorViewResolver> errorViewResolvers) {
+								List<ErrorViewResolver> errorViewResolvers) {
 		super(errorAttributes, errorViewResolvers);
 		Assert.notNull(errorProperties, "ErrorProperties must not be null");
 		this.errorProperties = errorProperties;
@@ -101,7 +102,8 @@ public class BasicErrorController extends AbstractErrorController {
 
 	/**
 	 * Determine if the stacktrace attribute should be included.
-	 * @param request the source request
+	 *
+	 * @param request  the source request
 	 * @param produces the media type produced (or {@code MediaType.ALL})
 	 * @return if the stacktrace attribute should be included
 	 */
@@ -118,6 +120,7 @@ public class BasicErrorController extends AbstractErrorController {
 
 	/**
 	 * Provide access to the error properties.
+	 *
 	 * @return the error properties
 	 */
 	protected ErrorProperties getErrorProperties() {

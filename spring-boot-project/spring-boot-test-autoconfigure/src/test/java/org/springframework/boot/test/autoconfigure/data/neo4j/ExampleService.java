@@ -17,7 +17,6 @@
 package org.springframework.boot.test.autoconfigure.data.neo4j;
 
 import org.neo4j.ogm.session.Session;
-
 import org.springframework.stereotype.Service;
 
 /**

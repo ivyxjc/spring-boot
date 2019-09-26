@@ -16,11 +16,7 @@
 
 package org.springframework.boot.test.autoconfigure.properties;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -28,6 +24,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.test.context.ContextCustomizer;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -97,13 +96,29 @@ public class PropertyMappingContextCustomizerFactoryTests {
 						+ "cannot be used in combination with the @Component annotation @Configuration");
 	}
 
-	@NoMappingAnnotation
-	static class NoMapping {
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface NoMappingAnnotation {
 
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
-	@interface NoMappingAnnotation {
+	@PropertyMapping
+	@interface TypeMappingAnnotation {
+
+		String mapped() default "Mapped";
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface AttributeMappingAnnotation {
+
+		@PropertyMapping("mapped")
+		String value() default "Mapped";
+
+	}
+
+	@NoMappingAnnotation
+	static class NoMapping {
 
 	}
 
@@ -118,14 +133,6 @@ public class PropertyMappingContextCustomizerFactoryTests {
 
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@PropertyMapping
-	@interface TypeMappingAnnotation {
-
-		String mapped() default "Mapped";
-
-	}
-
 	@AttributeMappingAnnotation
 	static class AttributeMapping {
 
@@ -133,14 +140,6 @@ public class PropertyMappingContextCustomizerFactoryTests {
 
 	@AttributeMappingAnnotation("Other")
 	static class OtherMapping {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface AttributeMappingAnnotation {
-
-		@PropertyMapping("mapped")
-		String value() default "Mapped";
 
 	}
 

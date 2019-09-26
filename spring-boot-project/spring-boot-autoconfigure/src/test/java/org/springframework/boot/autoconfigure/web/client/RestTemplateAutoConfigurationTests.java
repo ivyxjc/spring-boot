@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,6 +29,9 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -131,8 +130,7 @@ public class RestTemplateAutoConfigurationTests {
 		public RestTemplate restTemplateOne(RestTemplateBuilder builder) {
 			try {
 				return builder.build();
-			}
-			finally {
+			} finally {
 				breakBuilderOnNextCall(builder);
 			}
 		}
@@ -141,8 +139,7 @@ public class RestTemplateAutoConfigurationTests {
 		public RestTemplate restTemplateTwo(RestTemplateBuilder builder) {
 			try {
 				return builder.build();
-			}
-			finally {
+			} finally {
 				breakBuilderOnNextCall(builder);
 			}
 		}

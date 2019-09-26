@@ -16,17 +16,17 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.core.annotation.AnnotationUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Definition of a Spring {@link Qualifier @Qualifier}.
@@ -50,31 +50,6 @@ class QualifierDefinition {
 		this.field = field;
 		this.descriptor = new DependencyDescriptor(field, true);
 		this.annotations = annotations;
-	}
-
-	public boolean matches(ConfigurableListableBeanFactory beanFactory, String beanName) {
-		return beanFactory.isAutowireCandidate(beanName, this.descriptor);
-	}
-
-	public void applyTo(RootBeanDefinition definition) {
-		definition.setQualifiedElement(this.field);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) {
-			return true;
-		}
-		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) {
-			return false;
-		}
-		QualifierDefinition other = (QualifierDefinition) obj;
-		return this.annotations.equals(other.annotations);
-	}
-
-	@Override
-	public int hashCode() {
-		return this.annotations.hashCode();
 	}
 
 	public static QualifierDefinition forElement(AnnotatedElement element) {
@@ -105,6 +80,31 @@ class QualifierDefinition {
 		return (type.equals(MockBean.class) || type.equals(SpyBean.class)
 				|| AnnotationUtils.isAnnotationMetaPresent(type, MockBean.class)
 				|| AnnotationUtils.isAnnotationMetaPresent(type, SpyBean.class));
+	}
+
+	public boolean matches(ConfigurableListableBeanFactory beanFactory, String beanName) {
+		return beanFactory.isAutowireCandidate(beanName, this.descriptor);
+	}
+
+	public void applyTo(RootBeanDefinition definition) {
+		definition.setQualifiedElement(this.field);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) {
+			return true;
+		}
+		if (obj == null || !getClass().isAssignableFrom(obj.getClass())) {
+			return false;
+		}
+		QualifierDefinition other = (QualifierDefinition) obj;
+		return this.annotations.equals(other.annotations);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.annotations.hashCode();
 	}
 
 }

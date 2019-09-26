@@ -1,11 +1,11 @@
 ---
 spring:
-  profiles:
-    active: dev
+    profiles:
+        active: dev
 my:
-  property: fromyamlfile
+    property: fromyamlfile
 ---
 spring:
-  profiles: dev
+    profiles: dev
 my:
-  property: fromdevprofile
+    property: fromdevprofile

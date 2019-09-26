@@ -16,15 +16,6 @@
 
 package org.springframework.boot.actuate.liquibase;
 
-import java.time.Instant;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
-
 import liquibase.changelog.ChangeLogHistoryService;
 import liquibase.changelog.ChangeSet.ExecType;
 import liquibase.changelog.RanChangeSet;
@@ -33,12 +24,19 @@ import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.integration.spring.SpringLiquibase;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * {@link Endpoint} to expose liquibase info.
@@ -75,7 +73,7 @@ public class LiquibaseEndpoint {
 	}
 
 	private LiquibaseBean createReport(SpringLiquibase liquibase, ChangeLogHistoryService service,
-			DatabaseFactory factory) {
+									   DatabaseFactory factory) {
 		try {
 			DataSource dataSource = liquibase.getDataSource();
 			JdbcConnection connection = new JdbcConnection(dataSource.getConnection());
@@ -91,17 +89,14 @@ public class LiquibaseEndpoint {
 				service.setDatabase(database);
 				return new LiquibaseBean(
 						service.getRanChangeSets().stream().map(ChangeSet::new).collect(Collectors.toList()));
-			}
-			finally {
+			} finally {
 				if (database != null) {
 					database.close();
-				}
-				else {
+				} else {
 					connection.close();
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to get Liquibase change sets", ex);
 		}
 	}

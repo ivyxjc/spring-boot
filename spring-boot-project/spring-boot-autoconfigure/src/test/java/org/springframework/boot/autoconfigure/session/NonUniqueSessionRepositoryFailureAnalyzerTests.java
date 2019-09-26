@@ -16,16 +16,15 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.util.Arrays;
-
 import org.junit.Test;
-
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.boot.diagnostics.LoggingFailureAnalysisReporter;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.hazelcast.HazelcastSessionRepository;
 import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

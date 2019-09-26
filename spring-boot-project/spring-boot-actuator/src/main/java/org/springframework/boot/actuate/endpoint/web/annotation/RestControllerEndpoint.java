@@ -16,22 +16,14 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
-import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
-import org.springframework.boot.actuate.endpoint.annotation.FilteredEndpoint;
-import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
-import org.springframework.boot.actuate.endpoint.annotation.WriteOperation;
+import org.springframework.boot.actuate.endpoint.annotation.*;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.lang.annotation.*;
 
 /**
  * Identifies a type as being a REST endpoint that is only exposed over Spring MVC or
@@ -45,9 +37,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * {@link WebEndpoint @WebEndpoint} annotations whenever possible.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see WebEndpoint
  * @see ControllerEndpoint
+ * @since 2.0.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -59,6 +51,7 @@ public @interface RestControllerEndpoint {
 
 	/**
 	 * The id of the endpoint.
+	 *
 	 * @return the id
 	 */
 	@AliasFor(annotation = Endpoint.class)
@@ -66,6 +59,7 @@ public @interface RestControllerEndpoint {
 
 	/**
 	 * If the endpoint should be enabled or disabled by default.
+	 *
 	 * @return {@code true} if the endpoint is enabled by default
 	 */
 	@AliasFor(annotation = Endpoint.class)

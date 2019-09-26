@@ -38,8 +38,9 @@ public abstract class AbstractDiscoveredOperation implements Operation {
 
 	/**
 	 * Create a new {@link AbstractDiscoveredOperation} instance.
+	 *
 	 * @param operationMethod the method backing the operation
-	 * @param invoker the operation invoker to use
+	 * @param invoker         the operation invoker to use
 	 */
 	public AbstractDiscoveredOperation(DiscoveredOperationMethod operationMethod, OperationInvoker invoker) {
 		this.operationMethod = operationMethod;

@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.mongo;
 
-import java.util.stream.Collectors;
-
-import javax.annotation.PreDestroy;
-
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.connection.netty.NettyStreamFactoryFactory;
@@ -27,8 +23,6 @@ import com.mongodb.reactivestreams.client.MongoClient;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
-import reactor.core.publisher.Flux;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -40,6 +34,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
+import reactor.core.publisher.Flux;
+
+import javax.annotation.PreDestroy;
+import java.util.stream.Collectors;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Reactive Mongo.
@@ -49,7 +47,7 @@ import org.springframework.core.env.Environment;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ MongoClient.class, Flux.class })
+@ConditionalOnClass({MongoClient.class, Flux.class})
 @EnableConfigurationProperties(MongoProperties.class)
 public class MongoReactiveAutoConfiguration {
 
@@ -71,7 +69,7 @@ public class MongoReactiveAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public MongoClient reactiveStreamsMongoClient(MongoProperties properties, Environment environment,
-			ObjectProvider<MongoClientSettingsBuilderCustomizer> builderCustomizers) {
+												  ObjectProvider<MongoClientSettingsBuilderCustomizer> builderCustomizers) {
 		ReactiveMongoClientFactory factory = new ReactiveMongoClientFactory(properties, environment,
 				builderCustomizers.orderedStream().collect(Collectors.toList()));
 		this.mongo = factory.createMongoClient(this.settings);
@@ -79,7 +77,7 @@ public class MongoReactiveAutoConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ SocketChannel.class, NioEventLoopGroup.class })
+	@ConditionalOnClass({SocketChannel.class, NioEventLoopGroup.class})
 	static class NettyDriverConfiguration {
 
 		@Bean

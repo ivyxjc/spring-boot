@@ -16,13 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.test;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CyclicBarrier;
-
-import javax.servlet.DispatcherType;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.MockClock;
 import io.micrometer.core.instrument.binder.MeterBinder;
@@ -32,7 +25,6 @@ import io.micrometer.core.instrument.simple.SimpleConfig;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.JvmMetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.LogbackMetricsAutoConfiguration;
@@ -72,6 +64,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.DispatcherType;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CyclicBarrier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.client.ExpectedCount.once;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
@@ -85,7 +83,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = MetricsIntegrationTests.MetricsApp.class,
-		properties = "management.metrics.use-global-registry=false")
+				properties = "management.metrics.use-global-registry=false")
 public class MetricsIntegrationTests {
 
 	@Autowired
@@ -123,7 +121,7 @@ public class MetricsIntegrationTests {
 	}
 
 	@Test
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public void metricsFilterRegisteredForAsyncDispatches() {
 		Map<String, FilterRegistrationBean> filterRegistrations = this.context
 				.getBeansOfType(FilterRegistrationBean.class);
@@ -135,15 +133,15 @@ public class MetricsIntegrationTests {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ MetricsAutoConfiguration.class, JvmMetricsAutoConfiguration.class,
-			LogbackMetricsAutoConfiguration.class, SystemMetricsAutoConfiguration.class,
-			RabbitMetricsAutoConfiguration.class, CacheMetricsAutoConfiguration.class,
-			DataSourcePoolMetricsAutoConfiguration.class, HibernateMetricsAutoConfiguration.class,
-			HttpClientMetricsAutoConfiguration.class, WebFluxMetricsAutoConfiguration.class,
-			WebMvcMetricsAutoConfiguration.class, JacksonAutoConfiguration.class,
-			HttpMessageConvertersAutoConfiguration.class, RestTemplateAutoConfiguration.class,
-			WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-			ServletWebServerFactoryAutoConfiguration.class })
+	@ImportAutoConfiguration({MetricsAutoConfiguration.class, JvmMetricsAutoConfiguration.class,
+									 LogbackMetricsAutoConfiguration.class, SystemMetricsAutoConfiguration.class,
+									 RabbitMetricsAutoConfiguration.class, CacheMetricsAutoConfiguration.class,
+									 DataSourcePoolMetricsAutoConfiguration.class, HibernateMetricsAutoConfiguration.class,
+									 HttpClientMetricsAutoConfiguration.class, WebFluxMetricsAutoConfiguration.class,
+									 WebMvcMetricsAutoConfiguration.class, JacksonAutoConfiguration.class,
+									 HttpMessageConvertersAutoConfiguration.class, RestTemplateAutoConfiguration.class,
+									 WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+									 ServletWebServerFactoryAutoConfiguration.class})
 	@Import(PersonController.class)
 	static class MetricsApp {
 

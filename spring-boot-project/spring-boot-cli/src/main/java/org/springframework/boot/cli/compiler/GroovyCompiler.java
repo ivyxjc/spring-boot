@@ -16,32 +16,17 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ServiceLoader;
-
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyClassLoader.ClassCollector;
 import groovy.lang.GroovyCodeSource;
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.classgen.GeneratorContext;
-import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.control.CompilationUnit;
-import org.codehaus.groovy.control.CompilePhase;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.Phases;
-import org.codehaus.groovy.control.SourceUnit;
+import org.codehaus.groovy.control.*;
 import org.codehaus.groovy.control.customizers.CompilationCustomizer;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.ASTTransformationVisitor;
-
 import org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement;
 import org.springframework.boot.cli.compiler.grape.AetherGrapeEngine;
 import org.springframework.boot.cli.compiler.grape.AetherGrapeEngineFactory;
@@ -50,6 +35,11 @@ import org.springframework.boot.cli.compiler.grape.GrapeEngineInstaller;
 import org.springframework.boot.cli.util.ResourceUtils;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.util.ClassUtils;
+
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.URL;
+import java.util.*;
 
 /**
  * Compiler for Groovy sources. Primarily a simple Facade for
@@ -85,6 +75,7 @@ public class GroovyCompiler {
 
 	/**
 	 * Create a new {@link GroovyCompiler} instance.
+	 *
 	 * @param configuration the compiler configuration
 	 */
 	public GroovyCompiler(GroovyCompilerConfiguration configuration) {
@@ -103,8 +94,7 @@ public class GroovyCompiler {
 		this.loader.getConfiguration().addCompilationCustomizers(new CompilerAutoConfigureCustomizer());
 		if (configuration.isAutoconfigure()) {
 			this.compilerAutoConfigurations = ServiceLoader.load(CompilerAutoConfiguration.class);
-		}
-		else {
+		} else {
 			this.compilerAutoConfigurations = Collections.emptySet();
 		}
 
@@ -125,6 +115,7 @@ public class GroovyCompiler {
 	/**
 	 * Return a mutable list of the {@link ASTTransformation}s to be applied during
 	 * {@link #compile(String...)}.
+	 *
 	 * @return the AST transformations to apply
 	 */
 	public List<ASTTransformation> getAstTransformations() {
@@ -154,8 +145,7 @@ public class GroovyCompiler {
 		ClassLoader tccl = Thread.currentThread().getContextClassLoader();
 		if (tccl instanceof ExtendedGroovyClassLoader) {
 			return ((ExtendedGroovyClassLoader) tccl).getURLs();
-		}
-		else {
+		} else {
 			return new URL[0];
 		}
 	}
@@ -168,10 +158,11 @@ public class GroovyCompiler {
 	 * Compile the specified Groovy sources, applying any
 	 * {@link CompilerAutoConfiguration}s. All classes defined in the sources will be
 	 * returned from this method.
+	 *
 	 * @param sources the sources to compile
 	 * @return compiled classes
 	 * @throws CompilationFailedException in case of compilation failures
-	 * @throws IOException in case of I/O errors
+	 * @throws IOException                in case of I/O errors
 	 * @throws CompilationFailedException in case of compilation errors
 	 */
 	public Class<?>[] compile(String... sources) throws CompilationFailedException, IOException {
@@ -226,19 +217,18 @@ public class GroovyCompiler {
 			Field field = CompilationUnit.class.getDeclaredField("phaseOperations");
 			field.setAccessible(true);
 			return (LinkedList[]) field.get(compilationUnit);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Phase operations not available from compilation unit");
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	private void processConversionOperations(LinkedList conversionOperations) {
 		int index = getIndexOfASTTransformationVisitor(conversionOperations);
 		conversionOperations.add(index, new CompilationUnit.SourceUnitOperation() {
 			@Override
 			public void call(SourceUnit source) throws CompilationFailedException {
-				ASTNode[] nodes = new ASTNode[] { source.getAST() };
+				ASTNode[] nodes = new ASTNode[]{source.getAST()};
 				for (ASTTransformation transformation : GroovyCompiler.this.transformations) {
 					transformation.visit(nodes, source);
 				}
@@ -254,6 +244,27 @@ public class GroovyCompiler {
 			}
 		}
 		return conversionOperations.size();
+	}
+
+	private static class MainClass {
+
+		public static ClassNode get(CompilationUnit source) {
+			return get(source.getAST().getClasses());
+		}
+
+		public static ClassNode get(List<ClassNode> classes) {
+			for (ClassNode node : classes) {
+				if (AstUtils.hasAtLeastOneAnnotation(node, "Enable*AutoConfiguration")) {
+					return null; // No need to enhance this
+				}
+				if (AstUtils.hasAtLeastOneAnnotation(node, "*Controller", "Configuration", "Component", "*Service",
+						"Repository", "Enable*")) {
+					return node;
+				}
+			}
+			return classes.isEmpty() ? null : classes.get(0);
+		}
+
 	}
 
 	/**
@@ -288,27 +299,6 @@ public class GroovyCompiler {
 				}
 			}
 			importCustomizer.call(source, context, classNode);
-		}
-
-	}
-
-	private static class MainClass {
-
-		public static ClassNode get(CompilationUnit source) {
-			return get(source.getAST().getClasses());
-		}
-
-		public static ClassNode get(List<ClassNode> classes) {
-			for (ClassNode node : classes) {
-				if (AstUtils.hasAtLeastOneAnnotation(node, "Enable*AutoConfiguration")) {
-					return null; // No need to enhance this
-				}
-				if (AstUtils.hasAtLeastOneAnnotation(node, "*Controller", "Configuration", "Component", "*Service",
-						"Repository", "Enable*")) {
-					return node;
-				}
-			}
-			return classes.isEmpty() ? null : classes.get(0);
 		}
 
 	}

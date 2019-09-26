@@ -16,26 +16,22 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.apache.derby.jdbc.EmbeddedDriver;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link DevToolsDataSourceAutoConfiguration} with a pooled data source.

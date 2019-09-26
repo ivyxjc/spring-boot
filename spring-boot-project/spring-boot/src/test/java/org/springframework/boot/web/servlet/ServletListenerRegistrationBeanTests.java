@@ -16,15 +16,14 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.util.EventListener;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextListener;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletContextListener;
+import java.util.EventListener;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;

@@ -16,12 +16,11 @@
 
 package org.springframework.boot.configurationsample.specific;
 
-import java.io.PrintWriter;
-import java.io.Writer;
+import org.springframework.boot.configurationsample.ConfigurationProperties;
 
 import javax.sql.DataSource;
-
-import org.springframework.boot.configurationsample.ConfigurationProperties;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 /**
  * Sample config with types that should not be added to the meta-data as we have no way to

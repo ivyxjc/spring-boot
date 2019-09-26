@@ -16,15 +16,14 @@
 
 package org.springframework.boot.cli.command.options;
 
-import java.util.List;
-
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-
 import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
 import org.springframework.boot.cli.compiler.GroovyCompilerScope;
 import org.springframework.boot.cli.compiler.RepositoryConfigurationFactory;
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration;
+
+import java.util.List;
 
 /**
  * Simple adapter class to present an {@link OptionSet} as a
@@ -46,7 +45,7 @@ public class OptionSetGroovyCompilerConfiguration implements GroovyCompilerConfi
 	}
 
 	public OptionSetGroovyCompilerConfiguration(OptionSet optionSet, CompilerOptionHandler compilerOptionHandler,
-			List<RepositoryConfiguration> repositoryConfiguration) {
+												List<RepositoryConfiguration> repositoryConfiguration) {
 		this.options = optionSet;
 		this.optionHandler = compilerOptionHandler;
 		this.repositoryConfiguration = repositoryConfiguration;

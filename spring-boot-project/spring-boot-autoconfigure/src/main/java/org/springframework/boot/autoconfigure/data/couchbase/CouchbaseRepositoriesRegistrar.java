@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.data.couchbase;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.boot.autoconfigure.data.AbstractRepositoryConfigurationSourceSupport;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.data.couchbase.repository.config.CouchbaseRepositoryConfigurationExtension;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 import org.springframework.data.repository.config.RepositoryConfigurationExtension;
+
+import java.lang.annotation.Annotation;
 
 /**
  * {@link ImportBeanDefinitionRegistrar} used to auto-configure Spring Data Couchbase

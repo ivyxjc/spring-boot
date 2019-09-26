@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.metrics.cache;
 
-import java.util.Collections;
-
 import com.github.benmanes.caffeine.cache.Caffeine;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.cache.CaffeineCacheMetrics;
 import org.junit.Test;
-
 import org.springframework.cache.caffeine.CaffeineCache;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

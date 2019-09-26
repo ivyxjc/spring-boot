@@ -16,17 +16,16 @@
 
 package org.springframework.boot.actuate.endpoint.web.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.runner.Runner;
 import org.junit.runners.Suite;
 import org.junit.runners.model.InitializationError;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.PropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A custom {@link Runner} that tests web endpoints that are made available over HTTP

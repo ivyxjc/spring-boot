@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
+
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.util.Assert;
 
 /**
  * Factory to create a {@link CompositeReactiveHealthIndicator}.
@@ -47,17 +47,18 @@ public class CompositeReactiveHealthIndicatorFactory {
 	 * indicators. Each {@link HealthIndicator} are wrapped to a
 	 * {@link HealthIndicatorReactiveAdapter}. If two instances share the same name, the
 	 * reactive variant takes precedence.
-	 * @param healthAggregator the {@link HealthAggregator}
+	 *
+	 * @param healthAggregator         the {@link HealthAggregator}
 	 * @param reactiveHealthIndicators the {@link ReactiveHealthIndicator} instances
-	 * mapped by name
-	 * @param healthIndicators the {@link HealthIndicator} instances mapped by name if
-	 * any.
+	 *                                 mapped by name
+	 * @param healthIndicators         the {@link HealthIndicator} instances mapped by name if
+	 *                                 any.
 	 * @return a {@link ReactiveHealthIndicator} that delegates to the specified
 	 * {@code reactiveHealthIndicators}.
 	 */
 	public CompositeReactiveHealthIndicator createReactiveHealthIndicator(HealthAggregator healthAggregator,
-			Map<String, ReactiveHealthIndicator> reactiveHealthIndicators,
-			Map<String, HealthIndicator> healthIndicators) {
+																		  Map<String, ReactiveHealthIndicator> reactiveHealthIndicators,
+																		  Map<String, HealthIndicator> healthIndicators) {
 		Assert.notNull(healthAggregator, "HealthAggregator must not be null");
 		Assert.notNull(reactiveHealthIndicators, "ReactiveHealthIndicators must not be null");
 		ReactiveHealthIndicatorRegistryFactory factory = new ReactiveHealthIndicatorRegistryFactory(

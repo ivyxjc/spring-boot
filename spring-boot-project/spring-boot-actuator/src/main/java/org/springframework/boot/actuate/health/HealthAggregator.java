@@ -38,6 +38,7 @@ public interface HealthAggregator {
 
 	/**
 	 * Aggregate several given {@link Health} instances into one.
+	 *
 	 * @param healths the health instances to aggregate
 	 * @return the aggregated health
 	 */

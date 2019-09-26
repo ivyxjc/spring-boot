@@ -31,11 +31,12 @@ public interface ManagementContextFactory {
 
 	/**
 	 * Create the management application context.
-	 * @param parent the parent context
+	 *
+	 * @param parent               the parent context
 	 * @param configurationClasses the configuration classes
 	 * @return a configured application context
 	 */
 	ConfigurableWebServerApplicationContext createManagementContext(ApplicationContext parent,
-			Class<?>... configurationClasses);
+																	Class<?>... configurationClasses);
 
 }

@@ -16,19 +16,13 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Repeatable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be used to apply Mockito spies to a Spring
@@ -87,10 +81,10 @@ import org.springframework.test.context.junit4.SpringRunner;
  * with Java 8 or contained within a {@link SpyBeans @SpyBeans} annotation.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see MockitoPostProcessor
+ * @since 1.4.0
  */
-@Target({ ElementType.TYPE, ElementType.FIELD })
+@Target({ElementType.TYPE, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Repeatable(SpyBeans.class)
@@ -99,6 +93,7 @@ public @interface SpyBean {
 	/**
 	 * The name of the bean to spy. If not specified the name will either be generated or,
 	 * if the spy is for an existing bean, the existing name will be used.
+	 *
 	 * @return the name of the bean
 	 */
 	String name() default "";
@@ -106,6 +101,7 @@ public @interface SpyBean {
 	/**
 	 * The classes to spy. This is an alias of {@link #classes()} which can be used for
 	 * brevity if no other attributes are defined. See {@link #classes()} for details.
+	 *
 	 * @return the classes to spy
 	 */
 	@AliasFor("classes")
@@ -120,6 +116,7 @@ public @interface SpyBean {
 	 * <p>
 	 * If this is the only specified attribute consider using the {@code value} alias
 	 * instead.
+	 *
 	 * @return the classes to spy
 	 */
 	@AliasFor("value")
@@ -128,6 +125,7 @@ public @interface SpyBean {
 	/**
 	 * The reset mode to apply to the spied bean. The default is {@link MockReset#AFTER}
 	 * meaning that spies are automatically reset after each test method is invoked.
+	 *
 	 * @return the reset mode
 	 */
 	MockReset reset() default MockReset.AFTER;
@@ -138,6 +136,7 @@ public @interface SpyBean {
 	 * If set to {@code false} you may need to use the result of
 	 * {@link org.springframework.test.util.AopTestUtils#getUltimateTargetObject(Object)
 	 * AopTestUtils.getUltimateTargetObject(...)} when calling Mockito methods.
+	 *
 	 * @return {@code true} if the target of AOP advised beans is used or {@code false} if
 	 * the proxy is used directly
 	 */

@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.web.embedded;
 
-import java.time.Duration;
-
 import io.undertow.UndertowOptions;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.boot.context.properties.PropertyMapper;
@@ -28,6 +25,8 @@ import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.unit.DataSize;
+
+import java.time.Duration;
 
 /**
  * Customization for Undertow-specific features common for both Servlet and Reactive

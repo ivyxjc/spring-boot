@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.influx;
 
 import org.influxdb.InfluxDB;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.health.ApplicationHealthIndicator;
 import org.springframework.boot.actuate.influx.InfluxDbHealthIndicator;

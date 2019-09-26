@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import javax.servlet.MultipartConfigElement;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.util.unit.DataSize;
+
+import javax.servlet.MultipartConfigElement;
 
 /**
  * Properties to be used in configuring a {@link MultipartConfigElement}.
@@ -129,6 +129,7 @@ public class MultipartProperties {
 
 	/**
 	 * Create a new {@link MultipartConfigElement} using the properties.
+	 *
 	 * @return a new {@link MultipartConfigElement} configured using there properties
 	 */
 	public MultipartConfigElement createMultipartConfig() {

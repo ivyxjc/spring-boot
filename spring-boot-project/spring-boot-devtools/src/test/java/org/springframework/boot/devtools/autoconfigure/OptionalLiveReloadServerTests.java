@@ -17,13 +17,10 @@
 package org.springframework.boot.devtools.autoconfigure;
 
 import org.junit.Test;
-
 import org.springframework.boot.devtools.livereload.LiveReloadServer;
 
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link OptionalLiveReloadServer}.

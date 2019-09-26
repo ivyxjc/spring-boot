@@ -341,7 +341,7 @@
     {
       "name": "management.server.ssl.protocol",
       "description": "SSL protocol to use.",
-      "defaultValue":  "TLS"
+      "defaultValue": "TLS"
     },
     {
       "name": "management.server.ssl.trust-store",
@@ -397,7 +397,8 @@
       "type": "java.lang.Boolean",
       "description": "Mark if the endpoint exposes sensitive information.",
       "deprecation": {
-        "reason": "The \"actuator\" endpoint is no longer available.","level": "error"
+        "reason": "The \"actuator\" endpoint is no longer available.",
+        "level": "error"
       }
     },
     {
@@ -432,7 +433,8 @@
       "type": "java.lang.String",
       "description": "Endpoint identifier. With HTTP monitoring the identifier of the endpoint is mapped\n to a URL (e.g. 'foo' is mapped to '/foo').",
       "deprecation": {
-        "reason": "Endpoint identifier is no longer customizable.","level": "error"
+        "reason": "Endpoint identifier is no longer customizable.",
+        "level": "error"
       }
     },
     {
@@ -740,7 +742,8 @@
       "type": "java.lang.String",
       "description": "Endpoint identifier. With HTTP monitoring the identifier of the endpoint is mapped\n to a URL (e.g. 'foo' is mapped to '/foo').",
       "deprecation": {
-        "reason": "Endpoint identifier is no longer customizable.","level": "error"
+        "reason": "Endpoint identifier is no longer customizable.",
+        "level": "error"
       }
     },
     {
@@ -803,7 +806,8 @@
       "description": "Time to live for cached result, in milliseconds.",
       "defaultValue": 1000,
       "deprecation": {
-        "replacement": "management.endpoint.health.cache.time-to-live","level": "error"
+        "replacement": "management.endpoint.health.cache.time-to-live",
+        "level": "error"
       }
     },
     {
@@ -839,7 +843,8 @@
       "description": "Whether to enable hypermedia support for endpoints.",
       "defaultValue": false,
       "deprecation": {
-        "reason": "Hypermedia support in the Actuator is no longer available.","level": "error"
+        "reason": "Hypermedia support in the Actuator is no longer available.",
+        "level": "error"
       }
     },
     {
@@ -1505,7 +1510,8 @@
       "description": "Telnet port.",
       "defaultValue": 5000,
       "deprecation": {
-        "reason": "CRaSH support is no longer available.","level": "error"
+        "reason": "CRaSH support is no longer available.",
+        "level": "error"
       }
     },
     {

@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.mongo;
 
 import org.bson.Document;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;

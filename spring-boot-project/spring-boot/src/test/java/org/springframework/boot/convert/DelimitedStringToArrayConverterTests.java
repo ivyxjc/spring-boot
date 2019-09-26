@@ -16,18 +16,17 @@
 
 package org.springframework.boot.convert;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.ReflectionUtils;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +42,15 @@ public class DelimitedStringToArrayConverterTests {
 
 	public DelimitedStringToArrayConverterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(DelimitedStringToArrayConverterTests::addConverter);
+	}
+
+	private static void addConverter(FormattingConversionService service) {
+		service.addConverter(new DelimitedStringToArrayConverter(service));
 	}
 
 	@Test
@@ -95,15 +103,6 @@ public class DelimitedStringToArrayConverterTests {
 		TypeDescriptor targetType = TypeDescriptor.nested(ReflectionUtils.findField(Values.class, "delimiterNone"), 0);
 		String[] converted = (String[]) this.conversionService.convert("a,b,c", sourceType, targetType);
 		assertThat(converted).containsExactly("a,b,c");
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(DelimitedStringToArrayConverterTests::addConverter);
-	}
-
-	private static void addConverter(FormattingConversionService service) {
-		service.addConverter(new DelimitedStringToArrayConverter(service));
 	}
 
 	static class Values {

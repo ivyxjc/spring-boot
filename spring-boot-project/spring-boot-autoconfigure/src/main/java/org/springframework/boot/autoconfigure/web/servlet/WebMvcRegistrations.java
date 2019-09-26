@@ -30,14 +30,15 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * to choose from redundant MVC components.
  *
  * @author Brian Clozel
- * @since 2.0.0
  * @see org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration.EnableWebMvcConfiguration
+ * @since 2.0.0
  */
 public interface WebMvcRegistrations {
 
 	/**
 	 * Return the custom {@link RequestMappingHandlerMapping} that should be used and
 	 * processed by the MVC configuration.
+	 *
 	 * @return the custom {@link RequestMappingHandlerMapping} instance
 	 */
 	default RequestMappingHandlerMapping getRequestMappingHandlerMapping() {
@@ -47,6 +48,7 @@ public interface WebMvcRegistrations {
 	/**
 	 * Return the custom {@link RequestMappingHandlerAdapter} that should be used and
 	 * processed by the MVC configuration.
+	 *
 	 * @return the custom {@link RequestMappingHandlerAdapter} instance
 	 */
 	default RequestMappingHandlerAdapter getRequestMappingHandlerAdapter() {
@@ -56,6 +58,7 @@ public interface WebMvcRegistrations {
 	/**
 	 * Return the custom {@link ExceptionHandlerExceptionResolver} that should be used and
 	 * processed by the MVC configuration.
+	 *
 	 * @return the custom {@link ExceptionHandlerExceptionResolver} instance
 	 */
 	default ExceptionHandlerExceptionResolver getExceptionHandlerExceptionResolver() {

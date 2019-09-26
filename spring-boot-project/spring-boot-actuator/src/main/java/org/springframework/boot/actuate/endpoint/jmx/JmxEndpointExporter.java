@@ -16,25 +16,19 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
-
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jmx.JmxException;
 import org.springframework.jmx.export.MBeanExportException;
 import org.springframework.util.Assert;
+
+import javax.management.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * Exports {@link ExposableJmxEndpoint JMX endpoints} to a {@link MBeanServer}.
@@ -46,21 +40,15 @@ import org.springframework.util.Assert;
 public class JmxEndpointExporter implements InitializingBean, DisposableBean, BeanClassLoaderAware {
 
 	private static final Log logger = LogFactory.getLog(JmxEndpointExporter.class);
-
-	private ClassLoader classLoader;
-
 	private final MBeanServer mBeanServer;
-
 	private final EndpointObjectNameFactory objectNameFactory;
-
 	private final JmxOperationResponseMapper responseMapper;
-
 	private final Collection<ExposableJmxEndpoint> endpoints;
-
+	private ClassLoader classLoader;
 	private Collection<ObjectName> registered;
 
 	public JmxEndpointExporter(MBeanServer mBeanServer, EndpointObjectNameFactory objectNameFactory,
-			JmxOperationResponseMapper responseMapper, Collection<? extends ExposableJmxEndpoint> endpoints) {
+							   JmxOperationResponseMapper responseMapper, Collection<? extends ExposableJmxEndpoint> endpoints) {
 		Assert.notNull(mBeanServer, "MBeanServer must not be null");
 		Assert.notNull(objectNameFactory, "ObjectNameFactory must not be null");
 		Assert.notNull(responseMapper, "ResponseMapper must not be null");
@@ -97,11 +85,9 @@ public class JmxEndpointExporter implements InitializingBean, DisposableBean, Be
 			EndpointMBean mbean = new EndpointMBean(this.responseMapper, this.classLoader, endpoint);
 			this.mBeanServer.registerMBean(mbean, name);
 			return name;
-		}
-		catch (MalformedObjectNameException ex) {
+		} catch (MalformedObjectNameException ex) {
 			throw new IllegalStateException("Invalid ObjectName for " + getEndpointDescription(endpoint), ex);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MBeanExportException("Failed to register MBean for " + getEndpointDescription(endpoint), ex);
 		}
 	}
@@ -116,11 +102,9 @@ public class JmxEndpointExporter implements InitializingBean, DisposableBean, Be
 				logger.debug("Unregister endpoint with ObjectName '" + objectName + "' " + "from the JMX domain");
 			}
 			this.mBeanServer.unregisterMBean(objectName);
-		}
-		catch (InstanceNotFoundException ex) {
+		} catch (InstanceNotFoundException ex) {
 			// Ignore and continue
-		}
-		catch (MBeanRegistrationException ex) {
+		} catch (MBeanRegistrationException ex) {
 			throw new JmxException("Failed to unregister MBean with ObjectName '" + objectName + "'", ex);
 		}
 	}

@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.websocket.reactive;
 
-import javax.servlet.Servlet;
-import javax.websocket.server.ServerContainer;
-
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.websocket.server.WsSci;
-
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,6 +26,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.autoconfigure.web.reactive.ReactiveWebServerFactoryAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.servlet.Servlet;
+import javax.websocket.server.ServerContainer;
 
 /**
  * Auto configuration for WebSocket reactive server in Tomcat, Jetty or Undertow. Requires
@@ -42,13 +41,13 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ Servlet.class, ServerContainer.class })
+@ConditionalOnClass({Servlet.class, ServerContainer.class})
 @ConditionalOnWebApplication(type = Type.REACTIVE)
 @AutoConfigureBefore(ReactiveWebServerFactoryAutoConfiguration.class)
 public class WebSocketReactiveAutoConfiguration {
 
 	@Configuration
-	@ConditionalOnClass({ Tomcat.class, WsSci.class })
+	@ConditionalOnClass({Tomcat.class, WsSci.class})
 	static class TomcatWebSocketConfiguration {
 
 		@Bean

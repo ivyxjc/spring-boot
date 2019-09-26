@@ -16,16 +16,6 @@
 
 package org.springframework.boot.context.logging;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.SLF4JLogFactory;
@@ -35,18 +25,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
-import org.springframework.boot.logging.AbstractLoggingSystem;
-import org.springframework.boot.logging.LogFile;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingInitializationContext;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.LoggingSystemProperties;
+import org.springframework.boot.logging.*;
 import org.springframework.boot.logging.java.JavaLoggingSystem;
 import org.springframework.boot.system.ApplicationPid;
 import org.springframework.boot.testsupport.rule.OutputCapture;
@@ -62,6 +45,16 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -83,19 +76,13 @@ import static org.hamcrest.Matchers.not;
 public class LoggingApplicationListenerTests {
 
 	private static final String[] NO_ARGS = {};
-
+	private final LoggingApplicationListener initializer = new LoggingApplicationListener();
+	private final SLF4JLogFactory logFactory = new SLF4JLogFactory();
+	private final Log logger = this.logFactory.getInstance(getClass());
+	private final SpringApplication springApplication = new SpringApplication();
+	private final GenericApplicationContext context = new GenericApplicationContext();
 	@Rule
 	public OutputCapture outputCapture = new OutputCapture();
-
-	private final LoggingApplicationListener initializer = new LoggingApplicationListener();
-
-	private final SLF4JLogFactory logFactory = new SLF4JLogFactory();
-
-	private final Log logger = this.logFactory.getInstance(getClass());
-
-	private final SpringApplication springApplication = new SpringApplication();
-
-	private final GenericApplicationContext context = new GenericApplicationContext();
 
 	@Before
 	public void init() throws SecurityException, IOException {
@@ -368,7 +355,7 @@ public class LoggingApplicationListenerTests {
 	public void parseArgsDoesntReplace() {
 		this.initializer.setSpringBootLogging(LogLevel.ERROR);
 		this.initializer.setParseArgs(false);
-		multicastEvent(new ApplicationStartingEvent(this.springApplication, new String[] { "--debug" }));
+		multicastEvent(new ApplicationStartingEvent(this.springApplication, new String[]{"--debug"}));
 		this.initializer.initialize(this.context.getEnvironment(), this.context.getClassLoader());
 		this.logger.debug("testatdebug");
 		assertThat(this.outputCapture.toString()).doesNotContain("testatdebug");
@@ -569,7 +556,7 @@ public class LoggingApplicationListenerTests {
 
 		@Override
 		protected String[] getStandardConfigLocations() {
-			return new String[] { "foo.bar" };
+			return new String[]{"foo.bar"};
 		}
 
 		@Override
@@ -578,7 +565,7 @@ public class LoggingApplicationListenerTests {
 
 		@Override
 		protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-				LogFile logFile) {
+										 LogFile logFile) {
 		}
 
 		@Override

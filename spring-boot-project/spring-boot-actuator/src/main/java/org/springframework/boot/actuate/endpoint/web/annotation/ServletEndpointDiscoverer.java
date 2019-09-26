@@ -16,10 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.boot.actuate.endpoint.EndpointFilter;
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.Operation;
@@ -32,6 +28,10 @@ import org.springframework.boot.actuate.endpoint.web.PathMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.util.ClassUtils;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * {@link EndpointDiscoverer} for {@link ExposableServletEndpoint servlet endpoints}.
@@ -46,12 +46,13 @@ public class ServletEndpointDiscoverer extends EndpointDiscoverer<ExposableServl
 
 	/**
 	 * Create a new {@link ServletEndpointDiscoverer} instance.
-	 * @param applicationContext the source application context
+	 *
+	 * @param applicationContext  the source application context
 	 * @param endpointPathMappers the endpoint path mappers
-	 * @param filters filters to apply
+	 * @param filters             filters to apply
 	 */
 	public ServletEndpointDiscoverer(ApplicationContext applicationContext, List<PathMapper> endpointPathMappers,
-			Collection<EndpointFilter<ExposableServletEndpoint>> filters) {
+									 Collection<EndpointFilter<ExposableServletEndpoint>> filters) {
 		super(applicationContext, ParameterValueMapper.NONE, Collections.emptyList(), filters);
 		this.endpointPathMappers = endpointPathMappers;
 	}
@@ -64,14 +65,14 @@ public class ServletEndpointDiscoverer extends EndpointDiscoverer<ExposableServl
 
 	@Override
 	protected ExposableServletEndpoint createEndpoint(Object endpointBean, EndpointId id, boolean enabledByDefault,
-			Collection<Operation> operations) {
+													  Collection<Operation> operations) {
 		String rootPath = PathMapper.getRootPath(this.endpointPathMappers, id);
 		return new DiscoveredServletEndpoint(this, endpointBean, id, rootPath, enabledByDefault);
 	}
 
 	@Override
 	protected Operation createOperation(EndpointId endpointId, DiscoveredOperationMethod operationMethod,
-			OperationInvoker invoker) {
+										OperationInvoker invoker) {
 		throw new IllegalStateException("ServletEndpoints must not declare operations");
 	}
 

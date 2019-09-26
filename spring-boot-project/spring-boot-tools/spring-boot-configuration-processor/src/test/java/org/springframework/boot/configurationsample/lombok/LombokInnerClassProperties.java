@@ -17,7 +17,6 @@
 package org.springframework.boot.configurationsample.lombok;
 
 import lombok.Data;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
 import org.springframework.boot.configurationsample.NestedConfigurationProperty;
 
@@ -32,20 +31,22 @@ import org.springframework.boot.configurationsample.NestedConfigurationProperty;
 public class LombokInnerClassProperties {
 
 	private final Foo first = new Foo();
-
-	private Foo second = new Foo();
-
 	@NestedConfigurationProperty
 	private final SimpleLombokPojo third = new SimpleLombokPojo();
-
+	private Foo second = new Foo();
 	private Fourth fourth;
+
+	public enum Fourth {
+
+		YES, NO
+
+	}
 
 	@Data
 	public static class Foo {
 
-		private String name;
-
 		private final Bar bar = new Bar();
+		private String name;
 
 		@Data
 		public static class Bar {
@@ -53,12 +54,6 @@ public class LombokInnerClassProperties {
 			private String name;
 
 		}
-
-	}
-
-	public enum Fourth {
-
-		YES, NO
 
 	}
 

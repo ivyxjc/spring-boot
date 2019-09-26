@@ -16,33 +16,21 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
-import java.security.PrivateKey;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509ExtendedKeyManager;
-
 import io.undertow.Undertow;
-import org.xnio.Options;
-import org.xnio.Sequence;
-import org.xnio.SslClientAuthMode;
-
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
+import org.xnio.Options;
+import org.xnio.Sequence;
+import org.xnio.SslClientAuthMode;
+
+import javax.net.ssl.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.security.*;
+import java.security.cert.X509Certificate;
 
 /**
  * {@link UndertowBuilderCustomizer} that configures SSL on the given builder instance.
@@ -81,8 +69,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 			if (this.ssl.getCiphers() != null) {
 				builder.setSocketOption(Options.SSL_ENABLED_CIPHER_SUITES, Sequence.of(this.ssl.getCiphers()));
 			}
-		}
-		catch (NoSuchAlgorithmException | KeyManagementException ex) {
+		} catch (NoSuchAlgorithmException | KeyManagementException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -118,8 +105,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 				return getConfigurableAliasKeyManagers(ssl, keyManagerFactory.getKeyManagers());
 			}
 			return keyManagerFactory.getKeyManagers();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -149,8 +135,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 					.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			trustManagerFactory.init(store);
 			return trustManagerFactory.getTrustManagers();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -181,8 +166,7 @@ class SslBuilderCustomizer implements UndertowBuilderCustomizer {
 			URL url = ResourceUtils.getURL(resource);
 			store.load(url.openStream(), (password != null) ? password.toCharArray() : null);
 			return store;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new WebServerException("Could not load key store '" + resource + "'", ex);
 		}
 	}

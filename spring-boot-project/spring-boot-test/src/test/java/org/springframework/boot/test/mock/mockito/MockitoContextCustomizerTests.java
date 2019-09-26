@@ -16,16 +16,15 @@
 
 package org.springframework.boot.test.mock.mockito;
 
+import org.junit.Test;
+import org.springframework.boot.test.mock.mockito.example.ExampleService;
+import org.springframework.boot.test.mock.mockito.example.ExampleServiceCaller;
+import org.springframework.core.ResolvableType;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.junit.Test;
-
-import org.springframework.boot.test.mock.mockito.example.ExampleService;
-import org.springframework.boot.test.mock.mockito.example.ExampleServiceCaller;
-import org.springframework.core.ResolvableType;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

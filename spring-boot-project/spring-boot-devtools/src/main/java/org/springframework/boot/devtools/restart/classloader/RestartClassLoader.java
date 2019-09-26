@@ -16,6 +16,12 @@
 
 package org.springframework.boot.devtools.restart.classloader;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
+import org.springframework.core.SmartClassLoader;
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,13 +29,6 @@ import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Enumeration;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
-import org.springframework.core.SmartClassLoader;
-import org.springframework.util.Assert;
 
 /**
  * Disposable {@link ClassLoader} used to support application restarting. Provides parent
@@ -47,8 +46,9 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 
 	/**
 	 * Create a new {@link RestartClassLoader} instance.
+	 *
 	 * @param parent the parent classloader
-	 * @param urls the urls managed by the classloader
+	 * @param urls   the urls managed by the classloader
 	 */
 	public RestartClassLoader(ClassLoader parent, URL[] urls) {
 		this(parent, urls, ClassLoaderFileRepository.NONE);
@@ -56,10 +56,11 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 
 	/**
 	 * Create a new {@link RestartClassLoader} instance.
-	 * @param parent the parent classloader
+	 *
+	 * @param parent       the parent classloader
 	 * @param updatedFiles any files that have been updated since the JARs referenced in
-	 * URLs were created.
-	 * @param urls the urls managed by the classloader
+	 *                     URLs were created.
+	 * @param urls         the urls managed by the classloader
 	 */
 	public RestartClassLoader(ClassLoader parent, URL[] urls, ClassLoaderFileRepository updatedFiles) {
 		this(parent, urls, updatedFiles, LogFactory.getLog(RestartClassLoader.class));
@@ -67,11 +68,12 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 
 	/**
 	 * Create a new {@link RestartClassLoader} instance.
-	 * @param parent the parent classloader
+	 *
+	 * @param parent       the parent classloader
 	 * @param updatedFiles any files that have been updated since the JARs referenced in
-	 * URLs were created.
-	 * @param urls the urls managed by the classloader
-	 * @param logger the logger used for messages
+	 *                     URLs were created.
+	 * @param urls         the urls managed by the classloader
+	 * @param logger       the logger used for messages
 	 */
 	public RestartClassLoader(ClassLoader parent, URL[] urls, ClassLoaderFileRepository updatedFiles, Log logger) {
 		super(urls, parent);
@@ -139,8 +141,7 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 			if (loadedClass == null) {
 				try {
 					loadedClass = findClass(name);
-				}
-				catch (ClassNotFoundException ex) {
+				} catch (ClassNotFoundException ex) {
 					loadedClass = getParent().loadClass(name);
 				}
 			}
@@ -170,8 +171,7 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 	private URL createFileUrl(String name, ClassLoaderFile file) {
 		try {
 			return new URL("reloaded", null, -1, "/" + name, new ClassLoaderFileURLStreamHandler(file));
-		}
-		catch (MalformedURLException ex) {
+		} catch (MalformedURLException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -194,9 +194,8 @@ public class RestartClassLoader extends URLClassLoader implements SmartClassLoad
 	 */
 	private static class CompoundEnumeration<E> implements Enumeration<E> {
 
-		private E firstElement;
-
 		private final Enumeration<E> enumeration;
+		private E firstElement;
 
 		CompoundEnumeration(E firstElement, Enumeration<E> enumeration) {
 			this.firstElement = firstElement;

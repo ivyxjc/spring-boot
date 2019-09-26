@@ -16,32 +16,22 @@
 
 package org.springframework.boot.loader;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.Set;
-import java.util.jar.Manifest;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.springframework.boot.loader.archive.Archive;
 import org.springframework.boot.loader.archive.Archive.Entry;
 import org.springframework.boot.loader.archive.Archive.EntryFilter;
 import org.springframework.boot.loader.archive.ExplodedArchive;
 import org.springframework.boot.loader.archive.JarFileArchive;
 import org.springframework.boot.loader.util.SystemPropertyUtils;
+
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLDecoder;
+import java.util.*;
+import java.util.jar.Manifest;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * {@link Launcher} for archives with user-configured classpath and main class via a
@@ -74,21 +64,17 @@ import org.springframework.boot.loader.util.SystemPropertyUtils;
  */
 public class PropertiesLauncher extends Launcher {
 
-	private static final String DEBUG = "loader.debug";
-
 	/**
 	 * Properties key for main class. As a manifest entry can also be specified as
 	 * {@code Start-Class}.
 	 */
 	public static final String MAIN = "loader.main";
-
 	/**
 	 * Properties key for classpath entries (directories possibly containing jars or
 	 * jars). Multiple entries can be specified using a comma-separated list. {@code
 	 * BOOT-INF/classes,BOOT-INF/lib} in the application archive are always used.
 	 */
 	public static final String PATH = "loader.path";
-
 	/**
 	 * Properties key for home directory. This is the location of external configuration
 	 * if not on classpath, and also the base path for any relative paths in the
@@ -96,43 +82,36 @@ public class PropertiesLauncher extends Launcher {
 	 * <code>${user.dir}</code>).
 	 */
 	public static final String HOME = "loader.home";
-
 	/**
 	 * Properties key for default command line arguments. These arguments (if present) are
 	 * prepended to the main method arguments before launching.
 	 */
 	public static final String ARGS = "loader.args";
-
 	/**
 	 * Properties key for name of external configuration file (excluding suffix). Defaults
 	 * to "application". Ignored if {@link #CONFIG_LOCATION loader config location} is
 	 * provided instead.
 	 */
 	public static final String CONFIG_NAME = "loader.config.name";
-
 	/**
 	 * Properties key for config file location (including optional classpath:, file: or
 	 * URL prefix).
 	 */
 	public static final String CONFIG_LOCATION = "loader.config.location";
-
 	/**
 	 * Properties key for boolean flag (default false) which if set will cause the
 	 * external configuration properties to be copied to System properties (assuming that
 	 * is allowed by Java security).
 	 */
 	public static final String SET_SYSTEM_PROPERTIES = "loader.system";
-
+	private static final String DEBUG = "loader.debug";
 	private static final Pattern WORD_SEPARATOR = Pattern.compile("\\W+");
 
 	private static final String NESTED_ARCHIVE_SEPARATOR = "!" + File.separator;
 
 	private final File home;
-
-	private List<String> paths = new ArrayList<>();
-
 	private final Properties properties = new Properties();
-
+	private List<String> paths = new ArrayList<>();
 	private Archive parent;
 
 	public PropertiesLauncher() {
@@ -141,17 +120,40 @@ public class PropertiesLauncher extends Launcher {
 			initializeProperties();
 			initializePaths();
 			this.parent = createArchive();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		PropertiesLauncher launcher = new PropertiesLauncher();
+		args = launcher.getArgs(args);
+		launcher.launch(args);
+	}
+
+	public static String toCamelCase(CharSequence string) {
+		if (string == null) {
+			return null;
+		}
+		StringBuilder builder = new StringBuilder();
+		Matcher matcher = WORD_SEPARATOR.matcher(string);
+		int pos = 0;
+		while (matcher.find()) {
+			builder.append(capitalize(string.subSequence(pos, matcher.end()).toString()));
+			pos = matcher.end();
+		}
+		builder.append(capitalize(string.subSequence(pos, string.length()).toString()));
+		return builder.toString();
+	}
+
+	private static String capitalize(String str) {
+		return Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
 
 	protected File getHomeDirectory() {
 		try {
 			return new File(getPropertyWithDefault(HOME, "${user.dir}"));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -160,8 +162,7 @@ public class PropertiesLauncher extends Launcher {
 		List<String> configs = new ArrayList<>();
 		if (getProperty(CONFIG_LOCATION) != null) {
 			configs.add(getProperty(CONFIG_LOCATION));
-		}
-		else {
+		} else {
 			String[] names = getPropertyWithDefault(CONFIG_NAME, "loader").split(",");
 			for (String name : names) {
 				configs.add("file:" + getHomeDirectory() + "/" + name + ".properties");
@@ -176,8 +177,7 @@ public class PropertiesLauncher extends Launcher {
 					loadResource(resource);
 					// Load the first one we find
 					return;
-				}
-				else {
+				} else {
 					debug("Not found: " + config);
 				}
 			}
@@ -254,8 +254,7 @@ public class PropertiesLauncher extends Launcher {
 			URLConnection con = url.openConnection();
 			try {
 				return con.getInputStream();
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				// Close the HTTP connection (if applicable).
 				if (con instanceof HttpURLConnection) {
 					((HttpURLConnection) con).disconnect();
@@ -277,14 +276,12 @@ public class PropertiesLauncher extends Launcher {
 				int responseCode = httpConnection.getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					return true;
-				}
-				else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+				} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
 					return false;
 				}
 			}
 			return (connection.getContentLength() >= 0);
-		}
-		finally {
+		} finally {
 			if (connection instanceof HttpURLConnection) {
 				((HttpURLConnection) connection).disconnect();
 			}
@@ -356,14 +353,12 @@ public class PropertiesLauncher extends Launcher {
 
 		try {
 			return loaderClass.getConstructor(ClassLoader.class).newInstance(parent);
-		}
-		catch (NoSuchMethodException ex) {
+		} catch (NoSuchMethodException ex) {
 			// Ignore and try with URLs
 		}
 		try {
 			return loaderClass.getConstructor(URL[].class, ClassLoader.class).newInstance(new URL[0], parent);
-		}
-		catch (NoSuchMethodException ex) {
+		} catch (NoSuchMethodException ex) {
 			// Ignore and try without any arguments
 		}
 		return loaderClass.newInstance();
@@ -410,8 +405,7 @@ public class PropertiesLauncher extends Launcher {
 					}
 				}
 			}
-		}
-		catch (IllegalStateException ex) {
+		} catch (IllegalStateException ex) {
 			// Ignore
 		}
 		// Otherwise try the parent archive
@@ -436,8 +430,7 @@ public class PropertiesLauncher extends Launcher {
 					List<Archive> nested = new ArrayList<>(archive.getNestedArchives(new ArchiveEntryFilter()));
 					nested.add(0, archive);
 					lib.addAll(nested);
-				}
-				else {
+				} else {
 					lib.add(archive);
 				}
 			}
@@ -544,8 +537,7 @@ public class PropertiesLauncher extends Launcher {
 				}
 				return entry.getName().startsWith(JarLauncher.BOOT_INF_LIB);
 			}));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			// Ignore
 		}
 	}
@@ -562,39 +554,13 @@ public class PropertiesLauncher extends Launcher {
 		}
 		if (path.endsWith("/*")) {
 			path = path.substring(0, path.length() - 1);
-		}
-		else {
+		} else {
 			// It's a directory
 			if (!path.endsWith("/") && !path.equals(".")) {
 				path = path + "/";
 			}
 		}
 		return path;
-	}
-
-	public static void main(String[] args) throws Exception {
-		PropertiesLauncher launcher = new PropertiesLauncher();
-		args = launcher.getArgs(args);
-		launcher.launch(args);
-	}
-
-	public static String toCamelCase(CharSequence string) {
-		if (string == null) {
-			return null;
-		}
-		StringBuilder builder = new StringBuilder();
-		Matcher matcher = WORD_SEPARATOR.matcher(string);
-		int pos = 0;
-		while (matcher.find()) {
-			builder.append(capitalize(string.subSequence(pos, matcher.end()).toString()));
-			pos = matcher.end();
-		}
-		builder.append(capitalize(string.subSequence(pos, string.length()).toString()));
-		return builder.toString();
-	}
-
-	private static String capitalize(String str) {
-		return Character.toUpperCase(str.charAt(0)) + str.substring(1);
 	}
 
 	private void debug(String message) {

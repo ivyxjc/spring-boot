@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.autoconfigure.liquibase;
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.liquibase.LiquibaseEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.liquibase.DataSourceClosingSpringLiquibase;
@@ -66,10 +65,10 @@ public class LiquibaseEndpointAutoConfigurationTests {
 	public void doesNotDisableCloseOfDataSourceWhenEndpointIsDisabled() {
 		this.contextRunner.withUserConfiguration(DataSourceClosingLiquibaseConfiguration.class)
 				.withPropertyValues("management.endpoint.liquibase.enabled:false").run((context) -> {
-					assertThat(context).doesNotHaveBean(LiquibaseEndpoint.class);
-					DataSourceClosingSpringLiquibase bean = context.getBean(DataSourceClosingSpringLiquibase.class);
-					assertThat(bean).hasFieldOrPropertyWithValue("closeDataSourceOnceMigrated", true);
-				});
+			assertThat(context).doesNotHaveBean(LiquibaseEndpoint.class);
+			DataSourceClosingSpringLiquibase bean = context.getBean(DataSourceClosingSpringLiquibase.class);
+			assertThat(bean).hasFieldOrPropertyWithValue("closeDataSourceOnceMigrated", true);
+		});
 	}
 
 	@Configuration

@@ -46,13 +46,13 @@ import org.springframework.security.web.server.WebFilterChainProxy;
  * @since 2.1.0
  */
 @Configuration
-@ConditionalOnClass({ EnableWebFluxSecurity.class, WebFilterChainProxy.class })
-@ConditionalOnMissingBean({ SecurityWebFilterChain.class, WebFilterChainProxy.class })
+@ConditionalOnClass({EnableWebFluxSecurity.class, WebFilterChainProxy.class})
+@ConditionalOnMissingBean({SecurityWebFilterChain.class, WebFilterChainProxy.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @AutoConfigureBefore(ReactiveSecurityAutoConfiguration.class)
-@AutoConfigureAfter({ HealthEndpointAutoConfiguration.class, InfoEndpointAutoConfiguration.class,
-		WebEndpointAutoConfiguration.class, ReactiveOAuth2ClientAutoConfiguration.class,
-		ReactiveOAuth2ResourceServerAutoConfiguration.class })
+@AutoConfigureAfter({HealthEndpointAutoConfiguration.class, InfoEndpointAutoConfiguration.class,
+							WebEndpointAutoConfiguration.class, ReactiveOAuth2ClientAutoConfiguration.class,
+							ReactiveOAuth2ResourceServerAutoConfiguration.class})
 public class ReactiveManagementWebSecurityAutoConfiguration {
 
 	@Bean

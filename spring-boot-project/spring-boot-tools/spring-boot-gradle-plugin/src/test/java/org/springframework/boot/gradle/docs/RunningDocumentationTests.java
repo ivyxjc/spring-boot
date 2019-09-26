@@ -16,17 +16,14 @@
 
 package org.springframework.boot.gradle.docs;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.gradle.junit.GradleMultiDslSuite;
 import org.springframework.boot.gradle.testkit.GradleBuild;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Tests for the documentation about running a Spring Boot application.

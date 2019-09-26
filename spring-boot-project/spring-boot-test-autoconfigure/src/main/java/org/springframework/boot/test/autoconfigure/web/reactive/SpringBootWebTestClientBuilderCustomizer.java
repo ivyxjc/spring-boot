@@ -16,16 +16,16 @@
 
 package org.springframework.boot.test.autoconfigure.web.reactive;
 
-import java.time.Duration;
-import java.util.Collection;
-import java.util.function.Consumer;
-
 import org.springframework.boot.web.codec.CodecCustomizer;
 import org.springframework.http.codec.ClientCodecConfigurer;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.test.web.reactive.server.WebTestClient.Builder;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
+
+import java.time.Duration;
+import java.util.Collection;
+import java.util.function.Consumer;
 
 /**
  * {@link WebTestClientBuilderCustomizer} for a typical Spring Boot application. Usually
@@ -45,6 +45,7 @@ public class SpringBootWebTestClientBuilderCustomizer implements WebTestClientBu
 	/**
 	 * Create a new {@code SpringBootWebTestClientBuilderCustomizer} that will configure
 	 * the builder's codecs using the given {@code codecCustomizers}.
+	 *
 	 * @param codecCustomizers the codec customizers
 	 */
 	public SpringBootWebTestClientBuilderCustomizer(Collection<CodecCustomizer> codecCustomizers) {

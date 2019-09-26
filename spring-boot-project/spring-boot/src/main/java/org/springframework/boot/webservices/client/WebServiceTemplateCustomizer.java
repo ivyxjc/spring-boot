@@ -29,6 +29,7 @@ public interface WebServiceTemplateCustomizer {
 
 	/**
 	 * Callback to customize a {@link WebServiceTemplate} instance.
+	 *
 	 * @param webServiceTemplate the template to customize
 	 */
 	void customize(WebServiceTemplate webServiceTemplate);

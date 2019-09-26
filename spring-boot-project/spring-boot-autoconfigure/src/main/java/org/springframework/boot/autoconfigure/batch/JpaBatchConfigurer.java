@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.batch;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 /**
  * A {@link BasicBatchConfigurer} tailored for JPA.
@@ -40,14 +39,15 @@ public class JpaBatchConfigurer extends BasicBatchConfigurer {
 
 	/**
 	 * Create a new {@link BasicBatchConfigurer} instance.
-	 * @param properties the batch properties
-	 * @param dataSource the underlying data source
+	 *
+	 * @param properties                    the batch properties
+	 * @param dataSource                    the underlying data source
 	 * @param transactionManagerCustomizers transaction manager customizers (or
-	 * {@code null})
-	 * @param entityManagerFactory the entity manager factory (or {@code null})
+	 *                                      {@code null})
+	 * @param entityManagerFactory          the entity manager factory (or {@code null})
 	 */
 	protected JpaBatchConfigurer(BatchProperties properties, DataSource dataSource,
-			TransactionManagerCustomizers transactionManagerCustomizers, EntityManagerFactory entityManagerFactory) {
+								 TransactionManagerCustomizers transactionManagerCustomizers, EntityManagerFactory entityManagerFactory) {
 		super(properties, dataSource, transactionManagerCustomizers);
 		this.entityManagerFactory = entityManagerFactory;
 	}

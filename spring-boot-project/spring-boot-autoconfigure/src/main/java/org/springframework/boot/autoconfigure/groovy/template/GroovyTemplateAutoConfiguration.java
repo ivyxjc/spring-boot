@@ -16,16 +16,9 @@
 
 package org.springframework.boot.autoconfigure.groovy.template;
 
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.Servlet;
-
 import groovy.text.markup.MarkupTemplateEngine;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -45,6 +38,11 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfig;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfigurer;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupViewResolver;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.Servlet;
+import java.security.CodeSource;
+import java.security.ProtectionDomain;
 
 /**
  * Auto-configuration support for Groovy templates in MVC. By default creates a
@@ -76,7 +74,7 @@ public class GroovyTemplateAutoConfiguration {
 		private final MarkupTemplateEngine templateEngine;
 
 		public GroovyMarkupConfiguration(ApplicationContext applicationContext, GroovyTemplateProperties properties,
-				ObjectProvider<MarkupTemplateEngine> templateEngine) {
+										 ObjectProvider<MarkupTemplateEngine> templateEngine) {
 			this.applicationContext = applicationContext;
 			this.properties = properties;
 			this.templateEngine = templateEngine.getIfAvailable();
@@ -99,6 +97,7 @@ public class GroovyTemplateAutoConfiguration {
 		 * Unfortunately it's quite common for people to use groovy-all and not actually
 		 * need templating support. This method check attempts to check the source jar so
 		 * that we can skip the {@code /template} folder check for such cases.
+		 *
 		 * @return true if the groovy-all jar is used
 		 */
 		private boolean isUsingGroovyAllJar() {
@@ -109,8 +108,7 @@ public class GroovyTemplateAutoConfiguration {
 					return true;
 				}
 				return false;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				return false;
 			}
 		}
@@ -131,7 +129,7 @@ public class GroovyTemplateAutoConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ Servlet.class, LocaleContextHolder.class, UrlBasedViewResolver.class })
+	@ConditionalOnClass({Servlet.class, LocaleContextHolder.class, UrlBasedViewResolver.class})
 	@ConditionalOnWebApplication(type = Type.SERVLET)
 	@ConditionalOnProperty(name = "spring.groovy.template.enabled", matchIfMissing = true)
 	public static class GroovyWebConfiguration {

@@ -16,13 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jackson;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -30,16 +23,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.DeserializationConfig;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy.SnakeCaseStrategy;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.fasterxml.jackson.datatype.joda.cfg.FormatConfig;
@@ -48,7 +33,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.jackson.JsonComponent;
@@ -59,6 +43,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -119,12 +110,12 @@ public class JacksonAutoConfigurationTests {
 	public void customJodaDateTimeFormat() throws Exception {
 		this.contextRunner.withPropertyValues("spring.jackson.date-format:yyyyMMddHHmmss",
 				"spring.jackson.joda-date-time-format:yyyy-MM-dd HH:mm:ss").run((context) -> {
-					ObjectMapper mapper = context.getBean(ObjectMapper.class);
-					DateTime dateTime = new DateTime(1988, 6, 25, 20, 30, DateTimeZone.UTC);
-					assertThat(mapper.writeValueAsString(dateTime)).isEqualTo("\"1988-06-25 20:30:00\"");
-					Date date = dateTime.toDate();
-					assertThat(mapper.writeValueAsString(date)).isEqualTo("\"19880625203000\"");
-				});
+			ObjectMapper mapper = context.getBean(ObjectMapper.class);
+			DateTime dateTime = new DateTime(1988, 6, 25, 20, 30, DateTimeZone.UTC);
+			assertThat(mapper.writeValueAsString(dateTime)).isEqualTo("\"1988-06-25 20:30:00\"");
+			Date date = dateTime.toDate();
+			assertThat(mapper.writeValueAsString(date)).isEqualTo("\"19880625203000\"");
+		});
 	}
 
 	@Test
@@ -181,7 +172,7 @@ public class JacksonAutoConfigurationTests {
 					assertThat(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS.enabledByDefault()).isTrue();
 					assertThat(mapper.getSerializationConfig()
 							.hasSerializationFeatures(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS.getMask()))
-									.isFalse();
+							.isFalse();
 				});
 	}
 
@@ -193,7 +184,7 @@ public class JacksonAutoConfigurationTests {
 					assertThat(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS.enabledByDefault()).isFalse();
 					assertThat(mapper.getDeserializationConfig()
 							.hasDeserializationFeatures(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS.getMask()))
-									.isTrue();
+							.isTrue();
 				});
 	}
 
@@ -205,7 +196,7 @@ public class JacksonAutoConfigurationTests {
 					assertThat(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES.enabledByDefault()).isTrue();
 					assertThat(mapper.getDeserializationConfig()
 							.hasDeserializationFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES.getMask()))
-									.isFalse();
+							.isFalse();
 				});
 	}
 
@@ -319,10 +310,10 @@ public class JacksonAutoConfigurationTests {
 	public void customTimeZoneFormattingADateTime() {
 		this.contextRunner.withPropertyValues("spring.jackson.time-zone:America/Los_Angeles",
 				"spring.jackson.date-format:zzzz", "spring.jackson.locale:en").run((context) -> {
-					ObjectMapper objectMapper = context.getBean(Jackson2ObjectMapperBuilder.class).build();
-					DateTime dateTime = new DateTime(1436966242231L, DateTimeZone.UTC);
-					assertThat(objectMapper.writeValueAsString(dateTime)).isEqualTo("\"Pacific Daylight Time\"");
-				});
+			ObjectMapper objectMapper = context.getBean(Jackson2ObjectMapperBuilder.class).build();
+			DateTime dateTime = new DateTime(1436966242231L, DateTimeZone.UTC);
+			assertThat(objectMapper.writeValueAsString(dateTime)).isEqualTo("\"Pacific Daylight Time\"");
+		});
 	}
 
 	@Test
@@ -339,10 +330,10 @@ public class JacksonAutoConfigurationTests {
 	public void customLocaleWithJodaTime() throws JsonProcessingException {
 		this.contextRunner.withPropertyValues("spring.jackson.locale:de_DE", "spring.jackson.date-format:zzzz",
 				"spring.jackson.serialization.write-dates-with-zone-id:true").run((context) -> {
-					ObjectMapper objectMapper = context.getBean(ObjectMapper.class);
-					DateTime jodaTime = new DateTime(1478424650000L, DateTimeZone.forID("Europe/Rome"));
-					assertThat(objectMapper.writeValueAsString(jodaTime)).startsWith("\"Mitteleuropäische ");
-				});
+			ObjectMapper objectMapper = context.getBean(ObjectMapper.class);
+			DateTime jodaTime = new DateTime(1478424650000L, DateTimeZone.forID("Europe/Rome"));
+			assertThat(objectMapper.writeValueAsString(jodaTime)).startsWith("\"Mitteleuropäische ");
+		});
 	}
 
 	@Test
@@ -542,9 +533,8 @@ public class JacksonAutoConfigurationTests {
 	@SuppressWarnings("unused")
 	private static class VisibilityBean {
 
-		private String property1;
-
 		public String property2;
+		private String property1;
 
 		public String getProperty3() {
 			return null;

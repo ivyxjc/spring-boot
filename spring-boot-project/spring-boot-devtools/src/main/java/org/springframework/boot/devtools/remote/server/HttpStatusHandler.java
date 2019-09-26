@@ -16,12 +16,12 @@
 
 package org.springframework.boot.devtools.remote.server;
 
-import java.io.IOException;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
 
 /**
  * {@link Handler} that responds with a specific {@link HttpStatus}.
@@ -44,6 +44,7 @@ public class HttpStatusHandler implements Handler {
 	/**
 	 * Create a new {@link HttpStatusHandler} instance that will respond with the
 	 * specified status.
+	 *
 	 * @param status the status
 	 */
 	public HttpStatusHandler(HttpStatus status) {

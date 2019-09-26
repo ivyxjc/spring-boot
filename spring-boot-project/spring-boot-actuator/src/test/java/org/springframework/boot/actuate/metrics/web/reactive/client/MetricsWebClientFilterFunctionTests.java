@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.client;
 
-import java.io.IOException;
-import java.net.URI;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.MockClock;
 import io.micrometer.core.instrument.Timer;
@@ -28,14 +23,18 @@ import io.micrometer.core.instrument.simple.SimpleConfig;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Before;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+import java.net.URI;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -97,7 +96,7 @@ public class MetricsWebClientFilterFunctionTests {
 				.block(Duration.ofSeconds(30));
 		assertThat(this.registry.get("http.client.requests")
 				.tags("method", "GET", "uri", "/projects/spring-boot", "status", "IO_ERROR").timer().count())
-						.isEqualTo(1);
+				.isEqualTo(1);
 	}
 
 	@Test
@@ -109,7 +108,7 @@ public class MetricsWebClientFilterFunctionTests {
 				.block(Duration.ofSeconds(30));
 		assertThat(this.registry.get("http.client.requests")
 				.tags("method", "GET", "uri", "/projects/spring-boot", "status", "CLIENT_ERROR").timer().count())
-						.isEqualTo(1);
+				.isEqualTo(1);
 	}
 
 	@Test

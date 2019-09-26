@@ -16,18 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.jdbc;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.metrics.micrometer.MicrometerMetricsTrackerFactory;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
@@ -42,6 +35,11 @@ import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for metrics on all available
  * {@link DataSource datasources}.
@@ -50,10 +48,10 @@ import org.springframework.util.StringUtils;
  * @since 2.0.0
  */
 @Configuration
-@AutoConfigureAfter({ MetricsAutoConfiguration.class, DataSourceAutoConfiguration.class,
-		SimpleMetricsExportAutoConfiguration.class })
-@ConditionalOnClass({ DataSource.class, MeterRegistry.class })
-@ConditionalOnBean({ DataSource.class, MeterRegistry.class })
+@AutoConfigureAfter({MetricsAutoConfiguration.class, DataSourceAutoConfiguration.class,
+							SimpleMetricsExportAutoConfiguration.class})
+@ConditionalOnClass({DataSource.class, MeterRegistry.class})
+@ConditionalOnBean({DataSource.class, MeterRegistry.class})
 public class DataSourcePoolMetricsAutoConfiguration {
 
 	@Configuration
@@ -67,7 +65,7 @@ public class DataSourcePoolMetricsAutoConfiguration {
 		private final Collection<DataSourcePoolMetadataProvider> metadataProviders;
 
 		DataSourcePoolMetadataMetricsConfiguration(MeterRegistry registry,
-				Collection<DataSourcePoolMetadataProvider> metadataProviders) {
+												   Collection<DataSourcePoolMetadataProvider> metadataProviders) {
 			this.registry = registry;
 			this.metadataProviders = metadataProviders;
 		}
@@ -85,6 +83,7 @@ public class DataSourcePoolMetricsAutoConfiguration {
 
 		/**
 		 * Get the name of a DataSource based on its {@code beanName}.
+		 *
 		 * @param beanName the name of the data source bean
 		 * @return a name for the given data source
 		 */
@@ -124,8 +123,7 @@ public class DataSourcePoolMetricsAutoConfiguration {
 			if (hikari.getMetricRegistry() == null && hikari.getMetricsTrackerFactory() == null) {
 				try {
 					hikari.setMetricsTrackerFactory(new MicrometerMetricsTrackerFactory(this.registry));
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					logger.warn("Failed to bind Hikari metrics: " + ex.getMessage());
 				}
 			}

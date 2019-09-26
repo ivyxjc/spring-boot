@@ -16,15 +16,14 @@
 
 package org.springframework.boot.security.reactive;
 
-import java.util.function.Supplier;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.util.function.Supplier;
 
 /**
  * {@link ApplicationContext} backed {@link ServerWebExchangeMatcher}. Can work directly
@@ -33,18 +32,16 @@ import org.springframework.web.server.ServerWebExchange;
  * that is autowired in the usual way.
  *
  * @param <C> the type of the context that the match method actually needs to use. Can be
- * an {@link ApplicationContext} or a class of an {@link ApplicationContext#getBean(Class)
- * existing bean}.
+ *            an {@link ApplicationContext} or a class of an {@link ApplicationContext#getBean(Class)
+ *            existing bean}.
  * @author Madhura Bhave
  * @since 2.0.0
  */
 public abstract class ApplicationContextServerWebExchangeMatcher<C> implements ServerWebExchangeMatcher {
 
 	private final Class<? extends C> contextClass;
-
-	private volatile Supplier<C> context;
-
 	private final Object contextLock = new Object();
+	private volatile Supplier<C> context;
 
 	public ApplicationContextServerWebExchangeMatcher(Class<? extends C> contextClass) {
 		Assert.notNull(contextClass, "Context class must not be null");
@@ -58,8 +55,9 @@ public abstract class ApplicationContextServerWebExchangeMatcher<C> implements S
 
 	/**
 	 * Decides whether the rule implemented by the strategy matches the supplied exchange.
+	 *
 	 * @param exchange the source exchange
-	 * @param context a supplier for the initialized context (may throw an exception)
+	 * @param context  a supplier for the initialized context (may throw an exception)
 	 * @return if the exchange matches
 	 */
 	protected abstract Mono<MatchResult> matches(ServerWebExchange exchange, Supplier<C> context);
@@ -79,6 +77,7 @@ public abstract class ApplicationContextServerWebExchangeMatcher<C> implements S
 
 	/**
 	 * Called once the context has been initialized.
+	 *
 	 * @param context a supplier for the initialized context (may throw an exception)
 	 */
 	protected void initialized(Supplier<C> context) {

@@ -16,11 +16,7 @@
 
 package org.springframework.boot.autoconfigure.amqp;
 
-import java.time.Duration;
-import java.util.stream.Collectors;
-
 import com.rabbitmq.client.Channel;
-
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -42,12 +38,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import java.time.Duration;
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link RabbitTemplate}.
  * <p>
  * This configuration class is active only when the RabbitMQ and Spring AMQP client
  * libraries are on the classpath.
- * <P>
+ * <p>
  * Registers the following beans:
  * <ul>
  * <li>{@link org.springframework.amqp.rabbit.core.RabbitTemplate RabbitTemplate} if there
@@ -83,7 +82,7 @@ import org.springframework.context.annotation.Import;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ RabbitTemplate.class, Channel.class })
+@ConditionalOnClass({RabbitTemplate.class, Channel.class})
 @EnableConfigurationProperties(RabbitProperties.class)
 @Import(RabbitAnnotationDrivenConfiguration.class)
 public class RabbitAutoConfiguration {
@@ -94,7 +93,7 @@ public class RabbitAutoConfiguration {
 
 		@Bean
 		public CachingConnectionFactory rabbitConnectionFactory(RabbitProperties properties,
-				ObjectProvider<ConnectionNameStrategy> connectionNameStrategy) throws Exception {
+																ObjectProvider<ConnectionNameStrategy> connectionNameStrategy) throws Exception {
 			PropertyMapper map = PropertyMapper.get();
 			CachingConnectionFactory factory = new CachingConnectionFactory(
 					getRabbitConnectionFactoryBean(properties).getObject());
@@ -156,8 +155,8 @@ public class RabbitAutoConfiguration {
 		private final ObjectProvider<RabbitRetryTemplateCustomizer> retryTemplateCustomizers;
 
 		public RabbitTemplateConfiguration(RabbitProperties properties,
-				ObjectProvider<MessageConverter> messageConverter,
-				ObjectProvider<RabbitRetryTemplateCustomizer> retryTemplateCustomizers) {
+										   ObjectProvider<MessageConverter> messageConverter,
+										   ObjectProvider<RabbitRetryTemplateCustomizer> retryTemplateCustomizers) {
 			this.properties = properties;
 			this.messageConverter = messageConverter;
 			this.retryTemplateCustomizers = retryTemplateCustomizers;
@@ -178,7 +177,7 @@ public class RabbitAutoConfiguration {
 			if (properties.getRetry().isEnabled()) {
 				template.setRetryTemplate(new RetryTemplateFactory(
 						this.retryTemplateCustomizers.orderedStream().collect(Collectors.toList())).createRetryTemplate(
-								properties.getRetry(), RabbitRetryTemplateCustomizer.Target.SENDER));
+						properties.getRetry(), RabbitRetryTemplateCustomizer.Target.SENDER));
 			}
 			map.from(properties::getReceiveTimeout).whenNonNull().as(Duration::toMillis)
 					.to(template::setReceiveTimeout);

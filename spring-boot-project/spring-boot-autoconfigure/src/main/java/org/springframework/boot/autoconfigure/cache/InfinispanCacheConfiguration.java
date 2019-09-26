@@ -16,15 +16,10 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-
 import org.infinispan.configuration.cache.ConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.spring.provider.SpringEmbeddedCacheManager;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -34,6 +29,10 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.util.CollectionUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Infinispan cache configuration.
@@ -56,7 +55,7 @@ public class InfinispanCacheConfiguration {
 	private final ConfigurationBuilder defaultConfigurationBuilder;
 
 	public InfinispanCacheConfiguration(CacheProperties cacheProperties, CacheManagerCustomizers customizers,
-			ObjectProvider<ConfigurationBuilder> defaultConfigurationBuilder) {
+										ObjectProvider<ConfigurationBuilder> defaultConfigurationBuilder) {
 		this.cacheProperties = cacheProperties;
 		this.customizers = customizers;
 		this.defaultConfigurationBuilder = defaultConfigurationBuilder.getIfAvailable();

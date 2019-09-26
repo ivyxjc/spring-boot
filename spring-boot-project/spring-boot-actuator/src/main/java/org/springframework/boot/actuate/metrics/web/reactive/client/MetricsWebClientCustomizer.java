@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.metrics.web.reactive.client;
 
 import io.micrometer.core.instrument.MeterRegistry;
-
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -36,12 +35,13 @@ public class MetricsWebClientCustomizer implements WebClientCustomizer {
 	 * Create a new {@code MetricsWebClientFilterFunction} that will record metrics using
 	 * the given {@code meterRegistry} with tags provided by the given
 	 * {@code tagProvider}.
+	 *
 	 * @param meterRegistry the meter registry
-	 * @param tagProvider the tag provider
-	 * @param metricName the name of the recorded metric
+	 * @param tagProvider   the tag provider
+	 * @param metricName    the name of the recorded metric
 	 */
 	public MetricsWebClientCustomizer(MeterRegistry meterRegistry, WebClientExchangeTagsProvider tagProvider,
-			String metricName) {
+									  String metricName) {
 		this.filterFunction = new MetricsWebClientFilterFunction(meterRegistry, tagProvider, metricName);
 	}
 

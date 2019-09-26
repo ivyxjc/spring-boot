@@ -16,31 +16,25 @@
 
 package org.springframework.boot.admin;
 
-import java.lang.management.ManagementFactory;
-
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.EnvironmentAware;
+import org.springframework.context.*;
 import org.springframework.context.event.GenericApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.util.Assert;
+
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 
 /**
  * Register a {@link SpringApplicationAdminMXBean} implementation to the platform
@@ -54,13 +48,9 @@ public class SpringApplicationAdminMXBeanRegistrar implements ApplicationContext
 		EnvironmentAware, InitializingBean, DisposableBean {
 
 	private static final Log logger = LogFactory.getLog(SpringApplicationAdmin.class);
-
-	private ConfigurableApplicationContext applicationContext;
-
-	private Environment environment = new StandardEnvironment();
-
 	private final ObjectName objectName;
-
+	private ConfigurableApplicationContext applicationContext;
+	private Environment environment = new StandardEnvironment();
 	private boolean ready = false;
 
 	private boolean embeddedWebApplication = false;

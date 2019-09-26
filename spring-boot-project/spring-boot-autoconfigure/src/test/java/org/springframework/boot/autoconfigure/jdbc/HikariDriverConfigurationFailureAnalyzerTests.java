@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.jdbc;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.diagnostics.FailureAnalysis;
@@ -67,8 +66,7 @@ public class HikariDriverConfigurationFailureAnalyzerTests {
 			context.refresh();
 			context.close();
 			return null;
-		}
-		catch (BeanCreationException ex) {
+		} catch (BeanCreationException ex) {
 			return ex;
 		}
 	}

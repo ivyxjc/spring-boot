@@ -18,7 +18,6 @@ package org.springframework.boot;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Profiles;
@@ -165,7 +164,7 @@ public class ReproTests {
 	}
 
 	private void assertVersionProperty(ConfigurableApplicationContext context, String expectedVersion,
-			String... expectedActiveProfiles) {
+									   String... expectedActiveProfiles) {
 		assertThat(context.getEnvironment().getActiveProfiles()).isEqualTo(expectedActiveProfiles);
 		assertThat(context.getEnvironment().getProperty("version")).as("version mismatch").isEqualTo(expectedVersion);
 	}

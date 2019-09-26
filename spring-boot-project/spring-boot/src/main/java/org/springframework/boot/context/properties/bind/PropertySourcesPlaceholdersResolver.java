@@ -51,6 +51,13 @@ public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver
 				SystemPropertyUtils.PLACEHOLDER_SUFFIX, SystemPropertyUtils.VALUE_SEPARATOR, true);
 	}
 
+	private static PropertySources getSources(Environment environment) {
+		Assert.notNull(environment, "Environment must not be null");
+		Assert.isInstanceOf(ConfigurableEnvironment.class, environment,
+				"Environment must be a ConfigurableEnvironment");
+		return ((ConfigurableEnvironment) environment).getPropertySources();
+	}
+
 	@Override
 	public Object resolvePlaceholders(Object value) {
 		if (value instanceof String) {
@@ -69,13 +76,6 @@ public class PropertySourcesPlaceholdersResolver implements PlaceholdersResolver
 			}
 		}
 		return null;
-	}
-
-	private static PropertySources getSources(Environment environment) {
-		Assert.notNull(environment, "Environment must not be null");
-		Assert.isInstanceOf(ConfigurableEnvironment.class, environment,
-				"Environment must be a ConfigurableEnvironment");
-		return ((ConfigurableEnvironment) environment).getPropertySources();
 	}
 
 }

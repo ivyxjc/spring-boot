@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.mustache;
 
 import com.samskivert.mustache.Mustache;
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.boot.web.servlet.view.MustacheViewResolver;
@@ -65,7 +64,7 @@ public class MustacheAutoConfigurationTests {
 		assertThat(this.reactiveWebContext.getBeansOfType(MustacheViewResolver.class)).isEmpty();
 		assertThat(this.reactiveWebContext
 				.getBeansOfType(org.springframework.boot.web.reactive.result.view.MustacheViewResolver.class))
-						.hasSize(1);
+				.hasSize(1);
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class MustacheAutoConfigurationTests {
 		assertThat(this.reactiveWebContext.getBeansOfType(MustacheViewResolver.class)).isEmpty();
 		assertThat(this.reactiveWebContext
 				.getBeansOfType(org.springframework.boot.web.reactive.result.view.MustacheViewResolver.class))
-						.hasSize(1);
+				.hasSize(1);
 		assertThat(this.reactiveWebContext.getBean(Mustache.Compiler.class).standardsMode).isTrue();
 	}
 
@@ -101,7 +100,7 @@ public class MustacheAutoConfigurationTests {
 	}
 
 	@Configuration
-	@Import({ MustacheAutoConfiguration.class })
+	@Import({MustacheAutoConfiguration.class})
 	protected static class BaseConfiguration {
 
 	}

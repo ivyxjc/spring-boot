@@ -16,19 +16,10 @@
 
 package org.springframework.boot.actuate.endpoint.web.test;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-
-import javax.ws.rs.core.MediaType;
-
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.model.Resource;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-
 import org.springframework.boot.actuate.endpoint.http.ActuatorMediaType;
 import org.springframework.boot.actuate.endpoint.invoke.convert.ConversionServiceParameterValueMapper;
 import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
@@ -47,6 +38,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
+
+import javax.ws.rs.core.MediaType;
+import java.util.*;
 
 /**
  * {@link BlockJUnit4ClassRunner} for Jersey.
@@ -69,7 +63,7 @@ class JerseyEndpointsRunner extends AbstractWebEndpointRunner {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, JerseyAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, JerseyAutoConfiguration.class})
 	static class JerseyEndpointConfiguration {
 
 		private final ApplicationContext applicationContext;

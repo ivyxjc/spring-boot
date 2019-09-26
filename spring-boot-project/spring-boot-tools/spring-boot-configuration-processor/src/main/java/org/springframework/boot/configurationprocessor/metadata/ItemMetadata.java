@@ -23,8 +23,8 @@ import java.util.Locale;
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 1.2.0
  * @see ConfigurationMetadata
+ * @since 1.2.0
  */
 public final class ItemMetadata implements Comparable<ItemMetadata> {
 
@@ -45,7 +45,7 @@ public final class ItemMetadata implements Comparable<ItemMetadata> {
 	private ItemDeprecation deprecation;
 
 	ItemMetadata(ItemType itemType, String prefix, String name, String type, String sourceType, String sourceMethod,
-			String description, Object defaultValue, ItemDeprecation deprecation) {
+				 String description, Object defaultValue, ItemDeprecation deprecation) {
 		this.itemType = itemType;
 		this.name = buildName(prefix, name);
 		this.type = type;
@@ -54,6 +54,20 @@ public final class ItemMetadata implements Comparable<ItemMetadata> {
 		this.description = description;
 		this.defaultValue = defaultValue;
 		this.deprecation = deprecation;
+	}
+
+	public static ItemMetadata newGroup(String name, String type, String sourceType, String sourceMethod) {
+		return new ItemMetadata(ItemType.GROUP, name, null, type, sourceType, sourceMethod, null, null, null);
+	}
+
+	public static ItemMetadata newProperty(String prefix, String name, String type, String sourceType,
+										   String sourceMethod, String description, Object defaultValue, ItemDeprecation deprecation) {
+		return new ItemMetadata(ItemType.PROPERTY, prefix, name, type, sourceType, sourceMethod, description,
+				defaultValue, deprecation);
+	}
+
+	public static String newItemMetadataPrefix(String prefix, String suffix) {
+		return prefix.toLowerCase(Locale.ENGLISH) + ConfigurationMetadata.toDashedCase(suffix);
 	}
 
 	private String buildName(String prefix, String name) {
@@ -205,20 +219,6 @@ public final class ItemMetadata implements Comparable<ItemMetadata> {
 	@Override
 	public int compareTo(ItemMetadata o) {
 		return getName().compareTo(o.getName());
-	}
-
-	public static ItemMetadata newGroup(String name, String type, String sourceType, String sourceMethod) {
-		return new ItemMetadata(ItemType.GROUP, name, null, type, sourceType, sourceMethod, null, null, null);
-	}
-
-	public static ItemMetadata newProperty(String prefix, String name, String type, String sourceType,
-			String sourceMethod, String description, Object defaultValue, ItemDeprecation deprecation) {
-		return new ItemMetadata(ItemType.PROPERTY, prefix, name, type, sourceType, sourceMethod, description,
-				defaultValue, deprecation);
-	}
-
-	public static String newItemMetadataPrefix(String prefix, String suffix) {
-		return prefix.toLowerCase(Locale.ENGLISH) + ConfigurationMetadata.toDashedCase(suffix);
 	}
 
 	/**

@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.data.jpa;
 
-import java.lang.annotation.Annotation;
-import java.util.Locale;
-
 import org.springframework.boot.autoconfigure.data.AbstractRepositoryConfigurationSourceSupport;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
@@ -27,6 +24,9 @@ import org.springframework.data.jpa.repository.config.JpaRepositoryConfigExtensi
 import org.springframework.data.repository.config.BootstrapMode;
 import org.springframework.data.repository.config.RepositoryConfigurationExtension;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Locale;
 
 /**
  * {@link ImportBeanDefinitionRegistrar} used to auto-configure Spring Data JPA

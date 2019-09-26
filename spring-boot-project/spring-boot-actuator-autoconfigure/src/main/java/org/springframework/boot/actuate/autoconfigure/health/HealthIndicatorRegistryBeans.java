@@ -16,15 +16,15 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
 import org.springframework.boot.actuate.health.HealthIndicatorRegistryFactory;
 import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ClassUtils;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Creates a {@link HealthIndicatorRegistry} from beans in the {@link ApplicationContext}.

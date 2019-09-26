@@ -77,8 +77,7 @@ public class RestDocsTestExecutionListener extends AbstractTestExecutionListener
 		private ManualRestDocumentation findManualRestDocumentation(TestContext testContext) {
 			try {
 				return testContext.getApplicationContext().getBean(ManualRestDocumentation.class);
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return null;
 			}
 		}

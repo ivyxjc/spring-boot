@@ -16,20 +16,19 @@
 
 package org.springframework.boot.cli.command.init;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Test;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.StreamUtils;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Map;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.junit.Test;
-
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.util.StreamUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -45,6 +44,38 @@ public class ProjectGenerationRequestTests {
 	public static final Map<String, String> EMPTY_TAGS = Collections.emptyMap();
 
 	private final ProjectGenerationRequest request = new ProjectGenerationRequest();
+
+	private static URI createUrl(String actionAndParam) {
+		try {
+			return new URI(ProjectGenerationRequest.DEFAULT_SERVICE_URL + actionAndParam);
+		} catch (URISyntaxException ex) {
+			throw new IllegalStateException(ex);
+		}
+	}
+
+	private static URI createDefaultUrl(String param) {
+		return createUrl("/starter.zip" + param);
+	}
+
+	private static InitializrServiceMetadata createDefaultMetadata() {
+		ProjectType projectType = new ProjectType("test-type", "The test type", "/starter.zip", true, EMPTY_TAGS);
+		return new InitializrServiceMetadata(projectType);
+	}
+
+	private static InitializrServiceMetadata readMetadata() throws JSONException {
+		return readMetadata("2.0.0");
+	}
+
+	private static InitializrServiceMetadata readMetadata(String version) throws JSONException {
+		try {
+			Resource resource = new ClassPathResource("metadata/service-metadata-" + version + ".json");
+			String content = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
+			JSONObject json = new JSONObject(content);
+			return new InitializrServiceMetadata(json);
+		} catch (IOException ex) {
+			throw new IllegalStateException("Failed to read metadata", ex);
+		}
+	}
 
 	@Test
 	public void defaultSettings() {
@@ -205,44 +236,10 @@ public class ProjectGenerationRequestTests {
 				.withMessageContaining("no default is defined");
 	}
 
-	private static URI createUrl(String actionAndParam) {
-		try {
-			return new URI(ProjectGenerationRequest.DEFAULT_SERVICE_URL + actionAndParam);
-		}
-		catch (URISyntaxException ex) {
-			throw new IllegalStateException(ex);
-		}
-	}
-
-	private static URI createDefaultUrl(String param) {
-		return createUrl("/starter.zip" + param);
-	}
-
 	public void setBuildAndFormat(String build, String format) {
 		this.request.setBuild((build != null) ? build : "maven");
 		this.request.setFormat((format != null) ? format : "project");
 		this.request.setDetectType(true);
-	}
-
-	private static InitializrServiceMetadata createDefaultMetadata() {
-		ProjectType projectType = new ProjectType("test-type", "The test type", "/starter.zip", true, EMPTY_TAGS);
-		return new InitializrServiceMetadata(projectType);
-	}
-
-	private static InitializrServiceMetadata readMetadata() throws JSONException {
-		return readMetadata("2.0.0");
-	}
-
-	private static InitializrServiceMetadata readMetadata(String version) throws JSONException {
-		try {
-			Resource resource = new ClassPathResource("metadata/service-metadata-" + version + ".json");
-			String content = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
-			JSONObject json = new JSONObject(content);
-			return new InitializrServiceMetadata(json);
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException("Failed to read metadata", ex);
-		}
 	}
 
 }

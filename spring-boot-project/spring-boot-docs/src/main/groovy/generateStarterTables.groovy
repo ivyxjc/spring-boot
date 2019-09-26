@@ -1,5 +1,3 @@
-import groovy.util.XmlSlurper
-
 def getStarters(File dir) {
 	def starters = []
 	new File(project.build.directory, 'external-resources/starter-poms').eachDir { starterDir ->
@@ -8,10 +6,10 @@ def getStarters(File dir) {
 		if (isStarter(dependencies)) {
 			def name = pom.artifactId.text()
 			starters << [
-					'name': name,
-					'description': postProcessDescription(pom.description.text()),
+					'name'        : name,
+					'description' : postProcessDescription(pom.description.text()),
 					'dependencies': dependencies,
-					'pomUrl': "{github-code}/spring-boot-project/spring-boot-starters/$name/pom.xml"
+					'pomUrl'      : "{github-code}/spring-boot-project/spring-boot-starters/$name/pom.xml"
 			]
 		}
 	}
@@ -25,7 +23,8 @@ boolean isApplicationStarter(def starter) {
 boolean isTechnicalStarter(def starter) {
 	starter.name != 'spring-boot-starter-test' && !isProductionStarter(starter) &&
 			starter.dependencies.find {
-					it.startsWith('org.springframework.boot:spring-boot-starter') } == null
+				it.startsWith('org.springframework.boot:spring-boot-starter')
+			} == null
 }
 
 boolean isProductionStarter(def starter) {

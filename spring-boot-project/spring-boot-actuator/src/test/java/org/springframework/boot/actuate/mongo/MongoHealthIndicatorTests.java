@@ -20,7 +20,6 @@ import com.mongodb.MongoException;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

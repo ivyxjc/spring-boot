@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.function.Function;
-
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+
+import java.util.function.Function;
 
 /**
  * {@link RequestMatcherProvider} that provides an {@link AntPathRequestMatcher}.

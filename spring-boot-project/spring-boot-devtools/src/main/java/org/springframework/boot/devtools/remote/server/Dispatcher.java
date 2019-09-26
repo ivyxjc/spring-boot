@@ -16,16 +16,16 @@
 
 package org.springframework.boot.devtools.remote.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Dispatcher used to route incoming remote server requests to a {@link Handler}. Similar
@@ -33,8 +33,8 @@ import org.springframework.util.Assert;
  * be used regardless of any web framework.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see HandlerMapper
+ * @since 1.3.0
  */
 public class Dispatcher {
 
@@ -52,7 +52,8 @@ public class Dispatcher {
 
 	/**
 	 * Dispatch the specified request to an appropriate {@link Handler}.
-	 * @param request the request
+	 *
+	 * @param request  the request
 	 * @param response the response
 	 * @return {@code true} if the request was dispatched
 	 * @throws IOException in case of I/O errors

@@ -16,29 +16,12 @@
 
 package org.springframework.boot.actuate.web.mappings;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.web.mappings.MappingsEndpoint.ApplicationMappings;
 import org.springframework.boot.actuate.web.mappings.MappingsEndpoint.ContextMappings;
 import org.springframework.boot.actuate.web.mappings.reactive.DispatcherHandlerMappingDescription;
 import org.springframework.boot.actuate.web.mappings.reactive.DispatcherHandlersMappingDescriptionProvider;
-import org.springframework.boot.actuate.web.mappings.servlet.DispatcherServletMappingDescription;
-import org.springframework.boot.actuate.web.mappings.servlet.DispatcherServletsMappingDescriptionProvider;
-import org.springframework.boot.actuate.web.mappings.servlet.FilterRegistrationMappingDescription;
-import org.springframework.boot.actuate.web.mappings.servlet.FiltersMappingDescriptionProvider;
-import org.springframework.boot.actuate.web.mappings.servlet.ServletRegistrationMappingDescription;
-import org.springframework.boot.actuate.web.mappings.servlet.ServletsMappingDescriptionProvider;
+import org.springframework.boot.actuate.web.mappings.servlet.*;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -56,6 +39,16 @@ import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -77,21 +70,21 @@ public class MappingsEndpointTests {
 		Supplier<ConfigurableWebApplicationContext> contextSupplier = prepareContextSupplier();
 		new WebApplicationContextRunner(contextSupplier)
 				.withUserConfiguration(EndpointConfiguration.class, ServletWebConfiguration.class).run((context) -> {
-					ContextMappings contextMappings = contextMappings(context);
-					assertThat(contextMappings.getParentId()).isNull();
-					assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherServlets", "servletFilters",
-							"servlets");
-					Map<String, List<DispatcherServletMappingDescription>> dispatcherServlets = mappings(
-							contextMappings, "dispatcherServlets");
-					assertThat(dispatcherServlets).containsOnlyKeys("dispatcherServlet");
-					List<DispatcherServletMappingDescription> handlerMappings = dispatcherServlets
-							.get("dispatcherServlet");
-					assertThat(handlerMappings).hasSize(1);
-					List<ServletRegistrationMappingDescription> servlets = mappings(contextMappings, "servlets");
-					assertThat(servlets).hasSize(1);
-					List<FilterRegistrationMappingDescription> filters = mappings(contextMappings, "servletFilters");
-					assertThat(filters).hasSize(1);
-				});
+			ContextMappings contextMappings = contextMappings(context);
+			assertThat(contextMappings.getParentId()).isNull();
+			assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherServlets", "servletFilters",
+					"servlets");
+			Map<String, List<DispatcherServletMappingDescription>> dispatcherServlets = mappings(
+					contextMappings, "dispatcherServlets");
+			assertThat(dispatcherServlets).containsOnlyKeys("dispatcherServlet");
+			List<DispatcherServletMappingDescription> handlerMappings = dispatcherServlets
+					.get("dispatcherServlet");
+			assertThat(handlerMappings).hasSize(1);
+			List<ServletRegistrationMappingDescription> servlets = mappings(contextMappings, "servlets");
+			assertThat(servlets).hasSize(1);
+			List<FilterRegistrationMappingDescription> filters = mappings(contextMappings, "servletFilters");
+			assertThat(filters).hasSize(1);
+		});
 	}
 
 	@Test
@@ -99,15 +92,15 @@ public class MappingsEndpointTests {
 		Supplier<ConfigurableWebApplicationContext> contextSupplier = prepareContextSupplier();
 		new WebApplicationContextRunner(contextSupplier).withUserConfiguration(EndpointConfiguration.class,
 				ServletWebConfiguration.class, CustomDispatcherServletConfiguration.class).run((context) -> {
-					ContextMappings contextMappings = contextMappings(context);
-					Map<String, List<DispatcherServletMappingDescription>> dispatcherServlets = mappings(
-							contextMappings, "dispatcherServlets");
-					assertThat(dispatcherServlets).containsOnlyKeys("dispatcherServlet",
-							"customDispatcherServletRegistration", "anotherDispatcherServletRegistration");
-					assertThat(dispatcherServlets.get("dispatcherServlet")).hasSize(1);
-					assertThat(dispatcherServlets.get("customDispatcherServletRegistration")).hasSize(1);
-					assertThat(dispatcherServlets.get("anotherDispatcherServletRegistration")).hasSize(1);
-				});
+			ContextMappings contextMappings = contextMappings(context);
+			Map<String, List<DispatcherServletMappingDescription>> dispatcherServlets = mappings(
+					contextMappings, "dispatcherServlets");
+			assertThat(dispatcherServlets).containsOnlyKeys("dispatcherServlet",
+					"customDispatcherServletRegistration", "anotherDispatcherServletRegistration");
+			assertThat(dispatcherServlets.get("dispatcherServlet")).hasSize(1);
+			assertThat(dispatcherServlets.get("customDispatcherServletRegistration")).hasSize(1);
+			assertThat(dispatcherServlets.get("anotherDispatcherServletRegistration")).hasSize(1);
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,15 +125,15 @@ public class MappingsEndpointTests {
 	public void reactiveWebMappings() {
 		new ReactiveWebApplicationContextRunner()
 				.withUserConfiguration(EndpointConfiguration.class, ReactiveWebConfiguration.class).run((context) -> {
-					ContextMappings contextMappings = contextMappings(context);
-					assertThat(contextMappings.getParentId()).isNull();
-					assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherHandlers");
-					Map<String, List<DispatcherHandlerMappingDescription>> dispatcherHandlers = mappings(
-							contextMappings, "dispatcherHandlers");
-					assertThat(dispatcherHandlers).containsOnlyKeys("webHandler");
-					List<DispatcherHandlerMappingDescription> handlerMappings = dispatcherHandlers.get("webHandler");
-					assertThat(handlerMappings).hasSize(3);
-				});
+			ContextMappings contextMappings = contextMappings(context);
+			assertThat(contextMappings.getParentId()).isNull();
+			assertThat(contextMappings.getMappings()).containsOnlyKeys("dispatcherHandlers");
+			Map<String, List<DispatcherHandlerMappingDescription>> dispatcherHandlers = mappings(
+					contextMappings, "dispatcherHandlers");
+			assertThat(dispatcherHandlers).containsOnlyKeys("webHandler");
+			List<DispatcherHandlerMappingDescription> handlerMappings = dispatcherHandlers.get("webHandler");
+			assertThat(handlerMappings).hasSize(3);
+		});
 	}
 
 	private ContextMappings contextMappings(ApplicationContext context) {
@@ -159,7 +152,7 @@ public class MappingsEndpointTests {
 
 		@Bean
 		public MappingsEndpoint mappingsEndpoint(Collection<MappingDescriptionProvider> descriptionProviders,
-				ApplicationContext context) {
+												 ApplicationContext context) {
 			return new MappingsEndpoint(descriptionProviders, context);
 		}
 
@@ -253,8 +246,7 @@ public class MappingsEndpointTests {
 				DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
 				dispatcherServlet.init(new MockServletConfig());
 				return dispatcherServlet;
-			}
-			catch (ServletException ex) {
+			} catch (ServletException ex) {
 				throw new IllegalStateException(ex);
 			}
 		}

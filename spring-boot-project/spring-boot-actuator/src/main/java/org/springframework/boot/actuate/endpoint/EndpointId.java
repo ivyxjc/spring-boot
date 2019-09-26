@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.endpoint;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
+
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.Assert;
 
 /**
  * An identifier for an actuator endpoint. Endpoint IDs may contain only letters, numbers
@@ -37,13 +36,9 @@ import org.springframework.util.Assert;
 public final class EndpointId {
 
 	private static final Log logger = LogFactory.getLog(EndpointId.class);
-
-	private static Set<String> loggedWarnings = new HashSet<>();
-
 	private static final Pattern VALID_PATTERN = Pattern.compile("[a-zA-Z0-9\\.\\-]+");
-
 	private static final Pattern WARNING_PATTERN = Pattern.compile("[\\.\\-]+");
-
+	private static Set<String> loggedWarnings = new HashSet<>();
 	private final String value;
 
 	private final String lowerCaseValue;
@@ -61,6 +56,37 @@ public final class EndpointId {
 		this.value = value;
 		this.lowerCaseValue = value.toLowerCase(Locale.ENGLISH);
 		this.lowerCaseAlphaNumeric = getAlphaNumerics(this.lowerCaseValue);
+	}
+
+	/**
+	 * Factory method to create a new {@link EndpointId} of the specified value.
+	 *
+	 * @param value the endpoint ID value
+	 * @return an {@link EndpointId} instance
+	 */
+	public static EndpointId of(String value) {
+		return new EndpointId(value);
+	}
+
+	/**
+	 * Factory method to create a new {@link EndpointId} from a property value. More
+	 * lenient than {@link #of(String)} to allow for common "relaxed" property variants.
+	 *
+	 * @param value the property value to convert
+	 * @return an {@link EndpointId} instance
+	 */
+	public static EndpointId fromPropertyValue(String value) {
+		return new EndpointId(value.replace("-", ""));
+	}
+
+	static void resetLoggedWarnings() {
+		loggedWarnings.clear();
+	}
+
+	private static void logWarning(String value) {
+		if (logger.isWarnEnabled() && loggedWarnings.add(value)) {
+			logger.warn("Endpoint ID '" + value + "' contains invalid characters, please migrate to a valid format.");
+		}
 	}
 
 	private String getAlphaNumerics(String value) {
@@ -92,6 +118,7 @@ public final class EndpointId {
 
 	/**
 	 * Return a lower-case version of the endpoint ID.
+	 *
 	 * @return the lower-case endpoint ID
 	 */
 	public String toLowerCaseString() {
@@ -101,35 +128,6 @@ public final class EndpointId {
 	@Override
 	public String toString() {
 		return this.value;
-	}
-
-	/**
-	 * Factory method to create a new {@link EndpointId} of the specified value.
-	 * @param value the endpoint ID value
-	 * @return an {@link EndpointId} instance
-	 */
-	public static EndpointId of(String value) {
-		return new EndpointId(value);
-	}
-
-	/**
-	 * Factory method to create a new {@link EndpointId} from a property value. More
-	 * lenient than {@link #of(String)} to allow for common "relaxed" property variants.
-	 * @param value the property value to convert
-	 * @return an {@link EndpointId} instance
-	 */
-	public static EndpointId fromPropertyValue(String value) {
-		return new EndpointId(value.replace("-", ""));
-	}
-
-	static void resetLoggedWarnings() {
-		loggedWarnings.clear();
-	}
-
-	private static void logWarning(String value) {
-		if (logger.isWarnEnabled() && loggedWarnings.add(value)) {
-			logger.warn("Endpoint ID '" + value + "' contains invalid characters, please migrate to a valid format.");
-		}
 	}
 
 }

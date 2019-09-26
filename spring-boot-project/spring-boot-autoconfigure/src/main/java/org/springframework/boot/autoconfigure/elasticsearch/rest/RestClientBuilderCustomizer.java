@@ -31,6 +31,7 @@ public interface RestClientBuilderCustomizer {
 
 	/**
 	 * Customize the {@link RestClientBuilder}.
+	 *
 	 * @param builder the builder to customize
 	 */
 	void customize(RestClientBuilder builder);

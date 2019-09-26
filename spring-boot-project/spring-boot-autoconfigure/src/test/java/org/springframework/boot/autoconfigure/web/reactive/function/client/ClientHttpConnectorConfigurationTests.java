@@ -16,16 +16,15 @@
 
 package org.springframework.boot.autoconfigure.web.reactive.function.client;
 
-import java.util.concurrent.Executor;
-
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.io.ByteBufferPool;
 import org.eclipse.jetty.util.thread.Scheduler;
 import org.junit.Test;
-
 import org.springframework.http.client.reactive.JettyClientHttpConnector;
 import org.springframework.http.client.reactive.JettyResourceFactory;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.concurrent.Executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

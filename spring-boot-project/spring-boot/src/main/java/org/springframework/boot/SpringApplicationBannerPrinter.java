@@ -16,18 +16,17 @@
 
 package org.springframework.boot;
 
+import org.apache.commons.logging.Log;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StringUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.StringUtils;
 
 /**
  * Class used by {@link SpringApplication} to print the application banner.
@@ -42,7 +41,7 @@ class SpringApplicationBannerPrinter {
 
 	static final String DEFAULT_BANNER_LOCATION = "banner.txt";
 
-	static final String[] IMAGE_EXTENSION = { "gif", "jpg", "png" };
+	static final String[] IMAGE_EXTENSION = {"gif", "jpg", "png"};
 
 	private static final Banner DEFAULT_BANNER = new SpringBootBanner();
 
@@ -59,8 +58,7 @@ class SpringApplicationBannerPrinter {
 		Banner banner = getBanner(environment);
 		try {
 			logger.info(createStringFromBanner(banner, environment, sourceClass));
-		}
-		catch (UnsupportedEncodingException ex) {
+		} catch (UnsupportedEncodingException ex) {
 			logger.warn("Failed to create String for banner", ex);
 		}
 		return new PrintedBanner(banner, sourceClass);

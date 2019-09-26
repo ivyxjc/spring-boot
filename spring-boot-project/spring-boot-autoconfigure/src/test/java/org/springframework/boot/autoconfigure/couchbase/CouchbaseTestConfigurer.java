@@ -21,7 +21,6 @@ import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseBucket;
 import com.couchbase.client.java.cluster.ClusterInfo;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
-
 import org.springframework.data.couchbase.config.CouchbaseConfigurer;
 import org.springframework.stereotype.Component;
 

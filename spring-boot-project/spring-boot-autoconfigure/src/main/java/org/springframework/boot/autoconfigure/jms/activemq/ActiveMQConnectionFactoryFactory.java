@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.jms.activemq;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
-
 import org.springframework.boot.autoconfigure.jms.activemq.ActiveMQProperties.Packages;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Factory to create a {@link ActiveMQConnectionFactory} instance from properties defined
@@ -44,7 +43,7 @@ class ActiveMQConnectionFactoryFactory {
 	private final List<ActiveMQConnectionFactoryCustomizer> factoryCustomizers;
 
 	ActiveMQConnectionFactoryFactory(ActiveMQProperties properties,
-			List<ActiveMQConnectionFactoryCustomizer> factoryCustomizers) {
+									 List<ActiveMQConnectionFactoryCustomizer> factoryCustomizers) {
 		Assert.notNull(properties, "Properties must not be null");
 		this.properties = properties;
 		this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
@@ -53,8 +52,7 @@ class ActiveMQConnectionFactoryFactory {
 	public <T extends ActiveMQConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {
 		try {
 			return doCreateConnectionFactory(factoryClass);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to create " + "ActiveMQConnectionFactory", ex);
 		}
 	}

@@ -16,12 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.filter;
 
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.type.classreading.MetadataReader;
@@ -29,6 +23,12 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.ReflectionUtils;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ContextCustomizer} to support {@link TypeExcludeFilters @TypeExcludeFilters}.
@@ -47,7 +47,7 @@ class TypeExcludeFiltersContextCustomizer implements ContextCustomizer {
 	}
 
 	private Set<TypeExcludeFilter> instantiateTypeExcludeFilters(Class<?> testClass,
-			Set<Class<? extends TypeExcludeFilter>> filterClasses) {
+																 Set<Class<? extends TypeExcludeFilter>> filterClasses) {
 		Set<TypeExcludeFilter> filters = new LinkedHashSet<>();
 		for (Class<? extends TypeExcludeFilter> filterClass : filterClasses) {
 			filters.add(instantiateTypeExcludeFilter(testClass, filterClass));
@@ -63,8 +63,7 @@ class TypeExcludeFiltersContextCustomizer implements ContextCustomizer {
 				return (TypeExcludeFilter) constructor.newInstance(testClass);
 			}
 			return (TypeExcludeFilter) constructor.newInstance();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to create filter for " + filterClass, ex);
 		}
 	}
@@ -82,7 +81,7 @@ class TypeExcludeFiltersContextCustomizer implements ContextCustomizer {
 
 	@Override
 	public void customizeContext(ConfigurableApplicationContext context,
-			MergedContextConfiguration mergedContextConfiguration) {
+								 MergedContextConfiguration mergedContextConfiguration) {
 		if (!this.filters.isEmpty()) {
 			context.getBeanFactory().registerSingleton(EXCLUDE_FILTER_BEAN_NAME, createDelegatingTypeExcludeFilter());
 		}
@@ -108,8 +107,7 @@ class TypeExcludeFiltersContextCustomizer implements ContextCustomizer {
 	private Constructor<?> getTypeExcludeFilterConstructor(Class<?> type) throws NoSuchMethodException {
 		try {
 			return type.getDeclaredConstructor(Class.class);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return type.getDeclaredConstructor();
 		}
 	}

@@ -16,18 +16,17 @@
 
 package org.springframework.boot.cli.command.archive;
 
+import org.assertj.core.api.Condition;
+import org.junit.Test;
+import org.springframework.boot.cli.command.archive.ResourceMatcher.MatchedResource;
+import org.springframework.test.util.ReflectionTestUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
-import org.assertj.core.api.Condition;
-import org.junit.Test;
-
-import org.springframework.boot.cli.command.archive.ResourceMatcher.MatchedResource;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

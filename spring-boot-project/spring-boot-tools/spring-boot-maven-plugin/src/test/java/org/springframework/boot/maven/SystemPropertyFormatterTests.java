@@ -17,7 +17,6 @@
 package org.springframework.boot.maven;
 
 import org.junit.Test;
-
 import org.springframework.boot.maven.AbstractRunMojo.SystemPropertyFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;

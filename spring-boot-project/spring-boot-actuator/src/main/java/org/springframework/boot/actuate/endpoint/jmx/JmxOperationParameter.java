@@ -27,18 +27,21 @@ public interface JmxOperationParameter {
 
 	/**
 	 * Return the name of the operation parameter.
+	 *
 	 * @return the name of the parameter
 	 */
 	String getName();
 
 	/**
 	 * Return the type of the operation parameter.
+	 *
 	 * @return the type
 	 */
 	Class<?> getType();
 
 	/**
 	 * Return the description of the parameter or {@code null} if none is available.
+	 *
 	 * @return the description or {@code null}
 	 */
 	String getDescription();

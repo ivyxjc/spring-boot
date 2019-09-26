@@ -16,17 +16,10 @@
 
 package org.springframework.boot.devtools.restart;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.concurrent.ThreadFactory;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile;
 import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
@@ -41,9 +34,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.concurrent.ThreadFactory;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -165,7 +162,7 @@ public class RestarterTests {
 	public void getInitialUrls() throws Exception {
 		Restarter.clearInstance();
 		RestartInitializer initializer = mock(RestartInitializer.class);
-		URL[] urls = new URL[] { new URL("file:/proj/module-a.jar!/") };
+		URL[] urls = new URL[]{new URL("file:/proj/module-a.jar!/")};
 		given(initializer.getInitialUrls(any(Thread.class))).willReturn(urls);
 		Restarter.initialize(new String[0], false, initializer, false);
 		assertThat(Restarter.getInstance().getInitialUrls()).isEqualTo(urls);
@@ -175,22 +172,8 @@ public class RestarterTests {
 	@EnableScheduling
 	public static class SampleApplication {
 
-		private int count = 0;
-
 		private static volatile boolean quit = false;
-
-		@Scheduled(fixedDelay = 200)
-		public void tickBean() {
-			System.out.println("Tick " + this.count++ + " " + Thread.currentThread());
-		}
-
-		@Scheduled(initialDelay = 500, fixedDelay = 500)
-		public void restart() {
-			System.out.println("Restart " + Thread.currentThread());
-			if (!SampleApplication.quit) {
-				Restarter.getInstance().restart();
-			}
-		}
+		private int count = 0;
 
 		public static void main(String... args) {
 			Restarter.initialize(args, false, new MockRestartInitializer(), true);
@@ -206,9 +189,21 @@ public class RestarterTests {
 		private static void sleep() {
 			try {
 				Thread.sleep(1200);
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				// Ignore
+			}
+		}
+
+		@Scheduled(fixedDelay = 200)
+		public void tickBean() {
+			System.out.println("Tick " + this.count++ + " " + Thread.currentThread());
+		}
+
+		@Scheduled(initialDelay = 500, fixedDelay = 500)
+		public void restart() {
+			System.out.println("Restart " + Thread.currentThread());
+			if (!SampleApplication.quit) {
+				Restarter.getInstance().restart();
 			}
 		}
 
@@ -230,11 +225,11 @@ public class RestarterTests {
 		private ClassLoader relaunchClassLoader;
 
 		TestableRestarter() {
-			this(Thread.currentThread(), new String[] {}, false, new MockRestartInitializer());
+			this(Thread.currentThread(), new String[]{}, false, new MockRestartInitializer());
 		}
 
 		protected TestableRestarter(Thread thread, String[] args, boolean forceReferenceCleanup,
-				RestartInitializer initializer) {
+									RestartInitializer initializer) {
 			super(thread, args, forceReferenceCleanup, initializer);
 		}
 
@@ -243,8 +238,7 @@ public class RestarterTests {
 			try {
 				stop();
 				start(failureHandler);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException(ex);
 			}
 		}

@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.metrics.web.reactive.client;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 

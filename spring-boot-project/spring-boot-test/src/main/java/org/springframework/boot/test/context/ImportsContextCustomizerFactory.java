@@ -16,9 +16,6 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.reflect.Method;
-import java.util.List;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -27,6 +24,9 @@ import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * {@link ContextCustomizerFactory} to allow {@code @Import} annotations to be used
@@ -39,7 +39,7 @@ class ImportsContextCustomizerFactory implements ContextCustomizerFactory {
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
-			List<ContextConfigurationAttributes> configAttributes) {
+													 List<ContextConfigurationAttributes> configAttributes) {
 		if (AnnotatedElementUtils.findMergedAnnotation(testClass, Import.class) != null) {
 			assertHasNoBeanMethods(testClass);
 			return new ImportsContextCustomizer(testClass);

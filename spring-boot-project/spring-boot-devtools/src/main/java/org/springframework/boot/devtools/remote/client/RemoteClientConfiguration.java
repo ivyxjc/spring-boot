@@ -16,17 +16,8 @@
 
 package org.springframework.boot.devtools.remote.client;
 
-import java.net.InetSocketAddress;
-import java.net.Proxy.Type;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,12 +51,20 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy.Type;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Configuration used to connect to remote Spring Boot applications.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see org.springframework.boot.devtools.RemoteSpringApplication
+ * @since 1.3.0
  */
 @Configuration
 @EnableConfigurationProperties(DevToolsProperties.class)

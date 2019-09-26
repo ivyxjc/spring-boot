@@ -18,7 +18,6 @@ package org.springframework.boot.context.config;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.ApplicationListener;

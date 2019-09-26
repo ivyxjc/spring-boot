@@ -16,18 +16,16 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.jmx;
 
-import java.util.Collections;
-
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.jmx.ExposableJmxEndpoint;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.util.ObjectUtils;
+
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -123,8 +121,7 @@ public class DefaultEndpointObjectNameFactoryTests {
 		try {
 			return new DefaultEndpointObjectNameFactory(this.properties, this.environment, this.mBeanServer,
 					this.contextId).getObjectName(endpoint);
-		}
-		catch (MalformedObjectNameException ex) {
+		} catch (MalformedObjectNameException ex) {
 			throw new AssertionError("Invalid object name", ex);
 		}
 	}

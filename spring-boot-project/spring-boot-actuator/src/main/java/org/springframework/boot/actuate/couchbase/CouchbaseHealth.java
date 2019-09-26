@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.couchbase;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.couchbase.client.core.message.internal.DiagnosticsReport;
 import com.couchbase.client.core.message.internal.EndpointHealth;
 import com.couchbase.client.core.state.LifecycleState;
-
 import org.springframework.boot.actuate.health.Health.Builder;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Details of Couchbase's health.

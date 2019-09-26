@@ -39,6 +39,7 @@ class ConnectionInputStream extends FilterInputStream {
 	 * Read the HTTP header from the {@link InputStream}. Note: This method doesn't expect
 	 * any HTTP content after the header since the initial request is usually just a
 	 * WebSocket upgrade.
+	 *
 	 * @return the HTTP header
 	 * @throws IOException in case of I/O errors
 	 */
@@ -55,6 +56,7 @@ class ConnectionInputStream extends FilterInputStream {
 	/**
 	 * Repeatedly read the underlying {@link InputStream} until the requested number of
 	 * bytes have been loaded.
+	 *
 	 * @param buffer the destination buffer
 	 * @param offset the buffer offset
 	 * @param length the amount of data to read
@@ -71,6 +73,7 @@ class ConnectionInputStream extends FilterInputStream {
 	/**
 	 * Read a single byte from the stream (checking that the end of the stream hasn't been
 	 * reached.
+	 *
 	 * @return the content
 	 * @throws IOException in case of I/O errors
 	 */
@@ -85,6 +88,7 @@ class ConnectionInputStream extends FilterInputStream {
 	/**
 	 * Read a number of bytes from the stream (checking that the end of the stream hasn't
 	 * been reached).
+	 *
 	 * @param buffer the destination buffer
 	 * @param offset the buffer offset
 	 * @param length the length to read

@@ -31,6 +31,7 @@ public interface CacheManagerCustomizer<T extends CacheManager> {
 
 	/**
 	 * Customize the cache manager.
+	 *
 	 * @param cacheManager the {@code CacheManager} to customize
 	 */
 	void customize(T cacheManager);

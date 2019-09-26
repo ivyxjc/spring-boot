@@ -16,16 +16,14 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.net.InetAddress;
-import java.security.NoSuchProviderException;
-
-import javax.net.ssl.KeyManager;
-
 import org.junit.Test;
-
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.net.ssl.KeyManager;
+import java.net.InetAddress;
+import java.security.NoSuchProviderException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;

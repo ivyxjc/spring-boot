@@ -16,16 +16,15 @@
 
 package org.springframework.boot.cli.command.install;
 
-import java.util.List;
-
 import joptsimple.OptionSet;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.OptionParsingCommand;
 import org.springframework.boot.cli.command.options.CompilerOptionHandler;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.Log;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * {@link Command} to install additional dependencies into the CLI.
@@ -55,8 +54,7 @@ public class InstallCommand extends OptionParsingCommand {
 					"Please specify at least one " + "dependency, in the form group:artifact:version, to install");
 			try {
 				new Installer(options, this).install(args);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				String message = ex.getMessage();
 				Log.error((message != null) ? message : ex.getClass().toString());
 			}

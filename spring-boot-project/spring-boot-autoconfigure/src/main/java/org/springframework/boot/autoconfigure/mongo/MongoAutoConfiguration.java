@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.mongo;
 
-import javax.annotation.PreDestroy;
-
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -29,6 +26,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+
+import javax.annotation.PreDestroy;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Mongo.
@@ -53,7 +52,7 @@ public class MongoAutoConfiguration {
 	private MongoClient mongo;
 
 	public MongoAutoConfiguration(MongoProperties properties, ObjectProvider<MongoClientOptions> options,
-			Environment environment) {
+								  Environment environment) {
 		this.options = options.getIfAvailable();
 		this.factory = new MongoClientFactory(properties, environment);
 	}
@@ -66,7 +65,7 @@ public class MongoAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean(type = { "com.mongodb.MongoClient", "com.mongodb.client.MongoClient" })
+	@ConditionalOnMissingBean(type = {"com.mongodb.MongoClient", "com.mongodb.client.MongoClient"})
 	public MongoClient mongo() {
 		this.mongo = this.factory.createMongoClient(this.options);
 		return this.mongo;

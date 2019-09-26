@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.influx;
 
-import java.util.function.Supplier;
-
 import okhttp3.OkHttpClient;
 import org.influxdb.InfluxDB;
+
+import java.util.function.Supplier;
 
 /**
  * Provide the {@link okhttp3.OkHttpClient.Builder OkHttpClient.Builder} to use to

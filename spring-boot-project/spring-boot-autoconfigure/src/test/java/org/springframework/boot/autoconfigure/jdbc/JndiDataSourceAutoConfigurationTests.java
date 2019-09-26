@@ -16,17 +16,10 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import java.util.Set;
-
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.jndi.JndiPropertiesHidingClassLoader;
 import org.springframework.boot.autoconfigure.jndi.TestableInitialContextFactory;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -35,6 +28,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jmx.export.MBeanExporter;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -69,8 +67,7 @@ public class JndiDataSourceAutoConfigurationTests {
 		TestableInitialContextFactory.clearAll();
 		if (this.initialContextFactory != null) {
 			System.setProperty(Context.INITIAL_CONTEXT_FACTORY, this.initialContextFactory);
-		}
-		else {
+		} else {
 			System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
 		}
 		if (this.context != null) {

@@ -16,18 +16,18 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.jar.JarOutputStream;
-import java.util.zip.ZipEntry;
-
 import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceManager;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,15 +16,7 @@
 
 package org.springframework.boot.cli.command.install;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-
 import joptsimple.OptionSet;
-
 import org.springframework.boot.cli.command.options.CompilerOptionHandler;
 import org.springframework.boot.cli.command.options.OptionSetGroovyCompilerConfiguration;
 import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
@@ -33,6 +25,13 @@ import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration;
 import org.springframework.boot.cli.util.Log;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.SystemPropertyUtils;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Shared logic for the {@link InstallCommand} and {@link UninstallCommand}.
@@ -55,7 +54,7 @@ class Installer {
 	}
 
 	private static GroovyCompilerConfiguration createCompilerConfiguration(OptionSet options,
-			CompilerOptionHandler compilerOptionHandler) {
+																		   CompilerOptionHandler compilerOptionHandler) {
 		List<RepositoryConfiguration> repositoryConfiguration = RepositoryConfigurationFactory
 				.createDefaultRepositoryConfiguration();
 		return new OptionSetGroovyCompilerConfiguration(options, compilerOptionHandler, repositoryConfiguration) {
@@ -109,8 +108,7 @@ class Installer {
 	private void setInstallCount(File file, int count) {
 		if (count == 0) {
 			this.installCounts.remove(file.getName());
-		}
-		else {
+		} else {
 			this.installCounts.setProperty(file.getName(), Integer.toString(count));
 		}
 	}

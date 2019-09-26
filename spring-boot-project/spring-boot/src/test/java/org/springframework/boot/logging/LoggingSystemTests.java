@@ -18,7 +18,6 @@ package org.springframework.boot.logging;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.logging.LoggingSystem.NoOpLoggingSystem;
 
 import static org.assertj.core.api.Assertions.assertThat;

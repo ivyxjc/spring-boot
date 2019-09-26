@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.data.neo4j.country;
 
-import java.io.Serializable;
-
 import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.Id;
 import org.neo4j.ogm.annotation.NodeEntity;
+
+import java.io.Serializable;
 
 @NodeEntity
 public class Country implements Serializable {

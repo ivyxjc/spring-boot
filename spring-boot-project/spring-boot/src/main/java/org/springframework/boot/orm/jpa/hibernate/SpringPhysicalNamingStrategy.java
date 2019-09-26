@@ -16,11 +16,11 @@
 
 package org.springframework.boot.orm.jpa.hibernate;
 
-import java.util.Locale;
-
 import org.hibernate.boot.model.naming.Identifier;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
+
+import java.util.Locale;
 
 /**
  * Hibernate {@link PhysicalNamingStrategy} that follows Spring recommended naming
@@ -74,8 +74,9 @@ public class SpringPhysicalNamingStrategy implements PhysicalNamingStrategy {
 	 * Get an identifier for the specified details. By default this method will return an
 	 * identifier with the name adapted based on the result of
 	 * {@link #isCaseInsensitive(JdbcEnvironment)}
-	 * @param name the name of the identifier
-	 * @param quoted if the identifier is quoted
+	 *
+	 * @param name            the name of the identifier
+	 * @param quoted          if the identifier is quoted
 	 * @param jdbcEnvironment the JDBC environment
 	 * @return an identifier instance
 	 */
@@ -88,6 +89,7 @@ public class SpringPhysicalNamingStrategy implements PhysicalNamingStrategy {
 
 	/**
 	 * Specify whether the database is case sensitive.
+	 *
 	 * @param jdbcEnvironment the JDBC environment which can be used to determine case
 	 * @return true if the database is case insensitive sensitivity
 	 */

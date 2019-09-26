@@ -34,13 +34,17 @@ class RawConfigurationMetadata {
 	private final List<ConfigurationMetadataHint> hints;
 
 	RawConfigurationMetadata(List<ConfigurationMetadataSource> sources, List<ConfigurationMetadataItem> items,
-			List<ConfigurationMetadataHint> hints) {
+							 List<ConfigurationMetadataHint> hints) {
 		this.sources = new ArrayList<>(sources);
 		this.items = new ArrayList<>(items);
 		this.hints = new ArrayList<>(hints);
 		for (ConfigurationMetadataItem item : this.items) {
 			resolveName(item);
 		}
+	}
+
+	private static boolean hasLength(String string) {
+		return (string != null && !string.isEmpty());
 	}
 
 	public List<ConfigurationMetadataSource> getSources() {
@@ -67,6 +71,7 @@ class RawConfigurationMetadata {
 
 	/**
 	 * Resolve the name of an item against this instance.
+	 *
 	 * @param item the item to resolve
 	 * @see ConfigurationMetadataProperty#setName(String)
 	 */
@@ -82,10 +87,6 @@ class RawConfigurationMetadata {
 				item.setName(name);
 			}
 		}
-	}
-
-	private static boolean hasLength(String string) {
-		return (string != null && !string.isEmpty());
 	}
 
 }

@@ -16,13 +16,8 @@
 
 package org.springframework.boot.actuate.endpoint.web.test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
-
 import org.springframework.boot.actuate.endpoint.http.ActuatorMediaType;
 import org.springframework.boot.actuate.endpoint.invoke.convert.ConversionServiceParameterValueMapper;
 import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
@@ -45,6 +40,10 @@ import org.springframework.http.MediaType;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * {@link BlockJUnit4ClassRunner} for Spring MVC.
  *
@@ -66,8 +65,8 @@ class WebMvcEndpointRunner extends AbstractWebEndpointRunner {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class})
 	static class WebMvcEndpointConfiguration {
 
 		private final ApplicationContext applicationContext;

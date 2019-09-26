@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.webservices;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link ConfigurationProperties} for Spring Web Services.
@@ -32,12 +32,11 @@ import org.springframework.util.Assert;
 @ConfigurationProperties(prefix = "spring.webservices")
 public class WebServicesProperties {
 
+	private final Servlet servlet = new Servlet();
 	/**
 	 * Path that serves as the base URI for the services.
 	 */
 	private String path = "/services";
-
-	private final Servlet servlet = new Servlet();
 
 	public String getPath() {
 		return this.path;

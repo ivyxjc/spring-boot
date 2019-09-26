@@ -16,16 +16,11 @@
 
 package org.springframework.boot.autoconfigure.web.embedded;
 
-import java.io.File;
-import java.util.Arrays;
-
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
 import io.undertow.UndertowOptions;
 import org.junit.Before;
 import org.junit.Test;
-import org.xnio.OptionMap;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -35,6 +30,10 @@ import org.springframework.boot.web.embedded.undertow.UndertowBuilderCustomizer;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.xnio.OptionMap;
+
+import java.io.File;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -149,7 +148,7 @@ public class UndertowWebServerFactoryCustomizerTests {
 		willAnswer((invocation) -> {
 			Object argument = invocation.getArgument(0);
 			Arrays.stream((argument instanceof UndertowBuilderCustomizer)
-					? new UndertowBuilderCustomizer[] { (UndertowBuilderCustomizer) argument }
+					? new UndertowBuilderCustomizer[]{(UndertowBuilderCustomizer) argument}
 					: (UndertowBuilderCustomizer[]) argument).forEach((customizer) -> customizer.customize(builder));
 			return null;
 		}).given(factory).addBuilderCustomizers(any());

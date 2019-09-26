@@ -16,13 +16,9 @@
 
 package org.springframework.boot.autoconfigure.solr;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.CloudSolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -31,6 +27,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Solr 4.x.
  *
@@ -38,7 +37,7 @@ import org.springframework.util.StringUtils;
  * @since 1.1.0
  */
 @Configuration
-@ConditionalOnClass({ HttpSolrClient.class, CloudSolrClient.class })
+@ConditionalOnClass({HttpSolrClient.class, CloudSolrClient.class})
 @EnableConfigurationProperties(SolrProperties.class)
 public class SolrAutoConfiguration {
 

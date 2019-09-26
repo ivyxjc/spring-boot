@@ -16,14 +16,13 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
-import javax.servlet.ServletException;
-
 import org.eclipse.jetty.webapp.AbstractConfiguration;
 import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
-
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.util.Assert;
+
+import javax.servlet.ServletException;
 
 /**
  * Jetty {@link Configuration} that calls {@link ServletContextInitializer}s.
@@ -38,6 +37,7 @@ public class ServletContextInitializerConfiguration extends AbstractConfiguratio
 
 	/**
 	 * Create a new {@link ServletContextInitializerConfiguration}.
+	 *
 	 * @param initializers the initializers that should be invoked
 	 * @since 1.2.1
 	 */
@@ -52,8 +52,7 @@ public class ServletContextInitializerConfiguration extends AbstractConfiguratio
 		Thread.currentThread().setContextClassLoader(context.getClassLoader());
 		try {
 			callInitializers(context);
-		}
-		finally {
+		} finally {
 			Thread.currentThread().setContextClassLoader(classLoader);
 		}
 	}
@@ -64,8 +63,7 @@ public class ServletContextInitializerConfiguration extends AbstractConfiguratio
 			for (ServletContextInitializer initializer : this.initializers) {
 				initializer.onStartup(context.getServletContext());
 			}
-		}
-		finally {
+		} finally {
 			setExtendedListenerTypes(context, false);
 		}
 	}
@@ -73,8 +71,7 @@ public class ServletContextInitializerConfiguration extends AbstractConfiguratio
 	private void setExtendedListenerTypes(WebAppContext context, boolean extended) {
 		try {
 			context.getServletContext().setExtendedListenerTypes(extended);
-		}
-		catch (NoSuchMethodError ex) {
+		} catch (NoSuchMethodError ex) {
 			// Not available on Jetty 8
 		}
 	}

@@ -17,7 +17,6 @@
 package org.springframework.boot.context.properties.bind.validation;
 
 import org.junit.Test;
-
 import org.springframework.boot.origin.MockOrigin;
 import org.springframework.boot.origin.Origin;
 import org.springframework.validation.FieldError;

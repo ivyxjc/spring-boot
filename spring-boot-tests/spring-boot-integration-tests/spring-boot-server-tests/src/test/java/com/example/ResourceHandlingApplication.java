@@ -16,21 +16,20 @@
 
 package com.example;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.context.WebServerPortFileWriter;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URL;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Test application for verifying an embedded container's static resource handling.
@@ -39,6 +38,11 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 public class ResourceHandlingApplication {
+
+	public static void main(String[] args) {
+		new SpringApplicationBuilder(ResourceHandlingApplication.class).properties("server.port:0")
+				.listeners(new WebServerPortFileWriter("target/server.port")).run(args);
+	}
 
 	@Bean
 	public ServletRegistrationBean<?> resourceServletRegistration() {
@@ -53,11 +57,6 @@ public class ResourceHandlingApplication {
 				new GetResourcePathsServlet());
 		registration.addUrlMappings("/resourcePaths");
 		return registration;
-	}
-
-	public static void main(String[] args) {
-		new SpringApplicationBuilder(ResourceHandlingApplication.class).properties("server.port:0")
-				.listeners(new WebServerPortFileWriter("target/server.port")).run(args);
 	}
 
 	private static final class GetResourcePathsServlet extends HttpServlet {
@@ -89,8 +88,7 @@ public class ResourceHandlingApplication {
 			URL resource = getServletContext().getResource(req.getQueryString());
 			if (resource == null) {
 				resp.sendError(404);
-			}
-			else {
+			} else {
 				resp.getWriter().println(resource);
 				resp.getWriter().flush();
 			}

@@ -16,13 +16,13 @@
 
 package org.springframework.boot.context.annotation;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.Aware;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
+
+import java.util.Set;
 
 /**
  * Interface that can be implemented by {@link ImportSelector} and
@@ -53,6 +53,7 @@ public interface DeterminableImports {
 	 * <p>
 	 * Unlike {@link ImportSelector} and {@link ImportBeanDefinitionRegistrar} any
 	 * {@link Aware} callbacks will not be invoked before this method is called.
+	 *
 	 * @param metadata the source meta-data
 	 * @return a key representing the annotations that actually drive the import
 	 */

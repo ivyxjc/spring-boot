@@ -31,6 +31,7 @@ interface DependencyResolver {
 	/**
 	 * Resolves the given {@code artifactIdentifiers}, typically in the form
 	 * "group:artifact:version", and their dependencies.
+	 *
 	 * @param artifactIdentifiers the artifacts to resolve
 	 * @return the {@code File}s for the resolved artifacts
 	 * @throws Exception if dependency resolution fails

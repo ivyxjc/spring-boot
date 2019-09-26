@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.EventListener;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.ResourceLoaderAware;
+
+import java.util.EventListener;
 
 /**
  * Listener that can be registered with {@code spring.factories} to receive details of
@@ -46,6 +46,7 @@ public interface AutoConfigurationImportListener extends EventListener {
 
 	/**
 	 * Handle an auto-configuration import event.
+	 *
 	 * @param event the event to respond to
 	 */
 	void onAutoConfigurationImportEvent(AutoConfigurationImportEvent event);

@@ -16,12 +16,11 @@
 
 package org.springframework.boot.autoconfigure.data.jpa.city;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
 public class City implements Serializable {

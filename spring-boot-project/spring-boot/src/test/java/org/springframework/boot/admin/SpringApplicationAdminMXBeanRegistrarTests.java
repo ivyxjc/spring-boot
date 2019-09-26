@@ -16,17 +16,9 @@
 
 package org.springframework.boot.admin;
 
-import java.lang.management.ManagementFactory;
-
-import javax.management.InstanceNotFoundException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -35,6 +27,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.management.InstanceNotFoundException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -74,8 +72,7 @@ public class SpringApplicationAdminMXBeanRegistrarTests {
 		application.addListeners((ContextRefreshedEvent event) -> {
 			try {
 				assertThat(isApplicationReady(objectName)).isFalse();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Could not contact spring application admin bean", ex);
 			}
 		});
@@ -135,10 +132,9 @@ public class SpringApplicationAdminMXBeanRegistrarTests {
 
 	private String getProperty(ObjectName objectName, String key) {
 		try {
-			return (String) this.mBeanServer.invoke(objectName, "getProperty", new Object[] { key },
-					new String[] { String.class.getName() });
-		}
-		catch (Exception ex) {
+			return (String) this.mBeanServer.invoke(objectName, "getProperty", new Object[]{key},
+					new String[]{String.class.getName()});
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex.getMessage(), ex);
 		}
 	}
@@ -148,8 +144,7 @@ public class SpringApplicationAdminMXBeanRegistrarTests {
 			Object value = this.mBeanServer.getAttribute(objectName, attribute);
 			assertThat(value == null || type.isInstance(value)).isTrue();
 			return type.cast(value);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex.getMessage(), ex);
 		}
 	}
@@ -157,8 +152,7 @@ public class SpringApplicationAdminMXBeanRegistrarTests {
 	private void invokeShutdown(ObjectName objectName) {
 		try {
 			this.mBeanServer.invoke(objectName, "shutdown", null, null);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex.getMessage(), ex);
 		}
 	}
@@ -166,8 +160,7 @@ public class SpringApplicationAdminMXBeanRegistrarTests {
 	private ObjectName createObjectName(String jmxName) {
 		try {
 			return new ObjectName(jmxName);
-		}
-		catch (MalformedObjectNameException ex) {
+		} catch (MalformedObjectNameException ex) {
 			throw new IllegalStateException("Invalid jmx name " + jmxName, ex);
 		}
 	}

@@ -16,15 +16,7 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.validation.constraints.Min;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,6 +25,12 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Min;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -43,6 +41,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Madhura Bhave
  */
 public class BindFailureAnalyzerTests {
+
+	private static String failure(String property, String value, String origin, String reason) {
+		return String.format("Property: %s%n    Value: %s%n    Origin: %s%n    Reason: %s", property, value, origin,
+				reason);
+	}
 
 	@Test
 	public void analysisForUnboundElementsIsNull() {
@@ -79,11 +82,6 @@ public class BindFailureAnalyzerTests {
 				"\"test.foo.value\" from property source \"test\"", "This is a failure"));
 	}
 
-	private static String failure(String property, String value, String origin, String reason) {
-		return String.format("Property: %s%n    Value: %s%n    Origin: %s%n    Reason: %s", property, value, origin,
-				reason);
-	}
-
 	private FailureAnalysis performAnalysis(Class<?> configuration, String... environment) {
 		BeanCreationException failure = createFailure(configuration, environment);
 		assertThat(failure).isNotNull();
@@ -98,8 +96,7 @@ public class BindFailureAnalyzerTests {
 			context.refresh();
 			context.close();
 			return null;
-		}
-		catch (BeanCreationException ex) {
+		} catch (BeanCreationException ex) {
 			return ex;
 		}
 	}
@@ -114,6 +111,12 @@ public class BindFailureAnalyzerTests {
 			map.put(key.trim(), value.trim());
 		}
 		sources.addFirst(new MapPropertySource("test", map));
+	}
+
+	enum Fruit {
+
+		APPLE, BANANA, ORANGE
+
 	}
 
 	@EnableConfigurationProperties(BindValidationFailureAnalyzerTests.FieldValidationFailureProperties.class)
@@ -215,12 +218,6 @@ public class BindFailureAnalyzerTests {
 		public void setValue(String value) {
 			throw new RuntimeException("This is a failure");
 		}
-
-	}
-
-	enum Fruit {
-
-		APPLE, BANANA, ORANGE
 
 	}
 

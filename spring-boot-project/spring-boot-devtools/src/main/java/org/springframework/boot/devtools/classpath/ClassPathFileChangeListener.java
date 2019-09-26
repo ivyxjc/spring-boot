@@ -16,8 +16,6 @@
 
 package org.springframework.boot.devtools.classpath;
 
-import java.util.Set;
-
 import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
 import org.springframework.boot.devtools.filewatch.FileChangeListener;
@@ -25,6 +23,8 @@ import org.springframework.boot.devtools.filewatch.FileSystemWatcher;
 import org.springframework.boot.devtools.restart.AgentReloader;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.util.Assert;
+
+import java.util.Set;
 
 /**
  * A {@link FileChangeListener} to publish {@link ClassPathChangedEvent
@@ -43,13 +43,14 @@ class ClassPathFileChangeListener implements FileChangeListener {
 
 	/**
 	 * Create a new {@link ClassPathFileChangeListener} instance.
-	 * @param eventPublisher the event publisher used send events
-	 * @param restartStrategy the restart strategy to use
+	 *
+	 * @param eventPublisher          the event publisher used send events
+	 * @param restartStrategy         the restart strategy to use
 	 * @param fileSystemWatcherToStop the file system watcher to stop on a restart (or
-	 * {@code null})
+	 *                                {@code null})
 	 */
 	ClassPathFileChangeListener(ApplicationEventPublisher eventPublisher, ClassPathRestartStrategy restartStrategy,
-			FileSystemWatcher fileSystemWatcherToStop) {
+								FileSystemWatcher fileSystemWatcherToStop) {
 		Assert.notNull(eventPublisher, "EventPublisher must not be null");
 		Assert.notNull(restartStrategy, "RestartStrategy must not be null");
 		this.eventPublisher = eventPublisher;

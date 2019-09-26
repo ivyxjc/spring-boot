@@ -16,14 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.orm.jpa;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+
+import java.lang.annotation.*;
 
 /**
  * {@link ImportAutoConfiguration Auto-configuration imports} for typical Data JPA tests.
@@ -32,8 +27,8 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
  *
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 1.4.0
  * @see DataJpaTest
+ * @since 1.4.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

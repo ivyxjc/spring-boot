@@ -16,10 +16,10 @@
 
 package org.springframework.boot.maven;
 
-import java.util.List;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
+
+import java.util.List;
 
 /**
  * An {@link ArtifactsFilter} that filters out any artifact not matching an

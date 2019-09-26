@@ -16,17 +16,16 @@
 
 package org.springframework.boot;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Test;
-
 import org.springframework.core.convert.support.ConfigurableConversionService;
 import org.springframework.core.env.AbstractEnvironment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.web.context.support.StandardServletEnvironment;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

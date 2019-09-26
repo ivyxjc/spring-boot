@@ -24,8 +24,8 @@ import org.springframework.util.StringUtils;
  * Ant style pattern based {@link ClassPathRestartStrategy}.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see ClassPathRestartStrategy
+ * @since 1.3.0
  */
 public class PatternClassPathRestartStrategy implements ClassPathRestartStrategy {
 

@@ -16,9 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
 import org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportMessage;
 import org.springframework.boot.test.context.DefaultTestExecutionListenersPostProcessor;
@@ -27,6 +24,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Alternative {@link DependencyInjectionTestExecutionListener} prints the
@@ -41,8 +41,7 @@ public class SpringBootDependencyInjectionTestExecutionListener extends Dependen
 	public void prepareTestInstance(TestContext testContext) throws Exception {
 		try {
 			super.prepareTestInstance(testContext);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			outputConditionEvaluationReport(testContext);
 			throw ex;
 		}
@@ -56,8 +55,7 @@ public class SpringBootDependencyInjectionTestExecutionListener extends Dependen
 						.get(((ConfigurableApplicationContext) context).getBeanFactory());
 				System.err.println(new ConditionEvaluationReportMessage(report));
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Allow original failure to be reported
 		}
 	}

@@ -26,14 +26,15 @@ import org.springframework.core.annotation.Order;
  * interface or {@link Order @Order} annotation.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see CommandLineRunner
+ * @since 1.3.0
  */
 @FunctionalInterface
 public interface ApplicationRunner {
 
 	/**
 	 * Callback used to run the bean.
+	 *
 	 * @param args incoming application arguments
 	 * @throws Exception on error
 	 */

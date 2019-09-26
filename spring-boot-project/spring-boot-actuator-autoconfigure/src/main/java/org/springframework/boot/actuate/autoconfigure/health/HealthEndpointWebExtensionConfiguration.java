@@ -18,16 +18,7 @@ package org.springframework.boot.actuate.autoconfigure.health;
 
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
-import org.springframework.boot.actuate.health.CompositeReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.HealthAggregator;
-import org.springframework.boot.actuate.health.HealthEndpoint;
-import org.springframework.boot.actuate.health.HealthEndpointWebExtension;
-import org.springframework.boot.actuate.health.HealthStatusHttpMapper;
-import org.springframework.boot.actuate.health.HealthWebEndpointResponseMapper;
-import org.springframework.boot.actuate.health.OrderedHealthAggregator;
-import org.springframework.boot.actuate.health.ReactiveHealthEndpointWebExtension;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicatorRegistry;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
@@ -59,7 +50,7 @@ class HealthEndpointWebExtensionConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public HealthWebEndpointResponseMapper healthWebEndpointResponseMapper(HealthStatusHttpMapper statusHttpMapper,
-			HealthEndpointProperties properties) {
+																		   HealthEndpointProperties properties) {
 		return new HealthWebEndpointResponseMapper(statusHttpMapper, properties.getShowDetails(),
 				properties.getRoles());
 	}
@@ -73,7 +64,7 @@ class HealthEndpointWebExtensionConfiguration {
 		private final ReactiveHealthIndicator reactiveHealthIndicator;
 
 		ReactiveWebHealthConfiguration(ObjectProvider<HealthAggregator> healthAggregator,
-				ReactiveHealthIndicatorRegistry registry) {
+									   ReactiveHealthIndicatorRegistry registry) {
 			this.reactiveHealthIndicator = new CompositeReactiveHealthIndicator(
 					healthAggregator.getIfAvailable(OrderedHealthAggregator::new), registry);
 		}
@@ -97,7 +88,7 @@ class HealthEndpointWebExtensionConfiguration {
 		@ConditionalOnMissingBean
 		@ConditionalOnBean(HealthEndpoint.class)
 		public HealthEndpointWebExtension healthEndpointWebExtension(HealthEndpoint healthEndpoint,
-				HealthWebEndpointResponseMapper responseMapper) {
+																	 HealthWebEndpointResponseMapper responseMapper) {
 			return new HealthEndpointWebExtension(healthEndpoint, responseMapper);
 		}
 

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.util.Map;
-
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.ConfigurableEnvironment;
+
+import java.util.Map;
 
 /**
  * An {@link InfoContributor} that provides all environment entries prefixed with info.

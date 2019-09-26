@@ -45,6 +45,7 @@ abstract class Definition {
 
 	/**
 	 * Return the name for bean.
+	 *
 	 * @return the name or {@code null}
 	 */
 	public String getName() {
@@ -53,6 +54,7 @@ abstract class Definition {
 
 	/**
 	 * Return the mock reset mode.
+	 *
 	 * @return the reset mode
 	 */
 	public MockReset getReset() {
@@ -61,6 +63,7 @@ abstract class Definition {
 
 	/**
 	 * Return if AOP advised beans should be proxy target aware.
+	 *
 	 * @return if proxy target aware
 	 */
 	public boolean isProxyTargetAware() {
@@ -69,6 +72,7 @@ abstract class Definition {
 
 	/**
 	 * Return the qualifier or {@code null}.
+	 *
 	 * @return the qualifier
 	 */
 	public QualifierDefinition getQualifier() {

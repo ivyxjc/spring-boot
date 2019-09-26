@@ -16,13 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.jdbc;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
@@ -45,6 +38,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
  * {@link DataSourceHealthIndicator}.
@@ -57,7 +56,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ JdbcTemplate.class, AbstractRoutingDataSource.class })
+@ConditionalOnClass({JdbcTemplate.class, AbstractRoutingDataSource.class})
 @ConditionalOnBean(DataSource.class)
 @ConditionalOnEnabledHealthIndicator("db")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)
@@ -72,7 +71,7 @@ public class DataSourceHealthIndicatorAutoConfiguration extends
 	private DataSourcePoolMetadataProvider poolMetadataProvider;
 
 	public DataSourceHealthIndicatorAutoConfiguration(Map<String, DataSource> dataSources,
-			ObjectProvider<DataSourcePoolMetadataProvider> metadataProviders) {
+													  ObjectProvider<DataSourcePoolMetadataProvider> metadataProviders) {
 		this.dataSources = filterDataSources(dataSources);
 		this.metadataProviders = metadataProviders.orderedStream().collect(Collectors.toList());
 	}

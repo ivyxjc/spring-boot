@@ -16,11 +16,11 @@
 
 package org.springframework.boot;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
  */
 public class DefaultApplicationArgumentsTests {
 
-	private static final String[] ARGS = new String[] { "--foo=bar", "--foo=baz", "--debug", "spring", "boot" };
+	private static final String[] ARGS = new String[]{"--foo=bar", "--foo=baz", "--debug", "spring", "boot"};
 
 	@Test
 	public void argumentsMustNotBeNull() {
@@ -77,7 +77,7 @@ public class DefaultApplicationArgumentsTests {
 
 	@Test
 	public void getNoNonOptionArgs() {
-		ApplicationArguments arguments = new DefaultApplicationArguments(new String[] { "--debug" });
+		ApplicationArguments arguments = new DefaultApplicationArguments(new String[]{"--debug"});
 		assertThat(arguments.getNonOptionArgs()).isEmpty();
 	}
 

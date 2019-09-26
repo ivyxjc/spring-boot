@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;

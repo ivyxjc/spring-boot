@@ -16,16 +16,8 @@
 
 package org.springframework.boot.context;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -41,6 +33,8 @@ import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * {@link ApplicationContextInitializer} to report warnings for common misconfiguration
@@ -61,10 +55,27 @@ public class ConfigurationWarningsApplicationContextInitializer
 
 	/**
 	 * Returns the checks that should be applied.
+	 *
 	 * @return the checks to apply
 	 */
 	protected Check[] getChecks() {
-		return new Check[] { new ComponentScanPackageCheck() };
+		return new Check[]{new ComponentScanPackageCheck()};
+	}
+
+	/**
+	 * A single check that can be applied.
+	 */
+	@FunctionalInterface
+	protected interface Check {
+
+		/**
+		 * Returns a warning if the check fails or {@code null} if there are no problems.
+		 *
+		 * @param registry the {@link BeanDefinitionRegistry}
+		 * @return a warning message or {@code null}
+		 */
+		String getWarning(BeanDefinitionRegistry registry);
+
 	}
 
 	/**
@@ -104,21 +115,6 @@ public class ConfigurationWarningsApplicationContextInitializer
 				logger.warn(String.format("%n%n** WARNING ** : %s%n%n", message));
 			}
 		}
-
-	}
-
-	/**
-	 * A single check that can be applied.
-	 */
-	@FunctionalInterface
-	protected interface Check {
-
-		/**
-		 * Returns a warning if the check fails or {@code null} if there are no problems.
-		 * @param registry the {@link BeanDefinitionRegistry}
-		 * @return a warning message or {@code null}
-		 */
-		String getWarning(BeanDefinitionRegistry registry);
 
 	}
 

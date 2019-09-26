@@ -39,6 +39,7 @@ public abstract class AbstractBindHandler implements BindHandler {
 
 	/**
 	 * Create a new binding handler instance with a specific parent.
+	 *
 	 * @param parent the parent handler
 	 */
 	public AbstractBindHandler(BindHandler parent) {

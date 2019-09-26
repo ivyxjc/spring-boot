@@ -34,18 +34,20 @@ public class ApplicationEnvironmentPreparedEvent extends SpringApplicationEvent 
 
 	/**
 	 * Create a new {@link ApplicationEnvironmentPreparedEvent} instance.
+	 *
 	 * @param application the current application
-	 * @param args the arguments the application is running with
+	 * @param args        the arguments the application is running with
 	 * @param environment the environment that was just created
 	 */
 	public ApplicationEnvironmentPreparedEvent(SpringApplication application, String[] args,
-			ConfigurableEnvironment environment) {
+											   ConfigurableEnvironment environment) {
 		super(application, args);
 		this.environment = environment;
 	}
 
 	/**
 	 * Return the environment.
+	 *
 	 * @return the environment
 	 */
 	public ConfigurableEnvironment getEnvironment() {

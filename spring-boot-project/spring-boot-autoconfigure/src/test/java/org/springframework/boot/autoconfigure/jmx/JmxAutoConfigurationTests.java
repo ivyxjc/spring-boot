@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.jmx;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;

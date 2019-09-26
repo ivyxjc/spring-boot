@@ -16,12 +16,12 @@
 
 package org.springframework.boot.web.server;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -128,8 +128,7 @@ public class MimeMappingsTests {
 		MimeMappings unmodifiable = MimeMappings.unmodifiableMappings(mappings);
 		try {
 			unmodifiable.remove("foo");
-		}
-		catch (UnsupportedOperationException ex) {
+		} catch (UnsupportedOperationException ex) {
 			// Expected
 		}
 		mappings.remove("foo");

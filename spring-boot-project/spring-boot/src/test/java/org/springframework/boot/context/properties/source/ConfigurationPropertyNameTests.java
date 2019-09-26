@@ -16,18 +16,15 @@
 
 package org.springframework.boot.context.properties.source;
 
+import org.junit.Test;
+import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.Test;
-
-import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link ConfigurationPropertyName}.

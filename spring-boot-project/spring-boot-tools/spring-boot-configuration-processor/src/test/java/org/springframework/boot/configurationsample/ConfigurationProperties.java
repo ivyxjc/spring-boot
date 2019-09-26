@@ -16,11 +16,7 @@
 
 package org.springframework.boot.configurationsample;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Alternative to Spring Boot's {@code @ConfigurationProperties} for testing (removes the
@@ -29,7 +25,7 @@ import java.lang.annotation.Target;
  * @author Stephane Nicoll
  * @author Phillip Webb
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ConfigurationProperties {

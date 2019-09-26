@@ -16,13 +16,12 @@
 
 package org.springframework.boot.jta.bitronix;
 
-import java.sql.Connection;
+import bitronix.tm.TransactionManagerServices;
+import org.junit.Test;
 
 import javax.sql.XAConnection;
 import javax.sql.XADataSource;
-
-import bitronix.tm.TransactionManagerServices;
-import org.junit.Test;
+import java.sql.Connection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

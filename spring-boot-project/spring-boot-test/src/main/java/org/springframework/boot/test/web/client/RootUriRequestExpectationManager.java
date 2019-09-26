@@ -16,26 +16,21 @@
 
 package org.springframework.boot.test.web.client;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import org.springframework.boot.web.client.RootUriTemplateHandler;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.support.HttpRequestWrapper;
 import org.springframework.mock.http.client.MockClientHttpRequest;
-import org.springframework.test.web.client.ExpectedCount;
-import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.test.web.client.*;
 import org.springframework.test.web.client.MockRestServiceServer.MockRestServiceServerBuilder;
-import org.springframework.test.web.client.RequestExpectationManager;
-import org.springframework.test.web.client.RequestMatcher;
-import org.springframework.test.web.client.ResponseActions;
-import org.springframework.test.web.client.SimpleRequestExpectationManager;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * {@link RequestExpectationManager} that strips the specified root URI from the request
@@ -48,10 +43,10 @@ import org.springframework.web.util.UriTemplateHandler;
  * </pre>
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see RootUriTemplateHandler
  * @see #bindTo(RestTemplate)
  * @see #forRestTemplate(RestTemplate, RequestExpectationManager)
+ * @since 1.4.0
  */
 public class RootUriRequestExpectationManager implements RequestExpectationManager {
 
@@ -64,6 +59,52 @@ public class RootUriRequestExpectationManager implements RequestExpectationManag
 		Assert.notNull(expectationManager, "ExpectationManager must not be null");
 		this.rootUri = rootUri;
 		this.expectationManager = expectationManager;
+	}
+
+	/**
+	 * Return a bound {@link MockRestServiceServer} for the given {@link RestTemplate},
+	 * configured with {@link RootUriRequestExpectationManager} when possible.
+	 *
+	 * @param restTemplate the source REST template
+	 * @return a configured {@link MockRestServiceServer}
+	 */
+	public static MockRestServiceServer bindTo(RestTemplate restTemplate) {
+		return bindTo(restTemplate, new SimpleRequestExpectationManager());
+	}
+
+	/**
+	 * Return a bound {@link MockRestServiceServer} for the given {@link RestTemplate},
+	 * configured with {@link RootUriRequestExpectationManager} when possible.
+	 *
+	 * @param restTemplate       the source REST template
+	 * @param expectationManager the source {@link RequestExpectationManager}
+	 * @return a configured {@link MockRestServiceServer}
+	 */
+	public static MockRestServiceServer bindTo(RestTemplate restTemplate,
+											   RequestExpectationManager expectationManager) {
+		MockRestServiceServerBuilder builder = MockRestServiceServer.bindTo(restTemplate);
+		return builder.build(forRestTemplate(restTemplate, expectationManager));
+	}
+
+	/**
+	 * Return {@link RequestExpectationManager} to be used for binding with the specified
+	 * {@link RestTemplate}. If the {@link RestTemplate} is using a
+	 * {@link RootUriTemplateHandler} then a {@link RootUriRequestExpectationManager} is
+	 * returned, otherwise the source manager is returned unchanged.
+	 *
+	 * @param restTemplate       the source REST template
+	 * @param expectationManager the source {@link RequestExpectationManager}
+	 * @return a {@link RequestExpectationManager} to be bound to the template
+	 */
+	public static RequestExpectationManager forRestTemplate(RestTemplate restTemplate,
+															RequestExpectationManager expectationManager) {
+		Assert.notNull(restTemplate, "RestTemplate must not be null");
+		UriTemplateHandler templateHandler = restTemplate.getUriTemplateHandler();
+		if (templateHandler instanceof RootUriTemplateHandler) {
+			return new RootUriRequestExpectationManager(((RootUriTemplateHandler) templateHandler).getRootUri(),
+					expectationManager);
+		}
+		return expectationManager;
 	}
 
 	@Override
@@ -79,8 +120,7 @@ public class RootUriRequestExpectationManager implements RequestExpectationManag
 		}
 		try {
 			return this.expectationManager.validateRequest(request);
-		}
-		catch (AssertionError ex) {
+		} catch (AssertionError ex) {
 			String message = ex.getMessage();
 			String prefix = "Request URI expected:</";
 			if (message != null && message.startsWith(prefix)) {
@@ -100,8 +140,7 @@ public class RootUriRequestExpectationManager implements RequestExpectationManag
 				return request;
 			}
 			return new ReplaceUriClientHttpRequest(uri, request);
-		}
-		catch (URISyntaxException ex) {
+		} catch (URISyntaxException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -114,49 +153,6 @@ public class RootUriRequestExpectationManager implements RequestExpectationManag
 	@Override
 	public void reset() {
 		this.expectationManager.reset();
-	}
-
-	/**
-	 * Return a bound {@link MockRestServiceServer} for the given {@link RestTemplate},
-	 * configured with {@link RootUriRequestExpectationManager} when possible.
-	 * @param restTemplate the source REST template
-	 * @return a configured {@link MockRestServiceServer}
-	 */
-	public static MockRestServiceServer bindTo(RestTemplate restTemplate) {
-		return bindTo(restTemplate, new SimpleRequestExpectationManager());
-	}
-
-	/**
-	 * Return a bound {@link MockRestServiceServer} for the given {@link RestTemplate},
-	 * configured with {@link RootUriRequestExpectationManager} when possible.
-	 * @param restTemplate the source REST template
-	 * @param expectationManager the source {@link RequestExpectationManager}
-	 * @return a configured {@link MockRestServiceServer}
-	 */
-	public static MockRestServiceServer bindTo(RestTemplate restTemplate,
-			RequestExpectationManager expectationManager) {
-		MockRestServiceServerBuilder builder = MockRestServiceServer.bindTo(restTemplate);
-		return builder.build(forRestTemplate(restTemplate, expectationManager));
-	}
-
-	/**
-	 * Return {@link RequestExpectationManager} to be used for binding with the specified
-	 * {@link RestTemplate}. If the {@link RestTemplate} is using a
-	 * {@link RootUriTemplateHandler} then a {@link RootUriRequestExpectationManager} is
-	 * returned, otherwise the source manager is returned unchanged.
-	 * @param restTemplate the source REST template
-	 * @param expectationManager the source {@link RequestExpectationManager}
-	 * @return a {@link RequestExpectationManager} to be bound to the template
-	 */
-	public static RequestExpectationManager forRestTemplate(RestTemplate restTemplate,
-			RequestExpectationManager expectationManager) {
-		Assert.notNull(restTemplate, "RestTemplate must not be null");
-		UriTemplateHandler templateHandler = restTemplate.getUriTemplateHandler();
-		if (templateHandler instanceof RootUriTemplateHandler) {
-			return new RootUriRequestExpectationManager(((RootUriTemplateHandler) templateHandler).getRootUri(),
-					expectationManager);
-		}
-		return expectationManager;
 	}
 
 	/**

@@ -33,12 +33,14 @@ public interface DispatcherServletPath {
 
 	/**
 	 * Returns the configured path of the dispatcher servlet.
+	 *
 	 * @return the configured path
 	 */
 	String getPath();
 
 	/**
 	 * Return a form of the given path that's relative to the dispatcher servlet path.
+	 *
 	 * @param path the path to make relative
 	 * @return the relative path
 	 */
@@ -53,6 +55,7 @@ public interface DispatcherServletPath {
 	/**
 	 * Return a cleaned up version of the path that can be used as a prefix for URLs. The
 	 * resulting path will have path will not have a trailing slash.
+	 *
 	 * @return the prefix
 	 * @see #getRelativePath(String)
 	 */
@@ -71,6 +74,7 @@ public interface DispatcherServletPath {
 	/**
 	 * Return a URL mapping pattern that can be used with a
 	 * {@link ServletRegistrationBean} to map the dispatcher servlet.
+	 *
 	 * @return the path as a servlet URL mapping
 	 */
 	default String getServletUrlMapping() {

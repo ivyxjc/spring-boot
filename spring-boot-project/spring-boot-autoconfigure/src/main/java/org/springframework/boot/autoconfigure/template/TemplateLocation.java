@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.template;
 
-import java.io.IOException;
-
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
 
 /**
  * Contains a location that templates can be loaded from.
@@ -41,6 +41,7 @@ public class TemplateLocation {
 	/**
 	 * Determine if this template location exists using the specified
 	 * {@link ResourcePatternResolver}.
+	 *
 	 * @param resolver the resolver used to test if the location exists
 	 * @return {@code true} if the location exists.
 	 */
@@ -51,8 +52,7 @@ public class TemplateLocation {
 		}
 		try {
 			return anyExists(resolver);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return false;
 		}
 	}

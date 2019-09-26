@@ -23,19 +23,21 @@ import java.util.Map;
  * A representation of an HTTP response that is suitable for tracing.
  *
  * @author Andy Wilkinson
- * @since 2.0.0
  * @see HttpExchangeTracer
+ * @since 2.0.0
  */
 public interface TraceableResponse {
 
 	/**
 	 * The status of the response.
+	 *
 	 * @return the status
 	 */
 	int getStatus();
 
 	/**
 	 * Returns a modifiable copy of the headers of the response.
+	 *
 	 * @return the headers
 	 */
 	Map<String, List<String>> getHeaders();

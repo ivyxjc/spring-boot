@@ -16,28 +16,18 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-import javax.sql.XADataSource;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.jdbc.metadata.DataSourcePoolMetadataProvidersConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
-import org.springframework.context.annotation.Condition;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import javax.sql.DataSource;
+import javax.sql.XADataSource;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link DataSource}.
@@ -49,14 +39,14 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ DataSource.class, EmbeddedDatabaseType.class })
+@ConditionalOnClass({DataSource.class, EmbeddedDatabaseType.class})
 @EnableConfigurationProperties(DataSourceProperties.class)
-@Import({ DataSourcePoolMetadataProvidersConfiguration.class, DataSourceInitializationConfiguration.class })
+@Import({DataSourcePoolMetadataProvidersConfiguration.class, DataSourceInitializationConfiguration.class})
 public class DataSourceAutoConfiguration {
 
 	@Configuration
 	@Conditional(EmbeddedDatabaseCondition.class)
-	@ConditionalOnMissingBean({ DataSource.class, XADataSource.class })
+	@ConditionalOnMissingBean({DataSource.class, XADataSource.class})
 	@Import(EmbeddedDataSourceConfiguration.class)
 	protected static class EmbeddedDatabaseConfiguration {
 
@@ -64,10 +54,10 @@ public class DataSourceAutoConfiguration {
 
 	@Configuration
 	@Conditional(PooledDataSourceCondition.class)
-	@ConditionalOnMissingBean({ DataSource.class, XADataSource.class })
-	@Import({ DataSourceConfiguration.Hikari.class, DataSourceConfiguration.Tomcat.class,
-			DataSourceConfiguration.Dbcp2.class, DataSourceConfiguration.Generic.class,
-			DataSourceJmxConfiguration.class })
+	@ConditionalOnMissingBean({DataSource.class, XADataSource.class})
+	@Import({DataSourceConfiguration.Hikari.class, DataSourceConfiguration.Tomcat.class,
+					DataSourceConfiguration.Dbcp2.class, DataSourceConfiguration.Generic.class,
+					DataSourceJmxConfiguration.class})
 	protected static class PooledDataSourceConfiguration {
 
 	}
@@ -111,6 +101,7 @@ public class DataSourceAutoConfiguration {
 		/**
 		 * Returns the class loader for the {@link DataSource} class. Used to ensure that
 		 * the driver class can actually be loaded by the data source.
+		 *
 		 * @param context the condition context
 		 * @return the class loader
 		 */

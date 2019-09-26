@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.info;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

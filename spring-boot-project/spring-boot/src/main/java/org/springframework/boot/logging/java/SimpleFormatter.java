@@ -16,13 +16,13 @@
 
 package org.springframework.boot.logging.java;
 
+import org.springframework.boot.logging.LoggingSystemProperties;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
-
-import org.springframework.boot.logging.LoggingSystemProperties;
 
 /**
  * Simple 'Java Logging' {@link Formatter}.
@@ -39,6 +39,19 @@ public class SimpleFormatter extends Formatter {
 	private final String pid = getOrUseDefault(LoggingSystemProperties.PID_KEY, "????");
 
 	private final Date date = new Date();
+
+	private static String getOrUseDefault(String key, String defaultValue) {
+		String value = null;
+		try {
+			value = System.getenv(key);
+		} catch (Exception ex) {
+			// ignore
+		}
+		if (value == null) {
+			value = defaultValue;
+		}
+		return System.getProperty(key, value);
+	}
 
 	@Override
 	public synchronized String format(LogRecord record) {
@@ -66,20 +79,6 @@ public class SimpleFormatter extends Formatter {
 	private String getThreadName() {
 		String name = Thread.currentThread().getName();
 		return (name != null) ? name : "";
-	}
-
-	private static String getOrUseDefault(String key, String defaultValue) {
-		String value = null;
-		try {
-			value = System.getenv(key);
-		}
-		catch (Exception ex) {
-			// ignore
-		}
-		if (value == null) {
-			value = defaultValue;
-		}
-		return System.getProperty(key, value);
 	}
 
 }

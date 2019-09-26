@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.http;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * HTTP properties.
@@ -35,15 +35,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class HttpProperties {
 
 	/**
+	 * HTTP encoding properties.
+	 */
+	private final Encoding encoding = new Encoding();
+	/**
 	 * Whether logging of (potentially sensitive) request details at DEBUG and TRACE level
 	 * is allowed.
 	 */
 	private boolean logRequestDetails;
-
-	/**
-	 * HTTP encoding properties.
-	 */
-	private final Encoding encoding = new Encoding();
 
 	public boolean isLogRequestDetails() {
 		return this.logRequestDetails;

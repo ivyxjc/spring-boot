@@ -16,14 +16,14 @@
 
 package org.springframework.boot.actuate.endpoint.annotation;
 
-import java.util.Collection;
-
 import org.springframework.boot.actuate.endpoint.AbstractExposableEndpoint;
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
 import org.springframework.boot.actuate.endpoint.Operation;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
+
+import java.util.Collection;
 
 /**
  * Abstract base class for {@link ExposableEndpoint endpoints} discovered by a
@@ -42,14 +42,15 @@ public abstract class AbstractDiscoveredEndpoint<O extends Operation> extends Ab
 
 	/**
 	 * Create a new {@link AbstractDiscoveredEndpoint} instance.
-	 * @param discoverer the discoverer that discovered the endpoint
-	 * @param endpointBean the primary source bean
-	 * @param id the ID of the endpoint
+	 *
+	 * @param discoverer       the discoverer that discovered the endpoint
+	 * @param endpointBean     the primary source bean
+	 * @param id               the ID of the endpoint
 	 * @param enabledByDefault if the endpoint is enabled by default
-	 * @param operations the endpoint operations
+	 * @param operations       the endpoint operations
 	 */
 	public AbstractDiscoveredEndpoint(EndpointDiscoverer<?, ?> discoverer, Object endpointBean, EndpointId id,
-			boolean enabledByDefault, Collection<? extends O> operations) {
+									  boolean enabledByDefault, Collection<? extends O> operations) {
 		super(id, enabledByDefault, operations);
 		Assert.notNull(discoverer, "Discoverer must not be null");
 		Assert.notNull(endpointBean, "EndpointBean must not be null");

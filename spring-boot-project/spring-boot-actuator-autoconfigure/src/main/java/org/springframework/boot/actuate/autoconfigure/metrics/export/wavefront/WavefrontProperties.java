@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.wavefront;
 
-import java.net.URI;
-import java.time.Duration;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.net.URI;
+import java.time.Duration;
 
 /**
  * {@link ConfigurationProperties} for configuring Wavefront metrics export.

@@ -30,6 +30,7 @@ public interface FlywayConfigurationCustomizer {
 
 	/**
 	 * Customize the flyway configuration.
+	 *
 	 * @param configuration the {@link FluentConfiguration} to customize
 	 */
 	void customize(FluentConfiguration configuration);

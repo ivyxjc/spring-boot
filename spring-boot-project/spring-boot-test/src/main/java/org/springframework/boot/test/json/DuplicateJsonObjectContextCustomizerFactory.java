@@ -16,19 +16,18 @@
 
 package org.springframework.boot.test.json;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
 import org.springframework.test.context.MergedContextConfiguration;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 /**
  * A {@link ContextCustomizerFactory} that produces a {@link ContextCustomizer} that warns
@@ -40,7 +39,7 @@ class DuplicateJsonObjectContextCustomizerFactory implements ContextCustomizerFa
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
-			List<ContextConfigurationAttributes> configAttributes) {
+													 List<ContextConfigurationAttributes> configAttributes) {
 		return new DuplicateJsonObjectContextCustomizer();
 	}
 
@@ -63,8 +62,7 @@ class DuplicateJsonObjectContextCustomizerFactory implements ContextCustomizerFa
 				while (resources.hasMoreElements()) {
 					jsonObjects.add(resources.nextElement());
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Continue
 			}
 			return jsonObjects;

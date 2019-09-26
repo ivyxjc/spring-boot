@@ -16,15 +16,15 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * {@link Converter} to convert from a {@link String} to a {@link DataSize}. Supports

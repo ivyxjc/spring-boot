@@ -16,14 +16,10 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.annotation.Conditional;
+
+import java.lang.annotation.*;
 
 /**
  * {@link Conditional} that only matches when a bean of the specified class is already
@@ -41,7 +37,7 @@ import org.springframework.context.annotation.Conditional;
  * @author Stephane Nicoll
  * @since 1.3.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Conditional(OnBeanCondition.class)
@@ -54,6 +50,7 @@ public @interface ConditionalOnSingleCandidate {
 	 * <p>
 	 * This attribute may <strong>not</strong> be used in conjunction with
 	 * {@link #type()}, but it may be used instead of {@link #type()}.
+	 *
 	 * @return the class type of the bean to check
 	 */
 	Class<?> value() default Object.class;
@@ -65,6 +62,7 @@ public @interface ConditionalOnSingleCandidate {
 	 * <p>
 	 * This attribute may <strong>not</strong> be used in conjunction with
 	 * {@link #value()}, but it may be used instead of {@link #value()}.
+	 *
 	 * @return the class type name of the bean to check
 	 */
 	String type() default "";
@@ -72,6 +70,7 @@ public @interface ConditionalOnSingleCandidate {
 	/**
 	 * Strategy to decide if the application context hierarchy (parent contexts) should be
 	 * considered.
+	 *
 	 * @return the search strategy
 	 */
 	SearchStrategy search() default SearchStrategy.ALL;

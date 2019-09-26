@@ -16,14 +16,14 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
+import org.apache.catalina.loader.ParallelWebappClassLoader;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Enumeration;
-
-import org.apache.catalina.loader.ParallelWebappClassLoader;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * Extension of Tomcat's {@link ParallelWebappClassLoader} that does not consider the
@@ -108,8 +108,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		}
 		try {
 			return Class.forName(name, false, this.parent);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			return null;
 		}
 	}
@@ -117,8 +116,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 	private Class<?> findClassIgnoringNotFound(String name) {
 		try {
 			return findClass(name);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			return null;
 		}
 	}
@@ -127,8 +125,7 @@ public class TomcatEmbeddedWebappClassLoader extends ParallelWebappClassLoader {
 		if (this.securityManager != null && name.lastIndexOf('.') >= 0) {
 			try {
 				this.securityManager.checkPackageAccess(name.substring(0, name.lastIndexOf('.')));
-			}
-			catch (SecurityException ex) {
+			} catch (SecurityException ex) {
 				throw new ClassNotFoundException("Security Violation, attempt to use " + "Restricted Class: " + name,
 						ex);
 			}

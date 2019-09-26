@@ -32,6 +32,7 @@ public interface ClusterBuilderCustomizer {
 
 	/**
 	 * Customize the {@link Builder}.
+	 *
 	 * @param clusterBuilder the builder to customize
 	 */
 	void customize(Builder clusterBuilder);

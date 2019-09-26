@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.jdbc;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.diagnostics.FailureAnalysis;
@@ -37,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  */
 @RunWith(ModifiedClassPathRunner.class)
-@ClassPathExclusions({ "h2-*.jar", "hsqldb-*.jar" })
+@ClassPathExclusions({"h2-*.jar", "hsqldb-*.jar"})
 public class DataSourceBeanCreationFailureAnalyzerTests {
 
 	private final MockEnvironment environment = new MockEnvironment();
@@ -76,8 +75,7 @@ public class DataSourceBeanCreationFailureAnalyzerTests {
 			context.refresh();
 			context.close();
 			return null;
-		}
-		catch (BeanCreationException ex) {
+		} catch (BeanCreationException ex) {
 			return ex;
 		}
 	}

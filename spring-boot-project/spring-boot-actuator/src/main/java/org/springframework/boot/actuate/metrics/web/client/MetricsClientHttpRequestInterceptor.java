@@ -16,20 +16,19 @@
 
 package org.springframework.boot.actuate.metrics.web.client;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
-
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.util.UriTemplateHandler;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link ClientHttpRequestInterceptor} applied via a
@@ -49,7 +48,7 @@ class MetricsClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
 	private final String metricName;
 
 	MetricsClientHttpRequestInterceptor(MeterRegistry meterRegistry, RestTemplateExchangeTagsProvider tagProvider,
-			String metricName) {
+										String metricName) {
 		this.tagProvider = tagProvider;
 		this.meterRegistry = meterRegistry;
 		this.metricName = metricName;
@@ -63,8 +62,7 @@ class MetricsClientHttpRequestInterceptor implements ClientHttpRequestIntercepto
 		try {
 			response = execution.execute(request, body);
 			return response;
-		}
-		finally {
+		} finally {
 			getTimeBuilder(request, response).register(this.meterRegistry).record(System.nanoTime() - startTime,
 					TimeUnit.NANOSECONDS);
 			urlTemplate.remove();

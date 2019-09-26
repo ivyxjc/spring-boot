@@ -16,10 +16,10 @@
 
 package org.springframework.boot.configurationsample.simple;
 
+import org.springframework.boot.configurationsample.ConfigurationProperties;
+
 import java.beans.FeatureDescriptor;
 import java.util.Comparator;
-
-import org.springframework.boot.configurationsample.ConfigurationProperties;
 
 /**
  * Simple properties.

@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.security.reactive;
 
-import java.net.URI;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.BeansException;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
@@ -53,6 +46,12 @@ import org.springframework.security.web.server.WebFilterChainProxy;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.health.ApplicationHealthIndicator;
 import org.springframework.boot.actuate.health.CompositeHealthIndicator;
@@ -36,6 +33,8 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -83,10 +82,10 @@ public class DataSourceHealthIndicatorAutoConfigurationTests {
 		this.contextRunner
 				.withUserConfiguration(DataSourceConfig.class, DataSourcePoolMetadataProvidersConfiguration.class)
 				.withPropertyValues("spring.datasource.test.validation-query:SELECT from FOOBAR").run((context) -> {
-					assertThat(context).hasSingleBean(HealthIndicator.class);
-					DataSourceHealthIndicator indicator = context.getBean(DataSourceHealthIndicator.class);
-					assertThat(indicator.getQuery()).isEqualTo("SELECT from FOOBAR");
-				});
+			assertThat(context).hasSingleBean(HealthIndicator.class);
+			DataSourceHealthIndicator indicator = context.getBean(DataSourceHealthIndicator.class);
+			assertThat(indicator.getQuery()).isEqualTo("SELECT from FOOBAR");
+		});
 	}
 
 	@Test

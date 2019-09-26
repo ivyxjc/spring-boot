@@ -16,12 +16,12 @@
 
 package org.springframework.boot.json;
 
+import org.springframework.util.ReflectionUtils;
+
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
-
-import org.springframework.util.ReflectionUtils;
 
 /**
  * Base class for parsers wrapped or implemented in this package.
@@ -51,8 +51,7 @@ public abstract class AbstractJsonParser implements JsonParser {
 	protected final <T> T tryParse(Callable<T> parser, Class<? extends Exception> check) {
 		try {
 			return parser.call();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (check.isAssignableFrom(ex.getClass())) {
 				throw new JsonParseException(ex);
 			}

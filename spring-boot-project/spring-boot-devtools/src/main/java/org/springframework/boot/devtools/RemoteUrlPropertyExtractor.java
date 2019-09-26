@@ -16,11 +16,6 @@
 
 package org.springframework.boot.devtools;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collections;
-import java.util.Map;
-
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
@@ -30,6 +25,11 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * {@link ApplicationListener} to extract the remote URL for the
@@ -50,8 +50,7 @@ class RemoteUrlPropertyExtractor implements ApplicationListener<ApplicationEnvir
 		Assert.state(url.indexOf(',') == -1, "Multiple URLs specified");
 		try {
 			new URI(url);
-		}
-		catch (URISyntaxException ex) {
+		} catch (URISyntaxException ex) {
 			throw new IllegalStateException("Malformed URL '" + url + "'");
 		}
 		Map<String, Object> source = Collections.singletonMap("remoteUrl", (Object) url);

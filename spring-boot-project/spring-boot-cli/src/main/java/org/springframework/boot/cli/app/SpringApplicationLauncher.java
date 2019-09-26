@@ -29,9 +29,9 @@ import java.util.Map;
  * separate ClassLoader from the application code.
  *
  * @author Andy Wilkinson
- * @since 1.2.0
  * @see System#getProperty(String)
  * @see System#getenv(String)
+ * @since 1.2.0
  */
 public class SpringApplicationLauncher {
 
@@ -42,6 +42,7 @@ public class SpringApplicationLauncher {
 	/**
 	 * Creates a new launcher that will use the given {@code classLoader} to load the
 	 * configured {@code SpringApplication} class.
+	 *
 	 * @param classLoader the {@code ClassLoader} to use
 	 */
 	public SpringApplicationLauncher(ClassLoader classLoader) {
@@ -51,8 +52,9 @@ public class SpringApplicationLauncher {
 	/**
 	 * Launches the application created using the given {@code sources}. The application
 	 * is launched with the given {@code args}.
+	 *
 	 * @param sources the sources for the application
-	 * @param args the args for the application
+	 * @param args    the args for the application
 	 * @return the application's {@code ApplicationContext}
 	 * @throws Exception if the launch fails
 	 */

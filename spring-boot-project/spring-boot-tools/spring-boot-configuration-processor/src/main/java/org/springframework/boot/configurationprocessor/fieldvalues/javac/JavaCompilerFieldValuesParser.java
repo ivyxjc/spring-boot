@@ -16,17 +16,12 @@
 
 package org.springframework.boot.configurationprocessor.fieldvalues.javac;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import org.springframework.boot.configurationprocessor.fieldvalues.FieldValuesParser;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-
-import org.springframework.boot.configurationprocessor.fieldvalues.FieldValuesParser;
+import java.util.*;
 
 /**
  * {@link FieldValuesParser} implementation for the standard Java compiler.
@@ -60,6 +55,12 @@ public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 	private static class FieldCollector implements TreeVisitor {
 
 		private static final Map<String, Class<?>> WRAPPER_TYPES;
+		private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
+		private static final Map<String, Object> WELL_KNOWN_STATIC_FINALS;
+		private static final String DURATION_OF = "Duration.of";
+		private static final Map<String, String> DURATION_SUFFIX;
+		private static final String DATA_SIZE_OF = "DataSize.of";
+		private static final Map<String, String> DATA_SIZE_SUFFIX;
 
 		static {
 			Map<String, Class<?>> types = new HashMap<>();
@@ -76,8 +77,6 @@ public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 			WRAPPER_TYPES = Collections.unmodifiableMap(types);
 		}
 
-		private static final Map<Class<?>, Object> DEFAULT_TYPE_VALUES;
-
 		static {
 			Map<Class<?>, Object> values = new HashMap<>();
 			values.put(Boolean.class, false);
@@ -87,8 +86,6 @@ public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 			values.put(Long.class, (long) 0);
 			DEFAULT_TYPE_VALUES = Collections.unmodifiableMap(values);
 		}
-
-		private static final Map<String, Object> WELL_KNOWN_STATIC_FINALS;
 
 		static {
 			Map<String, Object> values = new HashMap<>();
@@ -101,10 +98,6 @@ public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 			WELL_KNOWN_STATIC_FINALS = Collections.unmodifiableMap(values);
 		}
 
-		private static final String DURATION_OF = "Duration.of";
-
-		private static final Map<String, String> DURATION_SUFFIX;
-
 		static {
 			Map<String, String> values = new HashMap<>();
 			values.put("Nanos", "ns");
@@ -115,10 +108,6 @@ public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 			values.put("Days", "d");
 			DURATION_SUFFIX = Collections.unmodifiableMap(values);
 		}
-
-		private static final String DATA_SIZE_OF = "DataSize.of";
-
-		private static final Map<String, String> DATA_SIZE_SUFFIX;
 
 		static {
 			Map<String, String> values = new HashMap<>();
@@ -198,7 +187,7 @@ public class JavaCompilerFieldValuesParser implements FieldValuesParser {
 		}
 
 		private Object getFactoryValue(ExpressionTree expression, Object factoryValue, String prefix,
-				Map<String, String> suffixMapping) {
+									   Map<String, String> suffixMapping) {
 			Object instance = expression.getInstance();
 			if (instance != null && instance.toString().startsWith(prefix)) {
 				String type = instance.toString();

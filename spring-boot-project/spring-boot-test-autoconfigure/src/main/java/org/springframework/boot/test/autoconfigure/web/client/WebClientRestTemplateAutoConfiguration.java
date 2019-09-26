@@ -29,8 +29,8 @@ import org.springframework.web.client.RestTemplate;
  * {@link AutoConfigureWebClient#registerRestTemplate()} is {@code true}.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see AutoConfigureMockRestServiceServer
+ * @since 1.4.0
  */
 @Configuration
 @ConditionalOnProperty(prefix = "spring.test.webclient", name = "register-rest-template")

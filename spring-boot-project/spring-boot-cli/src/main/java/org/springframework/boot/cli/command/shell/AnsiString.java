@@ -33,8 +33,9 @@ class AnsiString {
 
 	/**
 	 * Create a new {@link AnsiString} for the given {@link Terminal}.
+	 *
 	 * @param terminal the terminal used to test if {@link Terminal#isAnsiSupported() ANSI
-	 * is supported}.
+	 *                 is supported}.
 	 */
 	AnsiString(Terminal terminal) {
 		this.terminal = terminal;
@@ -42,7 +43,8 @@ class AnsiString {
 
 	/**
 	 * Append text with the given ANSI codes.
-	 * @param text the text to append
+	 *
+	 * @param text  the text to append
 	 * @param codes the ANSI codes
 	 * @return this string
 	 */

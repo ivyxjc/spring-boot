@@ -16,6 +16,22 @@
 
 package org.springframework.boot.maven;
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.model.Dependency;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.project.MavenProject;
+import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
+import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
+import org.springframework.boot.loader.tools.*;
+import org.springframework.boot.loader.tools.Layouts.Expanded;
+import org.springframework.boot.loader.tools.Layouts.Jar;
+import org.springframework.boot.loader.tools.Layouts.None;
+import org.springframework.boot.loader.tools.Layouts.War;
+import org.springframework.boot.loader.tools.Repackager.MainClassTimeoutWarningListener;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,32 +39,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.model.Dependency;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
-import org.apache.maven.project.MavenProjectHelper;
-import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
-import org.apache.maven.shared.artifact.filter.collection.ScopeFilter;
-
-import org.springframework.boot.loader.tools.DefaultLaunchScript;
-import org.springframework.boot.loader.tools.LaunchScript;
-import org.springframework.boot.loader.tools.Layout;
-import org.springframework.boot.loader.tools.LayoutFactory;
-import org.springframework.boot.loader.tools.Layouts.Expanded;
-import org.springframework.boot.loader.tools.Layouts.Jar;
-import org.springframework.boot.loader.tools.Layouts.None;
-import org.springframework.boot.loader.tools.Layouts.War;
-import org.springframework.boot.loader.tools.Libraries;
-import org.springframework.boot.loader.tools.Repackager;
-import org.springframework.boot.loader.tools.Repackager.MainClassTimeoutWarningListener;
 
 /**
  * Repackages existing JAR and WAR archives so that they can be executed from the command
@@ -62,47 +52,53 @@ import org.springframework.boot.loader.tools.Repackager.MainClassTimeoutWarningL
  * @since 1.0.0
  */
 @Mojo(name = "repackage", defaultPhase = LifecyclePhase.PACKAGE, requiresProject = true, threadSafe = true,
-		requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME,
-		requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME)
+	  requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME,
+	  requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class RepackageMojo extends AbstractDependencyFilterMojo {
 
 	private static final Pattern WHITE_SPACE_PATTERN = Pattern.compile("\\s+");
-
+	/**
+	 * Include system scoped dependencies.
+	 *
+	 * @since 1.4.0
+	 */
+	@Parameter(defaultValue = "false")
+	public boolean includeSystemScope;
 	/**
 	 * The Maven project.
+	 *
 	 * @since 1.0.0
 	 */
 	@Parameter(defaultValue = "${project}", readonly = true, required = true)
 	private MavenProject project;
-
 	/**
 	 * Maven project helper utils.
+	 *
 	 * @since 1.0.0
 	 */
 	@Component
 	private MavenProjectHelper projectHelper;
-
 	/**
 	 * Directory containing the generated archive.
+	 *
 	 * @since 1.0.0
 	 */
 	@Parameter(defaultValue = "${project.build.directory}", required = true)
 	private File outputDirectory;
-
 	/**
 	 * Name of the generated archive.
+	 *
 	 * @since 1.0.0
 	 */
 	@Parameter(defaultValue = "${project.build.finalName}", readonly = true)
 	private String finalName;
-
 	/**
 	 * Skip the execution.
+	 *
 	 * @since 1.2.0
 	 */
 	@Parameter(property = "spring-boot.repackage.skip", defaultValue = "false")
 	private boolean skip;
-
 	/**
 	 * Classifier to add to the repackaged archive. If not given, the main artifact will
 	 * be replaced by the repackaged archive. If given, the classifier will also be used
@@ -113,53 +109,53 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 	 * allows to deploy it alongside to the original one, see <a href=
 	 * "https://maven.apache.org/plugins/maven-deploy-plugin/examples/deploying-with-classifiers.html"
 	 * > the maven documentation for more details</a>.
+	 *
 	 * @since 1.0.0
 	 */
 	@Parameter
 	private String classifier;
-
 	/**
 	 * Attach the repackaged archive to be installed and deployed.
+	 *
 	 * @since 1.4.0
 	 */
 	@Parameter(defaultValue = "true")
 	private boolean attach = true;
-
 	/**
 	 * The name of the main class. If not specified the first compiled class found that
 	 * contains a 'main' method will be used.
+	 *
 	 * @since 1.0.0
 	 */
 	@Parameter
 	private String mainClass;
-
 	/**
 	 * The type of archive (which corresponds to how the dependencies are laid out inside
 	 * it). Possible values are JAR, WAR, ZIP, DIR, NONE. Defaults to a guess based on the
 	 * archive type.
+	 *
 	 * @since 1.0.0
 	 */
 	@Parameter
 	private LayoutType layout;
-
 	/**
 	 * The layout factory that will be used to create the executable archive if no
 	 * explicit layout is set. Alternative layouts implementations can be provided by 3rd
 	 * parties.
+	 *
 	 * @since 1.5.0
 	 */
 	@Parameter
 	private LayoutFactory layoutFactory;
-
 	/**
 	 * A list of the libraries that must be unpacked from fat jars in order to run.
 	 * Specify each library as a {@code <dependency>} with a {@code <groupId>} and a
 	 * {@code <artifactId>} and they will be unpacked at runtime.
+	 *
 	 * @since 1.1.0
 	 */
 	@Parameter
 	private List<Dependency> requiresUnpack;
-
 	/**
 	 * Make a fully executable jar for *nix machines by prepending a launch script to the
 	 * jar.
@@ -169,39 +165,33 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 	 * or war that has been made fully-executable. It is recommended that you only enable
 	 * this option if you intend to execute it directly, rather than running it with
 	 * {@code java -jar} or deploying it to a servlet container.
+	 *
 	 * @since 1.3.0
 	 */
 	@Parameter(defaultValue = "false")
 	private boolean executable;
-
 	/**
 	 * The embedded launch script to prepend to the front of the jar if it is fully
 	 * executable. If not specified the 'Spring Boot' default script will be used.
+	 *
 	 * @since 1.3.0
 	 */
 	@Parameter
 	private File embeddedLaunchScript;
-
 	/**
 	 * Properties that should be expanded in the embedded launch script.
+	 *
 	 * @since 1.3.0
 	 */
 	@Parameter
 	private Properties embeddedLaunchScriptProperties;
-
 	/**
 	 * Exclude Spring Boot devtools from the repackaged archive.
+	 *
 	 * @since 1.3.0
 	 */
 	@Parameter(defaultValue = "true")
 	private boolean excludeDevtools = true;
-
-	/**
-	 * Include system scoped dependencies.
-	 * @since 1.4.0
-	 */
-	@Parameter(defaultValue = "false")
-	public boolean includeSystemScope;
 
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -225,8 +215,7 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 		try {
 			LaunchScript launchScript = getLaunchScript();
 			repackager.repackage(target, libraries, launchScript);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new MojoExecutionException(ex.getMessage(), ex);
 		}
 		updateArtifact(source, target, repackager.getBackupFile());
@@ -236,6 +225,7 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 	 * Return the source {@link Artifact} to repackage. If a classifier is specified and
 	 * an artifact with that classifier exists, it is used. Otherwise, the main artifact
 	 * is used.
+	 *
 	 * @return the source artifact to repackage
 	 */
 	private Artifact getSourceArtifact() {
@@ -330,14 +320,12 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 	private void updateArtifact(Artifact source, File target, File original) {
 		if (this.attach) {
 			attachArtifact(source, target);
-		}
-		else if (source.getFile().equals(target) && original.exists()) {
+		} else if (source.getFile().equals(target) && original.exists()) {
 			String artifactId = (this.classifier != null) ? "artifact with classifier " + this.classifier
 					: "main artifact";
 			getLog().info(String.format("Updating %s %s to %s", artifactId, source.getFile(), original));
 			source.setFile(original);
-		}
-		else if (this.classifier != null) {
+		} else if (this.classifier != null) {
 			getLog().info("Creating repackaged archive " + target + " with classifier " + this.classifier);
 		}
 	}
@@ -346,23 +334,12 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 		if (this.classifier != null && !source.getFile().equals(target)) {
 			getLog().info("Attaching repackaged archive " + target + " with classifier " + this.classifier);
 			this.projectHelper.attachArtifact(this.project, this.project.getPackaging(), this.classifier, target);
-		}
-		else {
+		} else {
 			String artifactId = (this.classifier != null) ? "artifact with classifier " + this.classifier
 					: "main artifact";
 			getLog().info("Replacing " + artifactId + " with repackaged archive");
 			source.setFile(target);
 		}
-	}
-
-	private class LoggingMainClassTimeoutWarningListener implements MainClassTimeoutWarningListener {
-
-		@Override
-		public void handleTimeoutWarning(long duration, String mainMethod) {
-			getLog().warn("Searching for the main-class is taking some time, "
-					+ "consider using the mainClass configuration " + "parameter");
-		}
-
 	}
 
 	/**
@@ -403,6 +380,16 @@ public class RepackageMojo extends AbstractDependencyFilterMojo {
 
 		public Layout layout() {
 			return this.layout;
+		}
+
+	}
+
+	private class LoggingMainClassTimeoutWarningListener implements MainClassTimeoutWarningListener {
+
+		@Override
+		public void handleTimeoutWarning(long duration, String mainMethod) {
+			getLog().warn("Searching for the main-class is taking some time, "
+					+ "consider using the mainClass configuration " + "parameter");
 		}
 
 	}

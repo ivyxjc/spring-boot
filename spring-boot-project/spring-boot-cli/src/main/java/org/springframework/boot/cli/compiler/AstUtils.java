@@ -16,27 +16,14 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import org.codehaus.groovy.ast.AnnotatedNode;
-import org.codehaus.groovy.ast.AnnotationNode;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.FieldNode;
-import org.codehaus.groovy.ast.MethodNode;
-import org.codehaus.groovy.ast.expr.ArgumentListExpression;
-import org.codehaus.groovy.ast.expr.ClosureExpression;
-import org.codehaus.groovy.ast.expr.ConstantExpression;
-import org.codehaus.groovy.ast.expr.Expression;
-import org.codehaus.groovy.ast.expr.MethodCallExpression;
+import org.codehaus.groovy.ast.*;
+import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
-
 import org.springframework.util.PatternMatchUtils;
+
+import java.util.*;
 
 /**
  * General purpose AST utilities.
@@ -52,7 +39,8 @@ public abstract class AstUtils {
 	 * Determine if a {@link ClassNode} has one or more of the specified annotations on
 	 * the class or any of its methods. N.B. the type names are not normally fully
 	 * qualified.
-	 * @param node the class to examine
+	 *
+	 * @param node        the class to examine
 	 * @param annotations the annotations to look for
 	 * @return {@code true} if at least one of the annotations is found, otherwise
 	 * {@code false}
@@ -72,7 +60,8 @@ public abstract class AstUtils {
 	/**
 	 * Determine if an {@link AnnotatedNode} has one or more of the specified annotations.
 	 * N.B. the annotation type names are not normally fully qualified.
-	 * @param node the node to examine
+	 *
+	 * @param node        the node to examine
 	 * @param annotations the annotations to look for
 	 * @return {@code true} if at least one of the annotations is found, otherwise
 	 * {@code false}
@@ -92,7 +81,8 @@ public abstract class AstUtils {
 	 * Determine if a {@link ClassNode} has one or more fields of the specified types or
 	 * method returning one or more of the specified types. N.B. the type names are not
 	 * normally fully qualified.
-	 * @param node the class to examine
+	 *
+	 * @param node  the class to examine
 	 * @param types the types to look for
 	 * @return {@code true} if at least one of the types is found, otherwise {@code false}
 	 */
@@ -114,7 +104,8 @@ public abstract class AstUtils {
 	/**
 	 * Determine if a {@link ClassNode} subclasses any of the specified types N.B. the
 	 * type names are not normally fully qualified.
-	 * @param node the class to examine
+	 *
+	 * @param node  the class to examine
 	 * @param types the types that may have been sub-classed
 	 * @return {@code true} if the class subclasses any of the specified types, otherwise
 	 * {@code false}
@@ -141,8 +132,9 @@ public abstract class AstUtils {
 	/**
 	 * Extract a top-level {@code name} closure from inside this block if there is one,
 	 * optionally removing it from the block at the same time.
-	 * @param block a block statement (class definition)
-	 * @param name the name to look for
+	 *
+	 * @param block  a block statement (class definition)
+	 * @param name   the name to look for
 	 * @param remove whether or not the extracted closure should be removed
 	 * @return a beans Closure if one can be found, null otherwise
 	 */

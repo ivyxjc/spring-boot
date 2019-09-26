@@ -16,12 +16,11 @@
 
 package org.springframework.boot.jdbc.metadata;
 
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
-
 import org.springframework.beans.DirectFieldAccessor;
+
+import javax.sql.DataSource;
 
 /**
  * {@link DataSourcePoolMetadata} for a Hikari {@link DataSource}.
@@ -39,8 +38,7 @@ public class HikariDataSourcePoolMetadata extends AbstractDataSourcePoolMetadata
 	public Integer getActive() {
 		try {
 			return getHikariPool().getActiveConnections();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}

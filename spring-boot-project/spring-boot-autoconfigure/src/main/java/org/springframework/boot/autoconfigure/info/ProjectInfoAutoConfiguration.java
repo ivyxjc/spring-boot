@@ -16,16 +16,8 @@
 
 package org.springframework.boot.autoconfigure.info;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Properties;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
@@ -40,6 +32,10 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Properties;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for various project information.

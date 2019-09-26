@@ -16,20 +16,8 @@
 
 package org.springframework.boot.testsupport.web.servlet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
+import javax.servlet.*;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -47,15 +35,11 @@ import static org.mockito.Mockito.mock;
  */
 public abstract class MockServletWebServer {
 
-	private ServletContext servletContext;
-
 	private final Initializer[] initializers;
-
 	private final List<RegisteredServlet> registeredServlets = new ArrayList<>();
-
 	private final List<RegisteredFilter> registeredFilters = new ArrayList<>();
-
 	private final int port;
+	private ServletContext servletContext;
 
 	public MockServletWebServer(Initializer[] initializers, int port) {
 		this.initializers = initializers;
@@ -90,8 +74,7 @@ public abstract class MockServletWebServer {
 			for (Initializer initializer : this.initializers) {
 				initializer.onStartup(this.servletContext);
 			}
-		}
-		catch (ServletException ex) {
+		} catch (ServletException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -129,6 +112,16 @@ public abstract class MockServletWebServer {
 
 	public int getPort() {
 		return this.port;
+	}
+
+	/**
+	 * Initializer (usually implement by adapting {@code Initializer}).
+	 */
+	@FunctionalInterface
+	protected interface Initializer {
+
+		void onStartup(ServletContext context) throws ServletException;
+
 	}
 
 	/**
@@ -176,16 +169,6 @@ public abstract class MockServletWebServer {
 		public Filter getFilter() {
 			return this.filter;
 		}
-
-	}
-
-	/**
-	 * Initializer (usually implement by adapting {@code Initializer}).
-	 */
-	@FunctionalInterface
-	protected interface Initializer {
-
-		void onStartup(ServletContext context) throws ServletException;
 
 	}
 

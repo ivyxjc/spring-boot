@@ -32,9 +32,9 @@ import org.springframework.context.annotation.Import;
  * @since 2.0.0
  */
 @Configuration
-@EnableConfigurationProperties({ HealthEndpointProperties.class, HealthIndicatorProperties.class })
+@EnableConfigurationProperties({HealthEndpointProperties.class, HealthIndicatorProperties.class})
 @AutoConfigureAfter(HealthIndicatorAutoConfiguration.class)
-@Import({ HealthEndpointConfiguration.class, HealthEndpointWebExtensionConfiguration.class })
+@Import({HealthEndpointConfiguration.class, HealthEndpointWebExtensionConfiguration.class})
 public class HealthEndpointAutoConfiguration {
 
 }

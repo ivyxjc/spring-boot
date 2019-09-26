@@ -16,14 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.security.servlet;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.assertj.core.api.AssertDelegateTarget;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
@@ -38,6 +32,10 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.StaticWebApplicationContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -243,7 +241,7 @@ public class EndpointRequestTests {
 	}
 
 	private RequestMatcherAssert assertMatcher(RequestMatcher matcher, PathMappedEndpoints pathMappedEndpoints,
-			RequestMatcherProvider matcherProvider) {
+											   RequestMatcherProvider matcherProvider) {
 		StaticWebApplicationContext context = new StaticWebApplicationContext();
 		context.registerBean(WebEndpointProperties.class);
 		if (pathMappedEndpoints != null) {
@@ -257,6 +255,10 @@ public class EndpointRequestTests {
 			context.registerBean(RequestMatcherProvider.class, () -> matcherProvider);
 		}
 		return assertThat(new RequestMatcherAssert(context, matcher));
+	}
+
+	interface TestEndpoint extends ExposableEndpoint<Operation>, PathMappedEndpoint {
+
 	}
 
 	private static class RequestMatcherAssert implements AssertDelegateTarget {
@@ -313,10 +315,6 @@ public class EndpointRequestTests {
 
 	@ServletEndpoint(id = "baz")
 	private static class BazServletEndpoint {
-
-	}
-
-	interface TestEndpoint extends ExposableEndpoint<Operation>, PathMappedEndpoint {
 
 	}
 

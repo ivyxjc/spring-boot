@@ -16,14 +16,7 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.EnumSet;
-
-import javax.servlet.DispatcherType;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -35,12 +28,13 @@ import org.springframework.session.MapSessionRepository;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.config.annotation.web.http.EnableSpringHttpSession;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
-import org.springframework.session.web.http.CookieHttpSessionIdResolver;
-import org.springframework.session.web.http.DefaultCookieSerializer;
-import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
-import org.springframework.session.web.http.HttpSessionIdResolver;
-import org.springframework.session.web.http.SessionRepositoryFilter;
+import org.springframework.session.web.http.*;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.servlet.DispatcherType;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.EnumSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -88,9 +82,9 @@ public class SessionAutoConfigurationTests extends AbstractSessionAutoConfigurat
 	public void backOffIfSessionRepositoryIsPresent() {
 		this.contextRunner.withUserConfiguration(SessionRepositoryConfiguration.class)
 				.withPropertyValues("spring.session.store-type=redis").run((context) -> {
-					MapSessionRepository repository = validateSessionRepository(context, MapSessionRepository.class);
-					assertThat(context).getBean("mySessionRepository").isSameAs(repository);
-				});
+			MapSessionRepository repository = validateSessionRepository(context, MapSessionRepository.class);
+			assertThat(context).getBean("mySessionRepository").isSameAs(repository);
+		});
 	}
 
 	@Test
@@ -126,9 +120,9 @@ public class SessionAutoConfigurationTests extends AbstractSessionAutoConfigurat
 	public void filterOrderCanBeCustomizedWithCustomStore() {
 		this.contextRunner.withUserConfiguration(SessionRepositoryConfiguration.class)
 				.withPropertyValues("spring.session.servlet.filter-order=123").run((context) -> {
-					FilterRegistrationBean<?> registration = context.getBean(FilterRegistrationBean.class);
-					assertThat(registration.getOrder()).isEqualTo(123);
-				});
+			FilterRegistrationBean<?> registration = context.getBean(FilterRegistrationBean.class);
+			assertThat(registration.getOrder()).isEqualTo(123);
+		});
 	}
 
 	@SuppressWarnings("unchecked")
@@ -136,10 +130,10 @@ public class SessionAutoConfigurationTests extends AbstractSessionAutoConfigurat
 	public void filterDispatcherTypesCanBeCustomized() {
 		this.contextRunner.withUserConfiguration(SessionRepositoryConfiguration.class)
 				.withPropertyValues("spring.session.servlet.filter-dispatcher-types=error, request").run((context) -> {
-					FilterRegistrationBean<?> registration = context.getBean(FilterRegistrationBean.class);
-					assertThat((EnumSet<DispatcherType>) ReflectionTestUtils.getField(registration, "dispatcherTypes"))
-							.containsOnly(DispatcherType.ERROR, DispatcherType.REQUEST);
-				});
+			FilterRegistrationBean<?> registration = context.getBean(FilterRegistrationBean.class);
+			assertThat((EnumSet<DispatcherType>) ReflectionTestUtils.getField(registration, "dispatcherTypes"))
+					.containsOnly(DispatcherType.ERROR, DispatcherType.REQUEST);
+		});
 	}
 
 	@Test
@@ -164,13 +158,13 @@ public class SessionAutoConfigurationTests extends AbstractSessionAutoConfigurat
 	public void autoConfiguredCookieSerializerIsUsedBySessionRepositoryFilter() {
 		this.contextRunner.withUserConfiguration(SessionRepositoryConfiguration.class)
 				.withPropertyValues("server.port=0").run((context) -> {
-					SessionRepositoryFilter<?> filter = context.getBean(SessionRepositoryFilter.class);
-					CookieHttpSessionIdResolver sessionIdResolver = (CookieHttpSessionIdResolver) ReflectionTestUtils
-							.getField(filter, "httpSessionIdResolver");
-					DefaultCookieSerializer cookieSerializer = (DefaultCookieSerializer) ReflectionTestUtils
-							.getField(sessionIdResolver, "cookieSerializer");
-					assertThat(cookieSerializer).isSameAs(context.getBean(DefaultCookieSerializer.class));
-				});
+			SessionRepositoryFilter<?> filter = context.getBean(SessionRepositoryFilter.class);
+			CookieHttpSessionIdResolver sessionIdResolver = (CookieHttpSessionIdResolver) ReflectionTestUtils
+					.getField(filter, "httpSessionIdResolver");
+			DefaultCookieSerializer cookieSerializer = (DefaultCookieSerializer) ReflectionTestUtils
+					.getField(sessionIdResolver, "cookieSerializer");
+			assertThat(cookieSerializer).isSameAs(context.getBean(DefaultCookieSerializer.class));
+		});
 	}
 
 	@Test

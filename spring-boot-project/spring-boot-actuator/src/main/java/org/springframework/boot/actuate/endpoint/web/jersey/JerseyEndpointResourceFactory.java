@@ -16,43 +16,29 @@
 
 package org.springframework.boot.actuate.endpoint.web.jersey;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import org.glassfish.jersey.process.Inflector;
+import org.glassfish.jersey.server.ContainerRequest;
+import org.glassfish.jersey.server.model.Resource;
+import org.glassfish.jersey.server.model.Resource.Builder;
+import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
+import org.springframework.boot.actuate.endpoint.InvocationContext;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
+import org.springframework.boot.actuate.endpoint.web.*;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+import reactor.core.publisher.Mono;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-
-import org.glassfish.jersey.process.Inflector;
-import org.glassfish.jersey.server.ContainerRequest;
-import org.glassfish.jersey.server.model.Resource;
-import org.glassfish.jersey.server.model.Resource.Builder;
-import reactor.core.publisher.Mono;
-
-import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
-import org.springframework.boot.actuate.endpoint.InvocationContext;
-import org.springframework.boot.actuate.endpoint.SecurityContext;
-import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
-import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
-import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
-import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
-import org.springframework.boot.actuate.endpoint.web.Link;
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
-import org.springframework.boot.actuate.endpoint.web.WebOperation;
-import org.springframework.boot.actuate.endpoint.web.WebOperationRequestPredicate;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.Principal;
+import java.util.*;
+import java.util.function.Function;
 
 /**
  * A factory for creating Jersey {@link Resource Resources} for {@link WebOperation web
@@ -67,15 +53,16 @@ public class JerseyEndpointResourceFactory {
 	/**
 	 * Creates {@link Resource Resources} for the operations of the given
 	 * {@code webEndpoints}.
-	 * @param endpointMapping the base mapping for all endpoints
-	 * @param endpoints the web endpoints
+	 *
+	 * @param endpointMapping    the base mapping for all endpoints
+	 * @param endpoints          the web endpoints
 	 * @param endpointMediaTypes media types consumed and produced by the endpoints
-	 * @param linksResolver resolver for determining links to available endpoints
+	 * @param linksResolver      resolver for determining links to available endpoints
 	 * @return the resources for the operations
 	 */
 	public Collection<Resource> createEndpointResources(EndpointMapping endpointMapping,
-			Collection<ExposableWebEndpoint> endpoints, EndpointMediaTypes endpointMediaTypes,
-			EndpointLinksResolver linksResolver) {
+														Collection<ExposableWebEndpoint> endpoints, EndpointMediaTypes endpointMediaTypes,
+														EndpointLinksResolver linksResolver) {
 		List<Resource> resources = new ArrayList<>();
 		endpoints.stream().flatMap((endpoint) -> endpoint.getOperations().stream())
 				.map((operation) -> createResource(endpointMapping, operation)).forEach(resources::add);
@@ -98,7 +85,7 @@ public class JerseyEndpointResourceFactory {
 	}
 
 	private Resource createEndpointLinksResource(String endpointPath, EndpointMediaTypes endpointMediaTypes,
-			EndpointLinksResolver linksResolver) {
+												 EndpointLinksResolver linksResolver) {
 		Builder resourceBuilder = Resource.builder().path(endpointPath);
 		resourceBuilder.addMethod("GET").produces(StringUtils.toStringArray(endpointMediaTypes.getProduced()))
 				.handledBy(new EndpointLinksInflector(linksResolver));
@@ -142,8 +129,7 @@ public class JerseyEndpointResourceFactory {
 				Object response = this.operation
 						.invoke(new InvocationContext(new JerseySecurityContext(data.getSecurityContext()), arguments));
 				return convertToJaxRsResponse(response, data.getRequest().getMethod());
-			}
-			catch (InvalidEndpointRequestException ex) {
+			} catch (InvalidEndpointRequestException ex) {
 				return Response.status(Status.BAD_REQUEST).build();
 			}
 		}
@@ -188,8 +174,7 @@ public class JerseyEndpointResourceFactory {
 				WebEndpointResponse<?> webEndpointResponse = (WebEndpointResponse<?>) response;
 				return Response.status(webEndpointResponse.getStatus())
 						.entity(convertIfNecessary(webEndpointResponse.getBody())).build();
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 			}
 		}
@@ -214,8 +199,7 @@ public class JerseyEndpointResourceFactory {
 			if (body instanceof org.springframework.core.io.Resource) {
 				try {
 					return ((org.springframework.core.io.Resource) body).getInputStream();
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					throw new IllegalStateException();
 				}
 			}

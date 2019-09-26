@@ -16,18 +16,13 @@
 
 package org.springframework.boot.logging;
 
-import java.util.Comparator;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
+
+import java.util.*;
 
 /**
  * Abstract base class for {@link LoggingSystem} implementations.
@@ -61,7 +56,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	}
 
 	private void initializeWithSpecificConfig(LoggingInitializationContext initializationContext, String configLocation,
-			LogFile logFile) {
+											  LogFile logFile) {
 		configLocation = SystemPropertyUtils.resolvePlaceholders(configLocation);
 		loadConfiguration(initializationContext, configLocation, logFile);
 	}
@@ -87,6 +82,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	 * Return any self initialization config that has been applied. By default this method
 	 * checks {@link #getStandardConfigLocations()} and assumes that any file that exists
 	 * will have been applied.
+	 *
 	 * @return the self initialization config or {@code null}
 	 */
 	protected String getSelfInitializationConfig() {
@@ -96,6 +92,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	/**
 	 * Return any spring specific initialization config that should be applied. By default
 	 * this method checks {@link #getSpringConfigLocations()}.
+	 *
 	 * @return the spring initialization config or {@code null}
 	 */
 	protected String getSpringInitializationConfig() {
@@ -114,6 +111,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 
 	/**
 	 * Return the standard config locations for this system.
+	 *
 	 * @return the standard config locations
 	 * @see #getSelfInitializationConfig()
 	 */
@@ -122,6 +120,7 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 	/**
 	 * Return the spring config locations for this system. By default this method returns
 	 * a set of locations based on {@link #getStandardConfigLocations()}.
+	 *
 	 * @return the spring config locations
 	 * @see #getSpringInitializationConfig()
 	 */
@@ -137,25 +136,28 @@ public abstract class AbstractLoggingSystem extends LoggingSystem {
 
 	/**
 	 * Load sensible defaults for the logging system.
+	 *
 	 * @param initializationContext the logging initialization context
-	 * @param logFile the file to load or {@code null} if no log file is to be written
+	 * @param logFile               the file to load or {@code null} if no log file is to be written
 	 */
 	protected abstract void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile);
 
 	/**
 	 * Load a specific configuration.
+	 *
 	 * @param initializationContext the logging initialization context
-	 * @param location the location of the configuration to load (never {@code null})
-	 * @param logFile the file to load or {@code null} if no log file is to be written
+	 * @param location              the location of the configuration to load (never {@code null})
+	 * @param logFile               the file to load or {@code null} if no log file is to be written
 	 */
 	protected abstract void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile);
+											  LogFile logFile);
 
 	/**
 	 * Reinitialize the logging system if required. Called when
 	 * {@link #getSelfInitializationConfig()} is used and the log file hasn't changed. May
 	 * be used to reload configuration (for example to pick up additional System
 	 * properties).
+	 *
 	 * @param initializationContext the logging initialization context
 	 */
 	protected void reinitialize(LoggingInitializationContext initializationContext) {

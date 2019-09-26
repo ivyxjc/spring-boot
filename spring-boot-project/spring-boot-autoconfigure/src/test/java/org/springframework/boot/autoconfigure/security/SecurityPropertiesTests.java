@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.security;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;

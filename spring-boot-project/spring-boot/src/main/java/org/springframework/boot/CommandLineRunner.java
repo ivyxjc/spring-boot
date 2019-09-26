@@ -29,14 +29,15 @@ import org.springframework.core.annotation.Order;
  * consider using {@link ApplicationRunner}.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see ApplicationRunner
+ * @since 1.0.0
  */
 @FunctionalInterface
 public interface CommandLineRunner {
 
 	/**
 	 * Callback used to run the bean.
+	 *
 	 * @param args incoming main method arguments
 	 * @throws Exception on error
 	 */

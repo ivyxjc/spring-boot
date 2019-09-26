@@ -15,13 +15,7 @@
  */
 package org.springframework.boot.autoconfigure.security.oauth2.client.reactive;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -39,6 +33,11 @@ import org.springframework.security.oauth2.client.registration.ReactiveClientReg
 import org.springframework.security.oauth2.client.web.server.AuthenticatedPrincipalServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import reactor.core.publisher.Flux;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,10 +48,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ReactiveOAuth2ClientAutoConfigurationTests {
 
+	private static final String REGISTRATION_PREFIX = "spring.security.oauth2.client.registration";
 	private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
 			.withConfiguration(AutoConfigurations.of(ReactiveOAuth2ClientAutoConfiguration.class));
-
-	private static final String REGISTRATION_PREFIX = "spring.security.oauth2.client.registration";
 
 	@Test
 	public void autoConfigurationShouldBackOffForServletEnvironments() {

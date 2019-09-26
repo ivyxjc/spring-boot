@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.amqp;
 
-import java.util.List;
-
 import org.springframework.amqp.rabbit.config.AbstractRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -28,6 +26,8 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.boot.autoconfigure.amqp.RabbitProperties.ListenerRetry;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * Configure {@link RabbitListenerContainerFactory} with sensible defaults.
@@ -50,6 +50,7 @@ public abstract class AbstractRabbitListenerContainerFactoryConfigurer<T extends
 	/**
 	 * Set the {@link MessageConverter} to use or {@code null} if the out-of-the-box
 	 * converter should be used.
+	 *
 	 * @param messageConverter the {@link MessageConverter}
 	 */
 	protected void setMessageConverter(MessageConverter messageConverter) {
@@ -58,6 +59,7 @@ public abstract class AbstractRabbitListenerContainerFactoryConfigurer<T extends
 
 	/**
 	 * Set the {@link MessageRecoverer} to use or {@code null} to rely on the default.
+	 *
 	 * @param messageRecoverer the {@link MessageRecoverer}
 	 */
 	protected void setMessageRecoverer(MessageRecoverer messageRecoverer) {
@@ -66,18 +68,11 @@ public abstract class AbstractRabbitListenerContainerFactoryConfigurer<T extends
 
 	/**
 	 * Set the {@link RabbitRetryTemplateCustomizer} instances to use.
+	 *
 	 * @param retryTemplateCustomizers the retry template customizers
 	 */
 	protected void setRetryTemplateCustomizers(List<RabbitRetryTemplateCustomizer> retryTemplateCustomizers) {
 		this.retryTemplateCustomizers = retryTemplateCustomizers;
-	}
-
-	/**
-	 * Set the {@link RabbitProperties} to use.
-	 * @param rabbitProperties the {@link RabbitProperties}
-	 */
-	protected void setRabbitProperties(RabbitProperties rabbitProperties) {
-		this.rabbitProperties = rabbitProperties;
 	}
 
 	protected final RabbitProperties getRabbitProperties() {
@@ -85,16 +80,26 @@ public abstract class AbstractRabbitListenerContainerFactoryConfigurer<T extends
 	}
 
 	/**
+	 * Set the {@link RabbitProperties} to use.
+	 *
+	 * @param rabbitProperties the {@link RabbitProperties}
+	 */
+	protected void setRabbitProperties(RabbitProperties rabbitProperties) {
+		this.rabbitProperties = rabbitProperties;
+	}
+
+	/**
 	 * Configure the specified rabbit listener container factory. The factory can be
 	 * further tuned and default settings can be overridden.
-	 * @param factory the {@link AbstractRabbitListenerContainerFactory} instance to
-	 * configure
+	 *
+	 * @param factory           the {@link AbstractRabbitListenerContainerFactory} instance to
+	 *                          configure
 	 * @param connectionFactory the {@link ConnectionFactory} to use
 	 */
 	public abstract void configure(T factory, ConnectionFactory connectionFactory);
 
 	protected void configure(T factory, ConnectionFactory connectionFactory,
-			RabbitProperties.AmqpContainer configuration) {
+							 RabbitProperties.AmqpContainer configuration) {
 		Assert.notNull(factory, "Factory must not be null");
 		Assert.notNull(connectionFactory, "ConnectionFactory must not be null");
 		Assert.notNull(configuration, "Configuration must not be null");

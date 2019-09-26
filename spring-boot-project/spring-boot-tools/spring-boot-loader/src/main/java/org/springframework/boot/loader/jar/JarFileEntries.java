@@ -16,20 +16,15 @@
 
 package org.springframework.boot.loader.jar;
 
+import org.springframework.boot.loader.data.RandomAccessData;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
-
-import org.springframework.boot.loader.data.RandomAccessData;
 
 /**
  * Provides access to entries from a {@link JarFile}. In order to reduce memory
@@ -47,50 +42,31 @@ import org.springframework.boot.loader.data.RandomAccessData;
  */
 class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 
+	protected static final int ENTRY_CACHE_SIZE = 25;
 	private static final String META_INF_PREFIX = "META-INF/";
-
 	private static final Name MULTI_RELEASE = new Name("Multi-Release");
-
 	private static final int BASE_VERSION = 8;
-
 	private static final int RUNTIME_VERSION;
-
-	static {
-		int version;
-		try {
-			Object runtimeVersion = Runtime.class.getMethod("version").invoke(null);
-			version = (int) runtimeVersion.getClass().getMethod("major").invoke(runtimeVersion);
-		}
-		catch (Throwable ex) {
-			version = 8;
-		}
-		RUNTIME_VERSION = version;
-	}
-
 	private static final long LOCAL_FILE_HEADER_SIZE = 30;
 
 	private static final char SLASH = '/';
 
 	private static final char NO_SUFFIX = 0;
 
-	protected static final int ENTRY_CACHE_SIZE = 25;
+	static {
+		int version;
+		try {
+			Object runtimeVersion = Runtime.class.getMethod("version").invoke(null);
+			version = (int) runtimeVersion.getClass().getMethod("major").invoke(runtimeVersion);
+		} catch (Throwable ex) {
+			version = 8;
+		}
+		RUNTIME_VERSION = version;
+	}
 
 	private final JarFile jarFile;
 
 	private final JarEntryFilter filter;
-
-	private RandomAccessData centralDirectoryData;
-
-	private int size;
-
-	private int[] hashCodes;
-
-	private int[] centralDirectoryOffsets;
-
-	private int[] positions;
-
-	private Boolean multiReleaseJar;
-
 	private final Map<Integer, FileHeader> entriesCache = Collections
 			.synchronizedMap(new LinkedHashMap<Integer, FileHeader>(16, 0.75f, true) {
 
@@ -103,6 +79,12 @@ class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 				}
 
 			});
+	private RandomAccessData centralDirectoryData;
+	private int size;
+	private int[] hashCodes;
+	private int[] centralDirectoryOffsets;
+	private int[] positions;
+	private Boolean multiReleaseJar;
 
 	JarFileEntries(JarFile jarFile, JarEntryFilter filter) {
 		this.jarFile = jarFile;
@@ -269,13 +251,11 @@ class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 			Manifest manifest = this.jarFile.getManifest();
 			if (manifest == null) {
 				multiRelease = false;
-			}
-			else {
+			} else {
 				Attributes attributes = manifest.getMainAttributes();
 				multiRelease = attributes.containsKey(MULTI_RELEASE);
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			multiRelease = false;
 		}
 		this.multiReleaseJar = multiRelease;
@@ -283,7 +263,7 @@ class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 	}
 
 	private <T extends FileHeader> T doGetEntry(CharSequence name, Class<T> type, boolean cacheEntry,
-			AsciiBytes nameAlias) {
+												AsciiBytes nameAlias) {
 		int hashCode = AsciiBytes.hashCode(name);
 		T entry = getEntry(hashCode, name, NO_SUFFIX, type, cacheEntry, nameAlias);
 		if (entry == null) {
@@ -294,7 +274,7 @@ class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 	}
 
 	private <T extends FileHeader> T getEntry(int hashCode, CharSequence name, char suffix, Class<T> type,
-			boolean cacheEntry, AsciiBytes nameAlias) {
+											  boolean cacheEntry, AsciiBytes nameAlias) {
 		int index = getFirstIndex(hashCode);
 		while (index >= 0 && index < this.size && this.hashCodes[index] == hashCode) {
 			T entry = getEntry(index, type, cacheEntry, nameAlias);
@@ -319,8 +299,7 @@ class JarFileEntries implements CentralDirectoryVisitor, Iterable<JarEntry> {
 				this.entriesCache.put(index, entry);
 			}
 			return (T) entry;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

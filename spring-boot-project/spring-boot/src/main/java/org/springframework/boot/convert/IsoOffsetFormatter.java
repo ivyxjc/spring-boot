@@ -16,12 +16,12 @@
 
 package org.springframework.boot.convert;
 
+import org.springframework.format.Formatter;
+
 import java.text.ParseException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-
-import org.springframework.format.Formatter;
 
 /**
  * A {@link Formatter} for {@link OffsetDateTime} that uses

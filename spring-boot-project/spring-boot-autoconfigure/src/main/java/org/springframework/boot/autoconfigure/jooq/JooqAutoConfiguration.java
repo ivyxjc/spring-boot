@@ -16,24 +16,12 @@
 
 package org.springframework.boot.autoconfigure.jooq;
 
-import javax.sql.DataSource;
-
-import org.jooq.ConnectionProvider;
-import org.jooq.DSLContext;
-import org.jooq.ExecuteListenerProvider;
-import org.jooq.ExecutorProvider;
-import org.jooq.RecordListenerProvider;
-import org.jooq.RecordMapperProvider;
-import org.jooq.RecordUnmapperProvider;
-import org.jooq.TransactionListenerProvider;
-import org.jooq.TransactionProvider;
-import org.jooq.VisitListenerProvider;
+import org.jooq.*;
 import org.jooq.conf.Settings;
 import org.jooq.impl.DataSourceConnectionProvider;
 import org.jooq.impl.DefaultConfiguration;
 import org.jooq.impl.DefaultDSLContext;
 import org.jooq.impl.DefaultExecuteListenerProvider;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -49,6 +37,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.sql.DataSource;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for JOOQ.
  *
@@ -60,7 +50,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @Configuration
 @ConditionalOnClass(DSLContext.class)
 @ConditionalOnBean(DataSource.class)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, TransactionAutoConfiguration.class })
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, TransactionAutoConfiguration.class})
 public class JooqAutoConfiguration {
 
 	@Bean
@@ -111,14 +101,14 @@ public class JooqAutoConfiguration {
 		private final ExecutorProvider executorProvider;
 
 		public DslContextConfiguration(JooqProperties properties, ConnectionProvider connectionProvider,
-				DataSource dataSource, ObjectProvider<TransactionProvider> transactionProvider,
-				ObjectProvider<RecordMapperProvider> recordMapperProvider,
-				ObjectProvider<RecordUnmapperProvider> recordUnmapperProvider, ObjectProvider<Settings> settings,
-				ObjectProvider<RecordListenerProvider[]> recordListenerProviders,
-				ExecuteListenerProvider[] executeListenerProviders,
-				ObjectProvider<VisitListenerProvider[]> visitListenerProviders,
-				ObjectProvider<TransactionListenerProvider[]> transactionListenerProviders,
-				ObjectProvider<ExecutorProvider> executorProvider) {
+									   DataSource dataSource, ObjectProvider<TransactionProvider> transactionProvider,
+									   ObjectProvider<RecordMapperProvider> recordMapperProvider,
+									   ObjectProvider<RecordUnmapperProvider> recordUnmapperProvider, ObjectProvider<Settings> settings,
+									   ObjectProvider<RecordListenerProvider[]> recordListenerProviders,
+									   ExecuteListenerProvider[] executeListenerProviders,
+									   ObjectProvider<VisitListenerProvider[]> visitListenerProviders,
+									   ObjectProvider<TransactionListenerProvider[]> transactionListenerProviders,
+									   ObjectProvider<ExecutorProvider> executorProvider) {
 			this.properties = properties;
 			this.connection = connectionProvider;
 			this.dataSource = dataSource;

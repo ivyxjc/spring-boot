@@ -16,17 +16,8 @@
 
 package org.springframework.boot.test.web.client;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -36,6 +27,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -58,7 +56,7 @@ public class TestRestTemplateContextCustomizerIntegrationTests {
 	}
 
 	@Configuration
-	@Import({ TestServlet.class, NoTestRestTemplateBeanChecker.class })
+	@Import({TestServlet.class, NoTestRestTemplateBeanChecker.class})
 	static class TestConfig {
 
 		@Bean

@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.data.jdbc;
 
-import java.util.Optional;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -36,6 +34,8 @@ import org.springframework.data.relational.core.mapping.NamingStrategy;
 import org.springframework.data.relational.core.mapping.RelationalMappingContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 
+import java.util.Optional;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Data's JDBC Repositories.
  * <p>
@@ -44,14 +44,14 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
  * {@link JdbcConfiguration} subclass.
  *
  * @author Andy Wilkinson
- * @since 2.1.0
  * @see EnableJdbcRepositories
+ * @since 2.1.0
  */
 @Configuration
 @ConditionalOnBean(NamedParameterJdbcOperations.class)
-@ConditionalOnClass({ NamedParameterJdbcOperations.class, JdbcConfiguration.class })
+@ConditionalOnClass({NamedParameterJdbcOperations.class, JdbcConfiguration.class})
 @ConditionalOnProperty(prefix = "spring.data.jdbc.repositories", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 @AutoConfigureAfter(JdbcTemplateAutoConfiguration.class)
 public class JdbcRepositoriesAutoConfiguration {
 

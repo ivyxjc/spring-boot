@@ -16,15 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.ServletEndpointManagementContextConfiguration;
@@ -50,6 +43,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.lang.annotation.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -59,7 +54,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT,
-		properties = "management.endpoints.web.exposure.include=jolokia")
+				properties = "management.endpoints.web.exposure.include=jolokia")
 @DirtiesContext
 public class JolokiaEndpointAutoConfigurationIntegrationTests {
 
@@ -98,23 +93,23 @@ public class JolokiaEndpointAutoConfigurationIntegrationTests {
 		assertThat(response.getBody()).contains("NonHeapMemoryUsage");
 	}
 
-	@Configuration
-	@MinimalWebConfiguration
-	@Import({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			JolokiaEndpointAutoConfiguration.class, EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
-			ServletManagementContextAutoConfiguration.class, ManagementContextAutoConfiguration.class,
-			ServletEndpointManagementContextConfiguration.class })
-	protected static class Application {
-
-	}
-
 	@Target(ElementType.TYPE)
 	@Retention(RetentionPolicy.RUNTIME)
 	@Documented
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-			ValidationAutoConfiguration.class, WebMvcAutoConfiguration.class, JacksonAutoConfiguration.class,
-			ErrorMvcAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class })
+	@Import({ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+					ValidationAutoConfiguration.class, WebMvcAutoConfiguration.class, JacksonAutoConfiguration.class,
+					ErrorMvcAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
 	protected @interface MinimalWebConfiguration {
+
+	}
+
+	@Configuration
+	@MinimalWebConfiguration
+	@Import({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+					JolokiaEndpointAutoConfiguration.class, EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
+					ServletManagementContextAutoConfiguration.class, ManagementContextAutoConfiguration.class,
+					ServletEndpointManagementContextConfiguration.class})
+	protected static class Application {
 
 	}
 

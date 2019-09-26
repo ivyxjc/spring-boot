@@ -16,43 +16,27 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.Processor;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
-import javax.lang.model.util.Elements;
-import javax.tools.Diagnostic.Kind;
-
 import org.springframework.boot.configurationprocessor.fieldvalues.FieldValuesParser;
 import org.springframework.boot.configurationprocessor.fieldvalues.javac.JavaCompilerFieldValuesParser;
 import org.springframework.boot.configurationprocessor.metadata.ConfigurationMetadata;
 import org.springframework.boot.configurationprocessor.metadata.InvalidConfigurationMetadataException;
 import org.springframework.boot.configurationprocessor.metadata.ItemDeprecation;
 import org.springframework.boot.configurationprocessor.metadata.ItemMetadata;
+
+import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.*;
+import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
+import javax.tools.Diagnostic.Kind;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.time.Duration;
+import java.util.*;
 
 /**
  * Annotation {@link Processor} that writes meta-data file for
@@ -64,7 +48,7 @@ import org.springframework.boot.configurationprocessor.metadata.ItemMetadata;
  * @author Jonas Keßler
  * @since 1.2.0
  */
-@SupportedAnnotationTypes({ "*" })
+@SupportedAnnotationTypes({"*"})
 public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor {
 
 	static final String ADDITIONAL_METADATA_LOCATIONS_OPTION = "org.springframework.boot."
@@ -145,8 +129,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 		this.metadataCollector = new MetadataCollector(env, this.metadataStore.readMetadata());
 		try {
 			this.fieldValuesParser = new JavaCompilerFieldValuesParser(env);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			this.fieldValuesParser = FieldValuesParser.NONE;
 			logWarning("Field value processing of @ConfigurationProperty meta-data is " + "not supported");
 		}
@@ -169,8 +152,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 		if (roundEnv.processingOver()) {
 			try {
 				writeMetaData();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Failed to write metadata", ex);
 			}
 		}
@@ -178,7 +160,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private Map<Element, List<Element>> getElementsAnnotatedOrMetaAnnotatedWith(RoundEnvironment roundEnv,
-			TypeElement annotation) {
+																				TypeElement annotation) {
 		DeclaredType annotationType = (DeclaredType) annotation.asType();
 		Map<Element, List<Element>> result = new LinkedHashMap<>();
 		for (Element element : roundEnv.getRootElements()) {
@@ -194,7 +176,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private boolean collectElementsAnnotatedOrMetaAnnotatedWith(DeclaredType annotationType,
-			LinkedList<Element> stack) {
+																LinkedList<Element> stack) {
 		Element element = stack.peekLast();
 		for (AnnotationMirror annotation : this.processingEnv.getElementUtils().getAllAnnotationMirrors(element)) {
 			Element annotationElement = annotation.getAnnotationType().asElement();
@@ -218,13 +200,11 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 				String prefix = getPrefix(annotation);
 				if (element instanceof TypeElement) {
 					processAnnotatedTypeElement(prefix, (TypeElement) element);
-				}
-				else if (element instanceof ExecutableElement) {
+				} else if (element instanceof ExecutableElement) {
 					processExecutableElement(prefix, (ExecutableElement) element);
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Error processing configuration meta-data on " + element, ex);
 		}
 	}
@@ -244,8 +224,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 				if (this.metadataCollector.hasSimilarGroup(group)) {
 					this.processingEnv.getMessager().printMessage(Kind.ERROR,
 							"Duplicate `@ConfigurationProperties` definition for prefix '" + prefix + "'", element);
-				}
-				else {
+				} else {
 					this.metadataCollector.add(group);
 					processTypeElement(prefix, (TypeElement) returns, element);
 				}
@@ -263,7 +242,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private void processSimpleTypes(String prefix, TypeElement element, ExecutableElement source,
-			TypeElementMembers members, Map<String, Object> fieldValues) {
+									TypeElementMembers members, Map<String, Object> fieldValues) {
 		members.getPublicGetters().forEach((name, getter) -> {
 			TypeMirror returnType = getter.getReturnType();
 			ExecutableElement setter = members.getPublicSetter(name, returnType);
@@ -300,7 +279,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private void processSimpleLombokTypes(String prefix, TypeElement element, ExecutableElement source,
-			TypeElementMembers members, Map<String, Object> fieldValues) {
+										  TypeElementMembers members, Map<String, Object> fieldValues) {
 		members.getFields().forEach((name, field) -> {
 			if (!isLombokField(field, element)) {
 				return;
@@ -324,7 +303,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private void processNestedTypes(String prefix, TypeElement element, ExecutableElement source,
-			TypeElementMembers members) {
+									TypeElementMembers members) {
 		members.getPublicGetters().forEach((name, getter) -> {
 			VariableElement field = members.getFields().get(name);
 			processNestedType(prefix, element, source, name, getter, field, getter.getReturnType());
@@ -332,7 +311,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private void processNestedLombokTypes(String prefix, TypeElement element, ExecutableElement source,
-			TypeElementMembers members) {
+										  TypeElementMembers members) {
 		members.getFields().forEach((name, field) -> {
 			if (isLombokField(field, element)) {
 				ExecutableElement getter = members.getPublicGetter(name, field.asType());
@@ -352,10 +331,11 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	/**
 	 * Determine if the specified {@link VariableElement field} defines a public accessor
 	 * using lombok annotations.
-	 * @param field the field to inspect
+	 *
+	 * @param field   the field to inspect
 	 * @param element the parent element of the field (i.e. its holding class)
-	 * @param getter {@code true} to look for the read accessor, {@code false} for the
-	 * write accessor
+	 * @param getter  {@code true} to look for the read accessor, {@code false} for the
+	 *                write accessor
 	 * @return {@code true} if this field has a public accessor of the specified type
 	 */
 	private boolean hasLombokPublicAccessor(VariableElement field, TypeElement element, boolean getter) {
@@ -378,7 +358,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 	}
 
 	private void processNestedType(String prefix, TypeElement element, ExecutableElement source, String name,
-			ExecutableElement getter, VariableElement field, TypeMirror returnType) {
+								   ExecutableElement getter, VariableElement field, TypeMirror returnType) {
 		Element returnElement = this.processingEnv.getTypeUtils().asElement(returnType);
 		boolean isNested = isNested(returnElement, field, element);
 		AnnotationMirror annotation = getAnnotation(getter, configurationPropertiesAnnotation());
@@ -398,8 +378,7 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 			if (element instanceof TypeElement) {
 				processEndpoint(annotation, (TypeElement) element);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Error processing configuration meta-data on " + element, ex);
 		}
 	}
@@ -541,14 +520,11 @@ public class ConfigurationMetadataAnnotationProcessor extends AbstractProcessor 
 			ConfigurationMetadata merged = new ConfigurationMetadata(metadata);
 			merged.merge(this.metadataStore.readAdditionalMetadata());
 			return merged;
-		}
-		catch (FileNotFoundException ex) {
+		} catch (FileNotFoundException ex) {
 			// No additional metadata
-		}
-		catch (InvalidConfigurationMetadataException ex) {
+		} catch (InvalidConfigurationMetadataException ex) {
 			log(ex.getKind(), ex.getMessage());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logWarning("Unable to merge additional metadata");
 			logWarning(getStackTrace(ex));
 		}

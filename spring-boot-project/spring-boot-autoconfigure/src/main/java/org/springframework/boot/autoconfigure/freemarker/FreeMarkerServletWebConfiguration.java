@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Servlet;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +32,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.Servlet;
+
 /**
  * Configuration for FreeMarker when used in a servlet web context.
  *
@@ -43,7 +43,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@ConditionalOnClass({ Servlet.class, FreeMarkerConfigurer.class })
+@ConditionalOnClass({Servlet.class, FreeMarkerConfigurer.class})
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 class FreeMarkerServletWebConfiguration extends AbstractFreeMarkerConfiguration {
 

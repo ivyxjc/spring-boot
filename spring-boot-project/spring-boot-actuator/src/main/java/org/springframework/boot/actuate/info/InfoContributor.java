@@ -27,6 +27,7 @@ public interface InfoContributor {
 
 	/**
 	 * Contributes additional details using the specified {@link Info.Builder Builder}.
+	 *
 	 * @param builder the builder to use
 	 */
 	void contribute(Info.Builder builder);

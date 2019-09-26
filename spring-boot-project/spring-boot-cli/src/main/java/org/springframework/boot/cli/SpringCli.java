@@ -16,14 +16,6 @@
 
 package org.springframework.boot.cli;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
-
 import org.springframework.boot.cli.command.CommandFactory;
 import org.springframework.boot.cli.command.CommandRunner;
 import org.springframework.boot.cli.command.core.HelpCommand;
@@ -34,14 +26,22 @@ import org.springframework.boot.loader.tools.LogbackInitializer;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.SystemPropertyUtils;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
+
 /**
  * Spring Command Line Interface. This is the main entry-point for the Spring command line
  * application.
  *
  * @author Phillip Webb
- * @since 1.0.0
  * @see #main(String...)
  * @see CommandRunner
+ * @since 1.0.0
  */
 public final class SpringCli {
 
@@ -88,8 +88,7 @@ public final class SpringCli {
 				if (file.getName().endsWith(".jar")) {
 					try {
 						urls.add(file.toURI().toURL());
-					}
-					catch (MalformedURLException ex) {
+					} catch (MalformedURLException ex) {
 						throw new IllegalStateException(ex);
 					}
 				}

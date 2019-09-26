@@ -16,16 +16,6 @@
 
 package org.springframework.boot.web.servlet.error;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -37,6 +27,15 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Default implementation of {@link ErrorAttributes}. Provides the following attributes
@@ -56,8 +55,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Dave Syer
  * @author Stephane Nicoll
  * @author Vedran Pavic
- * @since 2.0.0
  * @see ErrorAttributes
+ * @since 2.0.0
  */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class DefaultErrorAttributes implements ErrorAttributes, HandlerExceptionResolver, Ordered {
@@ -76,6 +75,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 
 	/**
 	 * Create a new {@link DefaultErrorAttributes} instance.
+	 *
 	 * @param includeException whether to include the "exception" attribute
 	 */
 	public DefaultErrorAttributes(boolean includeException) {
@@ -89,7 +89,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-			Exception ex) {
+										 Exception ex) {
 		storeErrorAttributes(request, ex);
 		return null;
 	}
@@ -118,15 +118,14 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 		errorAttributes.put("status", status);
 		try {
 			errorAttributes.put("error", HttpStatus.valueOf(status).getReasonPhrase());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Unable to obtain a reason
 			errorAttributes.put("error", "Http Status " + status);
 		}
 	}
 
 	private void addErrorDetails(Map<String, Object> errorAttributes, WebRequest webRequest,
-			boolean includeStackTrace) {
+								 boolean includeStackTrace) {
 		Throwable error = getError(webRequest);
 		if (error != null) {
 			while (error instanceof ServletException && error.getCause() != null) {
@@ -157,8 +156,7 @@ public class DefaultErrorAttributes implements ErrorAttributes, HandlerException
 			errorAttributes.put("errors", result.getAllErrors());
 			errorAttributes.put("message", "Validation failed for object='" + result.getObjectName()
 					+ "'. Error count: " + result.getErrorCount());
-		}
-		else {
+		} else {
 			errorAttributes.put("message", "No errors");
 		}
 	}

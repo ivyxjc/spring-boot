@@ -16,14 +16,14 @@
 
 package org.springframework.boot.ansi;
 
-import java.awt.Color;
+import org.springframework.util.Assert;
+
+import java.awt.*;
 import java.awt.color.ColorSpace;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.springframework.util.Assert;
 
 /**
  * Utility for working with {@link AnsiColor} in the context of {@link Color AWT Colors}.
@@ -112,7 +112,7 @@ public final class AnsiColors {
 			double l = (f(y) - 16.0) * 116.0;
 			double a = (f(x) - f(y)) * 500.0;
 			double b = (f(y) - f(z)) * 200.0;
-			return new float[] { (float) l, (float) a, (float) b };
+			return new float[]{(float) l, (float) a, (float) b};
 		}
 
 		private double f(double t) {

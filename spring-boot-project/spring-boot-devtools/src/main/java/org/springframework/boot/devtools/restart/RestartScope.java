@@ -16,23 +16,19 @@
 
 package org.springframework.boot.devtools.restart;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.annotation.Scope;
+
+import java.lang.annotation.*;
 
 /**
  * Restart {@code @Scope} Annotation used to indicate that a bean should remain between
  * restarts.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see RestartScopeInitializer
+ * @since 1.3.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Scope("restart")

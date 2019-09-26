@@ -16,10 +16,10 @@
 
 package org.springframework.boot.configurationprocessor.fieldvalues.javac;
 
-import javax.annotation.processing.ProcessingEnvironment;
-
 import org.springframework.boot.configurationprocessor.fieldvalues.AbstractFieldValuesProcessorTests;
 import org.springframework.boot.configurationprocessor.fieldvalues.FieldValuesParser;
+
+import javax.annotation.processing.ProcessingEnvironment;
 
 import static org.junit.Assume.assumeNoException;
 
@@ -34,8 +34,7 @@ public class JavaCompilerFieldValuesProcessorTests extends AbstractFieldValuesPr
 	protected FieldValuesParser createProcessor(ProcessingEnvironment env) {
 		try {
 			return new JavaCompilerFieldValuesParser(env);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			assumeNoException(ex);
 			throw new IllegalStateException();
 		}

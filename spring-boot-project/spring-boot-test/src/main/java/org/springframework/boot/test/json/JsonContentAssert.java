@@ -16,30 +16,22 @@
 
 package org.springframework.boot.test.json;
 
+import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.JsonPath;
+import org.assertj.core.api.*;
+import org.skyscreamer.jsonassert.JSONCompare;
+import org.skyscreamer.jsonassert.JSONCompareMode;
+import org.skyscreamer.jsonassert.JSONCompareResult;
+import org.skyscreamer.jsonassert.comparator.JSONComparator;
+import org.springframework.core.io.Resource;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
-
-import com.jayway.jsonpath.Configuration;
-import com.jayway.jsonpath.JsonPath;
-import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.api.AbstractBooleanAssert;
-import org.assertj.core.api.AbstractCharSequenceAssert;
-import org.assertj.core.api.AbstractObjectAssert;
-import org.assertj.core.api.Assert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.ListAssert;
-import org.assertj.core.api.MapAssert;
-import org.skyscreamer.jsonassert.JSONCompare;
-import org.skyscreamer.jsonassert.JSONCompareMode;
-import org.skyscreamer.jsonassert.JSONCompareResult;
-import org.skyscreamer.jsonassert.comparator.JSONComparator;
-
-import org.springframework.core.io.Resource;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * AssertJ {@link Assert} for {@link JsonContent}.
@@ -57,8 +49,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Create a new {@link JsonContentAssert} instance that will load resources as UTF-8.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param json the actual JSON content
+	 * @param json              the actual JSON content
 	 */
 	public JsonContentAssert(Class<?> resourceLoadClass, CharSequence json) {
 		this(resourceLoadClass, null, json);
@@ -67,9 +60,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Create a new {@link JsonContentAssert} instance that will load resources in the
 	 * given {@code charset}.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param charset the charset of the JSON resources
-	 * @param json the actual JSON content
+	 * @param charset           the charset of the JSON resources
+	 * @param json              the actual JSON content
 	 * @since 1.4.1
 	 */
 	public JsonContentAssert(Class<?> resourceLoadClass, Charset charset, CharSequence json) {
@@ -79,10 +73,11 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Create a new {@link JsonContentAssert} instance that will load resources in the
 	 * given {@code charset}.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param charset the charset of the JSON resources
-	 * @param json the actual JSON content
-	 * @param configuration the json-path configuration
+	 * @param charset           the charset of the JSON resources
+	 * @param json              the actual JSON content
+	 * @param configuration     the json-path configuration
 	 */
 	JsonContentAssert(Class<?> resourceLoadClass, Charset charset, CharSequence json, Configuration configuration) {
 		super(json, JsonContentAssert.class);
@@ -93,6 +88,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Overridden version of {@code isEqualTo} to perform JSON tests based on the object
 	 * type.
+	 *
 	 * @see org.assertj.core.api.AbstractAssert#isEqualTo(java.lang.Object)
 	 */
 	@Override
@@ -120,8 +116,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * to the specified JSON. The {@code expected} value can contain the JSON itself or,
 	 * if it ends with {@code .json}, the name of a resource to be loaded using
 	 * {@code resourceLoadClass}.
+	 *
 	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *                 JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
 	 */
@@ -133,7 +130,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#LENIENT leniently} equal
 	 * to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -146,6 +144,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#LENIENT leniently} equal
 	 * to the specified JSON bytes.
+	 *
 	 * @param expected the expected JSON bytes
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -158,6 +157,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#LENIENT leniently} equal
 	 * to the specified JSON file.
+	 *
 	 * @param expected a file containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -170,6 +170,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#LENIENT leniently} equal
 	 * to the specified JSON input stream.
+	 *
 	 * @param expected an input stream containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -182,6 +183,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#LENIENT leniently} equal
 	 * to the specified JSON resource.
+	 *
 	 * @param expected a resource containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -196,8 +198,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * the specified JSON. The {@code expected} value can contain the JSON itself or, if
 	 * it ends with {@code .json}, the name of a resource to be loaded using
 	 * {@code resourceLoadClass}.
+	 *
 	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *                 JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
 	 */
@@ -209,7 +212,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#STRICT strictly} equal to
 	 * the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -222,6 +226,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#STRICT strictly} equal to
 	 * the specified JSON bytes.
+	 *
 	 * @param expected the expected JSON bytes
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -233,6 +238,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#STRICT strictly} equal to
 	 * the specified JSON file.
+	 *
 	 * @param expected a file containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -245,6 +251,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#STRICT strictly} equal to
 	 * the specified JSON input stream.
+	 *
 	 * @param expected an input stream containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -257,6 +264,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is {@link JSONCompareMode#STRICT strictly} equal to
 	 * the specified JSON resource.
+	 *
 	 * @param expected a resource containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -270,8 +278,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * Verifies that the actual value is equal to the specified JSON. The {@code expected}
 	 * value can contain the JSON itself or, if it ends with {@code .json}, the name of a
 	 * resource to be loaded using {@code resourceLoadClass}.
-	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *
+	 * @param expected    the expected JSON or the name of a resource containing the expected
+	 *                    JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -283,9 +292,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
-	 * @param compareMode the compare mode used when checking
+	 * @param compareMode       the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
 	 */
@@ -296,7 +306,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON bytes.
-	 * @param expected the expected JSON bytes
+	 *
+	 * @param expected    the expected JSON bytes
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -308,7 +319,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON file.
-	 * @param expected a file containing the expected JSON
+	 *
+	 * @param expected    a file containing the expected JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -320,7 +332,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON input stream.
-	 * @param expected an input stream containing the expected JSON
+	 *
+	 * @param expected    an input stream containing the expected JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -331,7 +344,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON resource.
-	 * @param expected a resource containing the expected JSON
+	 *
+	 * @param expected    a resource containing the expected JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -345,8 +359,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * Verifies that the actual value is equal to the specified JSON. The {@code expected}
 	 * value can contain the JSON itself or, if it ends with {@code .json}, the name of a
 	 * resource to be loaded using {@code resourceLoadClass}.
-	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *
+	 * @param expected   the expected JSON or the name of a resource containing the expected
+	 *                   JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -358,9 +373,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
-	 * @param comparator the comparator used when checking
+	 * @param comparator        the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
 	 */
@@ -371,7 +387,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON bytes.
-	 * @param expected the expected JSON bytes
+	 *
+	 * @param expected   the expected JSON bytes
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -383,7 +400,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON file.
-	 * @param expected a file containing the expected JSON
+	 *
+	 * @param expected   a file containing the expected JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -395,7 +413,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON input stream.
-	 * @param expected an input stream containing the expected JSON
+	 *
+	 * @param expected   an input stream containing the expected JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -407,7 +426,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is equal to the specified JSON resource.
-	 * @param expected a resource containing the expected JSON
+	 *
+	 * @param expected   a resource containing the expected JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is not equal to the given one
@@ -420,6 +440,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Overridden version of {@code isNotEqualTo} to perform JSON tests based on the
 	 * object type.
+	 *
 	 * @see org.assertj.core.api.AbstractAssert#isEqualTo(java.lang.Object)
 	 */
 	@Override
@@ -447,8 +468,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * equal to the specified JSON. The {@code expected} value can contain the JSON itself
 	 * or, if it ends with {@code .json}, the name of a resource to be loaded using
 	 * {@code resourceLoadClass}.
+	 *
 	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *                 JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
 	 */
@@ -460,7 +482,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#LENIENT leniently}
 	 * equal to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -473,6 +496,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#LENIENT leniently}
 	 * equal to the specified JSON bytes.
+	 *
 	 * @param expected the expected JSON bytes
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -485,6 +509,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#LENIENT leniently}
 	 * equal to the specified JSON file.
+	 *
 	 * @param expected a file containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -497,6 +522,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#LENIENT leniently}
 	 * equal to the specified JSON input stream.
+	 *
 	 * @param expected an input stream containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -509,6 +535,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#LENIENT leniently}
 	 * equal to the specified JSON resource.
+	 *
 	 * @param expected a resource containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -522,8 +549,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * to the specified JSON. The {@code expected} value can contain the JSON itself or,
 	 * if it ends with {@code .json}, the name of a resource to be loaded using
 	 * {@code resourceLoadClass}.
+	 *
 	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *                 JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
 	 */
@@ -535,7 +563,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#STRICT strictly} equal
 	 * to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -548,6 +577,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#STRICT strictly} equal
 	 * to the specified JSON bytes.
+	 *
 	 * @param expected the expected JSON bytes
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -560,6 +590,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#STRICT strictly} equal
 	 * to the specified JSON file.
+	 *
 	 * @param expected a file containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -572,6 +603,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#STRICT strictly} equal
 	 * to the specified JSON input stream.
+	 *
 	 * @param expected an input stream containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -584,6 +616,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verifies that the actual value is not {@link JSONCompareMode#STRICT strictly} equal
 	 * to the specified JSON resource.
+	 *
 	 * @param expected a resource containing the expected JSON
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -597,8 +630,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * Verifies that the actual value is not equal to the specified JSON. The
 	 * {@code expected} value can contain the JSON itself or, if it ends with
 	 * {@code .json}, the name of a resource to be loaded using {@code resourceLoadClass}.
-	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *
+	 * @param expected    the expected JSON or the name of a resource containing the expected
+	 *                    JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -610,9 +644,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
-	 * @param compareMode the compare mode used when checking
+	 * @param compareMode       the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
 	 */
@@ -623,7 +658,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON bytes.
-	 * @param expected the expected JSON bytes
+	 *
+	 * @param expected    the expected JSON bytes
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -635,7 +671,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON file.
-	 * @param expected a file containing the expected JSON
+	 *
+	 * @param expected    a file containing the expected JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -647,7 +684,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON input stream.
-	 * @param expected an input stream containing the expected JSON
+	 *
+	 * @param expected    an input stream containing the expected JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -659,7 +697,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON resource.
-	 * @param expected a resource containing the expected JSON
+	 *
+	 * @param expected    a resource containing the expected JSON
 	 * @param compareMode the compare mode used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -673,8 +712,9 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * Verifies that the actual value is not equal to the specified JSON. The
 	 * {@code expected} value can contain the JSON itself or, if it ends with
 	 * {@code .json}, the name of a resource to be loaded using {@code resourceLoadClass}.
-	 * @param expected the expected JSON or the name of a resource containing the expected
-	 * JSON
+	 *
+	 * @param expected   the expected JSON or the name of a resource containing the expected
+	 *                   JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -686,9 +726,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON resource.
-	 * @param path the name of a resource containing the expected JSON
+	 *
+	 * @param path              the name of a resource containing the expected JSON
 	 * @param resourceLoadClass the source class used to load the resource
-	 * @param comparator the comparator used when checking
+	 * @param comparator        the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
 	 */
@@ -699,7 +740,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON bytes.
-	 * @param expected the expected JSON bytes
+	 *
+	 * @param expected   the expected JSON bytes
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -711,7 +753,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON file.
-	 * @param expected a file containing the expected JSON
+	 *
+	 * @param expected   a file containing the expected JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -723,7 +766,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON input stream.
-	 * @param expected an input stream containing the expected JSON
+	 *
+	 * @param expected   an input stream containing the expected JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -735,7 +779,8 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verifies that the actual value is not equal to the specified JSON resource.
-	 * @param expected a resource containing the expected JSON
+	 *
+	 * @param expected   a resource containing the expected JSON
 	 * @param comparator the comparator used when checking
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the actual JSON value is equal to the given one
@@ -749,9 +794,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * Verify that the actual value at the given JSON path produces a non-null result. If
 	 * the JSON path expression is not {@linkplain JsonPath#isDefinite() definite}, this
 	 * method verifies that the value at the given path is not <em>empty</em>.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is missing
 	 */
@@ -763,9 +809,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verify that the actual value at the given JSON path produces a non-null string
 	 * result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is missing or not a string
 	 */
@@ -777,9 +824,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verify that the actual value at the given JSON path produces a non-null number
 	 * result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is missing or not a number
 	 */
@@ -791,9 +839,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verify that the actual value at the given JSON path produces a non-null boolean
 	 * result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is missing or not a boolean
 	 */
@@ -805,9 +854,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verify that the actual value at the given JSON path produces a non-null array
 	 * result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is missing or not an array
 	 */
@@ -818,9 +868,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Verify that the actual value at the given JSON path produces a non-null map result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is missing or not a map
 	 */
@@ -832,9 +883,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verify that the actual value at the given JSON path produces an
 	 * {@link ObjectUtils#isEmpty(Object) empty} result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is not empty
 	 */
@@ -847,9 +899,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	 * Verify that the actual value at the given JSON path produces no result. If the JSON
 	 * path expression is not {@linkplain JsonPath#isDefinite() definite}, this method
 	 * verifies that the value at the given path is <em>empty</em>.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is not missing
 	 */
@@ -861,9 +914,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 	/**
 	 * Verify that the actual value at the given JSON path does not produce an
 	 * {@link ObjectUtils#isEmpty(Object) empty} result.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return {@code this} assertion object
 	 * @throws AssertionError if the value at the given path is empty
 	 */
@@ -874,9 +928,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Extract the value at the given JSON path for further object assertions.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return a new assertion object whose object under test is the extracted item
 	 * @throws AssertionError if the path is not valid
 	 */
@@ -886,22 +941,24 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Extract the string value at the given JSON path for further object assertions.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return a new assertion object whose object under test is the extracted item
 	 * @throws AssertionError if the path is not valid or does not result in a string
 	 */
 	public AbstractCharSequenceAssert<?, String> extractingJsonPathStringValue(CharSequence expression,
-			Object... args) {
+																			   Object... args) {
 		return Assertions.assertThat(extractingJsonPathValue(expression, args, String.class, "a string"));
 	}
 
 	/**
 	 * Extract the number value at the given JSON path for further object assertions.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return a new assertion object whose object under test is the extracted item
 	 * @throws AssertionError if the path is not valid or does not result in a number
 	 */
@@ -911,9 +968,10 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Extract the boolean value at the given JSON path for further object assertions.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
 	 * @return a new assertion object whose object under test is the extracted item
 	 * @throws AssertionError if the path is not valid or does not result in a boolean
 	 */
@@ -923,10 +981,11 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Extract the array value at the given JSON path for further object assertions.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
-	 * @param <E> element type
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param <E>        element type
 	 * @return a new assertion object whose object under test is the extracted item
 	 * @throws AssertionError if the path is not valid or does not result in an array
 	 */
@@ -937,11 +996,12 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	/**
 	 * Extract the map value at the given JSON path for further object assertions.
+	 *
 	 * @param expression the {@link JsonPath} expression
-	 * @param args arguments to parameterize the {@code JsonPath} expression with, using
-	 * formatting specifiers defined in {@link String#format(String, Object...)}
-	 * @param <K> key type
-	 * @param <V> value type
+	 * @param args       arguments to parameterize the {@code JsonPath} expression with, using
+	 *                   formatting specifiers defined in {@link String#format(String, Object...)}
+	 * @param <K>        key type
+	 * @param <V>        value type
 	 * @return a new assertion object whose object under test is the extracted item
 	 * @throws AssertionError if the path is not valid or does not result in a map
 	 */
@@ -952,7 +1012,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 
 	@SuppressWarnings("unchecked")
 	private <T> T extractingJsonPathValue(CharSequence expression, Object[] args, Class<T> type,
-			String expectedDescription) {
+										  String expectedDescription) {
 		JsonPathValue value = new JsonPathValue(expression, args);
 		if (value.getValue(false) != null) {
 			value.assertHasValue(type, expectedDescription);
@@ -967,8 +1027,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 		try {
 			return JSONCompare.compareJSON((expectedJson != null) ? expectedJson.toString() : null,
 					this.actual.toString(), compareMode);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (ex instanceof RuntimeException) {
 				throw (RuntimeException) ex;
 			}
@@ -983,8 +1042,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 		try {
 			return JSONCompare.compareJSON((expectedJson != null) ? expectedJson.toString() : null,
 					this.actual.toString(), comparator);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (ex instanceof RuntimeException) {
 				throw (RuntimeException) ex;
 			}
@@ -1080,8 +1138,7 @@ public class JsonContentAssert extends AbstractAssert<JsonContentAssert, CharSeq
 				CharSequence json = JsonContentAssert.this.actual;
 				return this.jsonPath.read((json != null) ? json.toString() : null,
 						JsonContentAssert.this.configuration);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				if (!required) {
 					return null;
 				}

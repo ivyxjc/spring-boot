@@ -16,10 +16,6 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
@@ -32,6 +28,10 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A {@link FailureAnalyzer} that performs analysis of failures caused by an
@@ -76,7 +76,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 	}
 
 	private void appendDetails(StringBuilder message, InvalidConfigurationPropertyValueException cause,
-			List<Descriptor> descriptors) {
+							   List<Descriptor> descriptors) {
 		Descriptor mainDescriptor = descriptors.get(0);
 		message.append("Invalid value '" + mainDescriptor.getValue() + "' for configuration property '"
 				+ cause.getName() + "'");
@@ -88,8 +88,7 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 		if (StringUtils.hasText(cause.getReason())) {
 			message.append(String.format(" Validation failed for the following " + "reason:%n%n"));
 			message.append(cause.getReason());
-		}
-		else {
+		} else {
 			message.append(" No reason was provided.");
 		}
 	}
@@ -133,6 +132,12 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 			this.origin = origin;
 		}
 
+		static Descriptor get(PropertySource<?> source, String propertyName) {
+			Object value = source.getProperty(propertyName);
+			Origin origin = OriginLookup.getOrigin(source, propertyName);
+			return new Descriptor(source.getName(), value, origin);
+		}
+
 		public String getPropertySource() {
 			return this.propertySource;
 		}
@@ -145,12 +150,6 @@ class InvalidConfigurationPropertyValueFailureAnalyzer
 			if (this.origin != null) {
 				message.append(" (originating from '" + this.origin + "')");
 			}
-		}
-
-		static Descriptor get(PropertySource<?> source, String propertyName) {
-			Object value = source.getProperty(propertyName);
-			Origin origin = OriginLookup.getOrigin(source, propertyName);
-			return new Descriptor(source.getName(), value, origin);
 		}
 
 	}

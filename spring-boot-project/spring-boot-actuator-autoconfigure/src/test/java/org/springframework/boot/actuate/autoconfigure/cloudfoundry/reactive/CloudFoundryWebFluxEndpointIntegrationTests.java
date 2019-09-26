@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.AccessLevel;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
@@ -55,6 +48,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.cors.CorsConfiguration;
+import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -77,9 +76,9 @@ public class CloudFoundryWebFluxEndpointIntegrationTests {
 
 	private final ReactiveWebApplicationContextRunner contextRunner = new ReactiveWebApplicationContextRunner(
 			AnnotationConfigReactiveWebServerApplicationContext::new)
-					.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class,
-							HttpHandlerAutoConfiguration.class, ReactiveWebServerFactoryAutoConfiguration.class))
-					.withUserConfiguration(TestEndpointConfiguration.class).withPropertyValues("server.port=0");
+			.withConfiguration(AutoConfigurations.of(WebFluxAutoConfiguration.class,
+					HttpHandlerAutoConfiguration.class, ReactiveWebServerFactoryAutoConfiguration.class))
+			.withUserConfiguration(TestEndpointConfiguration.class).withPropertyValues("server.port=0");
 
 	@Test
 	public void operationWithSecurityInterceptorForbidden() {
@@ -161,6 +160,14 @@ public class CloudFoundryWebFluxEndpointIntegrationTests {
 				+ Base64Utils.encodeToString("signature".getBytes());
 	}
 
+	public interface EndpointDelegate {
+
+		void write();
+
+		void write(String foo, String bar);
+
+	}
+
 	@Configuration
 	static class CloudFoundryReactiveConfiguration {
 
@@ -189,7 +196,7 @@ public class CloudFoundryWebFluxEndpointIntegrationTests {
 
 		@Bean
 		public WebEndpointDiscoverer webEndpointDiscoverer(ApplicationContext applicationContext,
-				EndpointMediaTypes endpointMediaTypes) {
+														   EndpointMediaTypes endpointMediaTypes) {
 			ParameterValueMapper parameterMapper = new ConversionServiceParameterValueMapper(
 					DefaultConversionService.getSharedInstance());
 			return new WebEndpointDiscoverer(applicationContext, parameterMapper, endpointMediaTypes, null,
@@ -267,14 +274,6 @@ public class CloudFoundryWebFluxEndpointIntegrationTests {
 		public TestEnvEndpoint testEnvEndpoint() {
 			return new TestEnvEndpoint();
 		}
-
-	}
-
-	public interface EndpointDelegate {
-
-		void write();
-
-		void write(String foo, String bar);
 
 	}
 

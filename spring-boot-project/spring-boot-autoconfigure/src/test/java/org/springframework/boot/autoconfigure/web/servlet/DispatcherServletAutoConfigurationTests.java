@@ -16,11 +16,7 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
@@ -33,6 +29,9 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.HttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -159,13 +158,13 @@ public class DispatcherServletAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.mvc.throw-exception-if-no-handler-found:true",
 				"spring.mvc.dispatch-options-request:false", "spring.mvc.dispatch-trace-request:true",
 				"spring.mvc.servlet.load-on-startup=5").run((context) -> {
-					DispatcherServlet dispatcherServlet = context.getBean(DispatcherServlet.class);
-					assertThat(dispatcherServlet).extracting("throwExceptionIfNoHandlerFound").containsExactly(true);
-					assertThat(dispatcherServlet).extracting("dispatchOptionsRequest").containsExactly(false);
-					assertThat(dispatcherServlet).extracting("dispatchTraceRequest").containsExactly(true);
-					assertThat(context.getBean("dispatcherServletRegistration"))
-							.hasFieldOrPropertyWithValue("loadOnStartup", 5);
-				});
+			DispatcherServlet dispatcherServlet = context.getBean(DispatcherServlet.class);
+			assertThat(dispatcherServlet).extracting("throwExceptionIfNoHandlerFound").containsExactly(true);
+			assertThat(dispatcherServlet).extracting("dispatchOptionsRequest").containsExactly(false);
+			assertThat(dispatcherServlet).extracting("dispatchTraceRequest").containsExactly(true);
+			assertThat(context.getBean("dispatcherServletRegistration"))
+					.hasFieldOrPropertyWithValue("loadOnStartup", 5);
+		});
 	}
 
 	@Configuration

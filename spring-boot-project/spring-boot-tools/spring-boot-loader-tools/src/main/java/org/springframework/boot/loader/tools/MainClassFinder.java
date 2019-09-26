@@ -16,33 +16,12 @@
 
 package org.springframework.boot.loader.tools;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Deque;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import org.springframework.asm.*;
+
+import java.io.*;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.springframework.asm.AnnotationVisitor;
-import org.springframework.asm.ClassReader;
-import org.springframework.asm.ClassVisitor;
-import org.springframework.asm.MethodVisitor;
-import org.springframework.asm.Opcodes;
-import org.springframework.asm.SpringAsmInfo;
-import org.springframework.asm.Type;
 
 /**
  * Finds any class with a {@code public static main} method by performing a breadth first
@@ -76,6 +55,7 @@ public abstract class MainClassFinder {
 
 	/**
 	 * Find the main class from a given folder.
+	 *
 	 * @param rootFolder the root folder to search
 	 * @return the main class or {@code null}
 	 * @throws IOException if the folder cannot be read
@@ -86,6 +66,7 @@ public abstract class MainClassFinder {
 
 	/**
 	 * Find a single main class from the given {@code rootFolder}.
+	 *
 	 * @param rootFolder the root folder to search
 	 * @return the main class or {@code null}
 	 * @throws IOException if the folder cannot be read
@@ -98,9 +79,10 @@ public abstract class MainClassFinder {
 	 * Find a single main class from the given {@code rootFolder}. A main class annotated
 	 * with an annotation with the given {@code annotationName} will be preferred over a
 	 * main class with no such annotation.
-	 * @param rootFolder the root folder to search
+	 *
+	 * @param rootFolder     the root folder to search
 	 * @param annotationName the name of the annotation that may be present on the main
-	 * class
+	 *                       class
 	 * @return the main class or {@code null}
 	 * @throws IOException if the folder cannot be read
 	 */
@@ -113,9 +95,10 @@ public abstract class MainClassFinder {
 	/**
 	 * Perform the given callback operation on all main classes from the given root
 	 * folder.
-	 * @param <T> the result type
+	 *
+	 * @param <T>        the result type
 	 * @param rootFolder the root folder
-	 * @param callback the callback
+	 * @param callback   the callback
 	 * @return the first callback result or {@code null}
 	 * @throws IOException in case of I/O errors
 	 */
@@ -160,7 +143,8 @@ public abstract class MainClassFinder {
 
 	/**
 	 * Find the main class in a given jar file.
-	 * @param jarFile the jar file to search
+	 *
+	 * @param jarFile         the jar file to search
 	 * @param classesLocation the location within the jar containing classes
 	 * @return the main class or {@code null}
 	 * @throws IOException if the jar file cannot be read
@@ -171,7 +155,8 @@ public abstract class MainClassFinder {
 
 	/**
 	 * Find a single main class in a given jar file.
-	 * @param jarFile the jar file to search
+	 *
+	 * @param jarFile         the jar file to search
 	 * @param classesLocation the location within the jar containing classes
 	 * @return the main class or {@code null}
 	 * @throws IOException if the jar file cannot be read
@@ -184,10 +169,11 @@ public abstract class MainClassFinder {
 	 * Find a single main class in a given jar file. A main class annotated with an
 	 * annotation with the given {@code annotationName} will be preferred over a main
 	 * class with no such annotation.
-	 * @param jarFile the jar file to search
+	 *
+	 * @param jarFile         the jar file to search
 	 * @param classesLocation the location within the jar containing classes
-	 * @param annotationName the name of the annotation that may be present on the main
-	 * class
+	 * @param annotationName  the name of the annotation that may be present on the main
+	 *                        class
 	 * @return the main class or {@code null}
 	 * @throws IOException if the jar file cannot be read
 	 */
@@ -200,10 +186,11 @@ public abstract class MainClassFinder {
 
 	/**
 	 * Perform the given callback operation on all main classes from the given jar.
-	 * @param <T> the result type
-	 * @param jarFile the jar file to search
+	 *
+	 * @param <T>             the result type
+	 * @param jarFile         the jar file to search
 	 * @param classesLocation the location within the jar containing classes
-	 * @param callback the callback
+	 * @param callback        the callback
 	 * @return the first callback result or {@code null}
 	 * @throws IOException in case of I/O errors
 	 */
@@ -255,10 +242,26 @@ public abstract class MainClassFinder {
 			ClassDescriptor classDescriptor = new ClassDescriptor();
 			classReader.accept(classDescriptor, ClassReader.SKIP_CODE);
 			return classDescriptor;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return null;
 		}
+	}
+
+	/**
+	 * Callback for handling {@link MainClass MainClasses}.
+	 *
+	 * @param <T> the callback's return type
+	 */
+	interface MainClassCallback<T> {
+
+		/**
+		 * Handle the specified main class.
+		 *
+		 * @param mainClass the main class
+		 * @return a non-null value if processing should end or {@code null} to continue
+		 */
+		T doWith(MainClass mainClass);
+
 	}
 
 	private static class ClassEntryComparator implements Comparator<JarEntry> {
@@ -325,22 +328,6 @@ public abstract class MainClassFinder {
 	}
 
 	/**
-	 * Callback for handling {@link MainClass MainClasses}.
-	 *
-	 * @param <T> the callback's return type
-	 */
-	interface MainClassCallback<T> {
-
-		/**
-		 * Handle the specified main class.
-		 * @param mainClass the main class
-		 * @return a non-null value if processing should end or {@code null} to continue
-		 */
-		T doWith(MainClass mainClass);
-
-	}
-
-	/**
 	 * A class with a {@code main} method.
 	 */
 	static final class MainClass {
@@ -353,7 +340,8 @@ public abstract class MainClassFinder {
 		 * Creates a new {@code MainClass} rather represents the main class with the given
 		 * {@code name}. The class is annotated with the annotations with the given
 		 * {@code annotationNames}.
-		 * @param name the name of the class
+		 *
+		 * @param name            the name of the class
 		 * @param annotationNames the names of the annotations on the class
 		 */
 		MainClass(String name, Set<String> annotationNames) {

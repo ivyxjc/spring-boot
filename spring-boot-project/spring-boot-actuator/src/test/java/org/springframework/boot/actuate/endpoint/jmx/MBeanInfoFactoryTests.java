@@ -16,16 +16,14 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Test;
+import org.springframework.boot.actuate.endpoint.OperationType;
 
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
-
-import org.junit.Test;
-
-import org.springframework.boot.actuate.endpoint.OperationType;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -80,7 +78,7 @@ public class MBeanInfoFactoryTests {
 	}
 
 	@Test
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void getMBeanInfoShouldUseJmxOperationResponseMapper() {
 		JmxOperationResponseMapper mapper = mock(JmxOperationResponseMapper.class);
 		given(mapper.mapResponseType(String.class)).willReturn((Class) Integer.class);
@@ -108,7 +106,7 @@ public class MBeanInfoFactoryTests {
 		assertThat(signature[1].getDescription()).isNull();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private JmxOperationParameter mockParameter(String name, Class<?> type, String description) {
 		JmxOperationParameter parameter = mock(JmxOperationParameter.class);
 		given(parameter.getName()).willReturn(name);

@@ -16,8 +16,6 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.io.File;
-
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
@@ -31,13 +29,13 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
+import java.io.File;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link GrapeRootRepositorySystemSessionAutoConfiguration}
@@ -77,8 +75,7 @@ public class GrapeRootRepositorySystemSessionAutoConfigurationTests {
 		System.setProperty("grape.root", "foo");
 		try {
 			new GrapeRootRepositorySystemSessionAutoConfiguration().apply(this.session, this.repositorySystem);
-		}
-		finally {
+		} finally {
 			System.clearProperty("grape.root");
 		}
 

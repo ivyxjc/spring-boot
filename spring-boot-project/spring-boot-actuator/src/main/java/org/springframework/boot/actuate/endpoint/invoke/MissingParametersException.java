@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.endpoint.invoke;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
 import org.springframework.util.StringUtils;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * {@link RuntimeException} thrown when an endpoint invocation does not contain required
@@ -36,7 +36,7 @@ public final class MissingParametersException extends InvalidEndpointRequestExce
 
 	public MissingParametersException(Set<OperationParameter> missingParameters) {
 		super("Failed to invoke operation because the following required " + "parameters were missing: "
-				+ StringUtils.collectionToCommaDelimitedString(missingParameters),
+						+ StringUtils.collectionToCommaDelimitedString(missingParameters),
 				"Missing parameters: "
 						+ missingParameters.stream().map(OperationParameter::getName).collect(Collectors.joining(",")));
 		this.missingParameters = missingParameters;
@@ -44,6 +44,7 @@ public final class MissingParametersException extends InvalidEndpointRequestExce
 
 	/**
 	 * Returns the parameters that were missing.
+	 *
 	 * @return the parameters
 	 */
 	public Set<OperationParameter> getMissingParameters() {

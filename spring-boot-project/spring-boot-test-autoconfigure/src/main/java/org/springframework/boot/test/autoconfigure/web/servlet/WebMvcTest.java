@@ -16,15 +16,7 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.autoconfigure.OverrideAutoConfiguration;
@@ -39,6 +31,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.BootstrapWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be used in combination with {@code @RunWith(SpringRunner.class)}
@@ -89,6 +83,7 @@ public @interface WebMvcTest {
 	/**
 	 * Properties in form {@literal key=value} that should be added to the Spring
 	 * {@link Environment} before the test runs.
+	 *
 	 * @return the properties to add
 	 * @since 2.1.0
 	 */
@@ -98,8 +93,9 @@ public @interface WebMvcTest {
 	 * Specifies the controllers to test. This is an alias of {@link #controllers()} which
 	 * can be used for brevity if no other attributes are defined. See
 	 * {@link #controllers()} for details.
-	 * @see #controllers()
+	 *
 	 * @return the controllers to test
+	 * @see #controllers()
 	 */
 	@AliasFor("controllers")
 	Class<?>[] value() default {};
@@ -107,8 +103,9 @@ public @interface WebMvcTest {
 	/**
 	 * Specifies the controllers to test. May be left blank if all {@code @Controller}
 	 * beans should be added to the application context.
-	 * @see #value()
+	 *
 	 * @return the controllers to test
+	 * @see #value()
 	 */
 	@AliasFor("value")
 	Class<?>[] controllers() default {};
@@ -119,15 +116,17 @@ public @interface WebMvcTest {
 	 * {@code @Controller} (when no explicit {@link #controllers() controllers} are
 	 * defined), {@code @ControllerAdvice} and {@code WebMvcConfigurer} beans are
 	 * included.
+	 *
+	 * @return if default filters should be used
 	 * @see #includeFilters()
 	 * @see #excludeFilters()
-	 * @return if default filters should be used
 	 */
 	boolean useDefaultFilters() default true;
 
 	/**
 	 * A set of include filters which can be used to add otherwise filtered beans to the
 	 * application context.
+	 *
 	 * @return include filters to apply
 	 */
 	Filter[] includeFilters() default {};
@@ -135,6 +134,7 @@ public @interface WebMvcTest {
 	/**
 	 * A set of exclude filters which can be used to filter beans that would otherwise be
 	 * added to the application context.
+	 *
 	 * @return exclude filters to apply
 	 */
 	Filter[] excludeFilters() default {};
@@ -144,6 +144,7 @@ public @interface WebMvcTest {
 	 * on the classpath. Also determines if
 	 * {@link org.springframework.security.config.annotation.web.WebSecurityConfigurer}
 	 * classes should be included in the application context. Defaults to {@code true}.
+	 *
 	 * @return if Spring Security's MockMvc support is auto-configured
 	 * @deprecated since 2.1.0 in favor of Spring Security's testing support
 	 */
@@ -153,6 +154,7 @@ public @interface WebMvcTest {
 
 	/**
 	 * Auto-configuration exclusions that should be applied for this test.
+	 *
 	 * @return auto-configuration exclusions to apply
 	 */
 	@AliasFor(annotation = ImportAutoConfiguration.class, attribute = "exclude")

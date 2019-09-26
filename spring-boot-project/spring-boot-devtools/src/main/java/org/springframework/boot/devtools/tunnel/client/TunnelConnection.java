@@ -30,9 +30,10 @@ public interface TunnelConnection {
 
 	/**
 	 * Open the tunnel connection.
+	 *
 	 * @param incomingChannel a {@link WritableByteChannel} that should be used to write
-	 * any incoming data received from the remote server
-	 * @param closeable a closeable to call when the channel is closed
+	 *                        any incoming data received from the remote server
+	 * @param closeable       a closeable to call when the channel is closed
 	 * @return a {@link WritableByteChannel} that should be used to send any outgoing data
 	 * destined for the remote server
 	 * @throws Exception in case of errors

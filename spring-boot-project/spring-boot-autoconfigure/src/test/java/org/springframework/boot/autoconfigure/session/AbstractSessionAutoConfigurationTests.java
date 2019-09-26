@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.util.Collections;
-
 import org.springframework.boot.test.context.assertj.AssertableReactiveWebApplicationContext;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +27,8 @@ import org.springframework.session.config.annotation.web.http.EnableSpringHttpSe
 import org.springframework.session.web.http.SessionRepositoryFilter;
 import org.springframework.web.server.session.WebSessionManager;
 
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -39,7 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public abstract class AbstractSessionAutoConfigurationTests {
 
 	protected <T extends SessionRepository<?>> T validateSessionRepository(AssertableWebApplicationContext context,
-			Class<T> type) {
+																		   Class<T> type) {
 		assertThat(context).hasSingleBean(SessionRepositoryFilter.class);
 		assertThat(context).hasSingleBean(SessionRepository.class);
 		SessionRepository<?> repository = context.getBean(SessionRepository.class);

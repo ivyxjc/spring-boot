@@ -16,20 +16,8 @@
 
 package org.springframework.boot.test.context.assertj;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.Map;
-
-import org.assertj.core.api.AbstractAssert;
-import org.assertj.core.api.AbstractObjectArrayAssert;
-import org.assertj.core.api.AbstractObjectAssert;
-import org.assertj.core.api.AbstractThrowableAssert;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.api.MapAssert;
+import org.assertj.core.api.*;
 import org.assertj.core.error.BasicErrorMessageFactory;
-
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -37,6 +25,12 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.Assert;
+
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,9 +41,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @param <C> the application context type
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 2.0.0
  * @see ApplicationContextRunner
  * @see AssertableApplicationContext
+ * @since 2.0.0
  */
 public class ApplicationContextAssert<C extends ApplicationContext>
 		extends AbstractAssert<ApplicationContextAssert<C>, C> {
@@ -58,8 +52,9 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 
 	/**
 	 * Create a new {@link ApplicationContextAssert} instance.
+	 *
 	 * @param applicationContext the source application context
-	 * @param startupFailure the startup failure or {@code null}
+	 * @param startupFailure     the startup failure or {@code null}
 	 */
 	ApplicationContextAssert(C applicationContext, Throwable startupFailure) {
 		super(applicationContext, ApplicationContextAssert.class);
@@ -72,11 +67,12 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).hasBean("fooBean"); </pre>
+	 *
 	 * @param name the name of the bean
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context does not contain a bean with the
-	 * given name
+	 *                        given name
 	 */
 	public ApplicationContextAssert<C> hasBean(String name) {
 		if (this.startupFailure != null) {
@@ -96,12 +92,13 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).hasSingleBean(Foo.class); </pre>
+	 *
 	 * @param type the bean type
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context does no beans of the given type
 	 * @throws AssertionError if the application context contains multiple beans of the
-	 * given type
+	 *                        given type
 	 */
 	public ApplicationContextAssert<C> hasSingleBean(Class<?> type) {
 		return hasSingleBean(type, Scope.INCLUDE_ANCESTORS);
@@ -112,13 +109,14 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).hasSingleBean(Foo.class, Scope.NO_ANCESTORS); </pre>
-	 * @param type the bean type
+	 *
+	 * @param type  the bean type
 	 * @param scope the scope of the assertion
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context does no beans of the given type
 	 * @throws AssertionError if the application context contains multiple beans of the
-	 * given type
+	 *                        given type
 	 */
 	public ApplicationContextAssert<C> hasSingleBean(Class<?> type, Scope scope) {
 		Assert.notNull(scope, "Scope must not be null");
@@ -145,11 +143,12 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).doesNotHaveBean(Foo.class); </pre>
+	 *
 	 * @param type the bean type
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context contains any beans of the given
-	 * type
+	 *                        type
 	 */
 	public ApplicationContextAssert<C> doesNotHaveBean(Class<?> type) {
 		return doesNotHaveBean(type, Scope.INCLUDE_ANCESTORS);
@@ -160,12 +159,13 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).doesNotHaveBean(Foo.class, Scope.NO_ANCESTORS); </pre>
-	 * @param type the bean type
+	 *
+	 * @param type  the bean type
 	 * @param scope the scope of the assertion
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context contains any beans of the given
-	 * type
+	 *                        type
 	 */
 	public ApplicationContextAssert<C> doesNotHaveBean(Class<?> type, Scope scope) {
 		Assert.notNull(scope, "Scope must not be null");
@@ -186,11 +186,12 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).doesNotHaveBean("fooBean"); </pre>
+	 *
 	 * @param name the name of the bean
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context contains a beans of the given
-	 * name
+	 *                        name
 	 */
 	public ApplicationContextAssert<C> doesNotHaveBean(String name) {
 		if (this.startupFailure != null) {
@@ -201,8 +202,7 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 			throwAssertionError(new BasicErrorMessageFactory(
 					"%nExpecting:%n <%s>%nnot to have a bean of name:%n <%s>%nbut found:%n <%s>",
 					getApplicationContext(), name, bean));
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 		}
 		return this;
 	}
@@ -213,7 +213,8 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBeanNames(Foo.class).containsOnly("fooBean"); </pre>
-	 * @param <T> the bean type
+	 *
+	 * @param <T>  the bean type
 	 * @param type the bean type
 	 * @return array assertions for the bean names
 	 * @throws AssertionError if the application context did not start
@@ -234,13 +235,14 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBean(Foo.class).isInstanceOf(DefaultFoo.class);
 	 * assertThat(context).getBean(Bar.class).isNull();</pre>
-	 * @param <T> the bean type
+	 *
+	 * @param <T>  the bean type
 	 * @param type the bean type
 	 * @return bean assertions for the bean, or an assert on {@code null} if the no bean
 	 * is found
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context contains multiple beans of the
-	 * given type
+	 *                        given type
 	 */
 	public <T> AbstractObjectAssert<?, T> getBean(Class<T> type) {
 		return getBean(type, Scope.INCLUDE_ANCESTORS);
@@ -254,14 +256,15 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBean(Foo.class, Scope.NO_ANCESTORS).isInstanceOf(DefaultFoo.class);
 	 * assertThat(context).getBean(Bar.class, Scope.NO_ANCESTORS).isNull();</pre>
-	 * @param <T> the bean type
-	 * @param type the bean type
+	 *
+	 * @param <T>   the bean type
+	 * @param type  the bean type
 	 * @param scope the scope of the assertion
 	 * @return bean assertions for the bean, or an assert on {@code null} if the no bean
 	 * is found
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context contains multiple beans of the
-	 * given type
+	 *                        given type
 	 */
 	public <T> AbstractObjectAssert<?, T> getBean(Class<T> type, Scope scope) {
 		Assert.notNull(scope, "Scope must not be null");
@@ -317,6 +320,7 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBean("foo").isInstanceOf(Foo.class);
 	 * assertThat(context).getBean("foo").isNull();</pre>
+	 *
 	 * @param name the name of the bean
 	 * @return bean assertions for the bean, or an assert on {@code null} if the no bean
 	 * is found
@@ -338,14 +342,15 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBean("foo", Foo.class).isInstanceOf(DefaultFoo.class);
 	 * assertThat(context).getBean("foo", Foo.class).isNull();</pre>
-	 * @param <T> the bean type
+	 *
+	 * @param <T>  the bean type
 	 * @param name the name of the bean
 	 * @param type the bean type
 	 * @return bean assertions for the bean, or an assert on {@code null} if the no bean
 	 * is found
 	 * @throws AssertionError if the application context did not start
 	 * @throws AssertionError if the application context contains a bean with the given
-	 * name but a different type
+	 *                        name but a different type
 	 */
 	@SuppressWarnings("unchecked")
 	public <T> AbstractObjectAssert<?, T> getBean(String name, Class<T> type) {
@@ -366,8 +371,7 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	private Object findBean(String name) {
 		try {
 			return getApplicationContext().getBean(name);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			return null;
 		}
 	}
@@ -380,7 +384,8 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBeans(Foo.class).containsKey("foo");
 	 * </pre>
-	 * @param <T> the bean type
+	 *
+	 * @param <T>  the bean type
 	 * @param type the bean type
 	 * @return bean assertions for the beans, or an assert on an empty {@code map} if the
 	 * no beans are found
@@ -398,8 +403,9 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getBeans(Foo.class, Scope.NO_ANCESTORS).containsKey("foo");
 	 * </pre>
-	 * @param <T> the bean type
-	 * @param type the bean type
+	 *
+	 * @param <T>   the bean type
+	 * @param type  the bean type
 	 * @param scope the scope of the assertion
 	 * @return bean assertions for the beans, or an assert on an empty {@code map} if the
 	 * no beans are found
@@ -421,6 +427,7 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * Example: <pre class="code">
 	 * assertThat(context).getFailure().containsMessage("missing bean");
 	 * </pre>
+	 *
 	 * @return assertions on the cause of the failure
 	 * @throws AssertionError if the application context started without a failure
 	 */
@@ -434,6 +441,7 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code"> assertThat(context).hasFailed();
 	 * </pre>
+	 *
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context started without a failure
 	 */
@@ -450,6 +458,7 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 	 * <p>
 	 * Example: <pre class="code"> assertThat(context).hasNotFailed();
 	 * </pre>
+	 *
 	 * @return {@code this} assertion object.
 	 * @throws AssertionError if the application context failed to start
 	 */
@@ -481,7 +490,6 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 		 * Limited to the current context.
 		 */
 		NO_ANCESTORS {
-
 			@Override
 			String[] getBeanNamesForType(ApplicationContext applicationContext, Class<?> type) {
 				return applicationContext.getBeanNamesForType(type);
@@ -498,7 +506,6 @@ public class ApplicationContextAssert<C extends ApplicationContext>
 		 * Consider the ancestor contexts as well as the current context.
 		 */
 		INCLUDE_ANCESTORS {
-
 			@Override
 			String[] getBeanNamesForType(ApplicationContext applicationContext, Class<?> type) {
 				return BeanFactoryUtils.beanNamesForTypeIncludingAncestors(applicationContext, type);

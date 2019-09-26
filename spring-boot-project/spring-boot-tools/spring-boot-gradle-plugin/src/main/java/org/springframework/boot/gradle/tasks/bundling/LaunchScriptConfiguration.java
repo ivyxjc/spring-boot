@@ -16,17 +16,16 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
+import org.gradle.api.Project;
+import org.gradle.api.tasks.bundling.AbstractArchiveTask;
+import org.springframework.boot.loader.tools.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import org.gradle.api.Project;
-import org.gradle.api.tasks.bundling.AbstractArchiveTask;
-
-import org.springframework.boot.loader.tools.FileUtils;
 
 /**
  * Encapsulates the configuration of the launch script for an executable jar or war.
@@ -60,6 +59,7 @@ public class LaunchScriptConfiguration implements Serializable {
 	/**
 	 * Returns the properties that are applied to the launch script when it's being
 	 * including in the executable archive.
+	 *
 	 * @return the properties
 	 */
 	public Map<String, String> getProperties() {
@@ -69,6 +69,7 @@ public class LaunchScriptConfiguration implements Serializable {
 	/**
 	 * Sets the properties that are applied to the launch script when it's being including
 	 * in the executable archive.
+	 *
 	 * @param properties the properties
 	 */
 	public void properties(Map<String, String> properties) {
@@ -78,6 +79,7 @@ public class LaunchScriptConfiguration implements Serializable {
 	/**
 	 * Returns the script {@link File} that will be included in the executable archive.
 	 * When {@code null}, the default launch script will be used.
+	 *
 	 * @return the script file
 	 */
 	public File getScript() {
@@ -87,6 +89,7 @@ public class LaunchScriptConfiguration implements Serializable {
 	/**
 	 * Sets the script {@link File} that will be included in the executable archive. When
 	 * {@code null}, the default launch script will be used.
+	 *
 	 * @param script the script file
 	 */
 	public void setScript(File script) {
@@ -109,11 +112,9 @@ public class LaunchScriptConfiguration implements Serializable {
 			if (other.script != null) {
 				return false;
 			}
-		}
-		else if (!this.script.equals(other.script)) {
+		} else if (!this.script.equals(other.script)) {
 			return false;
-		}
-		else if (!equalContents(this.script, other.script)) {
+		} else if (!equalContents(this.script, other.script)) {
 			return false;
 		}
 		return true;
@@ -122,8 +123,7 @@ public class LaunchScriptConfiguration implements Serializable {
 	private boolean equalContents(File one, File two) {
 		try {
 			return FileUtils.sha1Hash(one).equals(FileUtils.sha1Hash(two));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return false;
 		}
 	}

@@ -16,13 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.security.reactive;
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.assertj.core.api.AssertDelegateTarget;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
@@ -40,6 +35,10 @@ import org.springframework.security.web.server.util.matcher.ServerWebExchangeMat
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -211,7 +210,7 @@ public class EndpointRequestTests {
 	}
 
 	private RequestMatcherAssert assertMatcher(ServerWebExchangeMatcher matcher,
-			PathMappedEndpoints pathMappedEndpoints) {
+											   PathMappedEndpoints pathMappedEndpoints) {
 		StaticApplicationContext context = new StaticApplicationContext();
 		context.registerBean(WebEndpointProperties.class);
 		if (pathMappedEndpoints != null) {
@@ -222,6 +221,10 @@ public class EndpointRequestTests {
 			}
 		}
 		return assertThat(new RequestMatcherAssert(context, matcher));
+	}
+
+	interface TestEndpoint extends ExposableEndpoint<Operation>, PathMappedEndpoint {
+
 	}
 
 	private static class RequestMatcherAssert implements AssertDelegateTarget {
@@ -289,10 +292,6 @@ public class EndpointRequestTests {
 
 	@ServletEndpoint(id = "baz")
 	private static class BazServletEndpoint {
-
-	}
-
-	interface TestEndpoint extends ExposableEndpoint<Operation>, PathMappedEndpoint {
 
 	}
 

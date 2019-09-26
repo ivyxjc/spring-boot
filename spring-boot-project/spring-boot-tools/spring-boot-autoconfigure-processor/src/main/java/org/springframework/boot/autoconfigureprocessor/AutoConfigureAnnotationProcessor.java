@@ -16,32 +16,18 @@
 
 package org.springframework.boot.autoconfigureprocessor;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
-import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.*;
 import javax.lang.model.type.DeclaredType;
 import javax.tools.FileObject;
 import javax.tools.StandardLocation;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Annotation processor to store certain annotations from auto-configuration classes in a
@@ -51,14 +37,14 @@ import javax.tools.StandardLocation;
  * @author Phillip Webb
  * @since 1.5.0
  */
-@SupportedAnnotationTypes({ "org.springframework.context.annotation.Configuration",
-		"org.springframework.boot.autoconfigure.condition.ConditionalOnClass",
-		"org.springframework.boot.autoconfigure.condition.ConditionalOnBean",
-		"org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate",
-		"org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication",
-		"org.springframework.boot.autoconfigure.AutoConfigureBefore",
-		"org.springframework.boot.autoconfigure.AutoConfigureAfter",
-		"org.springframework.boot.autoconfigure.AutoConfigureOrder" })
+@SupportedAnnotationTypes({"org.springframework.context.annotation.Configuration",
+								  "org.springframework.boot.autoconfigure.condition.ConditionalOnClass",
+								  "org.springframework.boot.autoconfigure.condition.ConditionalOnBean",
+								  "org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate",
+								  "org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication",
+								  "org.springframework.boot.autoconfigure.AutoConfigureBefore",
+								  "org.springframework.boot.autoconfigure.AutoConfigureAfter",
+								  "org.springframework.boot.autoconfigure.AutoConfigureOrder"})
 public class AutoConfigureAnnotationProcessor extends AbstractProcessor {
 
 	protected static final String PROPERTIES_PATH = "META-INF/" + "spring-autoconfigure-metadata.properties";
@@ -115,8 +101,7 @@ public class AutoConfigureAnnotationProcessor extends AbstractProcessor {
 		if (roundEnv.processingOver()) {
 			try {
 				writeProperties();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Failed to write metadata", ex);
 			}
 		}
@@ -144,8 +129,7 @@ public class AutoConfigureAnnotationProcessor extends AbstractProcessor {
 				this.properties.put(qualifiedName + "." + propertyKey, toCommaDelimitedString(values));
 				this.properties.put(qualifiedName, "");
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Error processing configuration meta-data on " + element, ex);
 		}
 	}
@@ -191,11 +175,11 @@ public class AutoConfigureAnnotationProcessor extends AbstractProcessor {
 	@FunctionalInterface
 	private interface ValueExtractor {
 
-		List<Object> getValues(AnnotationMirror annotation);
-
 		static ValueExtractor allFrom(String... names) {
 			return new NamedValuesExtractor(names);
 		}
+
+		List<Object> getValues(AnnotationMirror annotation);
 
 	}
 

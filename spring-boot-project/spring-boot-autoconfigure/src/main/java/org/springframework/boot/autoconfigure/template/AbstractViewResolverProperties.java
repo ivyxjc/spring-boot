@@ -16,22 +16,22 @@
 
 package org.springframework.boot.autoconfigure.template;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.MimeType;
+import org.springframework.web.servlet.ViewResolver;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.MimeType;
-import org.springframework.web.servlet.ViewResolver;
 
 /**
  * Base class for {@link ConfigurationProperties} of a {@link ViewResolver}.
  *
  * @author Andy Wilkinson
  * @author Stephane Nicoll
- * @since 1.2.0
  * @see AbstractTemplateViewResolverProperties
+ * @since 1.2.0
  */
 public abstract class AbstractViewResolverProperties {
 
@@ -69,20 +69,20 @@ public abstract class AbstractViewResolverProperties {
 	 */
 	private boolean checkTemplateLocation = true;
 
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-
 	public boolean isEnabled() {
 		return this.enabled;
 	}
 
-	public void setCheckTemplateLocation(boolean checkTemplateLocation) {
-		this.checkTemplateLocation = checkTemplateLocation;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 
 	public boolean isCheckTemplateLocation() {
 		return this.checkTemplateLocation;
+	}
+
+	public void setCheckTemplateLocation(boolean checkTemplateLocation) {
+		this.checkTemplateLocation = checkTemplateLocation;
 	}
 
 	public String[] getViewNames() {
@@ -119,12 +119,12 @@ public abstract class AbstractViewResolverProperties {
 		return this.charset;
 	}
 
-	public String getCharsetName() {
-		return (this.charset != null) ? this.charset.name() : null;
-	}
-
 	public void setCharset(Charset charset) {
 		this.charset = charset;
+	}
+
+	public String getCharsetName() {
+		return (this.charset != null) ? this.charset.name() : null;
 	}
 
 }

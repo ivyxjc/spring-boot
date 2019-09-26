@@ -22,8 +22,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * Specialization of {@link ConfigurableEnvironment} for reactive application contexts.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see ConfigurableReactiveWebApplicationContext#getEnvironment()
+ * @since 2.0.0
  */
 public interface ConfigurableReactiveWebEnvironment extends ConfigurableEnvironment {
 

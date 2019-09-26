@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.health.ShowDetails;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Configuration properties for {@link HealthEndpoint}.

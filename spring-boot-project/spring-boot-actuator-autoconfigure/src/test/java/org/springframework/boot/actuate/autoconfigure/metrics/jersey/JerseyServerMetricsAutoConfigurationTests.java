@@ -16,12 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.jersey;
 
-import java.net.URI;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
@@ -31,7 +25,6 @@ import io.micrometer.jersey2.server.MetricsApplicationEventListener;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.monitoring.RequestEvent;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.test.MetricsRun;
@@ -48,6 +41,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import java.net.URI;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -63,10 +61,17 @@ public class JerseyServerMetricsAutoConfigurationTests {
 
 	private final WebApplicationContextRunner webContextRunner = new WebApplicationContextRunner(
 			AnnotationConfigServletWebServerApplicationContext::new)
-					.withConfiguration(AutoConfigurations.of(JerseyAutoConfiguration.class,
-							JerseyServerMetricsAutoConfiguration.class, ServletWebServerFactoryAutoConfiguration.class,
-							SimpleMetricsExportAutoConfiguration.class, MetricsAutoConfiguration.class))
-					.withUserConfiguration(ResourceConfiguration.class).withPropertyValues("server.port:0");
+			.withConfiguration(AutoConfigurations.of(JerseyAutoConfiguration.class,
+					JerseyServerMetricsAutoConfiguration.class, ServletWebServerFactoryAutoConfiguration.class,
+					SimpleMetricsExportAutoConfiguration.class, MetricsAutoConfiguration.class))
+			.withUserConfiguration(ResourceConfiguration.class).withPropertyValues("server.port:0");
+
+	private static void doRequest(AssertableWebApplicationContext context) {
+		int port = context.getSourceApplicationContext(AnnotationConfigServletWebServerApplicationContext.class)
+				.getWebServer().getPort();
+		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.getForEntity(URI.create("http://localhost:" + port + "/users/3"), String.class);
+	}
 
 	@Test
 	public void shouldOnlyBeActiveInWebApplicationContext() {
@@ -104,13 +109,6 @@ public class JerseyServerMetricsAutoConfigurationTests {
 					MeterRegistry registry = context.getBean(MeterRegistry.class);
 					assertThat(registry.find("http.server.requests").timer()).isNull();
 				});
-	}
-
-	private static void doRequest(AssertableWebApplicationContext context) {
-		int port = context.getSourceApplicationContext(AnnotationConfigServletWebServerApplicationContext.class)
-				.getWebServer().getPort();
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getForEntity(URI.create("http://localhost:" + port + "/users/3"), String.class);
 	}
 
 	@Configuration

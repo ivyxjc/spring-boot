@@ -16,15 +16,12 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.util.Collections;
-
 import org.junit.Test;
-
 import org.springframework.web.servlet.DispatcherServlet;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link DispatcherServletRegistrationBean}.

@@ -16,30 +16,13 @@
 
 package org.springframework.boot.actuate.endpoint.web.reactive;
 
-import java.lang.reflect.Method;
-import java.security.Principal;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import org.reactivestreams.Publisher;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.MonoSink;
-import reactor.core.scheduler.Schedulers;
-
 import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.boot.actuate.endpoint.invoke.OperationInvoker;
-import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
-import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
-import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
-import org.springframework.boot.actuate.endpoint.web.WebOperation;
-import org.springframework.boot.actuate.endpoint.web.WebOperationRequestPredicate;
+import org.springframework.boot.actuate.endpoint.web.*;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,6 +49,17 @@ import org.springframework.web.reactive.result.method.RequestMappingInfoHandlerM
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.pattern.PathPatternParser;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
+import reactor.core.scheduler.Schedulers;
+
+import java.lang.reflect.Method;
+import java.security.Principal;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A custom {@link HandlerMapping} that makes web endpoints available over HTTP using
@@ -98,14 +92,15 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 	/**
 	 * Creates a new {@code AbstractWebFluxEndpointHandlerMapping} that provides mappings
 	 * for the operations of the given {@code webEndpoints}.
-	 * @param endpointMapping the base mapping for all endpoints
-	 * @param endpoints the web endpoints
+	 *
+	 * @param endpointMapping    the base mapping for all endpoints
+	 * @param endpoints          the web endpoints
 	 * @param endpointMediaTypes media types consumed and produced by the endpoints
-	 * @param corsConfiguration the CORS configuration for the endpoints
+	 * @param corsConfiguration  the CORS configuration for the endpoints
 	 */
 	public AbstractWebFluxEndpointHandlerMapping(EndpointMapping endpointMapping,
-			Collection<ExposableWebEndpoint> endpoints, EndpointMediaTypes endpointMediaTypes,
-			CorsConfiguration corsConfiguration) {
+												 Collection<ExposableWebEndpoint> endpoints, EndpointMediaTypes endpointMediaTypes,
+												 CorsConfiguration corsConfiguration) {
 		this.endpointMapping = endpointMapping;
 		this.endpoints = endpoints;
 		this.endpointMediaTypes = endpointMediaTypes;
@@ -137,8 +132,7 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 		if (operation.getType() == OperationType.WRITE) {
 			registerMapping(createRequestMappingInfo(operation), new WriteOperationHandler((reactiveWebOperation)),
 					this.handleWriteMethod);
-		}
-		else {
+		} else {
 			registerMapping(createRequestMappingInfo(operation), new ReadOperationHandler((reactiveWebOperation)),
 					this.handleReadMethod);
 		}
@@ -147,13 +141,14 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 	/**
 	 * Hook point that allows subclasses to wrap the {@link ReactiveWebOperation} before
 	 * it's called. Allows additional features, such as security, to be added.
-	 * @param endpoint the source endpoint
-	 * @param operation the source operation
+	 *
+	 * @param endpoint             the source endpoint
+	 * @param operation            the source operation
 	 * @param reactiveWebOperation the reactive web operation to wrap
 	 * @return a wrapped reactive web operation
 	 */
 	protected ReactiveWebOperation wrapReactiveWebOperation(ExposableWebEndpoint endpoint, WebOperation operation,
-			ReactiveWebOperation reactiveWebOperation) {
+															ReactiveWebOperation reactiveWebOperation) {
 		return reactiveWebOperation;
 	}
 
@@ -199,16 +194,38 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 
 	/**
 	 * Return the Handler providing actuator links at the root endpoint.
+	 *
 	 * @return the links handler
 	 */
 	protected abstract LinksHandler getLinksHandler();
 
 	/**
 	 * Return the web endpoints being mapped.
+	 *
 	 * @return the endpoints
 	 */
 	public Collection<ExposableWebEndpoint> getEndpoints() {
 		return this.endpoints;
+	}
+
+	/**
+	 * Reactive handler providing actuator links at the root endpoint.
+	 */
+	@FunctionalInterface
+	protected interface LinksHandler {
+
+		Object links(ServerWebExchange exchange);
+
+	}
+
+	/**
+	 * A reactive web operation that can be handled by WebFlux.
+	 */
+	@FunctionalInterface
+	protected interface ReactiveWebOperation {
+
+		Mono<ResponseEntity<Object>> handle(ServerWebExchange exchange, Map<String, String> body);
+
 	}
 
 	/**
@@ -232,31 +249,10 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 			try {
 				Object result = this.invoker.invoke(context);
 				sink.success(result);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				sink.error(ex);
 			}
 		}
-
-	}
-
-	/**
-	 * Reactive handler providing actuator links at the root endpoint.
-	 */
-	@FunctionalInterface
-	protected interface LinksHandler {
-
-		Object links(ServerWebExchange exchange);
-
-	}
-
-	/**
-	 * A reactive web operation that can be handled by WebFlux.
-	 */
-	@FunctionalInterface
-	protected interface ReactiveWebOperation {
-
-		Mono<ResponseEntity<Object>> handle(ServerWebExchange exchange, Map<String, String> body);
 
 	}
 
@@ -352,43 +348,6 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 
 	}
 
-	/**
-	 * Handler for a {@link ReactiveWebOperation}.
-	 */
-	private final class WriteOperationHandler {
-
-		private final ReactiveWebOperation operation;
-
-		WriteOperationHandler(ReactiveWebOperation operation) {
-			this.operation = operation;
-		}
-
-		@ResponseBody
-		public Publisher<ResponseEntity<Object>> handle(ServerWebExchange exchange,
-				@RequestBody(required = false) Map<String, String> body) {
-			return this.operation.handle(exchange, body);
-		}
-
-	}
-
-	/**
-	 * Handler for a {@link ReactiveWebOperation}.
-	 */
-	private final class ReadOperationHandler {
-
-		private final ReactiveWebOperation operation;
-
-		ReadOperationHandler(ReactiveWebOperation operation) {
-			this.operation = operation;
-		}
-
-		@ResponseBody
-		public Publisher<ResponseEntity<Object>> handle(ServerWebExchange exchange) {
-			return this.operation.handle(exchange, null);
-		}
-
-	}
-
 	private static class WebFluxEndpointHandlerMethod extends HandlerMethod {
 
 		WebFluxEndpointHandlerMethod(Object bean, Method method) {
@@ -430,6 +389,43 @@ public abstract class AbstractWebFluxEndpointHandlerMapping extends RequestMappi
 			}
 			return this.roleVoter.vote(this.authentication, null,
 					Collections.singletonList(new SecurityConfig(role))) == AccessDecisionVoter.ACCESS_GRANTED;
+		}
+
+	}
+
+	/**
+	 * Handler for a {@link ReactiveWebOperation}.
+	 */
+	private final class WriteOperationHandler {
+
+		private final ReactiveWebOperation operation;
+
+		WriteOperationHandler(ReactiveWebOperation operation) {
+			this.operation = operation;
+		}
+
+		@ResponseBody
+		public Publisher<ResponseEntity<Object>> handle(ServerWebExchange exchange,
+														@RequestBody(required = false) Map<String, String> body) {
+			return this.operation.handle(exchange, body);
+		}
+
+	}
+
+	/**
+	 * Handler for a {@link ReactiveWebOperation}.
+	 */
+	private final class ReadOperationHandler {
+
+		private final ReactiveWebOperation operation;
+
+		ReadOperationHandler(ReactiveWebOperation operation) {
+			this.operation = operation;
+		}
+
+		@ResponseBody
+		public Publisher<ResponseEntity<Object>> handle(ServerWebExchange exchange) {
+			return this.operation.handle(exchange, null);
 		}
 
 	}

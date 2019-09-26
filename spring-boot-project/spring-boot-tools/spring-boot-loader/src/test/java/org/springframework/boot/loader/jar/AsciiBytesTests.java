@@ -33,13 +33,13 @@ public class AsciiBytesTests {
 
 	@Test
 	public void createFromBytes() {
-		AsciiBytes bytes = new AsciiBytes(new byte[] { 65, 66 });
+		AsciiBytes bytes = new AsciiBytes(new byte[]{65, 66});
 		assertThat(bytes.toString()).isEqualTo("AB");
 	}
 
 	@Test
 	public void createFromBytesWithOffset() {
-		AsciiBytes bytes = new AsciiBytes(new byte[] { 65, 66, 67, 68 }, 1, 2);
+		AsciiBytes bytes = new AsciiBytes(new byte[]{65, 66, 67, 68}, 1, 2);
 		assertThat(bytes.toString()).isEqualTo("BC");
 	}
 
@@ -51,18 +51,18 @@ public class AsciiBytesTests {
 
 	@Test
 	public void length() {
-		AsciiBytes b1 = new AsciiBytes(new byte[] { 65, 66 });
-		AsciiBytes b2 = new AsciiBytes(new byte[] { 65, 66, 67, 68 }, 1, 2);
+		AsciiBytes b1 = new AsciiBytes(new byte[]{65, 66});
+		AsciiBytes b2 = new AsciiBytes(new byte[]{65, 66, 67, 68}, 1, 2);
 		assertThat(b1.length()).isEqualTo(2);
 		assertThat(b2.length()).isEqualTo(2);
 	}
 
 	@Test
 	public void startWith() {
-		AsciiBytes abc = new AsciiBytes(new byte[] { 65, 66, 67 });
-		AsciiBytes ab = new AsciiBytes(new byte[] { 65, 66 });
-		AsciiBytes bc = new AsciiBytes(new byte[] { 65, 66, 67 }, 1, 2);
-		AsciiBytes abcd = new AsciiBytes(new byte[] { 65, 66, 67, 68 });
+		AsciiBytes abc = new AsciiBytes(new byte[]{65, 66, 67});
+		AsciiBytes ab = new AsciiBytes(new byte[]{65, 66});
+		AsciiBytes bc = new AsciiBytes(new byte[]{65, 66, 67}, 1, 2);
+		AsciiBytes abcd = new AsciiBytes(new byte[]{65, 66, 67, 68});
 		assertThat(abc.startsWith(abc)).isTrue();
 		assertThat(abc.startsWith(ab)).isTrue();
 		assertThat(abc.startsWith(bc)).isFalse();
@@ -71,10 +71,10 @@ public class AsciiBytesTests {
 
 	@Test
 	public void endsWith() {
-		AsciiBytes abc = new AsciiBytes(new byte[] { 65, 66, 67 });
-		AsciiBytes bc = new AsciiBytes(new byte[] { 65, 66, 67 }, 1, 2);
-		AsciiBytes ab = new AsciiBytes(new byte[] { 65, 66 });
-		AsciiBytes aabc = new AsciiBytes(new byte[] { 65, 65, 66, 67 });
+		AsciiBytes abc = new AsciiBytes(new byte[]{65, 66, 67});
+		AsciiBytes bc = new AsciiBytes(new byte[]{65, 66, 67}, 1, 2);
+		AsciiBytes ab = new AsciiBytes(new byte[]{65, 66});
+		AsciiBytes aabc = new AsciiBytes(new byte[]{65, 65, 66, 67});
 		assertThat(abc.endsWith(abc)).isTrue();
 		assertThat(abc.endsWith(bc)).isTrue();
 		assertThat(abc.endsWith(ab)).isFalse();
@@ -83,7 +83,7 @@ public class AsciiBytesTests {
 
 	@Test
 	public void substringFromBeingIndex() {
-		AsciiBytes abcd = new AsciiBytes(new byte[] { 65, 66, 67, 68 });
+		AsciiBytes abcd = new AsciiBytes(new byte[]{65, 66, 67, 68});
 		assertThat(abcd.substring(0).toString()).isEqualTo("ABCD");
 		assertThat(abcd.substring(1).toString()).isEqualTo("BCD");
 		assertThat(abcd.substring(2).toString()).isEqualTo("CD");
@@ -94,7 +94,7 @@ public class AsciiBytesTests {
 
 	@Test
 	public void substring() {
-		AsciiBytes abcd = new AsciiBytes(new byte[] { 65, 66, 67, 68 });
+		AsciiBytes abcd = new AsciiBytes(new byte[]{65, 66, 67, 68});
 		assertThat(abcd.substring(0, 4).toString()).isEqualTo("ABCD");
 		assertThat(abcd.substring(1, 3).toString()).isEqualTo("BC");
 		assertThat(abcd.substring(3, 4).toString()).isEqualTo("D");
@@ -104,9 +104,9 @@ public class AsciiBytesTests {
 
 	@Test
 	public void hashCodeAndEquals() {
-		AsciiBytes abcd = new AsciiBytes(new byte[] { 65, 66, 67, 68 });
-		AsciiBytes bc = new AsciiBytes(new byte[] { 66, 67 });
-		AsciiBytes bc_substring = new AsciiBytes(new byte[] { 65, 66, 67, 68 }).substring(1, 3);
+		AsciiBytes abcd = new AsciiBytes(new byte[]{65, 66, 67, 68});
+		AsciiBytes bc = new AsciiBytes(new byte[]{66, 67});
+		AsciiBytes bc_substring = new AsciiBytes(new byte[]{65, 66, 67, 68}).substring(1, 3);
 		AsciiBytes bc_string = new AsciiBytes("BC");
 		assertThat(bc.hashCode()).isEqualTo(bc.hashCode());
 		assertThat(bc.hashCode()).isEqualTo(bc_substring.hashCode());

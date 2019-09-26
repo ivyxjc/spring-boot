@@ -44,6 +44,7 @@ public class ConversionServiceParameterValueMapper implements ParameterValueMapp
 	/**
 	 * Create a new {@link ConversionServiceParameterValueMapper} instance backed by a
 	 * specific conversion service.
+	 *
 	 * @param conversionService the conversion service
 	 */
 	public ConversionServiceParameterValueMapper(ConversionService conversionService) {
@@ -55,8 +56,7 @@ public class ConversionServiceParameterValueMapper implements ParameterValueMapp
 	public Object mapParameterValue(OperationParameter parameter, Object value) throws ParameterMappingException {
 		try {
 			return this.conversionService.convert(value, parameter.getType());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new ParameterMappingException(parameter, value, ex);
 		}
 	}

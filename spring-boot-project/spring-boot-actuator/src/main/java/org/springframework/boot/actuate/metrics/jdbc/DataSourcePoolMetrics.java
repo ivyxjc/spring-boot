@@ -16,22 +16,20 @@
 
 package org.springframework.boot.actuate.metrics.jdbc;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
-
-import javax.sql.DataSource;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.binder.MeterBinder;
-
 import org.springframework.boot.jdbc.metadata.CompositeDataSourcePoolMetadataProvider;
 import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadata;
 import org.springframework.boot.jdbc.metadata.DataSourcePoolMetadataProvider;
 import org.springframework.util.Assert;
 import org.springframework.util.ConcurrentReferenceHashMap;
+
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * A {@link MeterBinder} for a {@link DataSource}.
@@ -49,12 +47,12 @@ public class DataSourcePoolMetrics implements MeterBinder {
 	private final Iterable<Tag> tags;
 
 	public DataSourcePoolMetrics(DataSource dataSource, Collection<DataSourcePoolMetadataProvider> metadataProviders,
-			String dataSourceName, Iterable<Tag> tags) {
+								 String dataSourceName, Iterable<Tag> tags) {
 		this(dataSource, new CompositeDataSourcePoolMetadataProvider(metadataProviders), dataSourceName, tags);
 	}
 
 	public DataSourcePoolMetrics(DataSource dataSource, DataSourcePoolMetadataProvider metadataProvider, String name,
-			Iterable<Tag> tags) {
+								 Iterable<Tag> tags) {
 		Assert.notNull(dataSource, "DataSource must not be null");
 		Assert.notNull(metadataProvider, "MetadataProvider must not be null");
 		this.dataSource = dataSource;
@@ -72,12 +70,12 @@ public class DataSourcePoolMetrics implements MeterBinder {
 	}
 
 	private <N extends Number> void bindPoolMetadata(MeterRegistry registry, String metricName,
-			Function<DataSourcePoolMetadata, N> function) {
+													 Function<DataSourcePoolMetadata, N> function) {
 		bindDataSource(registry, metricName, this.metadataProvider.getValueFunction(function));
 	}
 
 	private <N extends Number> void bindDataSource(MeterRegistry registry, String metricName,
-			Function<DataSource, N> function) {
+												   Function<DataSource, N> function) {
 		if (function.apply(this.dataSource) != null) {
 			registry.gauge("jdbc.connections." + metricName, this.tags, this.dataSource,
 					(m) -> function.apply(m).doubleValue());

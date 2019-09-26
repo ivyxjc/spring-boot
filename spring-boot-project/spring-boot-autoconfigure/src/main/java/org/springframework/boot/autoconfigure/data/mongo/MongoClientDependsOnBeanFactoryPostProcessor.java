@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data.mongo;
 
 import com.mongodb.MongoClient;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.AbstractDependsOnBeanFactoryPostProcessor;
@@ -39,6 +38,7 @@ public class MongoClientDependsOnBeanFactoryPostProcessor extends AbstractDepend
 	/**
 	 * Creates a new {@code MongoClientDependsOnBeanFactoryPostProcessor} that will set up
 	 * dependencies upon beans with the given names.
+	 *
 	 * @param dependsOn names of the beans to depend upon
 	 * @deprecated since 2.1.7 in favor of
 	 * {@link #MongoClientDependsOnBeanFactoryPostProcessor}
@@ -51,6 +51,7 @@ public class MongoClientDependsOnBeanFactoryPostProcessor extends AbstractDepend
 	/**
 	 * Creates a new {@code MongoClientDependsOnBeanFactoryPostProcessor} that will set up
 	 * dependencies upon beans with the given types.
+	 *
 	 * @param dependsOn types of the beans to depend upon
 	 */
 	public MongoClientDependsOnBeanFactoryPostProcessor(Class<?>... dependsOn) {

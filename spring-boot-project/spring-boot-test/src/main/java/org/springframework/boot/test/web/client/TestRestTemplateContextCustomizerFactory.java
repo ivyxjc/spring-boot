@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.web.client;
 
-import java.util.List;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
+
+import java.util.List;
 
 /**
  * {@link ContextCustomizerFactory} for {@link TestRestTemplate}.
@@ -34,7 +34,7 @@ class TestRestTemplateContextCustomizerFactory implements ContextCustomizerFacto
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
-			List<ContextConfigurationAttributes> configAttributes) {
+													 List<ContextConfigurationAttributes> configAttributes) {
 		if (AnnotatedElementUtils.findMergedAnnotation(testClass, SpringBootTest.class) != null) {
 			return new TestRestTemplateContextCustomizer();
 		}

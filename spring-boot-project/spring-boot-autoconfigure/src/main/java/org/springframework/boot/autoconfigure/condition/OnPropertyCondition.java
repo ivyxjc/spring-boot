@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.condition.ConditionMessage.Style;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
@@ -32,6 +27,11 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@link Condition} that checks if properties are defined in environment.
@@ -69,8 +69,7 @@ class OnPropertyCondition extends SpringBootCondition {
 				Map<String, Object> map;
 				if (i < maps.size()) {
 					map = maps.get(i);
-				}
-				else {
+				} else {
 					map = new HashMap<>();
 					maps.add(map);
 				}
@@ -140,8 +139,7 @@ class OnPropertyCondition extends SpringBootCondition {
 					if (!isMatch(resolver.getProperty(key), this.havingValue)) {
 						nonMatching.add(name);
 					}
-				}
-				else {
+				} else {
 					if (!this.matchIfMissing) {
 						missing.add(name);
 					}
@@ -163,8 +161,7 @@ class OnPropertyCondition extends SpringBootCondition {
 			result.append(this.prefix);
 			if (this.names.length == 1) {
 				result.append(this.names[0]);
-			}
-			else {
+			} else {
 				result.append("[");
 				result.append(StringUtils.arrayToCommaDelimitedString(this.names));
 				result.append("]");

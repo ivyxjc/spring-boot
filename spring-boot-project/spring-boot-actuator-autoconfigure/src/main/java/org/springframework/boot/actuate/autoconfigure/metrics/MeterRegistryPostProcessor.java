@@ -20,7 +20,6 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -43,14 +42,12 @@ class MeterRegistryPostProcessor implements BeanPostProcessor {
 	private final ObjectProvider<MeterRegistryCustomizer<?>> meterRegistryCustomizers;
 
 	private final ObjectProvider<MetricsProperties> metricsProperties;
-
+	private final ApplicationContext applicationContext;
 	private volatile MeterRegistryConfigurer configurer;
 
-	private final ApplicationContext applicationContext;
-
 	MeterRegistryPostProcessor(ObjectProvider<MeterBinder> meterBinders, ObjectProvider<MeterFilter> meterFilters,
-			ObjectProvider<MeterRegistryCustomizer<?>> meterRegistryCustomizers,
-			ObjectProvider<MetricsProperties> metricsProperties, ApplicationContext applicationContext) {
+							   ObjectProvider<MeterRegistryCustomizer<?>> meterRegistryCustomizers,
+							   ObjectProvider<MetricsProperties> metricsProperties, ApplicationContext applicationContext) {
 		this.meterBinders = meterBinders;
 		this.meterFilters = meterFilters;
 		this.meterRegistryCustomizers = meterRegistryCustomizers;

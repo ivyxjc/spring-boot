@@ -16,10 +16,10 @@
 
 package org.springframework.boot.jta.bitronix;
 
+import org.junit.Test;
+
 import javax.sql.DataSource;
 import javax.sql.XADataSource;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

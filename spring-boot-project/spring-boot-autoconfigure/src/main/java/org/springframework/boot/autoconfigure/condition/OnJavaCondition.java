@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJava.Range;
 import org.springframework.boot.system.JavaVersion;
 import org.springframework.context.annotation.Condition;
@@ -25,6 +23,8 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.Map;
 
 /**
  * {@link Condition} that checks for a required version of Java.
@@ -56,9 +56,10 @@ class OnJavaCondition extends SpringBootCondition {
 
 	/**
 	 * Determines if the {@code runningVersion} is within the specified range of versions.
+	 *
 	 * @param runningVersion the current version.
-	 * @param range the range
-	 * @param version the bounds of the range
+	 * @param range          the range
+	 * @param version        the bounds of the range
 	 * @return if this version is within the specified range
 	 */
 	private boolean isWithin(JavaVersion runningVersion, Range range, JavaVersion version) {

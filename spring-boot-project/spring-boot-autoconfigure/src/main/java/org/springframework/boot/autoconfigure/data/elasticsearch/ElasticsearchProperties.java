@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.data.elasticsearch;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Configuration properties for Elasticsearch.

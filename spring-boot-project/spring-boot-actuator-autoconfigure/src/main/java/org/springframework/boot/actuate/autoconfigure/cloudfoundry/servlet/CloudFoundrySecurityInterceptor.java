@@ -16,13 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.servlet;
 
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.AccessLevel;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
@@ -34,6 +29,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.cors.CorsUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+
 /**
  * Security interceptor to validate the cloud foundry token.
  *
@@ -42,17 +40,13 @@ import org.springframework.web.cors.CorsUtils;
 class CloudFoundrySecurityInterceptor {
 
 	private static final Log logger = LogFactory.getLog(CloudFoundrySecurityInterceptor.class);
-
+	private static final SecurityResponse SUCCESS = SecurityResponse.success();
 	private final TokenValidator tokenValidator;
-
 	private final CloudFoundrySecurityService cloudFoundrySecurityService;
-
 	private final String applicationId;
 
-	private static final SecurityResponse SUCCESS = SecurityResponse.success();
-
 	CloudFoundrySecurityInterceptor(TokenValidator tokenValidator,
-			CloudFoundrySecurityService cloudFoundrySecurityService, String applicationId) {
+									CloudFoundrySecurityService cloudFoundrySecurityService, String applicationId) {
 		this.tokenValidator = tokenValidator;
 		this.cloudFoundrySecurityService = cloudFoundrySecurityService;
 		this.applicationId = applicationId;
@@ -75,8 +69,7 @@ class CloudFoundrySecurityInterceptor {
 				return SUCCESS;
 			}
 			check(request, endpointId);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.error(ex);
 			if (ex instanceof CloudFoundryAuthorizationException) {
 				CloudFoundryAuthorizationException cfException = (CloudFoundryAuthorizationException) ex;

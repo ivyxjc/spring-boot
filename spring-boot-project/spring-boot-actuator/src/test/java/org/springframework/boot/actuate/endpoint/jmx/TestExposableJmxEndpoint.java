@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
+import org.springframework.boot.actuate.endpoint.EndpointId;
+
 import java.util.Arrays;
 import java.util.Collection;
-
-import org.springframework.boot.actuate.endpoint.EndpointId;
 
 /**
  * Test {@link ExposableJmxEndpoint} implementation.

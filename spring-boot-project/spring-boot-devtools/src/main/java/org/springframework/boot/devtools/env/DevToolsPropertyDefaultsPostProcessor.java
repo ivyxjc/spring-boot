@@ -16,12 +16,7 @@
 
 package org.springframework.boot.devtools.env;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.devtools.logger.DevToolsLogFactory;
 import org.springframework.boot.devtools.restart.Restarter;
@@ -32,6 +27,10 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.util.ClassUtils;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link EnvironmentPostProcessor} to add properties that make sense when working at
@@ -53,7 +52,7 @@ public class DevToolsPropertyDefaultsPostProcessor implements EnvironmentPostPro
 
 	private static final String[] WEB_ENVIRONMENT_CLASSES = {
 			"org.springframework.web.context.ConfigurableWebEnvironment",
-			"org.springframework.boot.web.reactive.context.ConfigurableReactiveWebEnvironment" };
+			"org.springframework.boot.web.reactive.context.ConfigurableReactiveWebEnvironment"};
 
 	private static final Map<String, Object> PROPERTIES;
 
@@ -104,8 +103,7 @@ public class DevToolsPropertyDefaultsPostProcessor implements EnvironmentPostPro
 		try {
 			Restarter restarter = Restarter.getInstance();
 			return (restarter != null && restarter.getInitialUrls() != null);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		}
 	}
@@ -127,8 +125,7 @@ public class DevToolsPropertyDefaultsPostProcessor implements EnvironmentPostPro
 	private Class<?> resolveClassName(String candidate, ClassLoader classLoader) {
 		try {
 			return ClassUtils.resolveClassName(candidate, classLoader);
-		}
-		catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException ex) {
 			return null;
 		}
 	}

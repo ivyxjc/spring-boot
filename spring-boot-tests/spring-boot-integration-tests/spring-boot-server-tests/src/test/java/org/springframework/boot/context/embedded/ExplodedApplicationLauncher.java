@@ -16,6 +16,9 @@
 
 package org.springframework.boot.context.embedded;
 
+import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StreamUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -24,9 +27,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StreamUtils;
 
 /**
  * {@link AbstractApplicationLauncher} that launches a Spring Boot application using
@@ -59,8 +59,7 @@ class ExplodedApplicationLauncher extends AbstractApplicationLauncher {
 		try {
 			explodeArchive(archive);
 			return Arrays.asList("-cp", this.exploded.getAbsolutePath(), mainClass);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -74,8 +73,7 @@ class ExplodedApplicationLauncher extends AbstractApplicationLauncher {
 			File extracted = new File(this.exploded, jarEntry.getName());
 			if (jarEntry.isDirectory()) {
 				extracted.mkdirs();
-			}
-			else {
+			} else {
 				FileOutputStream extractedOutputStream = new FileOutputStream(extracted);
 				StreamUtils.copy(jarFile.getInputStream(jarEntry), extractedOutputStream);
 				extractedOutputStream.close();

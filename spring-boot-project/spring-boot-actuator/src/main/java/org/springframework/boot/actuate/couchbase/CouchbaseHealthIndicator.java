@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.couchbase;
 
 import com.couchbase.client.core.message.internal.DiagnosticsReport;
 import com.couchbase.client.java.Cluster;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -37,6 +36,7 @@ public class CouchbaseHealthIndicator extends AbstractHealthIndicator {
 
 	/**
 	 * Create an indicator with the specified {@link Cluster}.
+	 *
 	 * @param cluster the Couchbase Cluster
 	 * @since 2.0.6
 	 */

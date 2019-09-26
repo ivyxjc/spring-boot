@@ -17,18 +17,13 @@
 package org.springframework.boot.diagnostics.analyzer;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.analyzer.nounique.TestBean;
 import org.springframework.boot.diagnostics.analyzer.nounique.TestBeanConsumer;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -95,8 +90,7 @@ public class NoUniqueBeanDefinitionFailureAnalyzerTests {
 			context.setParent(new AnnotationConfigApplicationContext(ParentProducer.class));
 			try {
 				context.refresh();
-			}
-			catch (BeanCreationException ex) {
+			} catch (BeanCreationException ex) {
 				this.analyzer.setBeanFactory(context.getBeanFactory());
 				return ex;
 			}

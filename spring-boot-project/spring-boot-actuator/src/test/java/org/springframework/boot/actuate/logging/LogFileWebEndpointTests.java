@@ -16,20 +16,19 @@
 
 package org.springframework.boot.actuate.logging;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.logging.LogFile;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StreamUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,11 +41,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class LogFileWebEndpointTests {
 
+	private final MockEnvironment environment = new MockEnvironment();
 	@Rule
 	public TemporaryFolder temp = new TemporaryFolder();
-
-	private final MockEnvironment environment = new MockEnvironment();
-
 	private File logFile;
 
 	@Before

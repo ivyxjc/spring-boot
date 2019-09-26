@@ -16,14 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
@@ -35,6 +27,13 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import javax.sql.DataSource;
+import java.nio.charset.Charset;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Base class for configuration of a data source.
@@ -167,6 +166,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Initialize a {@link DataSourceBuilder} with the state of this instance.
+	 *
 	 * @return a {@link DataSourceBuilder} initialized with the customizations defined on
 	 * this instance
 	 */
@@ -201,6 +201,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Return the configured driver or {@code null} if none was configured.
+	 *
 	 * @return the configured driver
 	 * @see #determineDriverClassName()
 	 */
@@ -214,6 +215,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Determine the driver to use based on this configuration and the environment.
+	 *
 	 * @return the driver to use
 	 * @since 1.4.0
 	 */
@@ -240,18 +242,17 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 		try {
 			ClassUtils.forName(this.driverClassName, null);
 			return true;
-		}
-		catch (UnsupportedClassVersionError ex) {
+		} catch (UnsupportedClassVersionError ex) {
 			// Driver library has been compiled with a later JDK, propagate error
 			throw ex;
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return false;
 		}
 	}
 
 	/**
 	 * Return the configured url or {@code null} if none was configured.
+	 *
 	 * @return the configured url
 	 * @see #determineUrl()
 	 */
@@ -265,6 +266,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Determine the url to use based on this configuration and the environment.
+	 *
 	 * @return the url to use
 	 * @since 1.4.0
 	 */
@@ -283,6 +285,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Determine the name to used based on this configuration.
+	 *
 	 * @return the database name to use or {@code null}
 	 * @since 2.0.0
 	 */
@@ -304,6 +307,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Return the configured username or {@code null} if none was configured.
+	 *
 	 * @return the configured username
 	 * @see #determineUsername()
 	 */
@@ -317,6 +321,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Determine the username to use based on this configuration and the environment.
+	 *
 	 * @return the username to use
 	 * @since 1.4.0
 	 */
@@ -332,6 +337,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Return the configured password or {@code null} if none was configured.
+	 *
 	 * @return the configured password
 	 * @see #determinePassword()
 	 */
@@ -345,6 +351,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 
 	/**
 	 * Determine the password to use based on this configuration and the environment.
+	 *
 	 * @return the password to use
 	 * @since 1.4.0
 	 */
@@ -366,6 +373,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 	 * Allows the DataSource to be managed by the container and obtained via JNDI. The
 	 * {@code URL}, {@code driverClassName}, {@code username} and {@code password} fields
 	 * will be ignored when using JNDI lookups.
+	 *
 	 * @param jndiName the JNDI name
 	 */
 	public void setJndiName(String jndiName) {
@@ -512,7 +520,7 @@ public class DataSourceProperties implements BeanClassLoaderAware, InitializingB
 		private final EmbeddedDatabaseConnection connection;
 
 		DataSourceBeanCreationException(String message, DataSourceProperties properties,
-				EmbeddedDatabaseConnection connection) {
+										EmbeddedDatabaseConnection connection) {
 			super(message);
 			this.properties = properties;
 			this.connection = connection;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -277,8 +277,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-				<groupId>io.micrometer</groupId>
-				<artifactId>micrometer-registry-wavefront</artifactId>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-wavefront</artifactId>
 			<optional>true</optional>
 		</dependency>
 		<dependency>
@@ -999,8 +999,12 @@
 									<links>
 										<link>https://docs.oracle.com/javase/8/docs/api</link>
 										<link>https://docs.oracle.com/javaee/7/api</link>
-										<link>https://docs.spring.io/spring-framework/docs/${spring-framework.version}/javadoc-api</link>
-										<link>https://docs.spring.io/spring-security/site/docs/${spring-security.version}/api</link>
+										<link>
+											https://docs.spring.io/spring-framework/docs/${spring-framework.version}/javadoc-api
+										</link>
+										<link>
+											https://docs.spring.io/spring-security/site/docs/${spring-security.version}/api
+										</link>
 										<link>https://tomcat.apache.org/tomcat-8.5-doc/api</link>
 										<link>https://www.eclipse.org/jetty/javadoc/${jetty.version}</link>
 										<link>https://www.thymeleaf.org/apidocs/thymeleaf/${thymeleaf.version}</link>
@@ -1027,7 +1031,8 @@
 											<version>${revision}</version>
 											<type>pom</type>
 											<overWrite>true</overWrite>
-											<outputDirectory>${project.build.directory}/external-resources</outputDirectory>
+											<outputDirectory>${project.build.directory}/external-resources
+											</outputDirectory>
 											<destFileName>starters-effective-pom.xml</destFileName>
 										</artifactItem>
 									</artifactItems>
@@ -1058,7 +1063,8 @@
 											<version>${revision}</version>
 											<classifier>docs</classifier>
 											<type>zip</type>
-											<outputDirectory>${project.build.directory}/contents/gradle-plugin</outputDirectory>
+											<outputDirectory>${project.build.directory}/contents/gradle-plugin
+											</outputDirectory>
 											<excludes>META-INF/**</excludes>
 										</artifactItem>
 										<artifactItem>
@@ -1067,7 +1073,8 @@
 											<version>${revision}</version>
 											<classifier>docs</classifier>
 											<type>zip</type>
-											<outputDirectory>${project.build.directory}/contents/actuator-api</outputDirectory>
+											<outputDirectory>${project.build.directory}/contents/actuator-api
+											</outputDirectory>
 											<excludes>META-INF/**</excludes>
 										</artifactItem>
 									</artifactItems>
@@ -1087,7 +1094,8 @@
 											<version>${revision}</version>
 											<type>effective-pom</type>
 											<overWrite>true</overWrite>
-											<outputDirectory>${project.build.directory}/external-resources</outputDirectory>
+											<outputDirectory>${project.build.directory}/external-resources
+											</outputDirectory>
 											<destFileName>effective-pom.xml</destFileName>
 										</artifactItem>
 									</artifactItems>
@@ -1136,7 +1144,9 @@
 											<version>${revision}</version>
 											<type>zip</type>
 											<classifier>starter-poms</classifier>
-											<outputDirectory>${project.build.directory}/external-resources/starter-poms</outputDirectory>
+											<outputDirectory>
+												${project.build.directory}/external-resources/starter-poms
+											</outputDirectory>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
@@ -1182,7 +1192,7 @@
 											<stylesheet>src/main/xslt/dependencyVersions.xsl</stylesheet>
 											<fileMappers>
 												<fileMapper
-													implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+														implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
 													<targetExtension>.adoc</targetExtension>
 												</fileMapper>
 											</fileMappers>
@@ -1207,7 +1217,7 @@
 											<stylesheet>src/main/xslt/versionProperties.xsl</stylesheet>
 											<fileMappers>
 												<fileMapper
-													implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+														implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
 													<targetExtension>.properties</targetExtension>
 												</fileMapper>
 											</fileMappers>
@@ -1231,9 +1241,12 @@
 						</executions>
 						<configuration>
 							<scripts>
-								<script>file:///${project.basedir}/src/main/groovy/generateAutoConfigurationClassTables.groovy</script>
+								<script>
+									file:///${project.basedir}/src/main/groovy/generateAutoConfigurationClassTables.groovy
+								</script>
 								<script>file:///${project.basedir}/src/main/groovy/generateStarterTables.groovy</script>
-								<script>file:///${project.basedir}/src/main/groovy/generateTestSlicesTable.groovy</script>
+								<script>file:///${project.basedir}/src/main/groovy/generateTestSlicesTable.groovy
+								</script>
 							</scripts>
 						</configuration>
 						<dependencies>
@@ -1268,7 +1281,8 @@
 								<inherited>false</inherited>
 								<configuration>
 									<files>
-										<file>${project.build.directory}/generated-resources/.flattened-pom.properties</file>
+										<file>${project.build.directory}/generated-resources/.flattened-pom.properties
+										</file>
 									</files>
 								</configuration>
 							</execution>
@@ -1290,21 +1304,39 @@
 									<doctype>book</doctype>
 									<attributes>
 										<docinfo>true</docinfo>
-										<spring-boot-artifactory-repo>${spring-boot-artifactory-repo}</spring-boot-artifactory-repo>
+										<spring-boot-artifactory-repo>${spring-boot-artifactory-repo}
+										</spring-boot-artifactory-repo>
 										<github-tag>${github-tag}</github-tag>
 										<jooq-version>${jooq.version}</jooq-version>
 										<spring-boot-version>${revision}</spring-boot-version>
 										<spring-amqp-version>${spring-amqp.version}</spring-amqp-version>
-										<spring-data-couchbase-version>${flattenedpom.version.org.springframework.data.spring-data-couchbase}</spring-data-couchbase-version>
-										<spring-data-commons-version>${flattenedpom.version.org.springframework.data.spring-data-commons}</spring-data-commons-version>
-										<spring-data-jpa-version>${flattenedpom.version.org.springframework.data.spring-data-jpa}</spring-data-jpa-version>
-										<spring-data-jdbc-version>${flattenedpom.version.org.springframework.data.spring-data-jdbc}</spring-data-jdbc-version>
-										<spring-data-mongodb-version>${flattenedpom.version.org.springframework.data.spring-data-mongodb}</spring-data-mongodb-version>
-										<spring-data-neo4j-version>${flattenedpom.version.org.springframework.data.spring-data-neo4j}</spring-data-neo4j-version>
-										<spring-data-rest-version>${flattenedpom.version.org.springframework.data.spring-data-rest-core}</spring-data-rest-version>
-										<spring-data-solr-version>${flattenedpom.version.org.springframework.data.spring-data-solr}</spring-data-solr-version>
+										<spring-data-couchbase-version>
+											${flattenedpom.version.org.springframework.data.spring-data-couchbase}
+										</spring-data-couchbase-version>
+										<spring-data-commons-version>
+											${flattenedpom.version.org.springframework.data.spring-data-commons}
+										</spring-data-commons-version>
+										<spring-data-jpa-version>
+											${flattenedpom.version.org.springframework.data.spring-data-jpa}
+										</spring-data-jpa-version>
+										<spring-data-jdbc-version>
+											${flattenedpom.version.org.springframework.data.spring-data-jdbc}
+										</spring-data-jdbc-version>
+										<spring-data-mongodb-version>
+											${flattenedpom.version.org.springframework.data.spring-data-mongodb}
+										</spring-data-mongodb-version>
+										<spring-data-neo4j-version>
+											${flattenedpom.version.org.springframework.data.spring-data-neo4j}
+										</spring-data-neo4j-version>
+										<spring-data-rest-version>
+											${flattenedpom.version.org.springframework.data.spring-data-rest-core}
+										</spring-data-rest-version>
+										<spring-data-solr-version>
+											${flattenedpom.version.org.springframework.data.spring-data-solr}
+										</spring-data-solr-version>
 										<spring-framework-version>${spring-framework.version}</spring-framework-version>
-										<spring-integration-version>${spring-integration.version}</spring-integration-version>
+										<spring-integration-version>${spring-integration.version}
+										</spring-integration-version>
 										<spring-security-version>${spring-security.version}</spring-security-version>
 										<spring-webservices-version>${spring-ws.version}</spring-webservices-version>
 									</attributes>
@@ -1324,7 +1356,8 @@
 							<foCustomization>${basedir}/src/main/docbook/xsl/pdf.xsl</foCustomization>
 							<useExtensions>1</useExtensions>
 							<highlightSource>1</highlightSource>
-							<highlightXslthlConfig>${basedir}/src/main/docbook/xsl/xslthl-config.xml</highlightXslthlConfig>
+							<highlightXslthlConfig>${basedir}/src/main/docbook/xsl/xslthl-config.xml
+							</highlightXslthlConfig>
 						</configuration>
 						<dependencies>
 							<dependency>
@@ -1349,20 +1382,21 @@
 								</goals>
 								<phase>prepare-package</phase>
 								<configuration>
-									<htmlCustomization>${basedir}/src/main/docbook/xsl/html-singlepage.xsl</htmlCustomization>
+									<htmlCustomization>${basedir}/src/main/docbook/xsl/html-singlepage.xsl
+									</htmlCustomization>
 									<targetDirectory>${basedir}/target/docbook/htmlsingle</targetDirectory>
 									<postProcess>
 										<copy todir="${basedir}/target/contents/reference/htmlsingle">
 											<fileset dir="${basedir}/target/docbook/htmlsingle">
-												<include name="**/*.html" />
+												<include name="**/*.html"/>
 											</fileset>
 										</copy>
 										<copy todir="${basedir}/target/contents/reference/htmlsingle">
 											<fileset dir="${basedir}/src/main/docbook">
-												<include name="**/*.css" />
-												<include name="**/*.png" />
-												<include name="**/*.gif" />
-												<include name="**/*.jpg" />
+												<include name="**/*.css"/>
+												<include name="**/*.png"/>
+												<include name="**/*.gif"/>
+												<include name="**/*.jpg"/>
 											</fileset>
 										</copy>
 									</postProcess>
@@ -1375,21 +1409,22 @@
 								</goals>
 								<phase>prepare-package</phase>
 								<configuration>
-									<htmlCustomization>${basedir}/src/main/docbook/xsl/html-multipage.xsl</htmlCustomization>
+									<htmlCustomization>${basedir}/src/main/docbook/xsl/html-multipage.xsl
+									</htmlCustomization>
 									<targetDirectory>${basedir}/target/docbook/html</targetDirectory>
 									<chunkedOutput>true</chunkedOutput>
 									<postProcess>
 										<copy todir="${basedir}/target/contents/reference/html">
 											<fileset dir="${basedir}/target/docbook/html">
-												<include name="**/*.html" />
+												<include name="**/*.html"/>
 											</fileset>
 										</copy>
 										<copy todir="${basedir}/target/contents/reference/html">
 											<fileset dir="${basedir}/src/main/docbook">
-												<include name="**/*.css" />
-												<include name="**/*.png" />
-												<include name="**/*.gif" />
-												<include name="**/*.jpg" />
+												<include name="**/*.css"/>
+												<include name="**/*.png"/>
+												<include name="**/*.gif"/>
+												<include name="**/*.jpg"/>
 											</fileset>
 										</copy>
 									</postProcess>
@@ -1407,11 +1442,11 @@
 									<postProcess>
 										<copy todir="${basedir}/target/contents/reference">
 											<fileset dir="${basedir}/target/docbook">
-												<include name="**/*.pdf" />
+												<include name="**/*.pdf"/>
 											</fileset>
 										</copy>
 										<move file="${basedir}/target/contents/reference/pdf/index.pdf"
-											tofile="${basedir}/target/contents/reference/pdf/spring-boot-reference.pdf" />
+											  tofile="${basedir}/target/contents/reference/pdf/spring-boot-reference.pdf"/>
 									</postProcess>
 								</configuration>
 							</execution>
@@ -1427,18 +1462,18 @@
 									<preProcess>
 										<copy todir="${basedir}/target/docbook/epub/images">
 											<fileset dir="${basedir}/src/main/docbook/images">
-												<include name="*.png" />
+												<include name="*.png"/>
 											</fileset>
 										</copy>
 									</preProcess>
 									<postProcess>
 										<copy todir="${basedir}/target/contents/reference/epub">
 											<fileset dir="${basedir}/target/docbook">
-												<include name="**/*.epub" />
+												<include name="**/*.epub"/>
 											</fileset>
 										</copy>
 										<move file="${basedir}/target/contents/reference/epub/index.epub"
-											tofile="${basedir}/target/contents/reference/epub/spring-boot-reference.epub" />
+											  tofile="${basedir}/target/contents/reference/epub/spring-boot-reference.epub"/>
 									</postProcess>
 								</configuration>
 							</execution>
@@ -1480,11 +1515,11 @@
 								<configuration>
 									<target>
 										<zip
-											destfile="${project.build.directory}/${project.artifactId}-${revision}.zip">
+												destfile="${project.build.directory}/${project.artifactId}-${revision}.zip">
 											<zipfileset
-												src="${project.build.directory}/${project.artifactId}-${revision}-javadoc.jar"
-												prefix="api" />
-											<fileset dir="${project.build.directory}/contents" />
+													src="${project.build.directory}/${project.artifactId}-${revision}-javadoc.jar"
+													prefix="api"/>
+											<fileset dir="${project.build.directory}/contents"/>
 										</zip>
 									</target>
 								</configuration>
@@ -1498,23 +1533,23 @@
 								<configuration>
 									<exportAntProperties>true</exportAntProperties>
 									<target>
-										<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-										<taskdef name="stringutil" classname="ise.antelope.tasks.StringUtilTask" />
-										<var name="version-type" value="${revision}" />
+										<taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+										<taskdef name="stringutil" classname="ise.antelope.tasks.StringUtilTask"/>
+										<var name="version-type" value="${revision}"/>
 										<propertyregex property="version-type" override="true"
-											input="${version-type}" regexp=".*\.(.*)" replace="\1" />
+													   input="${version-type}" regexp=".*\.(.*)" replace="\1"/>
 										<propertyregex property="version-type" override="true"
-											input="${version-type}" regexp="(M)\d+" replace="MILESTONE" />
+													   input="${version-type}" regexp="(M)\d+" replace="MILESTONE"/>
 										<propertyregex property="version-type" override="true"
-											input="${version-type}" regexp="(RC)\d+" replace="MILESTONE" />
+													   input="${version-type}" regexp="(RC)\d+" replace="MILESTONE"/>
 										<propertyregex property="version-type" override="true"
-											input="${version-type}" regexp="BUILD-(.*)" replace="SNAPSHOT" />
+													   input="${version-type}" regexp="BUILD-(.*)" replace="SNAPSHOT"/>
 										<stringutil string="${version-type}" property="spring-boot-artifactory-repo">
-											<lowercase />
+											<lowercase/>
 										</stringutil>
-										<var name="github-tag" value="v${revision}" />
+										<var name="github-tag" value="v${revision}"/>
 										<propertyregex property="github-tag" override="true"
-											input="${github-tag}" regexp=".*SNAPSHOT" replace="2.1.x" />
+													   input="${github-tag}" regexp=".*SNAPSHOT" replace="2.1.x"/>
 									</target>
 								</configuration>
 							</execution>
@@ -1532,7 +1567,9 @@
 								<configuration>
 									<artifacts>
 										<artifact>
-											<file>${project.build.directory}/${project.artifactId}-${project.version}.zip</file>
+											<file>
+												${project.build.directory}/${project.artifactId}-${project.version}.zip
+											</file>
 											<type>zip</type>
 										</artifact>
 									</artifacts>

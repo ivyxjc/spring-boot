@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.embedded;
 
-import java.util.function.Consumer;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.Valve;
 import org.apache.catalina.startup.Tomcat;
@@ -28,7 +26,6 @@ import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -38,6 +35,8 @@ import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.unit.DataSize;
+
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -71,7 +70,7 @@ public class TomcatWebServerFactoryCustomizerTests {
 		customizeAndRunServer((server) -> assertThat(
 				((AbstractHttp11Protocol<?>) server.getTomcat().getConnector().getProtocolHandler())
 						.getMaxSwallowSize())
-								.isEqualTo(this.serverProperties.getTomcat().getMaxSwallowSize().toBytes()));
+				.isEqualTo(this.serverProperties.getTomcat().getMaxSwallowSize().toBytes()));
 	}
 
 	@Test
@@ -79,7 +78,7 @@ public class TomcatWebServerFactoryCustomizerTests {
 		bind("server.tomcat.accept-count=10");
 		customizeAndRunServer((server) -> assertThat(
 				((AbstractProtocol<?>) server.getTomcat().getConnector().getProtocolHandler()).getAcceptCount())
-						.isEqualTo(10));
+				.isEqualTo(10));
 	}
 
 	@Test
@@ -100,7 +99,7 @@ public class TomcatWebServerFactoryCustomizerTests {
 		bind("server.tomcat.max-connections=5");
 		customizeAndRunServer((server) -> assertThat(
 				((AbstractProtocol<?>) server.getTomcat().getConnector().getProtocolHandler()).getMaxConnections())
-						.isEqualTo(5));
+				.isEqualTo(5));
 	}
 
 	@Test
@@ -315,8 +314,7 @@ public class TomcatWebServerFactoryCustomizerTests {
 		server.start();
 		try {
 			consumer.accept(server);
-		}
-		finally {
+		} finally {
 			server.stop();
 		}
 	}

@@ -36,6 +36,7 @@ public class ValueHint implements Serializable {
 
 	/**
 	 * Return the hint value.
+	 *
 	 * @return the value
 	 */
 	public Object getValue() {
@@ -48,6 +49,7 @@ public class ValueHint implements Serializable {
 
 	/**
 	 * A description of this value, if any. Can be multi-lines.
+	 *
 	 * @return the description
 	 * @see #getShortDescription()
 	 */
@@ -61,6 +63,7 @@ public class ValueHint implements Serializable {
 
 	/**
 	 * A single-line, single-sentence description of this hint, if any.
+	 *
 	 * @return the short description
 	 * @see #getDescription()
 	 */

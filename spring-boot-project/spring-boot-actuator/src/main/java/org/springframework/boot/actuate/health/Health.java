@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import org.springframework.util.Assert;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Carries information about the health of a component or subsystem.
@@ -59,6 +58,7 @@ public final class Health {
 
 	/**
 	 * Create a new {@link Health} instance with the specified status and details.
+	 *
 	 * @param builder the Builder to use
 	 */
 	private Health(Builder builder) {
@@ -68,7 +68,75 @@ public final class Health {
 	}
 
 	/**
+	 * Create a new {@link Builder} instance with an {@link Status#UNKNOWN} status.
+	 *
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder unknown() {
+		return status(Status.UNKNOWN);
+	}
+
+	/**
+	 * Create a new {@link Builder} instance with an {@link Status#UP} status.
+	 *
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder up() {
+		return status(Status.UP);
+	}
+
+	/**
+	 * Create a new {@link Builder} instance with an {@link Status#DOWN} status and the
+	 * specified exception details.
+	 *
+	 * @param ex the exception
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder down(Exception ex) {
+		return down().withException(ex);
+	}
+
+	/**
+	 * Create a new {@link Builder} instance with a {@link Status#DOWN} status.
+	 *
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder down() {
+		return status(Status.DOWN);
+	}
+
+	/**
+	 * Create a new {@link Builder} instance with an {@link Status#OUT_OF_SERVICE} status.
+	 *
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder outOfService() {
+		return status(Status.OUT_OF_SERVICE);
+	}
+
+	/**
+	 * Create a new {@link Builder} instance with a specific status code.
+	 *
+	 * @param statusCode the status code
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder status(String statusCode) {
+		return status(new Status(statusCode));
+	}
+
+	/**
+	 * Create a new {@link Builder} instance with a specific {@link Status}.
+	 *
+	 * @param status the status
+	 * @return a new {@link Builder} instance
+	 */
+	public static Builder status(Status status) {
+		return new Builder(status);
+	}
+
+	/**
 	 * Return the status of the health.
+	 *
 	 * @return the status (never {@code null})
 	 */
 	@JsonUnwrapped
@@ -78,6 +146,7 @@ public final class Health {
 
 	/**
 	 * Return the details of the health.
+	 *
 	 * @return the details (or an empty map)
 	 */
 	public Map<String, Object> getDetails() {
@@ -108,66 +177,6 @@ public final class Health {
 	}
 
 	/**
-	 * Create a new {@link Builder} instance with an {@link Status#UNKNOWN} status.
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder unknown() {
-		return status(Status.UNKNOWN);
-	}
-
-	/**
-	 * Create a new {@link Builder} instance with an {@link Status#UP} status.
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder up() {
-		return status(Status.UP);
-	}
-
-	/**
-	 * Create a new {@link Builder} instance with an {@link Status#DOWN} status and the
-	 * specified exception details.
-	 * @param ex the exception
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder down(Exception ex) {
-		return down().withException(ex);
-	}
-
-	/**
-	 * Create a new {@link Builder} instance with a {@link Status#DOWN} status.
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder down() {
-		return status(Status.DOWN);
-	}
-
-	/**
-	 * Create a new {@link Builder} instance with an {@link Status#OUT_OF_SERVICE} status.
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder outOfService() {
-		return status(Status.OUT_OF_SERVICE);
-	}
-
-	/**
-	 * Create a new {@link Builder} instance with a specific status code.
-	 * @param statusCode the status code
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder status(String statusCode) {
-		return status(new Status(statusCode));
-	}
-
-	/**
-	 * Create a new {@link Builder} instance with a specific {@link Status}.
-	 * @param status the status
-	 * @return a new {@link Builder} instance
-	 */
-	public static Builder status(Status status) {
-		return new Builder(status);
-	}
-
-	/**
 	 * Builder for creating immutable {@link Health} instances.
 	 */
 	public static class Builder {
@@ -186,6 +195,7 @@ public final class Health {
 
 		/**
 		 * Create new Builder instance, setting status to given {@code status}.
+		 *
 		 * @param status the {@link Status} to use
 		 */
 		public Builder(Status status) {
@@ -197,7 +207,8 @@ public final class Health {
 		/**
 		 * Create new Builder instance, setting status to given {@code status} and details
 		 * to given {@code details}.
-		 * @param status the {@link Status} to use
+		 *
+		 * @param status  the {@link Status} to use
 		 * @param details the details {@link Map} to use
 		 */
 		public Builder(Status status, Map<String, ?> details) {
@@ -209,6 +220,7 @@ public final class Health {
 
 		/**
 		 * Record detail for given {@link Exception}.
+		 *
 		 * @param ex the exception
 		 * @return this {@link Builder} instance
 		 */
@@ -219,7 +231,8 @@ public final class Health {
 
 		/**
 		 * Record detail using given {@code key} and {@code value}.
-		 * @param key the detail key
+		 *
+		 * @param key   the detail key
 		 * @param value the detail value
 		 * @return this {@link Builder} instance
 		 */
@@ -233,6 +246,7 @@ public final class Health {
 		/**
 		 * Record details from the given {@code details} map. Keys from the given map
 		 * replace any existing keys if there are duplicates.
+		 *
 		 * @param details map of details
 		 * @return this {@link Builder} instance
 		 * @since 2.1.0
@@ -245,6 +259,7 @@ public final class Health {
 
 		/**
 		 * Set status to {@link Status#UNKNOWN} status.
+		 *
 		 * @return this {@link Builder} instance
 		 */
 		public Builder unknown() {
@@ -253,6 +268,7 @@ public final class Health {
 
 		/**
 		 * Set status to {@link Status#UP} status.
+		 *
 		 * @return this {@link Builder} instance
 		 */
 		public Builder up() {
@@ -261,6 +277,7 @@ public final class Health {
 
 		/**
 		 * Set status to {@link Status#DOWN} and add details for given {@link Throwable}.
+		 *
 		 * @param ex the exception
 		 * @return this {@link Builder} instance
 		 */
@@ -270,6 +287,7 @@ public final class Health {
 
 		/**
 		 * Set status to {@link Status#DOWN}.
+		 *
 		 * @return this {@link Builder} instance
 		 */
 		public Builder down() {
@@ -278,6 +296,7 @@ public final class Health {
 
 		/**
 		 * Set status to {@link Status#OUT_OF_SERVICE}.
+		 *
 		 * @return this {@link Builder} instance
 		 */
 		public Builder outOfService() {
@@ -286,6 +305,7 @@ public final class Health {
 
 		/**
 		 * Set status to given {@code statusCode}.
+		 *
 		 * @param statusCode the status code
 		 * @return this {@link Builder} instance
 		 */
@@ -295,6 +315,7 @@ public final class Health {
 
 		/**
 		 * Set status to given {@link Status} instance.
+		 *
 		 * @param status the status
 		 * @return this {@link Builder} instance
 		 */
@@ -306,6 +327,7 @@ public final class Health {
 		/**
 		 * Create a new {@link Health} instance with the previously specified code and
 		 * details.
+		 *
 		 * @return a new {@link Health} instance
 		 */
 		public Health build() {

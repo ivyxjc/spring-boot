@@ -16,13 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint.invoke.reflect;
 
-import java.lang.reflect.Method;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.invoke.OperationParameters;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

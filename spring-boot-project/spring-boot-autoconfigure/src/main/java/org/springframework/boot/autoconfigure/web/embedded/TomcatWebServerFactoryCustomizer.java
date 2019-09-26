@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.embedded;
 
-import java.time.Duration;
-
 import org.apache.catalina.Lifecycle;
 import org.apache.catalina.valves.AccessLogValve;
 import org.apache.catalina.valves.ErrorReportValve;
@@ -25,7 +23,6 @@ import org.apache.catalina.valves.RemoteIpValve;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
-
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ErrorProperties.IncludeStacktrace;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
@@ -38,6 +35,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 import org.springframework.util.unit.DataSize;
+
+import java.time.Duration;
 
 /**
  * Customization for Tomcat-specific features common for both Servlet and Reactive

@@ -33,6 +33,7 @@ public interface XADataSourceWrapper {
 	/**
 	 * Wrap the specific {@link XADataSource} and enroll it with a JTA
 	 * {@link TransactionManager}.
+	 *
 	 * @param dataSource the data source to wrap
 	 * @return the wrapped data source
 	 * @throws Exception if the data source cannot be wrapped

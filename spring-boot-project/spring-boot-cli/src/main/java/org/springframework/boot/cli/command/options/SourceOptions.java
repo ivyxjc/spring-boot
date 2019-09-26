@@ -16,16 +16,15 @@
 
 package org.springframework.boot.cli.command.options;
 
+import joptsimple.OptionSet;
+import org.springframework.boot.cli.util.ResourceUtils;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import joptsimple.OptionSet;
-
-import org.springframework.boot.cli.util.ResourceUtils;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Extract source file options (anything following '--' in an {@link OptionSet}).
@@ -44,6 +43,7 @@ public class SourceOptions {
 
 	/**
 	 * Create a new {@link SourceOptions} instance.
+	 *
 	 * @param options the source option set
 	 */
 	public SourceOptions(OptionSet options) {
@@ -52,6 +52,7 @@ public class SourceOptions {
 
 	/**
 	 * Create a new {@link SourceOptions} instance.
+	 *
 	 * @param arguments the source arguments
 	 */
 	public SourceOptions(List<?> arguments) {
@@ -64,9 +65,10 @@ public class SourceOptions {
 	 * paths are tested before use). If default paths are provided and the option set
 	 * contains no source file arguments it is not an error even if none of the default
 	 * paths exist).
-	 * @param optionSet the source option set
+	 *
+	 * @param optionSet   the source option set
 	 * @param classLoader an optional classloader used to try and load files that are not
-	 * found in the local filesystem
+	 *                    found in the local filesystem
 	 */
 	public SourceOptions(OptionSet optionSet, ClassLoader classLoader) {
 		this(optionSet.nonOptionArguments(), classLoader);
@@ -85,8 +87,7 @@ public class SourceOptions {
 				File fileCandidate = new File(filename);
 				if (fileCandidate.isFile()) {
 					urls.add(fileCandidate.getAbsoluteFile().toURI().toString());
-				}
-				else if (!isAbsoluteWindowsFile(fileCandidate)) {
+				} else if (!isAbsoluteWindowsFile(fileCandidate)) {
 					urls.addAll(ResourceUtils.getUrls(filename, classLoader));
 				}
 				for (String url : urls) {
@@ -97,8 +98,7 @@ public class SourceOptions {
 				if (isSource(filename)) {
 					if (urls.isEmpty()) {
 						throw new IllegalArgumentException("Can't find " + filename);
-					}
-					else {
+					} else {
 						sourceArgCount++;
 					}
 				}

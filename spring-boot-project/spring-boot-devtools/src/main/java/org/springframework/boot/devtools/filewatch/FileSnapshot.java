@@ -16,9 +16,9 @@
 
 package org.springframework.boot.devtools.filewatch;
 
-import java.io.File;
-
 import org.springframework.util.Assert;
+
+import java.io.File;
 
 /**
  * A snapshot of a File at a given point in time.

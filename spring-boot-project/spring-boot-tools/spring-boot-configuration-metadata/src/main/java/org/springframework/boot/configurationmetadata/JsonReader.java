@@ -16,6 +16,9 @@
 
 package org.springframework.boot.configurationmetadata;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -24,9 +27,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Read standard json metadata format as {@link ConfigurationMetadataRepository}.
@@ -46,8 +46,7 @@ class JsonReader {
 			List<ConfigurationMetadataItem> items = parseAllItems(json);
 			List<ConfigurationMetadataHint> hints = parseAllHints(json);
 			return new RawConfigurationMetadata(groups, items, hints);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (ex instanceof IOException) {
 				throw (IOException) ex;
 			}
@@ -176,8 +175,7 @@ class JsonReader {
 		if (value != null) {
 			try {
 				return Deprecation.Level.valueOf(value.toUpperCase(Locale.ENGLISH));
-			}
-			catch (IllegalArgumentException ex) {
+			} catch (IllegalArgumentException ex) {
 				// let's use the default
 			}
 		}
@@ -206,8 +204,7 @@ class JsonReader {
 				out.append(buffer, 0, bytesRead);
 			}
 			return new JSONObject(out.toString());
-		}
-		finally {
+		} finally {
 			in.close();
 		}
 	}

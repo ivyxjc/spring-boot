@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import javax.jms.ConnectionFactory;
-
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
+
+import javax.jms.ConnectionFactory;
 
 /**
  * Factory to create a {@link JmsPoolConnectionFactory} from properties defined in
@@ -38,6 +38,7 @@ public class JmsPoolConnectionFactoryFactory {
 	/**
 	 * Create a {@link JmsPoolConnectionFactory} based on the specified
 	 * {@link ConnectionFactory}.
+	 *
 	 * @param connectionFactory the connection factory to wrap
 	 * @return a pooled connection factory
 	 */

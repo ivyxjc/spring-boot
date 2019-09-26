@@ -16,28 +16,23 @@
 
 package org.springframework.boot.web.servlet;
 
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpSessionAttributeListener;
+import javax.servlet.http.HttpSessionListener;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextAttributeListener;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletRequestAttributeListener;
-import javax.servlet.ServletRequestListener;
-import javax.servlet.http.HttpSessionAttributeListener;
-import javax.servlet.http.HttpSessionListener;
-
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 
 /**
  * A {@link ServletContextInitializer} to register {@link EventListener}s in a Servlet
  * 3.0+ container. Similar to the {@link ServletContext#addListener(EventListener)
  * registration} features provided by {@link ServletContext} but with a Spring Bean
  * friendly design.
- *
+ * <p>
  * This bean can be used to register the following types of listener:
  * <ul>
  * <li>{@link ServletContextAttributeListener}</li>
@@ -78,6 +73,7 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 
 	/**
 	 * Create a new {@link ServletListenerRegistrationBean} instance.
+	 *
 	 * @param listener the listener to register
 	 */
 	public ServletListenerRegistrationBean(T listener) {
@@ -87,41 +83,8 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 	}
 
 	/**
-	 * Set the listener that will be registered.
-	 * @param listener the listener to register
-	 */
-	public void setListener(T listener) {
-		Assert.notNull(listener, "Listener must not be null");
-		Assert.isTrue(isSupportedType(listener), "Listener is not of a supported type");
-		this.listener = listener;
-	}
-
-	/**
-	 * Return the listener to be registered.
-	 * @return the listener to be registered
-	 */
-	public T getListener() {
-		return this.listener;
-	}
-
-	@Override
-	protected String getDescription() {
-		Assert.notNull(this.listener, "Listener must not be null");
-		return "listener " + this.listener;
-	}
-
-	@Override
-	protected void register(String description, ServletContext servletContext) {
-		try {
-			servletContext.addListener(this.listener);
-		}
-		catch (RuntimeException ex) {
-			throw new IllegalStateException("Failed to add listener '" + this.listener + "' to servlet context", ex);
-		}
-	}
-
-	/**
 	 * Returns {@code true} if the specified listener is one of the supported types.
+	 *
 	 * @param listener the listener to test
 	 * @return if the listener is of a supported type
 	 */
@@ -136,10 +99,46 @@ public class ServletListenerRegistrationBean<T extends EventListener> extends Re
 
 	/**
 	 * Return the supported types for this registration.
+	 *
 	 * @return the supported types
 	 */
 	public static Set<Class<?>> getSupportedTypes() {
 		return SUPPORTED_TYPES;
+	}
+
+	/**
+	 * Return the listener to be registered.
+	 *
+	 * @return the listener to be registered
+	 */
+	public T getListener() {
+		return this.listener;
+	}
+
+	/**
+	 * Set the listener that will be registered.
+	 *
+	 * @param listener the listener to register
+	 */
+	public void setListener(T listener) {
+		Assert.notNull(listener, "Listener must not be null");
+		Assert.isTrue(isSupportedType(listener), "Listener is not of a supported type");
+		this.listener = listener;
+	}
+
+	@Override
+	protected String getDescription() {
+		Assert.notNull(this.listener, "Listener must not be null");
+		return "listener " + this.listener;
+	}
+
+	@Override
+	protected void register(String description, ServletContext servletContext) {
+		try {
+			servletContext.addListener(this.listener);
+		} catch (RuntimeException ex) {
+			throw new IllegalStateException("Failed to add listener '" + this.listener + "' to servlet context", ex);
+		}
 	}
 
 }

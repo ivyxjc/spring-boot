@@ -30,6 +30,7 @@ public interface TargetServerConnection {
 
 	/**
 	 * Open a connection to the target server with the specified timeout.
+	 *
 	 * @param timeout the read timeout
 	 * @return a {@link ByteChannel} providing read/write access to the server
 	 * @throws IOException in case of I/O errors

@@ -16,20 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jersey;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -45,6 +34,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import java.lang.annotation.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -54,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT,
-		properties = "spring.jackson.default-property-inclusion=non_null")
+				properties = "spring.jackson.default-property-inclusion=non_null")
 @DirtiesContext
 public class JerseyAutoConfigurationCustomObjectMapperProviderTests {
 
@@ -68,15 +62,20 @@ public class JerseyAutoConfigurationCustomObjectMapperProviderTests {
 		assertThat("{\"subject\":\"Jersey\"}").isEqualTo(response.getBody());
 	}
 
+	@Target(ElementType.TYPE)
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@Configuration
+	@Import({ServletWebServerFactoryAutoConfiguration.class, JacksonAutoConfiguration.class,
+					JerseyAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
+	protected @interface MinimalWebConfiguration {
+
+	}
+
 	@MinimalWebConfiguration
 	@ApplicationPath("/rest")
 	@Path("/message")
 	public static class Application extends ResourceConfig {
-
-		@GET
-		public Message message() {
-			return new Message("Jersey", null);
-		}
 
 		public Application() {
 			register(Application.class);
@@ -84,6 +83,11 @@ public class JerseyAutoConfigurationCustomObjectMapperProviderTests {
 
 		public static void main(String[] args) {
 			SpringApplication.run(Application.class, args);
+		}
+
+		@GET
+		public Message message() {
+			return new Message("Jersey", null);
 		}
 
 	}
@@ -114,16 +118,6 @@ public class JerseyAutoConfigurationCustomObjectMapperProviderTests {
 		public void setBody(String body) {
 			this.body = body;
 		}
-
-	}
-
-	@Target(ElementType.TYPE)
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@Configuration
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, JacksonAutoConfiguration.class,
-			JerseyAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class })
-	protected @interface MinimalWebConfiguration {
 
 	}
 

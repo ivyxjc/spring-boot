@@ -16,15 +16,15 @@
 
 package org.springframework.boot.web.servlet.server;
 
-import java.io.File;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.cert.Certificate;
-
 import org.apache.commons.logging.LogFactory;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import java.io.File;
+import java.net.URL;
+import java.security.CodeSource;
+import java.security.cert.Certificate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

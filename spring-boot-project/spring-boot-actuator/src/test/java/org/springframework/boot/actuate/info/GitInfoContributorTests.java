@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.info;
 
+import org.junit.Test;
+import org.springframework.boot.actuate.info.InfoPropertiesInfoContributor.Mode;
+import org.springframework.boot.info.GitProperties;
+
 import java.time.Instant;
 import java.util.Map;
 import java.util.Properties;
-
-import org.junit.Test;
-
-import org.springframework.boot.actuate.info.InfoPropertiesInfoContributor.Mode;
-import org.springframework.boot.info.GitProperties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,11 +16,10 @@
 
 package org.springframework.boot.autoconfigure.jooq;
 
-import javax.sql.DataSource;
-
 import org.jooq.SQLDialect;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import javax.sql.DataSource;
 
 /**
  * Configuration properties for the JOOQ database library.
@@ -48,6 +47,7 @@ public class JooqProperties {
 	/**
 	 * Determine the {@link SQLDialect} to use based on this configuration and the primary
 	 * {@link DataSource}.
+	 *
 	 * @param dataSource the data source
 	 * @return the {@code SQLDialect} to use for that {@link DataSource}
 	 */

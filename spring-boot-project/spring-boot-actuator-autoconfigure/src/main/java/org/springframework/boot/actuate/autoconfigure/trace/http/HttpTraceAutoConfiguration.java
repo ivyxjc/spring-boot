@@ -73,7 +73,7 @@ public class HttpTraceAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		public HttpTraceWebFilter httpTraceWebFilter(HttpTraceRepository repository, HttpExchangeTracer tracer,
-				HttpTraceProperties traceProperties) {
+													 HttpTraceProperties traceProperties) {
 			return new HttpTraceWebFilter(repository, tracer, traceProperties.getInclude());
 		}
 

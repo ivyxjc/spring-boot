@@ -16,15 +16,14 @@
 
 package org.springframework.boot.devtools.restart;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-
 import org.springframework.beans.factory.ObjectFactory;
+
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -59,7 +58,7 @@ public class MockRestarter implements TestRule {
 	@SuppressWarnings("rawtypes")
 	private void setup() {
 		Restarter.setInstance(this.mock);
-		given(this.mock.getInitialUrls()).willReturn(new URL[] {});
+		given(this.mock.getInitialUrls()).willReturn(new URL[]{});
 		given(this.mock.getOrAddAttribute(anyString(), any(ObjectFactory.class))).willAnswer((invocation) -> {
 			String name = invocation.getArgument(0);
 			ObjectFactory factory = invocation.getArgument(1);

@@ -16,11 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.boot.test.autoconfigure.filter.AnnotationCustomizableTypeExcludeFilter;
@@ -39,6 +34,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * {@link TypeExcludeFilter} for {@link WebMvcTest @WebMvcTest}.
  *
@@ -50,6 +50,9 @@ class WebMvcTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 	private static final String SECURITY_CONFIGURER = "org.springframework.security.config.annotation.web.WebSecurityConfigurer";
 
 	private static final Set<Class<?>> DEFAULT_INCLUDES;
+	private static final Set<Class<?>> DEFAULT_INCLUDES_AND_SECURITY_CONFIGURER;
+	private static final Set<Class<?>> DEFAULT_INCLUDES_AND_CONTROLLER;
+	private static final Set<Class<?>> DEFAULT_INCLUDES_SECURITY_CONFIGURER_AND_CONTROLLER;
 
 	static {
 		Set<Class<?>> includes = new LinkedHashSet<>();
@@ -67,27 +70,20 @@ class WebMvcTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 		DEFAULT_INCLUDES = Collections.unmodifiableSet(includes);
 	}
 
-	private static final Set<Class<?>> DEFAULT_INCLUDES_AND_SECURITY_CONFIGURER;
-
 	static {
 		Set<Class<?>> includes = new LinkedHashSet<>(DEFAULT_INCLUDES);
 		try {
 			includes.add(ClassUtils.forName(SECURITY_CONFIGURER, null));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 		}
 		DEFAULT_INCLUDES_AND_SECURITY_CONFIGURER = Collections.unmodifiableSet(includes);
 	}
-
-	private static final Set<Class<?>> DEFAULT_INCLUDES_AND_CONTROLLER;
 
 	static {
 		Set<Class<?>> includes = new LinkedHashSet<>(DEFAULT_INCLUDES);
 		includes.add(Controller.class);
 		DEFAULT_INCLUDES_AND_CONTROLLER = Collections.unmodifiableSet(includes);
 	}
-
-	private static final Set<Class<?>> DEFAULT_INCLUDES_SECURITY_CONFIGURER_AND_CONTROLLER;
 
 	static {
 		Set<Class<?>> includes = new LinkedHashSet<>(DEFAULT_INCLUDES_AND_SECURITY_CONFIGURER);
@@ -109,10 +105,10 @@ class WebMvcTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 	@Override
 	protected Filter[] getFilters(FilterType type) {
 		switch (type) {
-		case INCLUDE:
-			return this.annotation.includeFilters();
-		case EXCLUDE:
-			return this.annotation.excludeFilters();
+			case INCLUDE:
+				return this.annotation.includeFilters();
+			case EXCLUDE:
+				return this.annotation.excludeFilters();
 		}
 		throw new IllegalStateException("Unsupported type " + type);
 	}

@@ -16,24 +16,19 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive;
 
-import java.security.GeneralSecurityException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.PublicKey;
-import java.security.Signature;
+import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
+import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
+import org.springframework.boot.actuate.autoconfigure.cloudfoundry.Token;
+import org.springframework.util.Base64Utils;
+import reactor.core.publisher.Mono;
+
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
-
-import reactor.core.publisher.Mono;
-
-import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
-import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
-import org.springframework.boot.actuate.autoconfigure.cloudfoundry.Token;
-import org.springframework.util.Base64Utils;
 
 /**
  * Validator used to ensure that a signed {@link Token} has not been tampered with.
@@ -98,8 +93,7 @@ class ReactiveTokenValidator {
 			signature.initVerify(publicKey);
 			signature.update(token.getContent());
 			return signature.verify(token.getSignature());
-		}
-		catch (GeneralSecurityException ex) {
+		} catch (GeneralSecurityException ex) {
 			return false;
 		}
 	}

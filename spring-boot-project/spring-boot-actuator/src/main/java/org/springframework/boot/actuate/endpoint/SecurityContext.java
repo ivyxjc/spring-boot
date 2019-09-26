@@ -45,6 +45,7 @@ public interface SecurityContext {
 
 	/**
 	 * Return the currently authenticated {@link Principal} or {@code null}.
+	 *
 	 * @return the principal or {@code null}
 	 */
 	Principal getPrincipal();
@@ -52,6 +53,7 @@ public interface SecurityContext {
 	/**
 	 * Returns {@code true} if the currently authenticated user is in the given
 	 * {@code role}, or false otherwise.
+	 *
 	 * @param role name of the role
 	 * @return {@code true} if the user is in the given role
 	 */

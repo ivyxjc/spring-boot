@@ -16,14 +16,12 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
+import org.junit.Test;
+import org.springframework.orm.jpa.vendor.Database;
 
 import javax.sql.DataSource;
-
-import org.junit.Test;
-
-import org.springframework.orm.jpa.vendor.Database;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

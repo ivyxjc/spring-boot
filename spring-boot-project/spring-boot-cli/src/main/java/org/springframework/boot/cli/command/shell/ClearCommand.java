@@ -17,7 +17,6 @@
 package org.springframework.boot.cli.command.shell;
 
 import jline.console.ConsoleReader;
-
 import org.springframework.boot.cli.command.AbstractCommand;
 import org.springframework.boot.cli.command.status.ExitStatus;
 

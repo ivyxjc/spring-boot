@@ -31,13 +31,14 @@ public interface TemplateAvailabilityProvider {
 
 	/**
 	 * Returns {@code true} if a template is available for the given {@code view}.
-	 * @param view the view name
-	 * @param environment the environment
-	 * @param classLoader the class loader
+	 *
+	 * @param view           the view name
+	 * @param environment    the environment
+	 * @param classLoader    the class loader
 	 * @param resourceLoader the resource loader
 	 * @return if the template is available
 	 */
 	boolean isTemplateAvailable(String view, Environment environment, ClassLoader classLoader,
-			ResourceLoader resourceLoader);
+								ResourceLoader resourceLoader);
 
 }

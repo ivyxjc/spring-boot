@@ -16,27 +16,20 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.AnnotatedNode;
-import org.codehaus.groovy.ast.AnnotationNode;
-import org.codehaus.groovy.ast.ClassHelper;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.ModuleNode;
-import org.codehaus.groovy.ast.PackageNode;
+import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.ListExpression;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
-
 import org.springframework.boot.groovy.DependencyManagementBom;
 import org.springframework.core.Ordered;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A base class that lets plugin authors easily add additional BOMs to all apps. All the
@@ -67,6 +60,7 @@ public abstract class GenericBomAstTransformation implements SpringBootAstTransf
 	/**
 	 * The bom to be added to dependency management in compact form:
 	 * {@code "<groupId>:<artifactId>:<version>"} (like in a {@code @Grab}).
+	 *
 	 * @return the maven co-ordinates of the BOM to add
 	 */
 	protected abstract String getBomModule();

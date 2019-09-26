@@ -16,8 +16,6 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.lang.reflect.Method;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -28,7 +26,6 @@ import ch.qos.logback.core.rolling.RollingFileAppender;
 import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import ch.qos.logback.core.util.FileSize;
 import ch.qos.logback.core.util.OptionHelper;
-
 import org.springframework.boot.logging.LogFile;
 import org.springframework.boot.logging.LoggingInitializationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -36,6 +33,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
 
 /**
  * Default logback configuration used by Spring Boot. Uses {@link LogbackConfigurator} to
@@ -87,8 +86,7 @@ class DefaultLogbackConfiguration {
 			if (this.logFile != null) {
 				Appender<ILoggingEvent> fileAppender = fileAppender(config, this.logFile.toString());
 				config.root(Level.INFO, consoleAppender, fileAppender);
-			}
-			else {
+			} else {
 				config.root(Level.INFO, consoleAppender);
 			}
 		}
@@ -132,7 +130,7 @@ class DefaultLogbackConfiguration {
 	}
 
 	private void setRollingPolicy(RollingFileAppender<ILoggingEvent> appender, LogbackConfigurator config,
-			String logFile) {
+								  String logFile) {
 		SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy = new SizeAndTimeBasedRollingPolicy<>();
 		rollingPolicy.setFileNamePattern(logFile + ".%d{yyyy-MM-dd}.%i.gz");
 		setMaxFileSize(rollingPolicy, this.patterns.getProperty("logging.file.max-size", MAX_FILE_SIZE));
@@ -146,8 +144,7 @@ class DefaultLogbackConfiguration {
 	private void setMaxFileSize(SizeAndTimeBasedRollingPolicy<ILoggingEvent> rollingPolicy, String maxFileSize) {
 		try {
 			rollingPolicy.setMaxFileSize(FileSize.valueOf(maxFileSize));
-		}
-		catch (NoSuchMethodError ex) {
+		} catch (NoSuchMethodError ex) {
 			// Logback < 1.1.8 used String configuration
 			Method method = ReflectionUtils.findMethod(SizeAndTimeBasedRollingPolicy.class, "setMaxFileSize",
 					String.class);

@@ -16,14 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.web.reactive;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+
+import java.lang.annotation.*;
 
 /**
  * {@link ImportAutoConfiguration Auto-configuration imports} for typical Spring WebFlux
@@ -31,8 +26,8 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
  * using this annotation directly.
  *
  * @author Stephane Nicoll
- * @since 2.0.0
  * @see WebFluxTest
+ * @since 2.0.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

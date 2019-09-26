@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.time.Duration;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,6 +29,8 @@ import org.springframework.session.SessionRepository;
 import org.springframework.session.data.redis.RedisOperationsSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration;
 
+import java.time.Duration;
+
 /**
  * Redis backed session configuration.
  *
@@ -41,7 +41,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.RedisHt
  * @author Vedran Pavic
  */
 @Configuration
-@ConditionalOnClass({ RedisTemplate.class, RedisOperationsSessionRepository.class })
+@ConditionalOnClass({RedisTemplate.class, RedisOperationsSessionRepository.class})
 @ConditionalOnMissingBean(SessionRepository.class)
 @ConditionalOnBean(RedisConnectionFactory.class)
 @Conditional(ServletSessionCondition.class)

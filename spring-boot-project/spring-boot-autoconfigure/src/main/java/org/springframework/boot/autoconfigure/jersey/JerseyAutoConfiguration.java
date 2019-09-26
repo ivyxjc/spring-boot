@@ -16,17 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jersey;
 
-import java.util.Collections;
-import java.util.EnumSet;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.ws.rs.ext.ContextResolver;
-import javax.xml.bind.annotation.XmlElement;
-
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
@@ -38,19 +27,13 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.spring.SpringComponentProvider;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.servlet.ServletProperties;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.ConditionalOnMissingFilterBean;
@@ -70,6 +53,16 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.filter.RequestContextFilter;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
+import javax.ws.rs.ext.ContextResolver;
+import javax.xml.bind.annotation.XmlElement;
+import java.util.Collections;
+import java.util.EnumSet;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Jersey.
  *
@@ -80,7 +73,7 @@ import org.springframework.web.filter.RequestContextFilter;
  * @since 1.2.0
  */
 @Configuration
-@ConditionalOnClass({ SpringComponentProvider.class, ServletRegistration.class })
+@ConditionalOnClass({SpringComponentProvider.class, ServletRegistration.class})
 @ConditionalOnBean(type = "org.glassfish.jersey.server.ResourceConfig")
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE)
@@ -98,7 +91,7 @@ public class JerseyAutoConfiguration implements ServletContextAware {
 	private final ObjectProvider<ResourceConfigCustomizer> customizers;
 
 	public JerseyAutoConfiguration(JerseyProperties jersey, ResourceConfig config,
-			ObjectProvider<ResourceConfigCustomizer> customizers) {
+								   ObjectProvider<ResourceConfigCustomizer> customizers) {
 		this.jersey = jersey;
 		this.config = config;
 		this.customizers = customizers;
@@ -209,7 +202,7 @@ public class JerseyAutoConfiguration implements ServletContextAware {
 		}
 
 		@Configuration
-		@ConditionalOnClass({ JaxbAnnotationIntrospector.class, XmlElement.class })
+		@ConditionalOnClass({JaxbAnnotationIntrospector.class, XmlElement.class})
 		static class JaxbObjectMapperCustomizer {
 
 			@Autowired
@@ -222,7 +215,7 @@ public class JerseyAutoConfiguration implements ServletContextAware {
 			}
 
 			private AnnotationIntrospector createPair(MapperConfig<?> config,
-					JaxbAnnotationIntrospector jaxbAnnotationIntrospector) {
+													  JaxbAnnotationIntrospector jaxbAnnotationIntrospector) {
 				return AnnotationIntrospector.pair(config.getAnnotationIntrospector(), jaxbAnnotationIntrospector);
 			}
 

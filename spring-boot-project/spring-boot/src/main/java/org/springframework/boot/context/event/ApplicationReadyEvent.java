@@ -26,8 +26,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  * have been completed by then.
  *
  * @author Stephane Nicoll
- * @since 1.3.0
  * @see ApplicationFailedEvent
+ * @since 1.3.0
  */
 @SuppressWarnings("serial")
 public class ApplicationReadyEvent extends SpringApplicationEvent {
@@ -36,9 +36,10 @@ public class ApplicationReadyEvent extends SpringApplicationEvent {
 
 	/**
 	 * Create a new {@link ApplicationReadyEvent} instance.
+	 *
 	 * @param application the current application
-	 * @param args the arguments the application is running with
-	 * @param context the context that was being created
+	 * @param args        the arguments the application is running with
+	 * @param context     the context that was being created
 	 */
 	public ApplicationReadyEvent(SpringApplication application, String[] args, ConfigurableApplicationContext context) {
 		super(application, args);
@@ -47,6 +48,7 @@ public class ApplicationReadyEvent extends SpringApplicationEvent {
 
 	/**
 	 * Return the application context.
+	 *
 	 * @return the context
 	 */
 	public ConfigurableApplicationContext getApplicationContext() {

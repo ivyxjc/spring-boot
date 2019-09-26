@@ -17,7 +17,6 @@
 package org.springframework.boot.docs.elasticsearch.jest;
 
 import io.searchbox.client.config.HttpClientConfig;
-
 import org.springframework.boot.autoconfigure.elasticsearch.jest.HttpClientConfigBuilderCustomizer;
 
 /**

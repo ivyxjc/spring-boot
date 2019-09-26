@@ -16,9 +16,9 @@
 
 package org.springframework.boot.cli.command.options;
 
-import java.util.Arrays;
-
 import joptsimple.OptionSpec;
+
+import java.util.Arrays;
 
 /**
  * An {@link OptionHandler} for commands that result in the compilation of one or more

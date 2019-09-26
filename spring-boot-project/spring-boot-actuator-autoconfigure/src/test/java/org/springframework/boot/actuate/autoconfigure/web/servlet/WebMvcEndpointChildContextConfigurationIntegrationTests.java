@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.web.servlet;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
@@ -53,7 +52,7 @@ public class WebMvcEndpointChildContextConfigurationIntegrationTests {
 						DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class))
 				.withUserConfiguration(FailingEndpoint.class)
 				.withInitializer(new ServerPortInfoApplicationContextInitializer()).withPropertyValues("server.port=0",
-						"management.server.port=0", "management.endpoints.web.exposure.include=*")
+				"management.server.port=0", "management.endpoints.web.exposure.include=*")
 				.run((context) -> {
 					String port = context.getEnvironment().getProperty("local.management.port");
 					WebClient client = WebClient.create("http://localhost:" + port);

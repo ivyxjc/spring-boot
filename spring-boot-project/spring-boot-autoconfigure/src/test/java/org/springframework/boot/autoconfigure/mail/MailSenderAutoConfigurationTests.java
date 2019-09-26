@@ -16,15 +16,9 @@
 
 package org.springframework.boot.autoconfigure.mail;
 
-import java.util.Properties;
-
-import javax.mail.Session;
-import javax.naming.Context;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jndi.JndiPropertiesHidingClassLoader;
@@ -36,11 +30,12 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import javax.mail.Session;
+import javax.naming.Context;
+import java.util.Properties;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link MailSenderAutoConfiguration}.
@@ -70,8 +65,7 @@ public class MailSenderAutoConfigurationTests {
 		TestableInitialContextFactory.clearAll();
 		if (this.initialContextFactory != null) {
 			System.setProperty(Context.INITIAL_CONTEXT_FACTORY, this.initialContextFactory);
-		}
-		else {
+		} else {
 			System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
 		}
 		Thread.currentThread().setContextClassLoader(this.threadContextClassLoader);
@@ -95,15 +89,15 @@ public class MailSenderAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.mail.host:" + host, "spring.mail.port:42",
 				"spring.mail.username:john", "spring.mail.password:secret", "spring.mail.default-encoding:US-ASCII",
 				"spring.mail.protocol:smtps").run((context) -> {
-					assertThat(context).hasSingleBean(JavaMailSenderImpl.class);
-					JavaMailSenderImpl mailSender = context.getBean(JavaMailSenderImpl.class);
-					assertThat(mailSender.getHost()).isEqualTo(host);
-					assertThat(mailSender.getPort()).isEqualTo(42);
-					assertThat(mailSender.getUsername()).isEqualTo("john");
-					assertThat(mailSender.getPassword()).isEqualTo("secret");
-					assertThat(mailSender.getDefaultEncoding()).isEqualTo("US-ASCII");
-					assertThat(mailSender.getProtocol()).isEqualTo("smtps");
-				});
+			assertThat(context).hasSingleBean(JavaMailSenderImpl.class);
+			JavaMailSenderImpl mailSender = context.getBean(JavaMailSenderImpl.class);
+			assertThat(mailSender.getHost()).isEqualTo(host);
+			assertThat(mailSender.getPort()).isEqualTo(42);
+			assertThat(mailSender.getUsername()).isEqualTo("john");
+			assertThat(mailSender.getPassword()).isEqualTo("secret");
+			assertThat(mailSender.getDefaultEncoding()).isEqualTo("US-ASCII");
+			assertThat(mailSender.getProtocol()).isEqualTo("smtps");
+		});
 	}
 
 	@Test
@@ -221,10 +215,10 @@ public class MailSenderAutoConfigurationTests {
 	public void connectionOnStartup() {
 		this.contextRunner.withUserConfiguration(MockMailConfiguration.class)
 				.withPropertyValues("spring.mail.host:10.0.0.23", "spring.mail.test-connection:true").run((context) -> {
-					assertThat(context).hasSingleBean(JavaMailSenderImpl.class);
-					JavaMailSenderImpl mailSender = context.getBean(JavaMailSenderImpl.class);
-					verify(mailSender, times(1)).testConnection();
-				});
+			assertThat(context).hasSingleBean(JavaMailSenderImpl.class);
+			JavaMailSenderImpl mailSender = context.getBean(JavaMailSenderImpl.class);
+			verify(mailSender, times(1)).testConnection();
+		});
 	}
 
 	@Test

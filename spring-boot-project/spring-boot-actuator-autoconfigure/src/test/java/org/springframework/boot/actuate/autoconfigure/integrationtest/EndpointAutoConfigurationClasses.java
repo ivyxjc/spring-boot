@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.actuate.autoconfigure.audit.AuditEventsEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.condition.ConditionsReportEndpointAutoConfiguration;
@@ -31,6 +28,9 @@ import org.springframework.boot.actuate.autoconfigure.management.ThreadDumpEndpo
 import org.springframework.boot.actuate.autoconfigure.trace.http.HttpTraceEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.mappings.MappingsEndpointAutoConfiguration;
 import org.springframework.util.ClassUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A list of all endpoint auto-configuration classes for use in tests.

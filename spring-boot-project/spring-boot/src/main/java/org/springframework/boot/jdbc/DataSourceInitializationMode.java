@@ -21,8 +21,8 @@ package org.springframework.boot.jdbc;
  *
  * @author Vedran Pavic
  * @author Stephane Nicoll
- * @since 2.0.0
  * @see AbstractDataSourceInitializer
+ * @since 2.0.0
  */
 public enum DataSourceInitializationMode {
 

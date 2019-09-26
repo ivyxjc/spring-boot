@@ -22,7 +22,7 @@ import org.springframework.core.env.PropertySource;
 /**
  * Strategy used to provide a mapping between a {@link PropertySource} and a
  * {@link ConfigurationPropertySource}.
- * <P>
+ * <p>
  * Mappings should be provided for both {@link ConfigurationPropertyName
  * ConfigurationPropertyName} types and {@code String} based names. This allows the
  * {@link SpringConfigurationPropertySource} to first attempt any direct mappings (i.e.
@@ -43,6 +43,7 @@ interface PropertyMapper {
 	/**
 	 * Provide mappings from a {@link ConfigurationPropertySource}
 	 * {@link ConfigurationPropertyName}.
+	 *
 	 * @param configurationPropertyName the name to map
 	 * @return a stream of mappings or {@code Stream#empty()}
 	 */
@@ -50,6 +51,7 @@ interface PropertyMapper {
 
 	/**
 	 * Provide mappings from a {@link PropertySource} property name.
+	 *
 	 * @param propertySourceName the name to map
 	 * @return a stream of mappings or {@code Stream#empty()}
 	 */

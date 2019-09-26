@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.web.trace.reactive;
 
+import org.springframework.boot.actuate.trace.http.TraceableResponse;
+import org.springframework.http.server.reactive.ServerHttpResponse;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.boot.actuate.trace.http.TraceableResponse;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 
 /**
  * An adapter that exposes a {@link ServerHttpResponse} as a {@link TraceableResponse}.

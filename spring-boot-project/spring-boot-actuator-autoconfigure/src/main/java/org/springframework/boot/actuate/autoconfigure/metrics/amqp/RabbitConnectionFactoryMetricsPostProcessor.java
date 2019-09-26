@@ -20,7 +20,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.MetricsCollector;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tags;
-
 import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.actuate.metrics.amqp.RabbitMetrics;
@@ -56,7 +55,7 @@ class RabbitConnectionFactoryMetricsPostProcessor implements BeanPostProcessor, 
 	}
 
 	private void bindConnectionFactoryToRegistry(MeterRegistry registry, String beanName,
-			AbstractConnectionFactory connectionFactory) {
+												 AbstractConnectionFactory connectionFactory) {
 		ConnectionFactory rabbitConnectionFactory = connectionFactory.getRabbitConnectionFactory();
 		String connectionFactoryName = getConnectionFactoryName(beanName);
 		new RabbitMetrics(rabbitConnectionFactory, Tags.of("name", connectionFactoryName)).bindTo(registry);
@@ -64,6 +63,7 @@ class RabbitConnectionFactoryMetricsPostProcessor implements BeanPostProcessor, 
 
 	/**
 	 * Get the name of a ConnectionFactory based on its {@code beanName}.
+	 *
 	 * @param beanName the name of the connection factory bean
 	 * @return a name for the given connection factory
 	 */

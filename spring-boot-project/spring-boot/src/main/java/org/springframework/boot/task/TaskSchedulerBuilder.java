@@ -16,16 +16,16 @@
 
 package org.springframework.boot.task;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Builder that can be used to configure and create a {@link TaskScheduler}. Provides
@@ -53,7 +53,7 @@ public class TaskSchedulerBuilder {
 	}
 
 	public TaskSchedulerBuilder(Integer poolSize, String threadNamePrefix,
-			Set<TaskSchedulerCustomizer> taskSchedulerCustomizers) {
+								Set<TaskSchedulerCustomizer> taskSchedulerCustomizers) {
 		this.poolSize = poolSize;
 		this.threadNamePrefix = threadNamePrefix;
 		this.customizers = taskSchedulerCustomizers;
@@ -61,6 +61,7 @@ public class TaskSchedulerBuilder {
 
 	/**
 	 * Set the maximum allowed number of threads.
+	 *
 	 * @param poolSize the pool size to set
 	 * @return a new builder instance
 	 */
@@ -70,6 +71,7 @@ public class TaskSchedulerBuilder {
 
 	/**
 	 * Set the prefix to use for the names of newly created threads.
+	 *
 	 * @param threadNamePrefix the thread name prefix to set
 	 * @return a new builder instance
 	 */
@@ -82,6 +84,7 @@ public class TaskSchedulerBuilder {
 	 * applied to the {@link ThreadPoolTaskScheduler}. Customizers are applied in the
 	 * order that they were added after builder configuration has been applied. Setting
 	 * this value will replace any previously configured customizers.
+	 *
 	 * @param customizers the customizers to set
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(TaskSchedulerCustomizer...)
@@ -96,6 +99,7 @@ public class TaskSchedulerBuilder {
 	 * applied to the {@link ThreadPoolTaskScheduler}. Customizers are applied in the
 	 * order that they were added after builder configuration has been applied. Setting
 	 * this value will replace any previously configured customizers.
+	 *
 	 * @param customizers the customizers to set
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(TaskSchedulerCustomizer...)
@@ -109,6 +113,7 @@ public class TaskSchedulerBuilder {
 	 * Add {@link TaskSchedulerCustomizer taskSchedulerCustomizers} that should be applied
 	 * to the {@link ThreadPoolTaskScheduler}. Customizers are applied in the order that
 	 * they were added after builder configuration has been applied.
+	 *
 	 * @param customizers the customizers to add
 	 * @return a new builder instance
 	 * @see #customizers(TaskSchedulerCustomizer...)
@@ -122,6 +127,7 @@ public class TaskSchedulerBuilder {
 	 * Add {@link TaskSchedulerCustomizer taskSchedulerCustomizers} that should be applied
 	 * to the {@link ThreadPoolTaskScheduler}. Customizers are applied in the order that
 	 * they were added after builder configuration has been applied.
+	 *
 	 * @param customizers the customizers to add
 	 * @return a new builder instance
 	 * @see #customizers(TaskSchedulerCustomizer...)
@@ -134,6 +140,7 @@ public class TaskSchedulerBuilder {
 	/**
 	 * Build a new {@link ThreadPoolTaskScheduler} instance and configure it using this
 	 * builder.
+	 *
 	 * @return a configured {@link ThreadPoolTaskScheduler} instance.
 	 * @see #configure(ThreadPoolTaskScheduler)
 	 */
@@ -143,7 +150,8 @@ public class TaskSchedulerBuilder {
 
 	/**
 	 * Configure the provided {@link ThreadPoolTaskScheduler} instance using this builder.
-	 * @param <T> the type of task scheduler
+	 *
+	 * @param <T>           the type of task scheduler
 	 * @param taskScheduler the {@link ThreadPoolTaskScheduler} to configure
 	 * @return the task scheduler instance
 	 * @see #build()

@@ -16,10 +16,9 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.util.Properties;
-
 import javax.cache.CacheManager;
 import javax.cache.spi.CachingProvider;
+import java.util.Properties;
 
 /**
  * Callback interface that can be implemented by beans wishing to customize the properties
@@ -31,8 +30,9 @@ interface JCachePropertiesCustomizer {
 
 	/**
 	 * Customize the properties.
+	 *
 	 * @param cacheProperties the cache properties
-	 * @param properties the current properties
+	 * @param properties      the current properties
 	 * @see CachingProvider#getCacheManager(java.net.URI, ClassLoader, Properties)
 	 */
 	void customize(CacheProperties cacheProperties, Properties properties);

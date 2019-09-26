@@ -16,13 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.annotation.DiscoveredOperationMethod;
@@ -34,6 +27,13 @@ import org.springframework.boot.actuate.endpoint.web.WebOperationRequestPredicat
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Factory to create a {@link WebOperationRequestPredicate}.
@@ -52,7 +52,7 @@ class RequestPredicateFactory {
 	}
 
 	public WebOperationRequestPredicate getRequestPredicate(EndpointId endpointId, String rootPath,
-			DiscoveredOperationMethod operationMethod) {
+															DiscoveredOperationMethod operationMethod) {
 		Method method = operationMethod.getMethod();
 		String path = getPath(rootPath, method);
 		WebEndpointHttpMethod httpMethod = determineHttpMethod(operationMethod.getOperationType());

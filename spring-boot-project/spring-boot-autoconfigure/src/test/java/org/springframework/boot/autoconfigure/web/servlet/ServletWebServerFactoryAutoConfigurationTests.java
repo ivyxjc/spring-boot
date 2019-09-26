@@ -16,13 +16,7 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -42,6 +36,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
 
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 
@@ -56,9 +55,9 @@ public class ServletWebServerFactoryAutoConfigurationTests {
 
 	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner(
 			AnnotationConfigServletWebServerApplicationContext::new)
-					.withConfiguration(AutoConfigurations.of(ServletWebServerFactoryAutoConfiguration.class,
-							DispatcherServletAutoConfiguration.class))
-					.withUserConfiguration(WebServerConfiguration.class);
+			.withConfiguration(AutoConfigurations.of(ServletWebServerFactoryAutoConfiguration.class,
+					DispatcherServletAutoConfiguration.class))
+			.withUserConfiguration(WebServerConfiguration.class);
 
 	@Test
 	public void createFromConfigClass() {
@@ -120,10 +119,10 @@ public class ServletWebServerFactoryAutoConfigurationTests {
 	public void initParametersAreConfiguredOnTheServletContext() {
 		this.contextRunner.withPropertyValues("server.servlet.context-parameters.a:alpha",
 				"server.servlet.context-parameters.b:bravo").run((context) -> {
-					ServletContext servletContext = context.getServletContext();
-					assertThat(servletContext.getInitParameter("a")).isEqualTo("alpha");
-					assertThat(servletContext.getInitParameter("b")).isEqualTo("bravo");
-				});
+			ServletContext servletContext = context.getServletContext();
+			assertThat(servletContext.getInitParameter("a")).isEqualTo("alpha");
+			assertThat(servletContext.getInitParameter("b")).isEqualTo("bravo");
+		});
 	}
 
 	private ContextConsumer<AssertableWebApplicationContext> verifyContext() {

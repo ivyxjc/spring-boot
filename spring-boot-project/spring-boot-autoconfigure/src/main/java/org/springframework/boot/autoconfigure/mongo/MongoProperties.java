@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.mongo;
 
 import com.mongodb.MongoClientURI;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -143,12 +142,12 @@ public class MongoProperties {
 		return this.uri;
 	}
 
-	public String determineUri() {
-		return (this.uri != null) ? this.uri : DEFAULT_URI;
-	}
-
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+
+	public String determineUri() {
+		return (this.uri != null) ? this.uri : DEFAULT_URI;
 	}
 
 	public Integer getPort() {

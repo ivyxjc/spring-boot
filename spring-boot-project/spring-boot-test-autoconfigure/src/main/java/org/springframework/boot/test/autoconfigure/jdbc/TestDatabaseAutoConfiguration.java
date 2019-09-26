@@ -16,11 +16,8 @@
 
 package org.springframework.boot.test.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -46,12 +43,14 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 
+import javax.sql.DataSource;
+
 /**
  * Auto-configuration for a test database.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see AutoConfigureTestDatabase
+ * @since 1.4.0
  */
 @Configuration
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
@@ -64,17 +63,17 @@ public class TestDatabaseAutoConfiguration {
 	}
 
 	@Bean
+	@ConditionalOnProperty(prefix = "spring.test.database", name = "replace", havingValue = "ANY",
+						   matchIfMissing = true)
+	public static EmbeddedDataSourceBeanFactoryPostProcessor embeddedDataSourceBeanFactoryPostProcessor() {
+		return new EmbeddedDataSourceBeanFactoryPostProcessor();
+	}
+
+	@Bean
 	@ConditionalOnProperty(prefix = "spring.test.database", name = "replace", havingValue = "AUTO_CONFIGURED")
 	@ConditionalOnMissingBean
 	public DataSource dataSource() {
 		return new EmbeddedDataSourceFactory(this.environment).getEmbeddedDatabase();
-	}
-
-	@Bean
-	@ConditionalOnProperty(prefix = "spring.test.database", name = "replace", havingValue = "ANY",
-			matchIfMissing = true)
-	public static EmbeddedDataSourceBeanFactoryPostProcessor embeddedDataSourceBeanFactoryPostProcessor() {
-		return new EmbeddedDataSourceBeanFactoryPostProcessor();
 	}
 
 	@Order(Ordered.LOWEST_PRECEDENCE)

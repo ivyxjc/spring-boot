@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.server;
 
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
@@ -27,6 +25,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Map;
 
 /**
  * {@link SpringBootCondition} that matches when the management server is running on a

@@ -16,14 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.data.jdbc;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+
+import java.lang.annotation.*;
 
 /**
  * {@link ImportAutoConfiguration Auto-configuration imports} for typical Data JDBC tests.
@@ -31,8 +26,8 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
  * this annotation directly.
  *
  * @author Andy Wilkinson
- * @since 2.1.0
  * @see DataJdbcTest
+ * @since 2.1.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

@@ -16,17 +16,9 @@
 
 package org.springframework.boot.actuate.web.mappings.servlet;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
-
-import javax.servlet.ServletException;
-
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.core.StandardWrapper;
-
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServer;
 import org.springframework.boot.web.server.WebServer;
@@ -34,6 +26,12 @@ import org.springframework.boot.web.servlet.context.ServletWebServerApplicationC
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerMapping;
+
+import javax.servlet.ServletException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * {@code DispatcherServletHandlerMappings} provides access to a {@link DispatcherServlet
@@ -51,7 +49,7 @@ final class DispatcherServletHandlerMappings {
 	private final WebApplicationContext applicationContext;
 
 	DispatcherServletHandlerMappings(String name, DispatcherServlet dispatcherServlet,
-			WebApplicationContext applicationContext) {
+									 WebApplicationContext applicationContext) {
 		this.name = name;
 		this.dispatcherServlet = dispatcherServlet;
 		this.applicationContext = applicationContext;
@@ -73,8 +71,7 @@ final class DispatcherServletHandlerMappings {
 		WebServer webServer = ((ServletWebServerApplicationContext) this.applicationContext).getWebServer();
 		if (webServer instanceof UndertowServletWebServer) {
 			new UndertowServletInitializer((UndertowServletWebServer) webServer).initializeServlet(this.name);
-		}
-		else if (webServer instanceof TomcatWebServer) {
+		} else if (webServer instanceof TomcatWebServer) {
 			new TomcatServletInitializer((TomcatWebServer) webServer).initializeServlet(this.name);
 		}
 	}
@@ -106,8 +103,7 @@ final class DispatcherServletHandlerMappings {
 				try {
 					StandardWrapper wrapper = (StandardWrapper) child;
 					wrapper.deallocate(wrapper.allocate());
-				}
-				catch (ServletException ex) {
+				} catch (ServletException ex) {
 					// Continue
 				}
 			}
@@ -126,8 +122,7 @@ final class DispatcherServletHandlerMappings {
 		void initializeServlet(String name) {
 			try {
 				this.webServer.getDeploymentManager().getDeployment().getServlets().getManagedServlet(name).forceInit();
-			}
-			catch (ServletException ex) {
+			} catch (ServletException ex) {
 				// Continue
 			}
 		}

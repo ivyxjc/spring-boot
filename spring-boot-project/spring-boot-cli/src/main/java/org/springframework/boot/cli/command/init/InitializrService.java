@@ -16,11 +16,6 @@
 
 package org.springframework.boot.cli.command.init;
 
-import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
@@ -33,10 +28,14 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import org.springframework.boot.cli.util.Log;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Invokes the initializr service over HTTP.
@@ -45,20 +44,17 @@ import org.springframework.util.StringUtils;
  */
 class InitializrService {
 
-	private static final String FILENAME_HEADER_PREFIX = "filename=\"";
-
 	/**
 	 * Accept header to use to retrieve the json meta-data.
 	 */
 	public static final String ACCEPT_META_DATA = "application/vnd.initializr.v2.1+"
 			+ "json,application/vnd.initializr.v2+json";
-
 	/**
 	 * Accept header to use to retrieve the service capabilities of the service. If the
 	 * service does not offer such feature, the json meta-data are retrieved instead.
 	 */
 	public static final String ACCEPT_SERVICE_CAPABILITIES = "text/plain," + ACCEPT_META_DATA;
-
+	private static final String FILENAME_HEADER_PREFIX = "filename=\"";
 	/**
 	 * Late binding HTTP client.
 	 */
@@ -80,6 +76,7 @@ class InitializrService {
 
 	/**
 	 * Generate a project based on the specified {@link ProjectGenerationRequest}.
+	 *
 	 * @param request the generation request
 	 * @return an entity defining the project
 	 * @throws IOException if generation fails
@@ -96,6 +93,7 @@ class InitializrService {
 
 	/**
 	 * Load the {@link InitializrServiceMetadata} at the specified url.
+	 *
 	 * @param serviceUrl to url of the initializer service
 	 * @return the metadata describing the service
 	 * @throws IOException if the service's metadata cannot be loaded
@@ -110,6 +108,7 @@ class InitializrService {
 	 * Loads the service capabilities of the service at the specified URL. If the service
 	 * supports generating a textual representation of the capabilities, it is returned,
 	 * otherwise {@link InitializrServiceMetadata} is returned.
+	 *
 	 * @param serviceUrl to url of the initializer service
 	 * @return the service capabilities (as a String) or the
 	 * {@link InitializrServiceMetadata} describing the service
@@ -131,8 +130,7 @@ class InitializrService {
 	private InitializrServiceMetadata parseJsonMetadata(HttpEntity httpEntity) throws IOException {
 		try {
 			return new InitializrServiceMetadata(getContentAsJson(httpEntity));
-		}
-		catch (JSONException ex) {
+		} catch (JSONException ex) {
 			throw new ReportableException("Invalid content received from server (" + ex.getMessage() + ")", ex);
 		}
 	}
@@ -159,6 +157,7 @@ class InitializrService {
 
 	/**
 	 * Request the creation of the project using the specified URL.
+	 *
 	 * @param url the URL
 	 * @return the response
 	 */
@@ -168,6 +167,7 @@ class InitializrService {
 
 	/**
 	 * Retrieves the meta-data of the service at the specified URL.
+	 *
 	 * @param url the URL
 	 * @return the response
 	 */
@@ -181,8 +181,7 @@ class InitializrService {
 		try {
 			request.addHeader("User-Agent", "SpringBootCli/" + getClass().getPackage().getImplementationVersion());
 			return getHttp().execute(request);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new ReportableException(
 					"Failed to " + description + " from service at '" + url + "' (" + ex.getMessage() + ")");
 		}
@@ -194,8 +193,7 @@ class InitializrService {
 		String error = extractMessage(httpResponse.getEntity());
 		if (StringUtils.hasText(error)) {
 			message += ": '" + error + "'";
-		}
-		else {
+		} else {
 			int statusCode = httpResponse.getStatusLine().getStatusCode();
 			message += " (unexpected " + statusCode + " error)";
 		}
@@ -209,8 +207,7 @@ class InitializrService {
 				if (error.has("message")) {
 					return error.getString("message");
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore
 			}
 		}

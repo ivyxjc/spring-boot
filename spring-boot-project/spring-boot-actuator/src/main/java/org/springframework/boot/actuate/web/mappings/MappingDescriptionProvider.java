@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.web.mappings;
 
-import java.util.List;
-
 import org.springframework.context.ApplicationContext;
+
+import java.util.List;
 
 /**
  * A {@link MappingDescriptionProvider} provides a {@link List} of mapping descriptions
@@ -31,6 +31,7 @@ public interface MappingDescriptionProvider {
 
 	/**
 	 * Returns the name of the mappings described by this provider.
+	 *
 	 * @return the name of the mappings
 	 */
 	String getMappingName();
@@ -38,6 +39,7 @@ public interface MappingDescriptionProvider {
 	/**
 	 * Produce the descriptions of the mappings identified by this provider in the given
 	 * {@code context}.
+	 *
 	 * @param context the application context to introspect
 	 * @return the mapping descriptions
 	 */

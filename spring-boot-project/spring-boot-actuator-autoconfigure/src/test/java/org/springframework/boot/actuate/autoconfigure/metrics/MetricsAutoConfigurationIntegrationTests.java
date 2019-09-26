@@ -24,7 +24,6 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import io.micrometer.graphite.GraphiteMeterRegistry;
 import io.micrometer.jmx.JmxMeterRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.graphite.GraphiteMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.jmx.JmxMetricsExportAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.test.MetricsRun;
@@ -101,12 +100,12 @@ public class MetricsAutoConfigurationIntegrationTests {
 	public void compositeCreatedWithMultipleRegistries() {
 		new ApplicationContextRunner().with(MetricsRun.limitedTo(GraphiteMetricsExportAutoConfiguration.class,
 				JmxMetricsExportAutoConfiguration.class)).run((context) -> {
-					MeterRegistry registry = context.getBean(MeterRegistry.class);
-					assertThat(registry).isInstanceOf(CompositeMeterRegistry.class);
-					assertThat(((CompositeMeterRegistry) registry).getRegistries())
-							.hasAtLeastOneElementOfType(GraphiteMeterRegistry.class)
-							.hasAtLeastOneElementOfType(JmxMeterRegistry.class);
-				});
+			MeterRegistry registry = context.getBean(MeterRegistry.class);
+			assertThat(registry).isInstanceOf(CompositeMeterRegistry.class);
+			assertThat(((CompositeMeterRegistry) registry).getRegistries())
+					.hasAtLeastOneElementOfType(GraphiteMeterRegistry.class)
+					.hasAtLeastOneElementOfType(JmxMeterRegistry.class);
+		});
 	}
 
 	@Configuration

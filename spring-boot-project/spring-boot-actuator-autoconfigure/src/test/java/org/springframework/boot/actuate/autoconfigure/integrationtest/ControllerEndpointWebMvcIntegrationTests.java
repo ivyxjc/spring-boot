@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.audit.AuditAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
@@ -104,18 +103,18 @@ public class ControllerEndpointWebMvcIntegrationTests {
 		return builder.build();
 	}
 
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
-			ServletManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
-			ManagementContextAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-			BeansEndpointAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
+									 ServletManagementContextAutoConfiguration.class, AuditAutoConfiguration.class,
+									 PropertyPlaceholderAutoConfiguration.class, WebMvcAutoConfiguration.class,
+									 ManagementContextAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+									 BeansEndpointAutoConfiguration.class})
 	static class DefaultConfiguration {
 
 	}
 
 	@Import(DefaultConfiguration.class)
-	@ImportAutoConfiguration({ SecurityAutoConfiguration.class })
+	@ImportAutoConfiguration({SecurityAutoConfiguration.class})
 	static class SecureConfiguration {
 
 	}

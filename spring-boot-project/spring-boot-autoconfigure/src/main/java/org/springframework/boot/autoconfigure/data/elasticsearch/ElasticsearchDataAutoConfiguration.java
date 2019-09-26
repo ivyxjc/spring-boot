@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data.elasticsearch;
 
 import org.elasticsearch.client.Client;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,7 +43,7 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
  * @since 1.1.0
  */
 @Configuration
-@ConditionalOnClass({ Client.class, ElasticsearchTemplate.class })
+@ConditionalOnClass({Client.class, ElasticsearchTemplate.class})
 @AutoConfigureAfter(ElasticsearchAutoConfiguration.class)
 public class ElasticsearchDataAutoConfiguration {
 
@@ -54,8 +53,7 @@ public class ElasticsearchDataAutoConfiguration {
 	public ElasticsearchTemplate elasticsearchTemplate(Client client, ElasticsearchConverter converter) {
 		try {
 			return new ElasticsearchTemplate(client, converter);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

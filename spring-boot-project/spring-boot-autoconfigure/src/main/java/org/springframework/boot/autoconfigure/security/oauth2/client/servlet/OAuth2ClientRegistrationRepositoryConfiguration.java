@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.security.oauth2.client.servlet;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
@@ -30,6 +27,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link Configuration} used to map {@link OAuth2ClientProperties} to client

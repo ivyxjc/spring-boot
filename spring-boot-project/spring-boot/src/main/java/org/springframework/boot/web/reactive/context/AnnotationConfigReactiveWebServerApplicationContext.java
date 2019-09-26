@@ -16,25 +16,19 @@
 
 package org.springframework.boot.web.reactive.context;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigRegistry;
-import org.springframework.context.annotation.AnnotationConfigUtils;
-import org.springframework.context.annotation.AnnotationScopeMetadataResolver;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.context.annotation.ScopeMetadataResolver;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ReactiveWebServerApplicationContext} that accepts annotated classes as input -
@@ -50,11 +44,11 @@ import org.springframework.util.ObjectUtils;
  * to deliberately override certain bean definitions via an extra Configuration class.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see #register(Class...)
  * @see #scan(String...)
  * @see ReactiveWebServerApplicationContext
  * @see AnnotationConfigApplicationContext
+ * @since 2.0.0
  */
 public class AnnotationConfigReactiveWebServerApplicationContext extends ReactiveWebServerApplicationContext
 		implements AnnotationConfigRegistry {
@@ -81,6 +75,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	 * Create a new {@link AnnotationConfigReactiveWebServerApplicationContext} with the
 	 * given {@code DefaultListableBeanFactory}. The context needs to be populated through
 	 * {@link #register} calls and then manually {@linkplain #refresh refreshed}.
+	 *
 	 * @param beanFactory the DefaultListableBeanFactory instance to use for this context
 	 */
 	public AnnotationConfigReactiveWebServerApplicationContext(DefaultListableBeanFactory beanFactory) {
@@ -93,8 +88,9 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	 * Create a new {@link AnnotationConfigReactiveWebServerApplicationContext}, deriving
 	 * bean definitions from the given annotated classes and automatically refreshing the
 	 * context.
+	 *
 	 * @param annotatedClasses one or more annotated classes, e.g. {@code @Configuration}
-	 * classes
+	 *                         classes
 	 */
 	public AnnotationConfigReactiveWebServerApplicationContext(Class<?>... annotatedClasses) {
 		this();
@@ -106,6 +102,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	 * Create a new {@link AnnotationConfigReactiveWebServerApplicationContext}, scanning
 	 * for bean definitions in the given packages and automatically refreshing the
 	 * context.
+	 *
 	 * @param basePackages the packages to check for annotated classes
 	 */
 	public AnnotationConfigReactiveWebServerApplicationContext(String... basePackages) {
@@ -137,6 +134,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	 * <p>
 	 * Any call to this method must occur prior to calls to {@link #register(Class...)}
 	 * and/or {@link #scan(String...)}.
+	 *
 	 * @param beanNameGenerator the bean name generator
 	 * @see AnnotatedBeanDefinitionReader#setBeanNameGenerator
 	 * @see ClassPathBeanDefinitionScanner#setBeanNameGenerator
@@ -155,6 +153,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	 * <p>
 	 * Any call to this method must occur prior to calls to {@link #register(Class...)}
 	 * and/or {@link #scan(String...)}.
+	 *
 	 * @param scopeMetadataResolver the scope metadata resolver
 	 */
 	public void setScopeMetadataResolver(ScopeMetadataResolver scopeMetadataResolver) {
@@ -169,8 +168,9 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	 * <p>
 	 * Calls to {@code #register} are idempotent; adding the same annotated class more
 	 * than once has no additional effect.
+	 *
 	 * @param annotatedClasses one or more annotated classes, e.g. {@code @Configuration}
-	 * classes
+	 *                         classes
 	 * @see #scan(String...)
 	 * @see #refresh()
 	 */
@@ -183,6 +183,7 @@ public class AnnotationConfigReactiveWebServerApplicationContext extends Reactiv
 	/**
 	 * Perform a scan within the specified base packages. Note that {@link #refresh()}
 	 * must be called in order for the context to fully process the new class.
+	 *
 	 * @param basePackages the packages to check for annotated classes
 	 * @see #register(Class...)
 	 * @see #refresh()

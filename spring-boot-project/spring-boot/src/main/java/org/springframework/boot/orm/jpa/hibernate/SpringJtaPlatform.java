@@ -16,13 +16,12 @@
 
 package org.springframework.boot.orm.jpa.hibernate;
 
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-
 import org.hibernate.engine.transaction.jta.platform.internal.AbstractJtaPlatform;
-
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.Assert;
+
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
 
 /**
  * Generic Hibernate {@link AbstractJtaPlatform} implementation that simply resolves the

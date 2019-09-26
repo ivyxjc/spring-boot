@@ -16,15 +16,11 @@
 
 package org.springframework.boot.ansi;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySource;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * {@link PropertyResolver} for {@link AnsiStyle}, {@link AnsiColor} and
@@ -55,7 +51,8 @@ public class AnsiPropertySource extends PropertySource<AnsiElement> {
 
 	/**
 	 * Create a new {@link AnsiPropertySource} instance.
-	 * @param name the name of the property source
+	 *
+	 * @param name   the name of the property source
 	 * @param encode if the output should be encoded
 	 */
 	public AnsiPropertySource(String name, boolean encode) {

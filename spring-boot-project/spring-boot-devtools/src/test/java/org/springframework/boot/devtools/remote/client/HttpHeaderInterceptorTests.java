@@ -16,18 +16,17 @@
 
 package org.springframework.boot.devtools.remote.client;
 
-import java.io.IOException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.mock.web.MockHttpServletRequest;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -62,7 +61,7 @@ public class HttpHeaderInterceptorTests {
 	@Before
 	public void setup() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		this.body = new byte[] {};
+		this.body = new byte[]{};
 		this.httpRequest = new MockHttpServletRequest();
 		this.request = new ServletServerHttpRequest(this.httpRequest);
 		this.name = "X-AUTH-TOKEN";

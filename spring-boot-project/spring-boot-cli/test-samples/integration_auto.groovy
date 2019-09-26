@@ -1,7 +1,7 @@
 package com.example
 
 @SpringBootApplication
-@SpringBootTest(classes=RestTests, webEnvironment=WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = RestTests, webEnvironment = WebEnvironment.RANDOM_PORT)
 class RestTests {
 
 	@Autowired

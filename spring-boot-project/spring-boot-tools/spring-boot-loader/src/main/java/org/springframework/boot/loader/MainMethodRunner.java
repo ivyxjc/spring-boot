@@ -34,8 +34,9 @@ public class MainMethodRunner {
 
 	/**
 	 * Create a new {@link MainMethodRunner} instance.
+	 *
 	 * @param mainClass the main class
-	 * @param args incoming arguments
+	 * @param args      incoming arguments
 	 */
 	public MainMethodRunner(String mainClass, String[] args) {
 		this.mainClassName = mainClass;
@@ -45,7 +46,7 @@ public class MainMethodRunner {
 	public void run() throws Exception {
 		Class<?> mainClass = Thread.currentThread().getContextClassLoader().loadClass(this.mainClassName);
 		Method mainMethod = mainClass.getDeclaredMethod("main", String[].class);
-		mainMethod.invoke(null, new Object[] { this.args });
+		mainMethod.invoke(null, new Object[]{this.args});
 	}
 
 }

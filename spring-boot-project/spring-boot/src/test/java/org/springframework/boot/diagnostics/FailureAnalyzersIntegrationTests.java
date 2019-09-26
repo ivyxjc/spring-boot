@@ -16,16 +16,15 @@
 
 package org.springframework.boot.diagnostics;
 
-import javax.annotation.PostConstruct;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.boot.web.server.PortInUseException;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.PostConstruct;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

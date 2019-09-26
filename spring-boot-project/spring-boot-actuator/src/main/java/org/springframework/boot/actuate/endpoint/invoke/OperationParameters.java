@@ -28,6 +28,7 @@ public interface OperationParameters extends Iterable<OperationParameter> {
 
 	/**
 	 * Return {@code true} if there is at least one parameter.
+	 *
 	 * @return if there are parameters
 	 */
 	default boolean hasParameters() {
@@ -36,6 +37,7 @@ public interface OperationParameters extends Iterable<OperationParameter> {
 
 	/**
 	 * Return the total number of parameters.
+	 *
 	 * @return the total number of parameters
 	 */
 	int getParameterCount();
@@ -43,6 +45,7 @@ public interface OperationParameters extends Iterable<OperationParameter> {
 	/**
 	 * Return if any of the contained parameters are
 	 * {@link OperationParameter#isMandatory() mandatory}.
+	 *
 	 * @return if any parameters are mandatory
 	 */
 	default boolean hasMandatoryParameter() {
@@ -51,6 +54,7 @@ public interface OperationParameters extends Iterable<OperationParameter> {
 
 	/**
 	 * Return the parameter at the specified index.
+	 *
 	 * @param index the parameter index
 	 * @return the parameter
 	 */
@@ -58,6 +62,7 @@ public interface OperationParameters extends Iterable<OperationParameter> {
 
 	/**
 	 * Return a stream of the contained parameters.
+	 *
 	 * @return a stream of the parameters
 	 */
 	Stream<OperationParameter> stream();

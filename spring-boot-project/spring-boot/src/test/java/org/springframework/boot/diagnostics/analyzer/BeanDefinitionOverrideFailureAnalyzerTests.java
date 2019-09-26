@@ -17,7 +17,6 @@
 package org.springframework.boot.diagnostics.analyzer;
 
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.BeanDefinitionOverrideException;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -57,14 +56,13 @@ public class BeanDefinitionOverrideFailureAnalyzerTests {
 			context.refresh();
 			context.close();
 			return null;
-		}
-		catch (BeanDefinitionOverrideException ex) {
+		} catch (BeanDefinitionOverrideException ex) {
 			return ex;
 		}
 	}
 
 	@Configuration
-	@Import({ FirstConfiguration.class, SecondConfiguration.class })
+	@Import({FirstConfiguration.class, SecondConfiguration.class})
 	static class BeanOverrideConfiguration {
 
 	}

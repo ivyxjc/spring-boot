@@ -16,13 +16,13 @@
 
 package org.springframework.boot.convert;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Set;
-
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.GenericConverter;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * {@link Converter} to convert from a {@link Number} to a {@link Duration}. Supports

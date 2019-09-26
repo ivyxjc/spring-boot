@@ -16,11 +16,11 @@
 
 package org.springframework.boot.docs.jdbc;
 
-import javax.sql.DataSource;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+
+import javax.sql.DataSource;
 
 /**
  * A sample {@link SpringBootConfiguration} that only enables the auto-configuration for

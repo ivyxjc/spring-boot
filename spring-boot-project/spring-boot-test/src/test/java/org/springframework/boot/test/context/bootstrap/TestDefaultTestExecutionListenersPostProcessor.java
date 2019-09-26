@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.context.bootstrap;
 
-import java.util.Set;
-
 import org.springframework.boot.test.context.DefaultTestExecutionListenersPostProcessor;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
+
+import java.util.Set;
 
 /**
  * Test {@link DefaultTestExecutionListenersPostProcessor}.

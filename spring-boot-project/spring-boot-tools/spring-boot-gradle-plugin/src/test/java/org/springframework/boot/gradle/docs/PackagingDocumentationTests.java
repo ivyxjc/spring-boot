@@ -16,25 +16,20 @@
 
 package org.springframework.boot.gradle.docs;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.gradle.junit.GradleMultiDslSuite;
+import org.springframework.boot.gradle.testkit.Dsl;
+import org.springframework.boot.gradle.testkit.GradleBuild;
+import org.springframework.util.FileCopyUtils;
+
+import java.io.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.springframework.boot.gradle.junit.GradleMultiDslSuite;
-import org.springframework.boot.gradle.testkit.Dsl;
-import org.springframework.boot.gradle.testkit.GradleBuild;
-import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

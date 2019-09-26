@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.ldap;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.ldap.CommunicationException;

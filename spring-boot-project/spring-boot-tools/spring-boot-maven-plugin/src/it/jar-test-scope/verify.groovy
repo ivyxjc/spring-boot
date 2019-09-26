@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import java.io.*;
-import org.springframework.boot.maven.*;
+
+import org.springframework.boot.maven.Verify
 
 File f = new File(basedir, "target/jar-test-scope-0.0.1.BUILD-SNAPSHOT.jar")
 new Verify.JarArchiveVerification(f, Verify.SAMPLE_APP) {

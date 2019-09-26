@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.jooq;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jooq.SQLDialect;
 import org.jooq.tools.jdbc.JDBCUtils;
-
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
+
+import javax.sql.DataSource;
 
 /**
  * Utility to lookup well known {@link SQLDialect SQLDialects} from a {@link DataSource}.
@@ -41,6 +40,7 @@ final class SqlDialectLookup {
 
 	/**
 	 * Return the most suitable {@link SQLDialect} for the given {@link DataSource}.
+	 *
 	 * @param dataSource the source {@link DataSource}
 	 * @return the most suitable {@link SQLDialect}
 	 */
@@ -54,8 +54,7 @@ final class SqlDialectLookup {
 			if (sqlDialect != null) {
 				return sqlDialect;
 			}
-		}
-		catch (MetaDataAccessException ex) {
+		} catch (MetaDataAccessException ex) {
 			logger.warn("Unable to determine jdbc url from datasource", ex);
 		}
 		return SQLDialect.DEFAULT;

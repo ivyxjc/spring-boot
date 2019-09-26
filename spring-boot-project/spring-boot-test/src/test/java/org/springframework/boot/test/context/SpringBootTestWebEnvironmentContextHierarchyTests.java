@@ -18,7 +18,6 @@ package org.springframework.boot.test.context;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.AbstractSpringBootTestWebServerWebEnvironmentTests.AbstractConfig;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -44,9 +43,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @DirtiesContext
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, properties = { "server.port=0", "value=123" })
-@ContextHierarchy({ @ContextConfiguration(classes = ParentConfiguration.class),
-		@ContextConfiguration(classes = ChildConfiguration.class) })
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT, properties = {"server.port=0", "value=123"})
+@ContextHierarchy({@ContextConfiguration(classes = ParentConfiguration.class),
+						  @ContextConfiguration(classes = ChildConfiguration.class)})
 public class SpringBootTestWebEnvironmentContextHierarchyTests {
 
 	@Autowired

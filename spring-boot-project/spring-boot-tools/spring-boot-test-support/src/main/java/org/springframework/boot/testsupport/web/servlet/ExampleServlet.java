@@ -16,15 +16,10 @@
 
 package org.springframework.boot.testsupport.web.servlet;
 
-import java.io.IOException;
-
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.springframework.util.StreamUtils;
+
+import javax.servlet.*;
+import java.io.IOException;
 
 /**
  * Simple example Servlet used for testing.
@@ -60,8 +55,7 @@ public class ExampleServlet extends GenericServlet {
 			ServletOutputStream outputStream = response.getOutputStream();
 			StreamUtils.copy(content.getBytes(), outputStream);
 			outputStream.flush();
-		}
-		else {
+		} else {
 			response.getWriter().write(content);
 		}
 	}

@@ -16,29 +16,21 @@
 
 package org.springframework.boot.devtools.filewatch;
 
+import org.springframework.util.Assert;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.springframework.util.Assert;
 
 /**
  * Watches specific folders for file changes.
  *
  * @author Andy Clement
  * @author Phillip Webb
- * @since 1.3.0
  * @see FileChangeListener
+ * @since 1.3.0
  */
 public class FileSystemWatcher {
 
@@ -57,12 +49,9 @@ public class FileSystemWatcher {
 	private final AtomicInteger remainingScans = new AtomicInteger(-1);
 
 	private final Map<File, FolderSnapshot> folders = new HashMap<>();
-
-	private Thread watchThread;
-
-	private FileFilter triggerFilter;
-
 	private final Object monitor = new Object();
+	private Thread watchThread;
+	private FileFilter triggerFilter;
 
 	/**
 	 * Create a new {@link FileSystemWatcher} instance.
@@ -73,10 +62,11 @@ public class FileSystemWatcher {
 
 	/**
 	 * Create a new {@link FileSystemWatcher} instance.
-	 * @param daemon if a daemon thread used to monitor changes
+	 *
+	 * @param daemon       if a daemon thread used to monitor changes
 	 * @param pollInterval the amount of time to wait between checking for changes
-	 * @param quietPeriod the amount of time required after a change has been detected to
-	 * ensure that updates have completed
+	 * @param quietPeriod  the amount of time required after a change has been detected to
+	 *                     ensure that updates have completed
 	 */
 	public FileSystemWatcher(boolean daemon, Duration pollInterval, Duration quietPeriod) {
 		Assert.notNull(pollInterval, "PollInterval must not be null");
@@ -93,6 +83,7 @@ public class FileSystemWatcher {
 	/**
 	 * Add listener for file change events. Cannot be called after the watcher has been
 	 * {@link #start() started}.
+	 *
 	 * @param fileChangeListener the listener to add
 	 */
 	public void addListener(FileChangeListener fileChangeListener) {
@@ -106,6 +97,7 @@ public class FileSystemWatcher {
 	/**
 	 * Add source folders to monitor. Cannot be called after the watcher has been
 	 * {@link #start() started}.
+	 *
 	 * @param folders the folders to monitor
 	 */
 	public void addSourceFolders(Iterable<File> folders) {
@@ -120,6 +112,7 @@ public class FileSystemWatcher {
 	/**
 	 * Add a source folder to monitor. Cannot be called after the watcher has been
 	 * {@link #start() started}.
+	 *
 	 * @param folder the folder to monitor
 	 */
 	public void addSourceFolder(File folder) {
@@ -133,6 +126,7 @@ public class FileSystemWatcher {
 
 	/**
 	 * Set an optional {@link FileFilter} used to limit the files that trigger a change.
+	 *
 	 * @param triggerFilter a trigger filter or null
 	 */
 	public void setTriggerFilter(FileFilter triggerFilter) {
@@ -180,6 +174,7 @@ public class FileSystemWatcher {
 
 	/**
 	 * Stop monitoring the source folders.
+	 *
 	 * @param remainingScans the number of remaining scans
 	 */
 	void stopAfter(int remainingScans) {
@@ -197,8 +192,7 @@ public class FileSystemWatcher {
 		if (thread != null && Thread.currentThread() != thread) {
 			try {
 				thread.join();
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 		}
@@ -219,7 +213,7 @@ public class FileSystemWatcher {
 		private Map<File, FolderSnapshot> folders;
 
 		private Watcher(AtomicInteger remainingScans, List<FileChangeListener> listeners, FileFilter triggerFilter,
-				long pollInterval, long quietPeriod, Map<File, FolderSnapshot> folders) {
+						long pollInterval, long quietPeriod, Map<File, FolderSnapshot> folders) {
 			this.remainingScans = remainingScans;
 			this.listeners = listeners;
 			this.triggerFilter = triggerFilter;
@@ -237,8 +231,7 @@ public class FileSystemWatcher {
 						this.remainingScans.decrementAndGet();
 					}
 					scan();
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 				remainingScans = this.remainingScans.get();

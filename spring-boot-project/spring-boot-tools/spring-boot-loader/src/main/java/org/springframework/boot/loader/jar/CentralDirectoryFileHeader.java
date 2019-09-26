@@ -16,11 +16,11 @@
 
 package org.springframework.boot.loader.jar;
 
+import org.springframework.boot.loader.data.RandomAccessData;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
-import org.springframework.boot.loader.data.RandomAccessData;
 
 /**
  * A ZIP File "Central directory file header record" (CDFH).
@@ -54,13 +54,21 @@ final class CentralDirectoryFileHeader implements FileHeader {
 	}
 
 	CentralDirectoryFileHeader(byte[] header, int headerOffset, AsciiBytes name, byte[] extra, AsciiBytes comment,
-			long localHeaderOffset) {
+							   long localHeaderOffset) {
 		this.header = header;
 		this.headerOffset = headerOffset;
 		this.name = name;
 		this.extra = extra;
 		this.comment = comment;
 		this.localHeaderOffset = localHeaderOffset;
+	}
+
+	public static CentralDirectoryFileHeader fromRandomAccessData(RandomAccessData data, int offset,
+																  JarEntryFilter filter) throws IOException {
+		CentralDirectoryFileHeader fileHeader = new CentralDirectoryFileHeader();
+		byte[] bytes = data.read(offset, 46);
+		fileHeader.load(bytes, 0, data, offset, filter);
+		return fileHeader;
 	}
 
 	void load(byte[] data, int dataOffset, RandomAccessData variableData, int variableOffset, JarEntryFilter filter)
@@ -120,6 +128,7 @@ final class CentralDirectoryFileHeader implements FileHeader {
 	 * Decode MS-DOS Date Time details. See <a href=
 	 * "https://docs.microsoft.com/en-gb/windows/desktop/api/winbase/nf-winbase-dosdatetimetofiletime">
 	 * Microsoft's documentation</a> for more details of the format.
+	 *
 	 * @param datetime the date and time
 	 * @return the date and time as milliseconds since the epoch
 	 */
@@ -162,14 +171,6 @@ final class CentralDirectoryFileHeader implements FileHeader {
 		byte[] header = new byte[46];
 		System.arraycopy(this.header, this.headerOffset, header, 0, header.length);
 		return new CentralDirectoryFileHeader(header, 0, this.name, header, this.comment, this.localHeaderOffset);
-	}
-
-	public static CentralDirectoryFileHeader fromRandomAccessData(RandomAccessData data, int offset,
-			JarEntryFilter filter) throws IOException {
-		CentralDirectoryFileHeader fileHeader = new CentralDirectoryFileHeader();
-		byte[] bytes = data.read(offset, 46);
-		fileHeader.load(bytes, 0, data, offset, filter);
-		return fileHeader;
 	}
 
 }

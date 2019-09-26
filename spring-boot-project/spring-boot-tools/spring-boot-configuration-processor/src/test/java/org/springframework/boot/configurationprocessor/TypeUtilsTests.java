@@ -16,29 +16,23 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.configurationprocessor.TypeUtils.TypeDescriptor;
 import org.springframework.boot.configurationsample.generic.AbstractGenericProperties;
 import org.springframework.boot.configurationsample.generic.AbstractIntermediateGenericProperties;
 import org.springframework.boot.configurationsample.generic.SimpleGenericProperties;
 import org.springframework.boot.testsupport.compiler.TestCompiler;
+
+import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

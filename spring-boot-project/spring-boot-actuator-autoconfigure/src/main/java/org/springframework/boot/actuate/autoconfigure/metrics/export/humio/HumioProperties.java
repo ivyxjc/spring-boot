@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.humio;
 
+import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link ConfigurationProperties} for configuring Humio metrics export.

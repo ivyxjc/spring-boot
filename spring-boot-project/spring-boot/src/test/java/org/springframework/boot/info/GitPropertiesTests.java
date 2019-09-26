@@ -16,9 +16,9 @@
 
 package org.springframework.boot.info;
 
-import java.util.Properties;
-
 import org.junit.Test;
+
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,6 +28,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  */
 public class GitPropertiesTests {
+
+	private static Properties createProperties(String branch, String commitId, String commitIdAbbrev,
+											   String commitTime) {
+		Properties properties = new Properties();
+		properties.put("branch", branch);
+		properties.put("commit.id", commitId);
+		if (commitIdAbbrev != null) {
+			properties.put("commit.id.abbrev", commitIdAbbrev);
+		}
+		properties.put("commit.time", commitTime);
+		return properties;
+	}
 
 	@Test
 	public void basicInfo() {
@@ -92,18 +104,6 @@ public class GitPropertiesTests {
 		GitProperties properties = new GitProperties(createProperties("master", "abcdefghijklmno", null, "1457527123"));
 		assertThat(properties.getCommitId()).isEqualTo("abcdefghijklmno");
 		assertThat(properties.getShortCommitId()).isEqualTo("abcdefg");
-	}
-
-	private static Properties createProperties(String branch, String commitId, String commitIdAbbrev,
-			String commitTime) {
-		Properties properties = new Properties();
-		properties.put("branch", branch);
-		properties.put("commit.id", commitId);
-		if (commitIdAbbrev != null) {
-			properties.put("commit.id.abbrev", commitIdAbbrev);
-		}
-		properties.put("commit.time", commitTime);
-		return properties;
 	}
 
 }

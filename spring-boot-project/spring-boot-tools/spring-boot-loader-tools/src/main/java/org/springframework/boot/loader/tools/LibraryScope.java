@@ -26,9 +26,6 @@ package org.springframework.boot.loader.tools;
  */
 public interface LibraryScope {
 
-	@Override
-	String toString();
-
 	/**
 	 * The library is used at compile time and runtime.
 	 */
@@ -40,7 +37,6 @@ public interface LibraryScope {
 		}
 
 	};
-
 	/**
 	 * The library is used at runtime but not needed for compile.
 	 */
@@ -52,7 +48,6 @@ public interface LibraryScope {
 		}
 
 	};
-
 	/**
 	 * The library is needed for compile but is usually provided when running.
 	 */
@@ -64,7 +59,6 @@ public interface LibraryScope {
 		}
 
 	};
-
 	/**
 	 * Marker for custom scope when custom configuration is used.
 	 */
@@ -76,5 +70,8 @@ public interface LibraryScope {
 		}
 
 	};
+
+	@Override
+	String toString();
 
 }

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.context.filtersample;
 
-import java.io.IOException;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+
+import java.io.IOException;
 
 public class SampleTypeExcludeFilter extends TypeExcludeFilter {
 

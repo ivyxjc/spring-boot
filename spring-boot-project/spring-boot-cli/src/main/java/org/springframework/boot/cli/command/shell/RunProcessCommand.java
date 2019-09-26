@@ -16,15 +16,15 @@
 
 package org.springframework.boot.cli.command.shell;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.springframework.boot.cli.command.AbstractCommand;
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.loader.tools.RunProcess;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Special {@link Command} used to run a process from the shell. NOTE: this command is not
@@ -53,8 +53,7 @@ class RunProcessCommand extends AbstractCommand {
 		int code = this.process.run(true, StringUtils.toStringArray(args));
 		if (code == 0) {
 			return ExitStatus.OK;
-		}
-		else {
+		} else {
 			return new ExitStatus(code, "EXTERNAL_ERROR");
 		}
 	}

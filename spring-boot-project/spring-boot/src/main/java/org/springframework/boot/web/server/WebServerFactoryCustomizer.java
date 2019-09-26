@@ -33,14 +33,15 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
  * @author Phillip Webb
  * @author Dave Syer
  * @author Brian Clozel
- * @since 2.0.0
  * @see WebServerFactoryCustomizerBeanPostProcessor
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface WebServerFactoryCustomizer<T extends WebServerFactory> {
 
 	/**
 	 * Customize the specified {@link WebServerFactory}.
+	 *
 	 * @param factory the web server factory to customize
 	 */
 	void customize(T factory);

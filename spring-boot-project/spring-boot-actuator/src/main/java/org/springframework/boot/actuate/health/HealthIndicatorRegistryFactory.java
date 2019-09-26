@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
+
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.util.Assert;
 
 /**
  * Factory to create a {@link HealthIndicatorRegistry}.
@@ -41,6 +41,7 @@ public class HealthIndicatorRegistryFactory {
 
 	/**
 	 * Create a {@link HealthIndicatorRegistry} based on the specified health indicators.
+	 *
 	 * @param healthIndicators the {@link HealthIndicator} instances mapped by name
 	 * @return a {@link HealthIndicator} that delegates to the specified
 	 * {@code healthIndicators}.
@@ -51,7 +52,7 @@ public class HealthIndicatorRegistryFactory {
 	}
 
 	protected <T extends HealthIndicatorRegistry> T initialize(T registry,
-			Map<String, HealthIndicator> healthIndicators) {
+															   Map<String, HealthIndicator> healthIndicators) {
 		for (Map.Entry<String, HealthIndicator> entry : healthIndicators.entrySet()) {
 			String name = this.healthIndicatorNameFactory.apply(entry.getKey());
 			registry.register(name, entry.getValue());

@@ -30,6 +30,7 @@ public interface JCacheManagerCustomizer {
 
 	/**
 	 * Customize the cache manager.
+	 *
 	 * @param cacheManager the {@code javax.cache.CacheManager} to customize
 	 */
 	void customize(CacheManager cacheManager);

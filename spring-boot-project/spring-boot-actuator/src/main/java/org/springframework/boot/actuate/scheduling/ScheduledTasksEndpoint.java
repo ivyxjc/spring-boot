@@ -16,30 +16,18 @@
 
 package org.springframework.boot.actuate.scheduling;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.scheduling.Trigger;
-import org.springframework.scheduling.config.CronTask;
-import org.springframework.scheduling.config.FixedDelayTask;
-import org.springframework.scheduling.config.FixedRateTask;
-import org.springframework.scheduling.config.IntervalTask;
-import org.springframework.scheduling.config.ScheduledTask;
-import org.springframework.scheduling.config.ScheduledTaskHolder;
-import org.springframework.scheduling.config.Task;
-import org.springframework.scheduling.config.TriggerTask;
+import org.springframework.scheduling.config.*;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.scheduling.support.PeriodicTrigger;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
+
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * {@link Endpoint @Endpoint} to expose information about an application's scheduled
@@ -64,6 +52,12 @@ public class ScheduledTasksEndpoint {
 				.map(TaskDescription::of).filter(Objects::nonNull)
 				.collect(Collectors.groupingBy(TaskDescription::getType));
 		return new ScheduledTasksReport(descriptionsByType);
+	}
+
+	private enum TaskType {
+
+		CRON, CUSTOM_TRIGGER, FIXED_DELAY, FIXED_RATE
+
 	}
 
 	/**
@@ -123,6 +117,11 @@ public class ScheduledTasksEndpoint {
 
 		private final RunnableDescription runnable;
 
+		protected TaskDescription(TaskType type, Runnable runnable) {
+			this.type = type;
+			this.runnable = new RunnableDescription(runnable);
+		}
+
 		private static TaskDescription of(Task task) {
 			return DESCRIBERS.entrySet().stream().filter((entry) -> entry.getKey().isInstance(task))
 					.map((entry) -> entry.getValue().apply(task)).findFirst().orElse(null);
@@ -141,11 +140,6 @@ public class ScheduledTasksEndpoint {
 				return new FixedDelayTaskDescription(triggerTask, periodicTrigger);
 			}
 			return new CustomTriggerTaskDescription(triggerTask);
-		}
-
-		protected TaskDescription(TaskType type, Runnable runnable) {
-			this.type = type;
-			this.runnable = new RunnableDescription(runnable);
 		}
 
 		private TaskType getType() {
@@ -278,8 +272,7 @@ public class ScheduledTasksEndpoint {
 			if (runnable instanceof ScheduledMethodRunnable) {
 				Method method = ((ScheduledMethodRunnable) runnable).getMethod();
 				this.target = method.getDeclaringClass().getName() + "." + method.getName();
-			}
-			else {
+			} else {
 				this.target = runnable.getClass().getName();
 			}
 		}
@@ -287,12 +280,6 @@ public class ScheduledTasksEndpoint {
 		public String getTarget() {
 			return this.target;
 		}
-
-	}
-
-	private enum TaskType {
-
-		CRON, CUSTOM_TRIGGER, FIXED_DELAY, FIXED_RATE
 
 	}
 

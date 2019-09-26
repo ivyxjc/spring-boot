@@ -16,19 +16,19 @@
 
 package org.springframework.boot.autoconfigure.data.elasticsearch;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.function.Consumer;
-
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.InternalSettingsPreparer;
 import org.elasticsearch.node.Node;
 import org.elasticsearch.node.NodeValidationException;
 import org.elasticsearch.transport.Netty4Plugin;
 import org.elasticsearch.transport.Transport;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.function.Consumer;
 
 /**
  * Helper class for managing an Elasticsearch {@link Node}.
@@ -43,16 +43,13 @@ public class ElasticsearchNodeTemplate {
 		try {
 			node = startNode();
 			consumer.accept(new ElasticsearchNode(node));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);
-		}
-		finally {
+		} finally {
 			if (node != null) {
 				try {
 					node.close();
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					// Continue
 				}
 			}
@@ -70,8 +67,8 @@ public class ElasticsearchNodeTemplate {
 
 		private NettyTransportNode() {
 			super(InternalSettingsPreparer.prepareEnvironment(Settings.builder().put("path.home", "target/es/node")
-					.put("transport.type", "netty4").put("http.enabled", true).put("node.portsfile", true)
-					.put("http.port", 0).put("transport.tcp.port", 0).build(), null),
+							.put("transport.type", "netty4").put("http.enabled", true).put("node.portsfile", true)
+							.put("http.port", 0).put("transport.tcp.port", 0).build(), null),
 					Arrays.asList(Netty4Plugin.class));
 			new File("target/es/node/logs").mkdirs();
 		}
@@ -98,8 +95,7 @@ public class ElasticsearchNodeTemplate {
 					}
 				}
 				throw new IllegalStateException("HTTP port not found");
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new IllegalStateException("Failed to read HTTP port", ex);
 			}
 		}

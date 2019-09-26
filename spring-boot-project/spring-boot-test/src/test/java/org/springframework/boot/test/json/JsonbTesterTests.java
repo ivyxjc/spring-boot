@@ -16,14 +16,12 @@
 
 package org.springframework.boot.test.json;
 
-import java.util.List;
+import org.junit.Test;
+import org.springframework.core.ResolvableType;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-
-import org.junit.Test;
-
-import org.springframework.core.ResolvableType;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

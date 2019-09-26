@@ -16,17 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.reactive;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import javax.validation.ValidatorFactory;
-
 import org.joda.time.DateTime;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 import org.springframework.boot.autoconfigure.validation.ValidatorAdapter;
@@ -63,6 +54,13 @@ import org.springframework.web.reactive.result.method.annotation.RequestMappingH
 import org.springframework.web.reactive.result.view.ViewResolutionResultHandler;
 import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.util.pattern.PathPattern;
+
+import javax.validation.ValidatorFactory;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -252,35 +250,35 @@ public class WebFluxAutoConfigurationTests {
 	public void validationCustomConfigurerTakesPrecedence() {
 		this.contextRunner.withConfiguration(AutoConfigurations.of(ValidationAutoConfiguration.class))
 				.withUserConfiguration(ValidatorWebFluxConfigurer.class).run((context) -> {
-					assertThat(context).getBeans(ValidatorFactory.class).hasSize(1);
-					assertThat(context).getBeans(javax.validation.Validator.class).hasSize(1);
-					assertThat(context).getBeanNames(Validator.class).containsExactlyInAnyOrder("defaultValidator",
-							"webFluxValidator");
-					assertThat(context.getBean("webFluxValidator"))
-							.isSameAs(context.getBean(ValidatorWebFluxConfigurer.class).validator);
-					// Primary Spring validator is the auto-configured one as the WebFlux
-					// one has been
-					// customized via a WebFluxConfigurer
-					assertThat(context.getBean(Validator.class)).isEqualTo(context.getBean("defaultValidator"));
-				});
+			assertThat(context).getBeans(ValidatorFactory.class).hasSize(1);
+			assertThat(context).getBeans(javax.validation.Validator.class).hasSize(1);
+			assertThat(context).getBeanNames(Validator.class).containsExactlyInAnyOrder("defaultValidator",
+					"webFluxValidator");
+			assertThat(context.getBean("webFluxValidator"))
+					.isSameAs(context.getBean(ValidatorWebFluxConfigurer.class).validator);
+			// Primary Spring validator is the auto-configured one as the WebFlux
+			// one has been
+			// customized via a WebFluxConfigurer
+			assertThat(context.getBean(Validator.class)).isEqualTo(context.getBean("defaultValidator"));
+		});
 	}
 
 	@Test
 	public void validatorWithCustomSpringValidatorIgnored() {
 		this.contextRunner.withConfiguration(AutoConfigurations.of(ValidationAutoConfiguration.class))
 				.withUserConfiguration(CustomSpringValidator.class).run((context) -> {
-					assertThat(context).getBeanNames(javax.validation.Validator.class)
-							.containsExactly("defaultValidator");
-					assertThat(context).getBeanNames(Validator.class).containsExactlyInAnyOrder("customValidator",
-							"defaultValidator", "webFluxValidator");
-					Validator validator = context.getBean("webFluxValidator", Validator.class);
-					assertThat(validator).isInstanceOf(ValidatorAdapter.class);
-					Object defaultValidator = context.getBean("defaultValidator");
-					assertThat(((ValidatorAdapter) validator).getTarget()).isSameAs(defaultValidator);
-					// Primary Spring validator is the one used by WebFlux behind the
-					// scenes
-					assertThat(context.getBean(Validator.class)).isEqualTo(defaultValidator);
-				});
+			assertThat(context).getBeanNames(javax.validation.Validator.class)
+					.containsExactly("defaultValidator");
+			assertThat(context).getBeanNames(Validator.class).containsExactlyInAnyOrder("customValidator",
+					"defaultValidator", "webFluxValidator");
+			Validator validator = context.getBean("webFluxValidator", Validator.class);
+			assertThat(validator).isInstanceOf(ValidatorAdapter.class);
+			Object defaultValidator = context.getBean("defaultValidator");
+			assertThat(((ValidatorAdapter) validator).getTarget()).isSameAs(defaultValidator);
+			// Primary Spring validator is the one used by WebFlux behind the
+			// scenes
+			assertThat(context.getBean(Validator.class)).isEqualTo(defaultValidator);
+		});
 	}
 
 	@Test
@@ -357,15 +355,15 @@ public class WebFluxAutoConfigurationTests {
 	public void cacheControl() {
 		this.contextRunner.withPropertyValues("spring.resources.cache.cachecontrol.max-age:5",
 				"spring.resources.cache.cachecontrol.proxy-revalidate:true").run((context) -> {
-					Map<PathPattern, Object> handlerMap = getHandlerMap(context);
-					assertThat(handlerMap).hasSize(2);
-					for (Object handler : handlerMap.values()) {
-						if (handler instanceof ResourceWebHandler) {
-							assertThat(((ResourceWebHandler) handler).getCacheControl()).isEqualToComparingFieldByField(
-									CacheControl.maxAge(5, TimeUnit.SECONDS).proxyRevalidate());
-						}
-					}
-				});
+			Map<PathPattern, Object> handlerMap = getHandlerMap(context);
+			assertThat(handlerMap).hasSize(2);
+			for (Object handler : handlerMap.values()) {
+				if (handler instanceof ResourceWebHandler) {
+					assertThat(((ResourceWebHandler) handler).getCacheControl()).isEqualToComparingFieldByField(
+							CacheControl.maxAge(5, TimeUnit.SECONDS).proxyRevalidate());
+				}
+			}
+		});
 	}
 
 	private Map<PathPattern, Object> getHandlerMap(ApplicationContext context) {
@@ -513,8 +511,8 @@ public class WebFluxAutoConfigurationTests {
 	}
 
 	@Configuration
-	@Import({ WebFluxAutoConfigurationTests.CustomRequestMappingHandlerMapping.class,
-			WebFluxAutoConfigurationTests.CustomRequestMappingHandlerAdapter.class })
+	@Import({WebFluxAutoConfigurationTests.CustomRequestMappingHandlerMapping.class,
+					WebFluxAutoConfigurationTests.CustomRequestMappingHandlerAdapter.class})
 	static class MultipleWebFluxRegistrations {
 
 	}

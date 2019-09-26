@@ -1,7 +1,7 @@
-import org.springframework.boot.maven.*
+import org.springframework.boot.maven.Verify
 
-import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
 
 File main = new File(basedir, "target/jar-0.0.1.BUILD-SNAPSHOT.jar")
 File backup = new File(basedir, "target/jar-0.0.1.BUILD-SNAPSHOT.jar.original")
@@ -12,7 +12,7 @@ def file = new File(basedir, "build.log")
 assertTrue 'main artifact should have been replaced by repackaged archive',
 		file.text.contains("Replacing main artifact with repackaged archive")
 assertTrue 'main artifact should have been installed',
-		file.text.contains ("Installing " + main + " to")
+		file.text.contains("Installing " + main + " to")
 assertFalse 'backup artifact should not have been installed',
-		file.text.contains ("Installing " + backup + "to")
+		file.text.contains("Installing " + backup + "to")
 

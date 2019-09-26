@@ -16,12 +16,6 @@
 
 package org.springframework.boot.autoconfigure.domain;
 
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.context.ApplicationContext;
@@ -30,6 +24,12 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * An entity scanner that searches the classpath from an {@link EntityScan @EntityScan}
@@ -44,6 +44,7 @@ public class EntityScanner {
 
 	/**
 	 * Create a new {@link EntityScanner} instance.
+	 *
 	 * @param context the source application context
 	 */
 	public EntityScanner(ApplicationContext context) {
@@ -53,6 +54,7 @@ public class EntityScanner {
 
 	/**
 	 * Scan for entities with the specified annotations.
+	 *
 	 * @param annotationTypes the annotation types used on the entities
 	 * @return a set of entity classes
 	 * @throws ClassNotFoundException if an entity class cannot be loaded

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.couchbase;
 
-import java.time.Duration;
-import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
+
+import java.time.Duration;
+import java.util.List;
 
 /**
  * Configuration properties for Couchbase.
@@ -33,14 +33,12 @@ import org.springframework.util.StringUtils;
 @ConfigurationProperties(prefix = "spring.couchbase")
 public class CouchbaseProperties {
 
+	private final Bucket bucket = new Bucket();
+	private final Env env = new Env();
 	/**
 	 * Couchbase nodes (host or IP address) to bootstrap from.
 	 */
 	private List<String> bootstrapHosts;
-
-	private final Bucket bucket = new Bucket();
-
-	private final Env env = new Env();
 
 	public List<String> getBootstrapHosts() {
 		return this.bootstrapHosts;
@@ -113,19 +111,17 @@ public class CouchbaseProperties {
 	public static class Endpoints {
 
 		/**
-		 * Number of sockets per node against the key/value service.
-		 */
-		private int keyValue = 1;
-
-		/**
 		 * Query (N1QL) service configuration.
 		 */
 		private final CouchbaseService queryservice = new CouchbaseService();
-
 		/**
 		 * View service configuration.
 		 */
 		private final CouchbaseService viewservice = new CouchbaseService();
+		/**
+		 * Number of sockets per node against the key/value service.
+		 */
+		private int keyValue = 1;
 
 		public int getKeyValue() {
 			return this.keyValue;

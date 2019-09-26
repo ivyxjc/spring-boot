@@ -33,7 +33,8 @@ public interface RabbitRetryTemplateCustomizer {
 	/**
 	 * Callback to customize a {@link RetryTemplate} instance used in the context of the
 	 * specified {@link Target}.
-	 * @param target the {@link Target} of the retry template
+	 *
+	 * @param target        the {@link Target} of the retry template
 	 * @param retryTemplate the template to customize
 	 */
 	void customize(Target target, RetryTemplate retryTemplate);

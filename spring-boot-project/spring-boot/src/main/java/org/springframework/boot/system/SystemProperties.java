@@ -35,8 +35,7 @@ public final class SystemProperties {
 				if (override != null) {
 					return override;
 				}
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				System.err.println("Could not resolve '" + property + "' as system property: " + ex);
 			}
 		}

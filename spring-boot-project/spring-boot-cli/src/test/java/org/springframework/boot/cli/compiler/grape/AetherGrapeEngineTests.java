@@ -16,24 +16,18 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import groovy.lang.GroovyClassLoader;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.repository.Authentication;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.junit.Test;
-
 import org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.io.File;
+import java.net.URI;
+import java.net.URL;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -233,8 +227,7 @@ public class AetherGrapeEngineTests {
 		String previousValue = setOrClearSystemProperty(key, value);
 		try {
 			action.run();
-		}
-		finally {
+		} finally {
 			setOrClearSystemProperty(key, previousValue);
 		}
 	}

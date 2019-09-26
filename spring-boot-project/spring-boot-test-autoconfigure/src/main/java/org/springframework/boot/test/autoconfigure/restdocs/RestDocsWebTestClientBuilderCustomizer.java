@@ -34,7 +34,7 @@ class RestDocsWebTestClientBuilderCustomizer implements WebTestClientBuilderCust
 	private final WebTestClientRestDocumentationConfigurer delegate;
 
 	RestDocsWebTestClientBuilderCustomizer(RestDocsProperties properties,
-			WebTestClientRestDocumentationConfigurer delegate) {
+										   WebTestClientRestDocumentationConfigurer delegate) {
 		this.properties = properties;
 		this.delegate = delegate;
 	}

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
+import org.springframework.util.Assert;
+
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-
-import org.springframework.util.Assert;
 
 /**
  * Mappings between {@link CacheType} and {@code @Configuration}.

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.docs.context.properties.bind;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.convert.DurationUnit;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 /**
  * A {@link ConfigurationProperties} example that uses {@link Duration}.

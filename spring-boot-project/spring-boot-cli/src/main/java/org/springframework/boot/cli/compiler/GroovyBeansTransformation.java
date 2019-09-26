@@ -16,21 +16,15 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.ClassCodeVisitorSupport;
-import org.codehaus.groovy.ast.ClassHelper;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.ModuleNode;
-import org.codehaus.groovy.ast.PropertyNode;
+import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.ASTTransformation;
-
 import org.springframework.core.annotation.Order;
+
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 
 /**
  * {@link ASTTransformation} to resolve beans declarations inside application source
@@ -107,6 +101,7 @@ public class GroovyBeansTransformation implements ASTTransformation {
 		/**
 		 * Extract a top-level <code>beans{}</code> closure from inside this block if
 		 * there is one. Removes it from the block at the same time.
+		 *
 		 * @param block a block statement (class definition)
 		 * @return a beans Closure if one can be found, null otherwise
 		 */

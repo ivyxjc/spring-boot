@@ -35,9 +35,10 @@ public final class LoggerConfiguration {
 
 	/**
 	 * Create a new {@link LoggerConfiguration instance}.
-	 * @param name the name of the logger
+	 *
+	 * @param name            the name of the logger
 	 * @param configuredLevel the configured level of the logger
-	 * @param effectiveLevel the effective level of the logger
+	 * @param effectiveLevel  the effective level of the logger
 	 */
 	public LoggerConfiguration(String name, LogLevel configuredLevel, LogLevel effectiveLevel) {
 		Assert.notNull(name, "Name must not be null");
@@ -49,6 +50,7 @@ public final class LoggerConfiguration {
 
 	/**
 	 * Returns the configured level of the logger.
+	 *
 	 * @return the configured level of the logger
 	 */
 	public LogLevel getConfiguredLevel() {
@@ -57,6 +59,7 @@ public final class LoggerConfiguration {
 
 	/**
 	 * Returns the effective level of the logger.
+	 *
 	 * @return the effective level of the logger
 	 */
 	public LogLevel getEffectiveLevel() {
@@ -65,6 +68,7 @@ public final class LoggerConfiguration {
 
 	/**
 	 * Returns the name of the logger.
+	 *
 	 * @return the name of the logger
 	 */
 	public String getName() {

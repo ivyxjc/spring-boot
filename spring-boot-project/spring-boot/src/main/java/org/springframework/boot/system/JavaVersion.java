@@ -16,12 +16,12 @@
 
 package org.springframework.boot.system;
 
+import org.springframework.util.ClassUtils;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.util.ClassUtils;
 
 /**
  * Known Java versions.
@@ -71,13 +71,9 @@ public enum JavaVersion {
 		this.available = ClassUtils.hasMethod(clazz, methodName);
 	}
 
-	@Override
-	public String toString() {
-		return this.name;
-	}
-
 	/**
 	 * Returns the {@link JavaVersion} of the current runtime.
+	 *
 	 * @return the {@link JavaVersion}
 	 */
 	public static JavaVersion getJavaVersion() {
@@ -91,8 +87,14 @@ public enum JavaVersion {
 		return EIGHT;
 	}
 
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 	/**
 	 * Return if this version is equal to or newer than a given version.
+	 *
 	 * @param version the version to compare
 	 * @return {@code true} if this version is equal to or newer than {@code version}
 	 */
@@ -102,6 +104,7 @@ public enum JavaVersion {
 
 	/**
 	 * Return if this version is older than a given version.
+	 *
 	 * @param version the version to compare
 	 * @return {@code true} if this version is older than {@code version}
 	 */

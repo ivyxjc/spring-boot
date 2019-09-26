@@ -71,8 +71,7 @@ class DataSourceBeanCreationFailureAnalyzer extends AbstractFailureAnalyzer<Data
 		if (EmbeddedDatabaseConnection.NONE == cause.getConnection()) {
 			action.append(String.format(
 					"\tIf you want an embedded database (H2, HSQL or " + "Derby), please put it on the classpath.%n"));
-		}
-		else {
+		} else {
 			action.append(String.format("\tReview the configuration of %s%n.", cause.getConnection()));
 		}
 		action.append("\tIf you have database settings to be loaded from a particular "
@@ -85,8 +84,7 @@ class DataSourceBeanCreationFailureAnalyzer extends AbstractFailureAnalyzer<Data
 		String[] profiles = this.environment.getActiveProfiles();
 		if (ObjectUtils.isEmpty(profiles)) {
 			message.append(" (no profiles are currently active).");
-		}
-		else {
+		} else {
 			message.append(" (the profiles ");
 			message.append(StringUtils.arrayToCommaDelimitedString(profiles));
 			message.append(" are currently active).");

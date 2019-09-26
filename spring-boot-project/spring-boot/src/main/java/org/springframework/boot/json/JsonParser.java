@@ -23,17 +23,18 @@ import java.util.Map;
  * Parser that can read JSON formatted strings into {@link Map}s or {@link List}s.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see JsonParserFactory
  * @see BasicJsonParser
  * @see JacksonJsonParser
  * @see GsonJsonParser
  * @see YamlJsonParser
+ * @since 1.0.0
  */
 public interface JsonParser {
 
 	/**
 	 * Parse the specified JSON string into a Map.
+	 *
 	 * @param json the JSON to parse
 	 * @return the parsed JSON as a map
 	 * @throws JsonParseException if the JSON cannot be parsed
@@ -42,6 +43,7 @@ public interface JsonParser {
 
 	/**
 	 * Parse the specified JSON string into a List.
+	 *
 	 * @param json the JSON to parse
 	 * @return the parsed JSON as a list
 	 * @throws JsonParseException if the JSON cannot be parsed

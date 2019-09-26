@@ -31,6 +31,7 @@ public class LoggingInitializationContext {
 
 	/**
 	 * Create a new {@link LoggingInitializationContext} instance.
+	 *
 	 * @param environment the Spring environment.
 	 */
 	public LoggingInitializationContext(ConfigurableEnvironment environment) {
@@ -39,6 +40,7 @@ public class LoggingInitializationContext {
 
 	/**
 	 * Return the Spring environment if available.
+	 *
 	 * @return the {@link Environment} or {@code null}
 	 */
 	public Environment getEnvironment() {

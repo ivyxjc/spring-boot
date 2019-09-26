@@ -47,7 +47,7 @@ final class DefaultPropertyMapper implements PropertyMapper {
 			return last.getMapping();
 		}
 		String convertedName = configurationPropertyName.toString();
-		PropertyMapping[] mapping = { new PropertyMapping(convertedName, configurationPropertyName) };
+		PropertyMapping[] mapping = {new PropertyMapping(convertedName, configurationPropertyName)};
 		this.lastMappedConfigurationPropertyName = new LastMapping<>(configurationPropertyName, mapping);
 		return mapping;
 	}
@@ -68,10 +68,9 @@ final class DefaultPropertyMapper implements PropertyMapper {
 		try {
 			ConfigurationPropertyName convertedName = ConfigurationPropertyName.adapt(propertySourceName, '.');
 			if (!convertedName.isEmpty()) {
-				return new PropertyMapping[] { new PropertyMapping(propertySourceName, convertedName) };
+				return new PropertyMapping[]{new PropertyMapping(propertySourceName, convertedName)};
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 		}
 		return NO_MAPPINGS;
 	}

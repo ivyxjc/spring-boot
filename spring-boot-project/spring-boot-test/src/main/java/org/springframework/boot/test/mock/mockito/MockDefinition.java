@@ -16,21 +16,20 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.mockito.Answers;
 import org.mockito.MockSettings;
 import org.mockito.Mockito;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A complete definition that can be used to create a Mockito mock.
@@ -50,7 +49,7 @@ class MockDefinition extends Definition {
 	private final boolean serializable;
 
 	MockDefinition(String name, ResolvableType typeToMock, Class<?>[] extraInterfaces, Answers answer,
-			boolean serializable, MockReset reset, QualifierDefinition qualifier) {
+				   boolean serializable, MockReset reset, QualifierDefinition qualifier) {
 		super(name, reset, false, qualifier);
 		Assert.notNull(typeToMock, "TypeToMock must not be null");
 		this.typeToMock = typeToMock;
@@ -69,6 +68,7 @@ class MockDefinition extends Definition {
 
 	/**
 	 * Return the type that should be mocked.
+	 *
 	 * @return the type to mock; never {@code null}
 	 */
 	public ResolvableType getTypeToMock() {
@@ -77,6 +77,7 @@ class MockDefinition extends Definition {
 
 	/**
 	 * Return the extra interfaces.
+	 *
 	 * @return the extra interfaces or an empty set
 	 */
 	public Set<Class<?>> getExtraInterfaces() {
@@ -85,6 +86,7 @@ class MockDefinition extends Definition {
 
 	/**
 	 * Return the answers mode.
+	 *
 	 * @return the answers mode; never {@code null}
 	 */
 	public Answers getAnswer() {
@@ -93,6 +95,7 @@ class MockDefinition extends Definition {
 
 	/**
 	 * Return if the mock is serializable.
+	 *
 	 * @return if the mock is serializable
 	 */
 	public boolean isSerializable() {

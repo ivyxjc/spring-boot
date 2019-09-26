@@ -17,7 +17,6 @@
 package org.springframework.boot.test.autoconfigure;
 
 import org.junit.Test;
-
 import org.springframework.test.context.ContextCustomizer;
 
 import static org.assertj.core.api.Assertions.assertThat;

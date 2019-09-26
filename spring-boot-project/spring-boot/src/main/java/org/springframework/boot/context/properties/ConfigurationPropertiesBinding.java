@@ -16,13 +16,9 @@
 
 package org.springframework.boot.context.properties;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import java.lang.annotation.*;
 
 /**
  * Qualifier for beans that are needed to configure the binding of
@@ -32,7 +28,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
  * @since 1.3.0
  */
 @Qualifier(ConfigurationPropertiesBinding.VALUE)
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ConfigurationPropertiesBinding {

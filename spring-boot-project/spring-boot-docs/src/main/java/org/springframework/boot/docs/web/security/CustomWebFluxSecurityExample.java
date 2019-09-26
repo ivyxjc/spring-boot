@@ -35,12 +35,12 @@ public class CustomWebFluxSecurityExample {
 	@Bean
 	public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 		return http
-			.authorizeExchange()
+				.authorizeExchange()
 				.matchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 				.pathMatchers("/foo", "/bar")
-					.authenticated().and()
+				.authenticated().and()
 				.formLogin().and()
-			.build();
+				.build();
 	}
 	// end::configuration[]
 	// @formatter:on

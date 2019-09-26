@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.system;
 
-import java.io.File;
-
 import org.springframework.boot.actuate.system.DiskSpaceHealthIndicator;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
 import org.springframework.util.unit.DataSize;
+
+import java.io.File;
 
 /**
  * External configuration properties for {@link DiskSpaceHealthIndicator}.

@@ -16,28 +16,20 @@
 
 package org.springframework.boot.devtools.filewatch;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.devtools.filewatch.ChangedFile.Type;
 import org.springframework.util.FileCopyUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -47,12 +39,10 @@ import static org.mockito.Mockito.mock;
  */
 public class FileSystemWatcherTests {
 
-	private FileSystemWatcher watcher;
-
-	private List<Set<ChangedFiles>> changes = Collections.synchronizedList(new ArrayList<Set<ChangedFiles>>());
-
 	@Rule
 	public TemporaryFolder temp = new TemporaryFolder();
+	private FileSystemWatcher watcher;
+	private List<Set<ChangedFiles>> changes = Collections.synchronizedList(new ArrayList<Set<ChangedFiles>>());
 
 	@Before
 	public void setup() {
@@ -203,8 +193,7 @@ public class FileSystemWatcherTests {
 			if (changedFiles.getSourceFolder().equals(folder1)) {
 				ChangedFile file = new ChangedFile(folder1, file1, Type.ADD);
 				assertThat(changedFiles.getFiles()).containsOnly(file);
-			}
-			else {
+			} else {
 				ChangedFile file = new ChangedFile(folder2, file2, Type.ADD);
 				assertThat(changedFiles.getFiles()).containsOnly(file);
 			}

@@ -20,12 +20,7 @@ import com.hazelcast.core.Hazelcast;
 import com.hazelcast.spring.cache.HazelcastCache;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import net.sf.ehcache.Ehcache;
-
-import org.springframework.boot.actuate.metrics.cache.CacheMeterBinderProvider;
-import org.springframework.boot.actuate.metrics.cache.CaffeineCacheMeterBinderProvider;
-import org.springframework.boot.actuate.metrics.cache.EhCache2CacheMeterBinderProvider;
-import org.springframework.boot.actuate.metrics.cache.HazelcastCacheMeterBinderProvider;
-import org.springframework.boot.actuate.metrics.cache.JCacheCacheMeterBinderProvider;
+import org.springframework.boot.actuate.metrics.cache.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.ehcache.EhCacheCache;
@@ -43,7 +38,7 @@ import org.springframework.context.annotation.Configuration;
 class CacheMeterBinderProvidersConfiguration {
 
 	@Configuration
-	@ConditionalOnClass({ CaffeineCache.class, com.github.benmanes.caffeine.cache.Cache.class })
+	@ConditionalOnClass({CaffeineCache.class, com.github.benmanes.caffeine.cache.Cache.class})
 	static class CaffeineCacheMeterBinderProviderConfiguration {
 
 		@Bean
@@ -54,7 +49,7 @@ class CacheMeterBinderProvidersConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ EhCacheCache.class, Ehcache.class })
+	@ConditionalOnClass({EhCacheCache.class, Ehcache.class})
 	static class EhCache2CacheMeterBinderProviderConfiguration {
 
 		@Bean
@@ -65,7 +60,7 @@ class CacheMeterBinderProvidersConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ HazelcastCache.class, Hazelcast.class })
+	@ConditionalOnClass({HazelcastCache.class, Hazelcast.class})
 	static class HazelcastCacheMeterBinderProviderConfiguration {
 
 		@Bean
@@ -76,7 +71,7 @@ class CacheMeterBinderProvidersConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ JCacheCache.class, javax.cache.CacheManager.class })
+	@ConditionalOnClass({JCacheCache.class, javax.cache.CacheManager.class})
 	static class JCacheCacheMeterBinderProviderConfiguration {
 
 		@Bean

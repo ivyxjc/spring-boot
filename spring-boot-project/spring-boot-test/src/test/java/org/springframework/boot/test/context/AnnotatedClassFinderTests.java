@@ -17,7 +17,6 @@
 package org.springframework.boot.test.context;
 
 import org.junit.Test;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.example.ExampleConfig;
 import org.springframework.boot.test.context.example.scan.Example;

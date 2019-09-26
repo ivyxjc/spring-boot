@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.elasticsearch;
 
-import java.util.Map;
-
 import io.searchbox.client.JestClient;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -36,6 +33,8 @@ import org.springframework.boot.autoconfigure.elasticsearch.jest.JestAutoConfigu
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
  * {@link ElasticsearchHealthIndicator} using the {@link JestClient}.
@@ -48,7 +47,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(JestClient.class)
 @ConditionalOnEnabledHealthIndicator("elasticsearch")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)
-@AutoConfigureAfter({ JestAutoConfiguration.class, ElasticSearchClientHealthIndicatorAutoConfiguration.class })
+@AutoConfigureAfter({JestAutoConfiguration.class, ElasticSearchClientHealthIndicatorAutoConfiguration.class})
 public class ElasticSearchJestHealthIndicatorAutoConfiguration
 		extends CompositeHealthIndicatorConfiguration<ElasticsearchJestHealthIndicator, JestClient> {
 

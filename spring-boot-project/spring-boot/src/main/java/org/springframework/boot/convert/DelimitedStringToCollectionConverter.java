@@ -16,18 +16,18 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalGenericConverter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Converts a {@link Delimiter delimited} String to a Collection.
@@ -76,7 +76,7 @@ final class DelimitedStringToCollectionConverter implements ConditionalGenericCo
 	}
 
 	private Collection<Object> createCollection(TypeDescriptor targetType, TypeDescriptor elementDescriptor,
-			int length) {
+												int length) {
 		return CollectionFactory.createCollection(targetType.getType(),
 				(elementDescriptor != null) ? elementDescriptor.getType() : null, length);
 	}

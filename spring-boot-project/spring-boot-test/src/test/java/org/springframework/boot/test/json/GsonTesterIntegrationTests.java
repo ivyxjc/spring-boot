@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.json;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,17 +34,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class GsonTesterIntegrationTests {
 
-	private GsonTester<ExampleObject> simpleJson;
-
-	private GsonTester<List<ExampleObject>> listJson;
-
-	private GsonTester<Map<String, Integer>> mapJson;
-
-	private GsonTester<String> stringJson;
-
-	private Gson gson;
-
 	private static final String JSON = "{\"name\":\"Spring\",\"age\":123}";
+	private GsonTester<ExampleObject> simpleJson;
+	private GsonTester<List<ExampleObject>> listJson;
+	private GsonTester<Map<String, Integer>> mapJson;
+	private GsonTester<String> stringJson;
+	private Gson gson;
 
 	@Before
 	public void setup() {

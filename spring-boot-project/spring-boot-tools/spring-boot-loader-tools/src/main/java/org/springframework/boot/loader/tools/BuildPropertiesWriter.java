@@ -39,6 +39,7 @@ public final class BuildPropertiesWriter {
 	/**
 	 * Creates a new {@code BuildPropertiesWriter} that will write to the given
 	 * {@code outputFile}.
+	 *
 	 * @param outputFile the output file
 	 */
 	public BuildPropertiesWriter(File outputFile) {
@@ -100,7 +101,7 @@ public final class BuildPropertiesWriter {
 		private final Map<String, String> additionalProperties;
 
 		public ProjectDetails(String group, String artifact, String version, String name, Instant time,
-				Map<String, String> additionalProperties) {
+							  Map<String, String> additionalProperties) {
 			this.group = group;
 			this.artifact = artifact;
 			this.name = name;

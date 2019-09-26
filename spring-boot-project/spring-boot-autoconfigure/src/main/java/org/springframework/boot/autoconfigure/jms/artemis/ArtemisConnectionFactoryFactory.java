@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jms.artemis;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.activemq.artemis.api.core.TransportConfiguration;
 import org.apache.activemq.artemis.api.core.client.ActiveMQClient;
 import org.apache.activemq.artemis.api.core.client.ServerLocator;
@@ -27,11 +23,14 @@ import org.apache.activemq.artemis.core.remoting.impl.invm.InVMConnectorFactory;
 import org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory;
 import org.apache.activemq.artemis.core.remoting.impl.netty.TransportConstants;
 import org.apache.activemq.artemis.jms.client.ActiveMQConnectionFactory;
-
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Factory to create an Artemis {@link ActiveMQConnectionFactory} instance from properties
@@ -60,8 +59,7 @@ class ArtemisConnectionFactoryFactory {
 		try {
 			startEmbeddedJms();
 			return doCreateConnectionFactory(factoryClass);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to create " + "ActiveMQConnectionFactory", ex);
 		}
 	}
@@ -70,8 +68,7 @@ class ArtemisConnectionFactoryFactory {
 		if (ClassUtils.isPresent(EMBEDDED_JMS_CLASS, null)) {
 			try {
 				this.beanFactory.getBeansOfType(Class.forName(EMBEDDED_JMS_CLASS));
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore
 			}
 		}
@@ -90,6 +87,7 @@ class ArtemisConnectionFactoryFactory {
 
 	/**
 	 * Deduce the {@link ArtemisMode} to use if none has been set.
+	 *
 	 * @return the mode
 	 */
 	private ArtemisMode deduceMode() {
@@ -106,8 +104,7 @@ class ArtemisConnectionFactoryFactory {
 					InVMConnectorFactory.class.getName(), this.properties.getEmbedded().generateTransportParameters());
 			ServerLocator serviceLocator = ActiveMQClient.createServerLocatorWithoutHA(transportConfiguration);
 			return factoryClass.getConstructor(ServerLocator.class).newInstance(serviceLocator);
-		}
-		catch (NoClassDefFoundError ex) {
+		} catch (NoClassDefFoundError ex) {
 			throw new IllegalStateException("Unable to create InVM "
 					+ "Artemis connection, ensure that artemis-jms-server.jar " + "is in the classpath", ex);
 		}
@@ -121,7 +118,7 @@ class ArtemisConnectionFactoryFactory {
 		TransportConfiguration transportConfiguration = new TransportConfiguration(
 				NettyConnectorFactory.class.getName(), params);
 		Constructor<T> constructor = factoryClass.getConstructor(boolean.class, TransportConfiguration[].class);
-		T connectionFactory = constructor.newInstance(false, new TransportConfiguration[] { transportConfiguration });
+		T connectionFactory = constructor.newInstance(false, new TransportConfiguration[]{transportConfiguration});
 		String user = this.properties.getUser();
 		if (StringUtils.hasText(user)) {
 			connectionFactory.setUser(user);

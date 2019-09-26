@@ -16,18 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import java.util.Arrays;
-
-import javax.jms.ConnectionFactory;
-import javax.naming.NamingException;
-
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnJndi;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.jms.JndiConnectionFactoryAutoConfiguration.JndiOrPropertyCondition;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -36,6 +27,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jndi.JndiLocatorDelegate;
 import org.springframework.util.StringUtils;
+
+import javax.jms.ConnectionFactory;
+import javax.naming.NamingException;
+import java.util.Arrays;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for JMS provided from JNDI.
@@ -52,7 +47,7 @@ import org.springframework.util.StringUtils;
 public class JndiConnectionFactoryAutoConfiguration {
 
 	// Keep these in sync with the condition below
-	private static final String[] JNDI_LOCATIONS = { "java:/JmsXA", "java:/XAConnectionFactory" };
+	private static final String[] JNDI_LOCATIONS = {"java:/JmsXA", "java:/XAConnectionFactory"};
 
 	private final JmsProperties properties;
 
@@ -75,8 +70,7 @@ public class JndiConnectionFactoryAutoConfiguration {
 		for (String name : JNDI_LOCATIONS) {
 			try {
 				return this.jndiLocatorDelegate.lookup(name, ConnectionFactory.class);
-			}
-			catch (NamingException ex) {
+			} catch (NamingException ex) {
 				// Swallow and continue
 			}
 		}
@@ -93,7 +87,7 @@ public class JndiConnectionFactoryAutoConfiguration {
 			super(ConfigurationPhase.PARSE_CONFIGURATION);
 		}
 
-		@ConditionalOnJndi({ "java:/JmsXA", "java:/XAConnectionFactory" })
+		@ConditionalOnJndi({"java:/JmsXA", "java:/XAConnectionFactory"})
 		static class Jndi {
 
 		}

@@ -16,25 +16,6 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.Synchronization;
-import javax.transaction.Transaction;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-
 import com.zaxxer.hikari.HikariDataSource;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
@@ -44,7 +25,6 @@ import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform;
 import org.hibernate.internal.SessionFactoryImpl;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -71,6 +51,18 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.Synchronization;
+import javax.transaction.Transaction;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
 import static org.mockito.Mockito.mock;
@@ -95,10 +87,10 @@ public class HibernateJpaAutoConfigurationTests extends AbstractJpaAutoConfigura
 		contextRunner().withPropertyValues("spring.datasource.data:classpath:/city.sql",
 				// Missing:
 				"spring.datasource.schema:classpath:/ddl.sql").run((context) -> {
-					assertThat(context).hasFailed();
-					assertThat(context.getStartupFailure()).hasMessageContaining("ddl.sql");
-					assertThat(context.getStartupFailure()).hasMessageContaining("spring.datasource.schema");
-				});
+			assertThat(context).hasFailed();
+			assertThat(context.getStartupFailure()).hasMessageContaining("ddl.sql");
+			assertThat(context.getStartupFailure()).hasMessageContaining("spring.datasource.schema");
+		});
 	}
 
 	@Test
@@ -181,10 +173,10 @@ public class HibernateJpaAutoConfigurationTests extends AbstractJpaAutoConfigura
 	public void jtaCustomTransactionManagerUsingProperties() {
 		contextRunner().withPropertyValues("spring.transaction.default-timeout:30",
 				"spring.transaction.rollback-on-commit-failure:true").run((context) -> {
-					JpaTransactionManager transactionManager = context.getBean(JpaTransactionManager.class);
-					assertThat(transactionManager.getDefaultTimeout()).isEqualTo(30);
-					assertThat(transactionManager.isRollbackOnCommitFailure()).isTrue();
-				});
+			JpaTransactionManager transactionManager = context.getBean(JpaTransactionManager.class);
+			assertThat(transactionManager.getDefaultTimeout()).isEqualTo(30);
+			assertThat(transactionManager.isRollbackOnCommitFailure()).isTrue();
+		});
 	}
 
 	@Test
@@ -193,30 +185,30 @@ public class HibernateJpaAutoConfigurationTests extends AbstractJpaAutoConfigura
 				.withConfiguration(AutoConfigurations.of(DataSourceTransactionManagerAutoConfiguration.class,
 						XADataSourceAutoConfiguration.class, JtaAutoConfiguration.class))
 				.withUserConfiguration(TestTwoDataSourcesConfiguration.class).run((context) -> {
-					assertThat(context).hasNotFailed();
-					assertThat(context).doesNotHaveBean(EntityManagerFactory.class);
-				});
+			assertThat(context).hasNotFailed();
+			assertThat(context).doesNotHaveBean(EntityManagerFactory.class);
+		});
 	}
 
 	@Test
 	public void providerDisablesAutoCommitIsConfigured() {
 		contextRunner().withPropertyValues("spring.datasource.type:" + HikariDataSource.class.getName(),
 				"spring.datasource.hikari.auto-commit:false").run((context) -> {
-					Map<String, Object> jpaProperties = context.getBean(LocalContainerEntityManagerFactoryBean.class)
-							.getJpaPropertyMap();
-					assertThat(jpaProperties)
-							.contains(entry("hibernate.connection.provider_disables_autocommit", "true"));
-				});
+			Map<String, Object> jpaProperties = context.getBean(LocalContainerEntityManagerFactoryBean.class)
+					.getJpaPropertyMap();
+			assertThat(jpaProperties)
+					.contains(entry("hibernate.connection.provider_disables_autocommit", "true"));
+		});
 	}
 
 	@Test
 	public void providerDisablesAutoCommitIsNotConfiguredIfAutoCommitIsEnabled() {
 		contextRunner().withPropertyValues("spring.datasource.type:" + HikariDataSource.class.getName(),
 				"spring.datasource.hikari.auto-commit:true").run((context) -> {
-					Map<String, Object> jpaProperties = context.getBean(LocalContainerEntityManagerFactoryBean.class)
-							.getJpaPropertyMap();
-					assertThat(jpaProperties).doesNotContainKeys("hibernate.connection.provider_disables_autocommit");
-				});
+			Map<String, Object> jpaProperties = context.getBean(LocalContainerEntityManagerFactoryBean.class)
+					.getJpaPropertyMap();
+			assertThat(jpaProperties).doesNotContainKeys("hibernate.connection.provider_disables_autocommit");
+		});
 	}
 
 	@Test
@@ -320,7 +312,7 @@ public class HibernateJpaAutoConfigurationTests extends AbstractJpaAutoConfigura
 	public void eventListenerCanBeRegisteredAsBeans() {
 		contextRunner().withUserConfiguration(TestInitializedJpaConfiguration.class)
 				.withClassLoader(new HideDataScriptClassLoader()).withPropertyValues("spring.jpa.show-sql=true",
-						"spring.jpa.hibernate.ddl-auto:create-drop", "spring.datasource.data:classpath:/city.sql")
+				"spring.jpa.hibernate.ddl-auto:create-drop", "spring.datasource.data:classpath:/city.sql")
 				.run((context) -> {
 					// See CityListener
 					assertThat(context).hasSingleBean(City.class);
@@ -338,10 +330,10 @@ public class HibernateJpaAutoConfigurationTests extends AbstractJpaAutoConfigura
 	public void withSyncBootstrappingAnApplicationListenerThatUsesJpaDoesNotTriggerABeanCurrentlyInCreationException() {
 		contextRunner().withUserConfiguration(JpaUsingApplicationListenerConfiguration.class)
 				.withPropertyValues("spring.datasource.initialization-mode=never").run((context) -> {
-					assertThat(context).hasNotFailed();
-					assertThat(context.getBean(EventCapturingApplicationListener.class).events.stream()
-							.filter(DataSourceSchemaCreatedEvent.class::isInstance)).hasSize(1);
-				});
+			assertThat(context).hasNotFailed();
+			assertThat(context.getBean(EventCapturingApplicationListener.class).events.stream()
+					.filter(DataSourceSchemaCreatedEvent.class::isInstance)).hasSize(1);
+		});
 	}
 
 	@Test
@@ -350,16 +342,16 @@ public class HibernateJpaAutoConfigurationTests extends AbstractJpaAutoConfigura
 				.withUserConfiguration(AsyncBootstrappingConfiguration.class,
 						JpaUsingApplicationListenerConfiguration.class)
 				.withPropertyValues("spring.datasource.initialization-mode=never").run((context) -> {
-					assertThat(context).hasNotFailed();
-					EventCapturingApplicationListener listener = context
-							.getBean(EventCapturingApplicationListener.class);
-					long end = System.currentTimeMillis() + 30000;
-					while ((System.currentTimeMillis() < end) && !dataSourceSchemaCreatedEventReceived(listener)) {
-						Thread.sleep(100);
-					}
-					assertThat(listener.events.stream().filter(DataSourceSchemaCreatedEvent.class::isInstance))
-							.hasSize(1);
-				});
+			assertThat(context).hasNotFailed();
+			EventCapturingApplicationListener listener = context
+					.getBean(EventCapturingApplicationListener.class);
+			long end = System.currentTimeMillis() + 30000;
+			while ((System.currentTimeMillis() < end) && !dataSourceSchemaCreatedEventReceived(listener)) {
+				Thread.sleep(100);
+			}
+			assertThat(listener.events.stream().filter(DataSourceSchemaCreatedEvent.class::isInstance))
+					.hasSize(1);
+		});
 	}
 
 	@Test

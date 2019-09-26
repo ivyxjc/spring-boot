@@ -27,6 +27,7 @@ public interface RepackagingLayout extends Layout {
 
 	/**
 	 * Returns the location to which classes should be moved.
+	 *
 	 * @return the repackaged classes location
 	 */
 	String getRepackagedClassesLocation();

@@ -15,18 +15,9 @@
  */
 package org.springframework.boot.autoconfigure.security.oauth2.client.reactive;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.autoconfigure.condition.NoneNestedConditions;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.security.oauth2.client.ClientsConfiguredCondition;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientPropertiesRegistrationAdapter;
@@ -43,6 +34,10 @@ import org.springframework.security.oauth2.client.registration.InMemoryReactiveC
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.server.AuthenticatedPrincipalServerOAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.server.ServerOAuth2AuthorizedClientRepository;
+import reactor.core.publisher.Flux;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Security's Reactive
@@ -55,7 +50,7 @@ import org.springframework.security.oauth2.client.web.server.ServerOAuth2Authori
 @AutoConfigureBefore(ReactiveSecurityAutoConfiguration.class)
 @EnableConfigurationProperties(OAuth2ClientProperties.class)
 @Conditional(ReactiveOAuth2ClientAutoConfiguration.NonServletApplicationCondition.class)
-@ConditionalOnClass({ Flux.class, EnableWebFluxSecurity.class, ClientRegistration.class })
+@ConditionalOnClass({Flux.class, EnableWebFluxSecurity.class, ClientRegistration.class})
 public class ReactiveOAuth2ClientAutoConfiguration {
 
 	private final OAuth2ClientProperties properties;

@@ -36,18 +36,18 @@ public class InvalidConfigurationPropertyNameException extends RuntimeException 
 		this.invalidCharacters = invalidCharacters;
 	}
 
+	public static void throwIfHasInvalidChars(CharSequence name, List<Character> invalidCharacters) {
+		if (!invalidCharacters.isEmpty()) {
+			throw new InvalidConfigurationPropertyNameException(name, invalidCharacters);
+		}
+	}
+
 	public List<Character> getInvalidCharacters() {
 		return this.invalidCharacters;
 	}
 
 	public CharSequence getName() {
 		return this.name;
-	}
-
-	public static void throwIfHasInvalidChars(CharSequence name, List<Character> invalidCharacters) {
-		if (!invalidCharacters.isEmpty()) {
-			throw new InvalidConfigurationPropertyNameException(name, invalidCharacters);
-		}
 	}
 
 }

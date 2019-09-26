@@ -16,23 +16,8 @@
 
 package org.springframework.boot.devtools.tunnel.client;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.WritableByteChannel;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.devtools.tunnel.payload.HttpTunnelPayload;
 import org.springframework.boot.devtools.tunnel.payload.HttpTunnelPayloadForwarder;
 import org.springframework.http.HttpMethod;
@@ -42,15 +27,25 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.Assert;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicLong;
+
 /**
  * {@link TunnelConnection} implementation that uses HTTP to transfer data.
  *
  * @author Phillip Webb
  * @author Rob Winch
  * @author Andy Wilkinson
- * @since 1.3.0
  * @see TunnelClient
  * @see org.springframework.boot.devtools.tunnel.server.HttpTunnelServer
+ * @since 1.3.0
  */
 public class HttpTunnelConnection implements TunnelConnection {
 
@@ -64,7 +59,8 @@ public class HttpTunnelConnection implements TunnelConnection {
 
 	/**
 	 * Create a new {@link HttpTunnelConnection} instance.
-	 * @param url the URL to connect to
+	 *
+	 * @param url            the URL to connect to
 	 * @param requestFactory the HTTP request factory
 	 */
 	public HttpTunnelConnection(String url, ClientHttpRequestFactory requestFactory) {
@@ -73,17 +69,17 @@ public class HttpTunnelConnection implements TunnelConnection {
 
 	/**
 	 * Create a new {@link HttpTunnelConnection} instance.
-	 * @param url the URL to connect to
+	 *
+	 * @param url            the URL to connect to
 	 * @param requestFactory the HTTP request factory
-	 * @param executor the executor used to handle connections
+	 * @param executor       the executor used to handle connections
 	 */
 	protected HttpTunnelConnection(String url, ClientHttpRequestFactory requestFactory, Executor executor) {
 		Assert.hasLength(url, "URL must not be empty");
 		Assert.notNull(requestFactory, "RequestFactory must not be null");
 		try {
 			this.uri = new URL(url).toURI();
-		}
-		catch (URISyntaxException | MalformedURLException ex) {
+		} catch (URISyntaxException | MalformedURLException ex) {
 			throw new IllegalArgumentException("Malformed URL '" + url + "'");
 		}
 		this.requestFactory = requestFactory;
@@ -99,6 +95,20 @@ public class HttpTunnelConnection implements TunnelConnection {
 	protected final ClientHttpRequest createRequest(boolean hasPayload) throws IOException {
 		HttpMethod method = hasPayload ? HttpMethod.POST : HttpMethod.GET;
 		return this.requestFactory.createRequest(this.uri, method);
+	}
+
+	/**
+	 * {@link ThreadFactory} used to create the tunnel thread.
+	 */
+	private static class TunnelThreadFactory implements ThreadFactory {
+
+		@Override
+		public Thread newThread(Runnable runnable) {
+			Thread thread = new Thread(runnable, "HTTP Tunnel Connection");
+			thread.setDaemon(true);
+			return thread;
+		}
+
 	}
 
 	/**
@@ -149,12 +159,10 @@ public class HttpTunnelConnection implements TunnelConnection {
 				public void run() {
 					try {
 						sendAndReceive(payload);
-					}
-					catch (IOException ex) {
+					} catch (IOException ex) {
 						if (ex instanceof ConnectException) {
 							logger.warn("Failed to connect to remote application at " + HttpTunnelConnection.this.uri);
-						}
-						else {
+						} else {
 							logger.trace("Unexpected connection error", ex);
 						}
 						closeQuietly();
@@ -164,8 +172,7 @@ public class HttpTunnelConnection implements TunnelConnection {
 				private void closeQuietly() {
 					try {
 						close();
-					}
-					catch (IOException ex) {
+					} catch (IOException ex) {
 						// Ignore
 					}
 				}
@@ -196,20 +203,6 @@ public class HttpTunnelConnection implements TunnelConnection {
 			if (response.getStatusCode() != HttpStatus.TOO_MANY_REQUESTS) {
 				openNewConnection(null);
 			}
-		}
-
-	}
-
-	/**
-	 * {@link ThreadFactory} used to create the tunnel thread.
-	 */
-	private static class TunnelThreadFactory implements ThreadFactory {
-
-		@Override
-		public Thread newThread(Runnable runnable) {
-			Thread thread = new Thread(runnable, "HTTP Tunnel Connection");
-			thread.setDaemon(true);
-			return thread;
 		}
 
 	}

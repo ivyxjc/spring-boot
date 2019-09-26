@@ -1,6 +1,7 @@
 package org.test
 
-import static org.springframework.boot.groovy.GroovyTemplate.*;
+
+import static org.springframework.boot.groovy.GroovyTemplate.template;
 
 @Component
 class Example implements CommandLineRunner {
@@ -10,7 +11,7 @@ class Example implements CommandLineRunner {
 
 	@Override
 	void run(String... args) {
-		print template("test.txt", ["message":myService.sayWorld()])
+		print template("test.txt", ["message": myService.sayWorld()])
 	}
 }
 

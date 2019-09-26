@@ -27,7 +27,9 @@ import java.util.Set;
  */
 final class TldSkipPatterns {
 
+	static final Set<String> DEFAULT;
 	private static final Set<String> TOMCAT;
+	private static final Set<String> ADDITIONAL;
 
 	static {
 		// Same as Tomcat
@@ -71,8 +73,6 @@ final class TldSkipPatterns {
 		patterns.add("xml-apis-*.jar");
 		TOMCAT = Collections.unmodifiableSet(patterns);
 	}
-
-	private static final Set<String> ADDITIONAL;
 
 	static {
 		// Additional typical for Spring Boot applications
@@ -124,8 +124,6 @@ final class TldSkipPatterns {
 		patterns.add("xml-apis-*.jar");
 		ADDITIONAL = Collections.unmodifiableSet(patterns);
 	}
-
-	static final Set<String> DEFAULT;
 
 	static {
 		Set<String> patterns = new LinkedHashSet<>();

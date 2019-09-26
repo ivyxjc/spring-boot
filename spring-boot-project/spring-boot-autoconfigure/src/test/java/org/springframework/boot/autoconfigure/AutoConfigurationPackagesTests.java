@@ -16,16 +16,15 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.List;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages.Registrar;
 import org.springframework.boot.autoconfigure.packagestest.one.FirstConfiguration;
 import org.springframework.boot.autoconfigure.packagestest.two.SecondConfiguration;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;

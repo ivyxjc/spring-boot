@@ -16,18 +16,17 @@
 
 package org.springframework.boot.jdbc;
 
+import com.zaxxer.hikari.HikariDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.junit.After;
+import org.junit.Test;
+
+import javax.sql.DataSource;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
-
-import javax.sql.DataSource;
-
-import com.zaxxer.hikari.HikariDataSource;
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.junit.After;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

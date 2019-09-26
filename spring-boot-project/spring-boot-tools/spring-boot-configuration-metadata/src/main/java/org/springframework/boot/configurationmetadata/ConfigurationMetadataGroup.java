@@ -45,6 +45,7 @@ public class ConfigurationMetadataGroup implements Serializable {
 	/**
 	 * Return the id of the group, used as a common prefix for all properties associated
 	 * to it.
+	 *
 	 * @return the id of the group
 	 */
 	public String getId() {
@@ -54,6 +55,7 @@ public class ConfigurationMetadataGroup implements Serializable {
 	/**
 	 * Return the {@link ConfigurationMetadataSource sources} defining the properties of
 	 * this group.
+	 *
 	 * @return the sources of the group
 	 */
 	public Map<String, ConfigurationMetadataSource> getSources() {
@@ -66,6 +68,7 @@ public class ConfigurationMetadataGroup implements Serializable {
 	 * A property may appear more than once for a given source, potentially with
 	 * conflicting type or documentation. This is a "merged" view of the properties of
 	 * this group.
+	 *
 	 * @return the properties of the group
 	 * @see ConfigurationMetadataSource#getProperties()
 	 */

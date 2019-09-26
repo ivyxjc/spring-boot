@@ -16,6 +16,12 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.junit.Test;
+import org.mockito.stubbing.Answer;
+import org.springframework.boot.actuate.endpoint.SecurityContext;
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
+import org.springframework.http.HttpStatus;
+
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collections;
@@ -23,19 +29,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import org.junit.Test;
-import org.mockito.stubbing.Answer;
-
-import org.springframework.boot.actuate.endpoint.SecurityContext;
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
-import org.springframework.http.HttpStatus;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link HealthWebEndpointResponseMapper}.

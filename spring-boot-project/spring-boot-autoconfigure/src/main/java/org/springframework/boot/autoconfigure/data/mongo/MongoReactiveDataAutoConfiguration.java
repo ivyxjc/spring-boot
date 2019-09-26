@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data.mongo;
 
 import com.mongodb.reactivestreams.client.MongoClient;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -44,7 +43,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  * <p>
  * Registers a {@link ReactiveMongoTemplate} bean if no other bean of the same type is
  * configured.
- * <P>
+ * <p>
  * Honors the {@literal spring.data.mongodb.database} property if set, otherwise connects
  * to the {@literal test} database.
  *
@@ -52,7 +51,7 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ MongoClient.class, ReactiveMongoTemplate.class })
+@ConditionalOnClass({MongoClient.class, ReactiveMongoTemplate.class})
 @ConditionalOnBean(MongoClient.class)
 @EnableConfigurationProperties(MongoProperties.class)
 @Import(MongoDataConfiguration.class)
@@ -75,14 +74,14 @@ public class MongoReactiveDataAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public ReactiveMongoTemplate reactiveMongoTemplate(ReactiveMongoDatabaseFactory reactiveMongoDatabaseFactory,
-			MongoConverter converter) {
+													   MongoConverter converter) {
 		return new ReactiveMongoTemplate(reactiveMongoDatabaseFactory, converter);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean(MongoConverter.class)
 	public MappingMongoConverter mappingMongoConverter(MongoMappingContext context,
-			MongoCustomConversions conversions) {
+													   MongoCustomConversions conversions) {
 		MappingMongoConverter mappingConverter = new MappingMongoConverter(NoOpDbRefResolver.INSTANCE, context);
 		mappingConverter.setCustomConversions(conversions);
 		return mappingConverter;

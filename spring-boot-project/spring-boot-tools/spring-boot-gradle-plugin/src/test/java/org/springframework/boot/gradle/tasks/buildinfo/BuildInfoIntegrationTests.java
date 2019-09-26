@@ -16,19 +16,18 @@
 
 package org.springframework.boot.gradle.tasks.buildinfo;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
-
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.gradle.junit.GradleCompatibilitySuite;
 import org.springframework.boot.gradle.testkit.GradleBuild;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -95,8 +94,7 @@ public class BuildInfoIntegrationTests {
 		try (FileReader reader = new FileReader(file)) {
 			properties.load(reader);
 			return properties;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
 	}

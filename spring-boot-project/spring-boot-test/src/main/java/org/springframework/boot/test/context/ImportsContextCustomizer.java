@@ -16,14 +16,6 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -35,11 +27,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.boot.context.annotation.DeterminableImports;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
-import org.springframework.context.annotation.ImportSelector;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -50,6 +38,14 @@ import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ContextCustomizer} to allow {@code @Import} annotations to be used directly on
@@ -74,7 +70,7 @@ class ImportsContextCustomizer implements ContextCustomizer {
 
 	@Override
 	public void customizeContext(ConfigurableApplicationContext context,
-			MergedContextConfiguration mergedContextConfiguration) {
+								 MergedContextConfiguration mergedContextConfiguration) {
 		BeanDefinitionRegistry registry = getBeanDefinitionRegistry(context);
 		AnnotatedBeanDefinitionReader reader = new AnnotatedBeanDefinitionReader(registry);
 		registerCleanupPostProcessor(registry, reader);
@@ -105,7 +101,7 @@ class ImportsContextCustomizer implements ContextCustomizer {
 
 	@SuppressWarnings("unchecked")
 	private BeanDefinition registerBean(BeanDefinitionRegistry registry, AnnotatedBeanDefinitionReader reader,
-			String beanName, Class<?> type) {
+										String beanName, Class<?> type) {
 		reader.registerBean(type, beanName);
 		return registry.getBeanDefinition(beanName);
 	}
@@ -131,6 +127,15 @@ class ImportsContextCustomizer implements ContextCustomizer {
 	@Override
 	public String toString() {
 		return new ToStringCreator(this).append("key", this.key).toString();
+	}
+
+	/**
+	 * Filter used to limit considered annotations.
+	 */
+	private interface AnnotationFilter {
+
+		boolean isIgnored(Annotation annotation);
+
 	}
 
 	/**
@@ -163,7 +168,7 @@ class ImportsContextCustomizer implements ContextCustomizer {
 		public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 			BeanDefinition definition = this.beanFactory.getBeanDefinition(ImportsConfiguration.BEAN_NAME);
 			Object testClass = (definition != null) ? definition.getAttribute(TEST_CLASS_ATTRIBUTE) : null;
-			return (testClass != null) ? new String[] { ((Class<?>) testClass).getName() } : NO_IMPORTS;
+			return (testClass != null) ? new String[]{((Class<?>) testClass).getName()} : NO_IMPORTS;
 		}
 
 	}
@@ -198,8 +203,7 @@ class ImportsContextCustomizer implements ContextCustomizer {
 					}
 				}
 				registry.removeBeanDefinition(ImportsConfiguration.BEAN_NAME);
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 			}
 		}
 
@@ -249,7 +253,7 @@ class ImportsContextCustomizer implements ContextCustomizer {
 		}
 
 		private void collectElementAnnotations(AnnotatedElement element, Set<Annotation> annotations,
-				Set<Class<?>> seen) {
+											   Set<Class<?>> seen) {
 			for (Annotation annotation : element.getDeclaredAnnotations()) {
 				if (!isIgnoredAnnotation(annotation)) {
 					annotations.add(annotation);
@@ -310,8 +314,7 @@ class ImportsContextCustomizer implements ContextCustomizer {
 				Constructor<?> constructor = source.getDeclaredConstructor();
 				ReflectionUtils.makeAccessible(constructor);
 				return (T) constructor.newInstance();
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				throw new IllegalStateException("Unable to instantiate DeterminableImportSelector " + source.getName(),
 						ex);
 			}
@@ -331,15 +334,6 @@ class ImportsContextCustomizer implements ContextCustomizer {
 		public String toString() {
 			return this.key.toString();
 		}
-
-	}
-
-	/**
-	 * Filter used to limit considered annotations.
-	 */
-	private interface AnnotationFilter {
-
-		boolean isIgnored(Annotation annotation);
 
 	}
 

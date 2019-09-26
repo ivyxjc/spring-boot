@@ -16,18 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-
 import org.springframework.boot.test.json.BasicJsonTester;
+
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,9 +36,8 @@ import static org.mockito.Mockito.verify;
  */
 public class JacksonJmxOperationResponseMapperTests {
 
-	private JacksonJmxOperationResponseMapper mapper = new JacksonJmxOperationResponseMapper(null);
-
 	private final BasicJsonTester json = new BasicJsonTester(getClass());
+	private JacksonJmxOperationResponseMapper mapper = new JacksonJmxOperationResponseMapper(null);
 
 	@Test
 	public void createWhenObjectMapperIsNullShouldUseDefaultObjectMapper() {
@@ -98,7 +91,7 @@ public class JacksonJmxOperationResponseMapperTests {
 
 	@Test
 	public void mapResponseWhenArrayShouldReturnJsonArray() {
-		Object mapped = this.mapper.mapResponse(new int[] { 1, 2, 3 });
+		Object mapped = this.mapper.mapResponse(new int[]{1, 2, 3});
 		assertThat(this.json.from(mapped.toString())).isEqualToJson("[1,2,3]");
 	}
 

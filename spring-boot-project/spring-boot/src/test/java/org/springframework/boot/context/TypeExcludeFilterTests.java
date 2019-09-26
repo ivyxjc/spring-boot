@@ -18,7 +18,6 @@ package org.springframework.boot.context;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.context.filtersample.ExampleComponent;
 import org.springframework.boot.context.filtersample.ExampleFilteredComponent;
@@ -62,7 +61,7 @@ public class TypeExcludeFilterTests {
 
 	@Configuration
 	@ComponentScan(basePackageClasses = SampleTypeExcludeFilter.class,
-			excludeFilters = @Filter(type = FilterType.CUSTOM, classes = SampleTypeExcludeFilter.class))
+				   excludeFilters = @Filter(type = FilterType.CUSTOM, classes = SampleTypeExcludeFilter.class))
 	static class Config {
 
 	}

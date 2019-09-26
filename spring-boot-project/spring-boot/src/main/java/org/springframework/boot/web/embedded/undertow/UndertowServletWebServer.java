@@ -16,15 +16,6 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.lang.reflect.Field;
-import java.net.BindException;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletException;
-
 import io.undertow.Handlers;
 import io.undertow.Undertow;
 import io.undertow.Undertow.Builder;
@@ -32,14 +23,21 @@ import io.undertow.server.HttpHandler;
 import io.undertow.servlet.api.DeploymentManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.xnio.channels.BoundChannel;
-
 import org.springframework.boot.web.server.Compression;
 import org.springframework.boot.web.server.PortInUseException;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+import org.xnio.channels.BoundChannel;
+
+import javax.servlet.ServletException;
+import java.lang.reflect.Field;
+import java.net.BindException;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link WebServer} that can be used to control an embedded Undertow server. Typically
@@ -51,8 +49,8 @@ import org.springframework.util.StringUtils;
  * @author Eddú Meléndez
  * @author Christoph Dreis
  * @author Kristine Jetzke
- * @since 2.0.0
  * @see UndertowServletWebServerFactory
+ * @since 2.0.0
  */
 public class UndertowServletWebServer implements WebServer {
 
@@ -80,43 +78,46 @@ public class UndertowServletWebServer implements WebServer {
 
 	/**
 	 * Create a new {@link UndertowServletWebServer} instance.
-	 * @param builder the builder
-	 * @param manager the deployment manager
+	 *
+	 * @param builder     the builder
+	 * @param manager     the deployment manager
 	 * @param contextPath the root context path
-	 * @param autoStart if the server should be started
+	 * @param autoStart   if the server should be started
 	 * @param compression compression configuration
 	 */
 	public UndertowServletWebServer(Builder builder, DeploymentManager manager, String contextPath, boolean autoStart,
-			Compression compression) {
+									Compression compression) {
 		this(builder, manager, contextPath, false, autoStart, compression);
 	}
 
 	/**
 	 * Create a new {@link UndertowServletWebServer} instance.
-	 * @param builder the builder
-	 * @param manager the deployment manager
-	 * @param contextPath the root context path
+	 *
+	 * @param builder           the builder
+	 * @param manager           the deployment manager
+	 * @param contextPath       the root context path
 	 * @param useForwardHeaders if x-forward headers should be used
-	 * @param autoStart if the server should be started
-	 * @param compression compression configuration
+	 * @param autoStart         if the server should be started
+	 * @param compression       compression configuration
 	 */
 	public UndertowServletWebServer(Builder builder, DeploymentManager manager, String contextPath,
-			boolean useForwardHeaders, boolean autoStart, Compression compression) {
+									boolean useForwardHeaders, boolean autoStart, Compression compression) {
 		this(builder, manager, contextPath, useForwardHeaders, autoStart, compression, null);
 	}
 
 	/**
 	 * Create a new {@link UndertowServletWebServer} instance.
-	 * @param builder the builder
-	 * @param manager the deployment manager
-	 * @param contextPath the root context path
+	 *
+	 * @param builder           the builder
+	 * @param manager           the deployment manager
+	 * @param contextPath       the root context path
 	 * @param useForwardHeaders if x-forward headers should be used
-	 * @param autoStart if the server should be started
-	 * @param compression compression configuration
-	 * @param serverHeader string to be used in HTTP header
+	 * @param autoStart         if the server should be started
+	 * @param compression       compression configuration
+	 * @param serverHeader      string to be used in HTTP header
 	 */
 	public UndertowServletWebServer(Builder builder, DeploymentManager manager, String contextPath,
-			boolean useForwardHeaders, boolean autoStart, Compression compression, String serverHeader) {
+									boolean useForwardHeaders, boolean autoStart, Compression compression, String serverHeader) {
 		this.builder = builder;
 		this.manager = manager;
 		this.contextPath = contextPath;
@@ -143,8 +144,7 @@ public class UndertowServletWebServer implements WebServer {
 				this.started = true;
 				UndertowServletWebServer.logger.info("Undertow started on port(s) " + getPortsDescription()
 						+ " with context path '" + this.contextPath + "'");
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				try {
 					if (findBindException(ex) != null) {
 						List<Port> failedPorts = getConfiguredPorts();
@@ -155,8 +155,7 @@ public class UndertowServletWebServer implements WebServer {
 						}
 					}
 					throw new WebServerException("Unable to start embedded Undertow", ex);
-				}
-				finally {
+				} finally {
 					stopSilently();
 				}
 			}
@@ -174,8 +173,7 @@ public class UndertowServletWebServer implements WebServer {
 			if (this.undertow != null) {
 				this.undertow.stop();
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Ignore
 		}
 	}
@@ -225,14 +223,12 @@ public class UndertowServletWebServer implements WebServer {
 		try {
 			if (!this.autoStart) {
 				ports.add(new Port(-1, "unknown"));
-			}
-			else {
+			} else {
 				for (BoundChannel channel : extractChannels()) {
 					ports.add(getPortFromChannel(channel));
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Continue
 		}
 		return ports;
@@ -262,8 +258,7 @@ public class UndertowServletWebServer implements WebServer {
 				if (port.getNumber() != 0) {
 					ports.add(port);
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Continue
 			}
 		}
@@ -298,8 +293,7 @@ public class UndertowServletWebServer implements WebServer {
 				this.manager.stop();
 				this.manager.undeploy();
 				this.undertow.stop();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new WebServerException("Unable to stop undertow", ex);
 			}
 		}

@@ -17,15 +17,8 @@
 package org.springframework.boot.cli.command.init;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 /**
  * A helper class generating a report from the meta-data of a particular service.
@@ -41,15 +34,25 @@ class ServiceCapabilitiesReportGenerator {
 
 	/**
 	 * Creates an instance using the specified {@link InitializrService}.
+	 *
 	 * @param initializrService the initializr service
 	 */
 	ServiceCapabilitiesReportGenerator(InitializrService initializrService) {
 		this.initializrService = initializrService;
 	}
 
+	private static String repeat(String s, int count) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < count; i++) {
+			sb.append(s);
+		}
+		return sb.toString();
+	}
+
 	/**
 	 * Generate a report for the specified service. The report contains the available
 	 * capabilities as advertised by the root endpoint.
+	 *
 	 * @param url the url of the service
 	 * @return the report that describes the service
 	 * @throws IOException if the report cannot be generated
@@ -137,14 +140,6 @@ class ServiceCapabilitiesReportGenerator {
 			String defaultsValue = metadata.getDefaults().get(defaultsKey);
 			report.append(defaultsKey + ": " + defaultsValue + NEW_LINE);
 		}
-	}
-
-	private static String repeat(String s, int count) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < count; i++) {
-			sb.append(s);
-		}
-		return sb.toString();
 	}
 
 }

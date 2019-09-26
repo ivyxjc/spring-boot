@@ -16,10 +16,9 @@
 
 package org.springframework.boot.configurationprocessor;
 
+import javax.lang.model.type.TypeMirror;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.lang.model.type.TypeMirror;
 
 /**
  * Filter to exclude elements that don't make sense to process.

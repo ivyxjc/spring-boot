@@ -16,31 +16,26 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.junit.Test;
+import org.springframework.boot.actuate.env.EnvironmentEndpoint;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.core.env.*;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.operation.preprocess.ContentModifyingOperationPreprocessor;
+import org.springframework.restdocs.operation.preprocess.OperationPreprocessor;
+import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.test.context.TestPropertySource;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import org.junit.Test;
-
-import org.springframework.boot.actuate.env.EnvironmentEndpoint;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.core.env.AbstractEnvironment;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
-import org.springframework.http.MediaType;
-import org.springframework.restdocs.operation.preprocess.ContentModifyingOperationPreprocessor;
-import org.springframework.restdocs.operation.preprocess.OperationPreprocessor;
-import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
@@ -119,8 +114,7 @@ public class EnvironmentEndpointDocumentationTests extends MockMvcEndpointDocume
 				properties.keySet().retainAll(filteredKeys);
 			}
 			return objectMapper.writeValueAsBytes(payload);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

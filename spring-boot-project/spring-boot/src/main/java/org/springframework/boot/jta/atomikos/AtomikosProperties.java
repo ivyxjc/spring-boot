@@ -16,10 +16,10 @@
 
 package org.springframework.boot.jta.atomikos;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.Properties;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Bean friendly variant of
@@ -29,113 +29,90 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * @author Phillip Webb
  * @author Stephane Nicoll
- * @since 1.2.0
  * @see #asProperties()
+ * @since 1.2.0
  */
 @ConfigurationProperties(prefix = "spring.jta.atomikos.properties")
 public class AtomikosProperties {
 
+	private final Recovery recovery = new Recovery();
 	/**
 	 * Transaction manager implementation that should be started.
 	 */
 	private String service;
-
 	/**
 	 * Maximum timeout that can be allowed for transactions.
 	 */
 	private Duration maxTimeout = Duration.ofMillis(300000);
-
 	/**
 	 * Default timeout for JTA transactions.
 	 */
 	private Duration defaultJtaTimeout = Duration.ofMillis(10000);
-
 	/**
 	 * Maximum number of active transactions.
 	 */
 	private int maxActives = 50;
-
 	/**
 	 * Whether to enable disk logging.
 	 */
 	private boolean enableLogging = true;
-
 	/**
 	 * The transaction manager's unique name. Defaults to the machine's IP address. If you
 	 * plan to run more than one transaction manager against one database you must set
 	 * this property to a unique value.
 	 */
 	private String transactionManagerUniqueName;
-
 	/**
 	 * Whether sub-transactions should be joined when possible.
 	 */
 	private boolean serialJtaTransactions = true;
-
 	/**
 	 * Specify whether sub-transactions are allowed.
 	 */
 	private boolean allowSubTransactions = true;
-
 	/**
 	 * Whether a VM shutdown should trigger forced shutdown of the transaction core.
 	 */
 	private boolean forceShutdownOnVmExit;
-
 	/**
 	 * How long should normal shutdown (no-force) wait for transactions to complete.
 	 */
 	private long defaultMaxWaitTimeOnShutdown = Long.MAX_VALUE;
-
 	/**
 	 * Transactions log file base name.
 	 */
 	private String logBaseName = "tmlog";
-
 	/**
 	 * Directory in which the log files should be stored. Defaults to the current working
 	 * directory.
 	 */
 	private String logBaseDir;
-
 	/**
 	 * Interval between checkpoints, expressed as the number of log writes between two
 	 * checkpoints. A checkpoint reduces the log file size at the expense of adding some
 	 * overhead in the runtime.
 	 */
 	private long checkpointInterval = 500;
-
 	/**
 	 * Whether to use different (and concurrent) threads for two-phase commit on the
 	 * participating resources.
 	 */
 	private boolean threadedTwoPhaseCommit;
 
-	private final Recovery recovery = new Recovery();
+	public String getService() {
+		return this.service;
+	}
 
 	/**
 	 * Specifies the transaction manager implementation that should be started. There is
 	 * no default value and this must be set. Generally,
 	 * {@literal com.atomikos.icatch.standalone.UserTransactionServiceFactory} is the
 	 * value you should set.
+	 *
 	 * @param service the service
 	 */
 	public void setService(String service) {
 		this.service = service;
-	}
-
-	public String getService() {
-		return this.service;
-	}
-
-	/**
-	 * Specifies the maximum timeout that can be allowed for transactions. Defaults to
-	 * {@literal 300000}. This means that calls to UserTransaction.setTransactionTimeout()
-	 * with a value higher than configured here will be max'ed to this value.
-	 * @param maxTimeout the max timeout
-	 */
-	public void setMaxTimeout(Duration maxTimeout) {
-		this.maxTimeout = maxTimeout;
 	}
 
 	public Duration getMaxTimeout() {
@@ -143,16 +120,32 @@ public class AtomikosProperties {
 	}
 
 	/**
+	 * Specifies the maximum timeout that can be allowed for transactions. Defaults to
+	 * {@literal 300000}. This means that calls to UserTransaction.setTransactionTimeout()
+	 * with a value higher than configured here will be max'ed to this value.
+	 *
+	 * @param maxTimeout the max timeout
+	 */
+	public void setMaxTimeout(Duration maxTimeout) {
+		this.maxTimeout = maxTimeout;
+	}
+
+	public Duration getDefaultJtaTimeout() {
+		return this.defaultJtaTimeout;
+	}
+
+	/**
 	 * The default timeout for JTA transactions (optional, defaults to {@literal 10000}
 	 * ms).
+	 *
 	 * @param defaultJtaTimeout the default JTA timeout
 	 */
 	public void setDefaultJtaTimeout(Duration defaultJtaTimeout) {
 		this.defaultJtaTimeout = defaultJtaTimeout;
 	}
 
-	public Duration getDefaultJtaTimeout() {
-		return this.defaultJtaTimeout;
+	public int getMaxActives() {
+		return this.maxActives;
 	}
 
 	/**
@@ -161,14 +154,15 @@ public class AtomikosProperties {
 	 * with error message "Max number of active transactions reached" if you call
 	 * {@code UserTransaction.begin()} while there are already n concurrent transactions
 	 * running, n being this value.
+	 *
 	 * @param maxActives the max activities
 	 */
 	public void setMaxActives(int maxActives) {
 		this.maxActives = maxActives;
 	}
 
-	public int getMaxActives() {
-		return this.maxActives;
+	public boolean isEnableLogging() {
+		return this.enableLogging;
 	}
 
 	/**
@@ -176,14 +170,15 @@ public class AtomikosProperties {
 	 * for JUnit testing, or to profile code without seeing the transaction manager's
 	 * activity as a hot spot but this should never be disabled on production or data
 	 * integrity cannot be guaranteed.
+	 *
 	 * @param enableLogging if logging is enabled
 	 */
 	public void setEnableLogging(boolean enableLogging) {
 		this.enableLogging = enableLogging;
 	}
 
-	public boolean isEnableLogging() {
-		return this.enableLogging;
+	public String getTransactionManagerUniqueName() {
+		return this.transactionManagerUniqueName;
 	}
 
 	/**
@@ -195,14 +190,15 @@ public class AtomikosProperties {
 	 * multiple instances need to use the same properties file then the easiest way to
 	 * ensure uniqueness for this property is by referencing a system property specified
 	 * at VM startup.
+	 *
 	 * @param uniqueName the unique name
 	 */
 	public void setTransactionManagerUniqueName(String uniqueName) {
 		this.transactionManagerUniqueName = uniqueName;
 	}
 
-	public String getTransactionManagerUniqueName() {
-		return this.transactionManagerUniqueName;
+	public boolean isSerialJtaTransactions() {
+		return this.serialJtaTransactions;
 	}
 
 	/**
@@ -211,31 +207,19 @@ public class AtomikosProperties {
 	 * different but related subtransactions. This setting has no effect on resource
 	 * access within one and the same transaction. If you don't use subtransactions then
 	 * this setting can be ignored.
+	 *
 	 * @param serialJtaTransactions if serial JTA transactions are supported
 	 */
 	public void setSerialJtaTransactions(boolean serialJtaTransactions) {
 		this.serialJtaTransactions = serialJtaTransactions;
 	}
 
-	public boolean isSerialJtaTransactions() {
-		return this.serialJtaTransactions;
-	}
-
-	public void setAllowSubTransactions(boolean allowSubTransactions) {
-		this.allowSubTransactions = allowSubTransactions;
-	}
-
 	public boolean isAllowSubTransactions() {
 		return this.allowSubTransactions;
 	}
 
-	/**
-	 * Specifies whether VM shutdown should trigger forced shutdown of the transaction
-	 * core. Defaults to false.
-	 * @param forceShutdownOnVmExit if VM shutdown should be forced
-	 */
-	public void setForceShutdownOnVmExit(boolean forceShutdownOnVmExit) {
-		this.forceShutdownOnVmExit = forceShutdownOnVmExit;
+	public void setAllowSubTransactions(boolean allowSubTransactions) {
+		this.allowSubTransactions = allowSubTransactions;
 	}
 
 	public boolean isForceShutdownOnVmExit() {
@@ -243,12 +227,13 @@ public class AtomikosProperties {
 	}
 
 	/**
-	 * Specifies how long should a normal shutdown (no-force) wait for transactions to
-	 * complete. Defaults to {@literal Long.MAX_VALUE}.
-	 * @param defaultMaxWaitTimeOnShutdown the default max wait time on shutdown
+	 * Specifies whether VM shutdown should trigger forced shutdown of the transaction
+	 * core. Defaults to false.
+	 *
+	 * @param forceShutdownOnVmExit if VM shutdown should be forced
 	 */
-	public void setDefaultMaxWaitTimeOnShutdown(long defaultMaxWaitTimeOnShutdown) {
-		this.defaultMaxWaitTimeOnShutdown = defaultMaxWaitTimeOnShutdown;
+	public void setForceShutdownOnVmExit(boolean forceShutdownOnVmExit) {
+		this.forceShutdownOnVmExit = forceShutdownOnVmExit;
 	}
 
 	public long getDefaultMaxWaitTimeOnShutdown() {
@@ -256,14 +241,13 @@ public class AtomikosProperties {
 	}
 
 	/**
-	 * Specifies the transactions log file base name. Defaults to {@literal tmlog}. The
-	 * transactions logs are stored in files using this name appended with a number and
-	 * the extension {@literal .log}. At checkpoint, a new transactions log file is
-	 * created and the number is incremented.
-	 * @param logBaseName the log base name
+	 * Specifies how long should a normal shutdown (no-force) wait for transactions to
+	 * complete. Defaults to {@literal Long.MAX_VALUE}.
+	 *
+	 * @param defaultMaxWaitTimeOnShutdown the default max wait time on shutdown
 	 */
-	public void setLogBaseName(String logBaseName) {
-		this.logBaseName = logBaseName;
+	public void setDefaultMaxWaitTimeOnShutdown(long defaultMaxWaitTimeOnShutdown) {
+		this.defaultMaxWaitTimeOnShutdown = defaultMaxWaitTimeOnShutdown;
 	}
 
 	public String getLogBaseName() {
@@ -271,14 +255,15 @@ public class AtomikosProperties {
 	}
 
 	/**
-	 * Specifies the directory in which the log files should be stored. Defaults to the
-	 * current working directory. This directory should be a stable storage like a SAN,
-	 * RAID or at least backed up location. The transactions logs files are as important
-	 * as the data themselves to guarantee consistency in case of failures.
-	 * @param logBaseDir the log base dir
+	 * Specifies the transactions log file base name. Defaults to {@literal tmlog}. The
+	 * transactions logs are stored in files using this name appended with a number and
+	 * the extension {@literal .log}. At checkpoint, a new transactions log file is
+	 * created and the number is incremented.
+	 *
+	 * @param logBaseName the log base name
 	 */
-	public void setLogBaseDir(String logBaseDir) {
-		this.logBaseDir = logBaseDir;
+	public void setLogBaseName(String logBaseName) {
+		this.logBaseName = logBaseName;
 	}
 
 	public String getLogBaseDir() {
@@ -286,16 +271,33 @@ public class AtomikosProperties {
 	}
 
 	/**
+	 * Specifies the directory in which the log files should be stored. Defaults to the
+	 * current working directory. This directory should be a stable storage like a SAN,
+	 * RAID or at least backed up location. The transactions logs files are as important
+	 * as the data themselves to guarantee consistency in case of failures.
+	 *
+	 * @param logBaseDir the log base dir
+	 */
+	public void setLogBaseDir(String logBaseDir) {
+		this.logBaseDir = logBaseDir;
+	}
+
+	public long getCheckpointInterval() {
+		return this.checkpointInterval;
+	}
+
+	/**
 	 * Specifies the interval between checkpoints. A checkpoint reduces the log file size
 	 * at the expense of adding some overhead in the runtime. Defaults to {@literal 500}.
+	 *
 	 * @param checkpointInterval the checkpoint interval
 	 */
 	public void setCheckpointInterval(long checkpointInterval) {
 		this.checkpointInterval = checkpointInterval;
 	}
 
-	public long getCheckpointInterval() {
-		return this.checkpointInterval;
+	public boolean isThreadedTwoPhaseCommit() {
+		return this.threadedTwoPhaseCommit;
 	}
 
 	/**
@@ -305,14 +307,11 @@ public class AtomikosProperties {
 	 * parallel. Defaults to {@literal true}. If you set this to {@literal false}, then
 	 * commits will happen in the order that resources are accessed within the
 	 * transaction.
+	 *
 	 * @param threadedTwoPhaseCommit if threaded two phase commits should be used
 	 */
 	public void setThreadedTwoPhaseCommit(boolean threadedTwoPhaseCommit) {
 		this.threadedTwoPhaseCommit = threadedTwoPhaseCommit;
-	}
-
-	public boolean isThreadedTwoPhaseCommit() {
-		return this.threadedTwoPhaseCommit;
 	}
 
 	public Recovery getRecovery() {
@@ -322,6 +321,7 @@ public class AtomikosProperties {
 	/**
 	 * Returns the properties as a {@link Properties} object that can be used with
 	 * Atomikos.
+	 *
 	 * @return the properties
 	 */
 	public Properties asProperties() {

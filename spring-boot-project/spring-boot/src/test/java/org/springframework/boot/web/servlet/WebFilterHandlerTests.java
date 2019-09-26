@@ -16,27 +16,21 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.io.IOException;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
-
 import org.junit.Test;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
+import java.io.IOException;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -150,32 +144,32 @@ public class WebFilterHandlerTests {
 
 	}
 
-	@WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE })
+	@WebFilter(dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.INCLUDE})
 	class DispatcherTypesFilter extends BaseFilter {
 
 	}
 
-	@WebFilter(initParams = { @WebInitParam(name = "a", value = "alpha"), @WebInitParam(name = "b", value = "bravo") })
+	@WebFilter(initParams = {@WebInitParam(name = "a", value = "alpha"), @WebInitParam(name = "b", value = "bravo")})
 	class InitParametersFilter extends BaseFilter {
 
 	}
 
-	@WebFilter(servletNames = { "alpha", "bravo" })
+	@WebFilter(servletNames = {"alpha", "bravo"})
 	class ServletNamesFilter extends BaseFilter {
 
 	}
 
-	@WebFilter(urlPatterns = { "alpha", "bravo" })
+	@WebFilter(urlPatterns = {"alpha", "bravo"})
 	class UrlPatternsFilter extends BaseFilter {
 
 	}
 
-	@WebFilter({ "alpha", "bravo" })
+	@WebFilter({"alpha", "bravo"})
 	class UrlPatternsFromValueFilter extends BaseFilter {
 
 	}
 
-	@WebFilter(value = { "alpha", "bravo" }, urlPatterns = { "alpha", "bravo" })
+	@WebFilter(value = {"alpha", "bravo"}, urlPatterns = {"alpha", "bravo"})
 	class UrlPatternsDeclaredTwiceFilter extends BaseFilter {
 
 	}

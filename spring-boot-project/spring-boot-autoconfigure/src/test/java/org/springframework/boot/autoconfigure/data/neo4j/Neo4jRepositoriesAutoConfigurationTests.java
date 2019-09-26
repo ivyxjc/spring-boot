@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.data.neo4j;
 import org.junit.After;
 import org.junit.Test;
 import org.neo4j.ogm.session.SessionFactory;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;

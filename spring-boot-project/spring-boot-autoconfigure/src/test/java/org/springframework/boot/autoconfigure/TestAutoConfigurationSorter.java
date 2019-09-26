@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.Properties;
-
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+
+import java.util.Properties;
 
 /**
  * Public version of {@link AutoConfigurationSorter} for use in tests.

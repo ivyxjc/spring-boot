@@ -43,6 +43,7 @@ public class LocalHostUriTemplateHandler extends RootUriTemplateHandler {
 	/**
 	 * Create a new {@code LocalHostUriTemplateHandler} that will generate {@code http}
 	 * URIs using the given {@code environment} to determine the context path and port.
+	 *
 	 * @param environment the environment used to determine the port
 	 */
 	public LocalHostUriTemplateHandler(Environment environment) {
@@ -53,8 +54,9 @@ public class LocalHostUriTemplateHandler extends RootUriTemplateHandler {
 	 * Create a new {@code LocalHostUriTemplateHandler} that will generate URIs with the
 	 * given {@code scheme} and use the given {@code environment} to determine the
 	 * context-path and port.
+	 *
 	 * @param environment the environment used to determine the port
-	 * @param scheme the scheme of the root uri
+	 * @param scheme      the scheme of the root uri
 	 * @since 1.4.1
 	 */
 	public LocalHostUriTemplateHandler(Environment environment, String scheme) {
@@ -65,9 +67,10 @@ public class LocalHostUriTemplateHandler extends RootUriTemplateHandler {
 	 * Create a new {@code LocalHostUriTemplateHandler} that will generate URIs with the
 	 * given {@code scheme}, use the given {@code environment} to determine the
 	 * context-path and port and delegate to the given template {@code handler}.
+	 *
 	 * @param environment the environment used to determine the port
-	 * @param scheme the scheme of the root uri
-	 * @param handler the delegate handler
+	 * @param scheme      the scheme of the root uri
+	 * @param handler     the delegate handler
 	 * @since 2.0.3
 	 */
 	public LocalHostUriTemplateHandler(Environment environment, String scheme, UriTemplateHandler handler) {

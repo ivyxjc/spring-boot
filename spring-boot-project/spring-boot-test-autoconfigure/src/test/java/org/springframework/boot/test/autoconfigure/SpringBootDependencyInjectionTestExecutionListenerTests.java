@@ -18,7 +18,6 @@ package org.springframework.boot.test.autoconfigure;
 
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -64,8 +63,7 @@ public class SpringBootDependencyInjectionTestExecutionListenerTests {
 		given(testContext.getApplicationContext()).willReturn(applicationContext);
 		try {
 			this.reportListener.prepareTestInstance(testContext);
-		}
-		catch (IllegalStateException ex) {
+		} catch (IllegalStateException ex) {
 			// Expected
 		}
 		this.out.expect(containsString("CONDITIONS EVALUATION REPORT"));

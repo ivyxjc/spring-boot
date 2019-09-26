@@ -20,12 +20,9 @@ import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.gradle.junit.GradleMultiDslSuite;
 import org.springframework.boot.gradle.testkit.Dsl;
 import org.springframework.boot.gradle.testkit.GradleBuild;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Tests for the managing dependencies documentation.

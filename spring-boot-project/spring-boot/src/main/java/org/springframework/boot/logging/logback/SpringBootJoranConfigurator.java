@@ -20,7 +20,6 @@ import ch.qos.logback.classic.joran.JoranConfigurator;
 import ch.qos.logback.core.joran.action.NOPAction;
 import ch.qos.logback.core.joran.spi.ElementSelector;
 import ch.qos.logback.core.joran.spi.RuleStore;
-
 import org.springframework.boot.logging.LoggingInitializationContext;
 import org.springframework.core.env.Environment;
 

@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.h2;
 
 import org.h2.server.web.WebServlet;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

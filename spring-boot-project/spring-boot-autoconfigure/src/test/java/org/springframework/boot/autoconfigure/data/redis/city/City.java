@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.data.redis.city;
 
-import java.io.Serializable;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 @RedisHash("cities")
 public class City implements Serializable {

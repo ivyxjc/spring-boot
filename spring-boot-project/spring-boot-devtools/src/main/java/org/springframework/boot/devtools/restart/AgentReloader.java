@@ -16,11 +16,11 @@
 
 package org.springframework.boot.devtools.restart;
 
+import org.springframework.util.ClassUtils;
+
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.springframework.util.ClassUtils;
 
 /**
  * Utility to determine if an Java agent based reloader (e.g. JRebel) is being used.
@@ -45,6 +45,7 @@ public abstract class AgentReloader {
 
 	/**
 	 * Determine if any agent reloader is active.
+	 *
 	 * @return true if agent reloading is active
 	 */
 	public static boolean isActive() {

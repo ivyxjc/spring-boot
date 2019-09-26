@@ -15,12 +15,8 @@
  */
 package org.springframework.boot.actuate.autoconfigure.security.servlet;
 
-import java.util.Base64;
-import java.util.function.Supplier;
-
 import org.jolokia.http.AgentServlet;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementContextAutoConfiguration;
@@ -43,6 +39,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Base64;
+import java.util.function.Supplier;
+
 /**
  * Abstract base class for {@link EndpointRequest} tests.
  *
@@ -62,11 +61,11 @@ public abstract class AbstractEndpointRequestIntegrationTests {
 	public void toAllEndpointsShouldMatch() {
 		getContextRunner().withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO))
 				.withPropertyValues("spring.security.user.password=password").run((context) -> {
-					WebTestClient webTestClient = getWebTestClient(context);
-					webTestClient.get().uri("/actuator/e2").exchange().expectStatus().isUnauthorized();
-					webTestClient.get().uri("/actuator/e2").header("Authorization", getBasicAuth()).exchange()
-							.expectStatus().isOk();
-				});
+			WebTestClient webTestClient = getWebTestClient(context);
+			webTestClient.get().uri("/actuator/e2").exchange().expectStatus().isUnauthorized();
+			webTestClient.get().uri("/actuator/e2").header("Authorization", getBasicAuth()).exchange()
+					.expectStatus().isOk();
+		});
 	}
 
 	@Test

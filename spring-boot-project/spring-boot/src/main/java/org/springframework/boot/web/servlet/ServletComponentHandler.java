@@ -16,16 +16,16 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.util.Assert;
+
+import java.lang.annotation.Annotation;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract base class for handlers of Servlet components discovered via classpath
@@ -77,6 +77,6 @@ abstract class ServletComponentHandler {
 	}
 
 	protected abstract void doHandle(Map<String, Object> attributes, ScannedGenericBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry);
+									 BeanDefinitionRegistry registry);
 
 }

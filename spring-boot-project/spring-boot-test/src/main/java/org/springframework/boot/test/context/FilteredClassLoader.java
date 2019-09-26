@@ -16,6 +16,8 @@
 
 package org.springframework.boot.test.context;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -25,8 +27,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.function.Predicate;
-
-import org.springframework.core.io.ClassPathResource;
 
 /**
  * Test {@link URLClassLoader} that can filter the classes and resources it can load.
@@ -45,6 +45,7 @@ public class FilteredClassLoader extends URLClassLoader {
 
 	/**
 	 * Create a {@link FilteredClassLoader} that hides the given classes.
+	 *
 	 * @param hiddenClasses the classes to hide
 	 */
 	public FilteredClassLoader(Class<?>... hiddenClasses) {
@@ -53,6 +54,7 @@ public class FilteredClassLoader extends URLClassLoader {
 
 	/**
 	 * Create a {@link FilteredClassLoader} that hides classes from the given packages.
+	 *
 	 * @param hiddenPackages the packages to hide
 	 */
 	public FilteredClassLoader(String... hiddenPackages) {
@@ -62,6 +64,7 @@ public class FilteredClassLoader extends URLClassLoader {
 	/**
 	 * Create a {@link FilteredClassLoader} that hides resources from the given
 	 * {@link ClassPathResource classpath resources}.
+	 *
 	 * @param hiddenResources the resources to hide
 	 * @since 2.1.0
 	 */
@@ -71,10 +74,11 @@ public class FilteredClassLoader extends URLClassLoader {
 
 	/**
 	 * Create a {@link FilteredClassLoader} that filters based on the given predicate.
+	 *
 	 * @param filters a set of filters to determine when a class name or resource should
-	 * be hidden. A {@link Predicate#test(Object) result} of {@code true} indicates a
-	 * filtered class or resource. The input of the predicate can either be the binary
-	 * name of a class or a resource name.
+	 *                be hidden. A {@link Predicate#test(Object) result} of {@code true} indicates a
+	 *                filtered class or resource. The input of the predicate can either be the binary
+	 *                name of a class or a resource name.
 	 */
 	@SafeVarargs
 	public FilteredClassLoader(Predicate<String>... filters) {
@@ -82,7 +86,7 @@ public class FilteredClassLoader extends URLClassLoader {
 	}
 
 	private FilteredClassLoader(Collection<Predicate<String>> classesFilters,
-			Collection<Predicate<String>> resourcesFilters) {
+								Collection<Predicate<String>> resourcesFilters) {
 		super(new URL[0], FilteredClassLoader.class.getClassLoader());
 		this.classesFilters = classesFilters;
 		this.resourcesFilters = resourcesFilters;
@@ -139,6 +143,10 @@ public class FilteredClassLoader extends URLClassLoader {
 			this.hiddenClasses = hiddenClasses;
 		}
 
+		public static ClassFilter of(Class<?>... hiddenClasses) {
+			return new ClassFilter(hiddenClasses);
+		}
+
 		@Override
 		public boolean test(String className) {
 			for (Class<?> hiddenClass : this.hiddenClasses) {
@@ -147,10 +155,6 @@ public class FilteredClassLoader extends URLClassLoader {
 				}
 			}
 			return false;
-		}
-
-		public static ClassFilter of(Class<?>... hiddenClasses) {
-			return new ClassFilter(hiddenClasses);
 		}
 
 	}
@@ -166,6 +170,10 @@ public class FilteredClassLoader extends URLClassLoader {
 			this.hiddenPackages = hiddenPackages;
 		}
 
+		public static PackageFilter of(String... hiddenPackages) {
+			return new PackageFilter(hiddenPackages);
+		}
+
 		@Override
 		public boolean test(String className) {
 			for (String hiddenPackage : this.hiddenPackages) {
@@ -174,10 +182,6 @@ public class FilteredClassLoader extends URLClassLoader {
 				}
 			}
 			return false;
-		}
-
-		public static PackageFilter of(String... hiddenPackages) {
-			return new PackageFilter(hiddenPackages);
 		}
 
 	}
@@ -195,6 +199,10 @@ public class FilteredClassLoader extends URLClassLoader {
 			this.hiddenResources = hiddenResources;
 		}
 
+		public static ClassPathResourceFilter of(ClassPathResource... hiddenResources) {
+			return new ClassPathResourceFilter(hiddenResources);
+		}
+
 		@Override
 		public boolean test(String resourceName) {
 			for (ClassPathResource hiddenResource : this.hiddenResources) {
@@ -203,10 +211,6 @@ public class FilteredClassLoader extends URLClassLoader {
 				}
 			}
 			return false;
-		}
-
-		public static ClassPathResourceFilter of(ClassPathResource... hiddenResources) {
-			return new ClassPathResourceFilter(hiddenResources);
 		}
 
 	}

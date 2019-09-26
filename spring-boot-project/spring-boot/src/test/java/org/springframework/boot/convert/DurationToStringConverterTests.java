@@ -16,16 +16,15 @@
 
 package org.springframework.boot.convert;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,6 +40,11 @@ public class DurationToStringConverterTests {
 
 	public DurationToStringConverterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new DurationToStringConverter());
 	}
 
 	@Test
@@ -62,11 +66,6 @@ public class DurationToStringConverterTests {
 				MockDurationTypeDescriptor.get(ChronoUnit.SECONDS, DurationStyle.SIMPLE),
 				TypeDescriptor.valueOf(String.class));
 		assertThat(converted).isEqualTo("1s");
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new DurationToStringConverter());
 	}
 
 }

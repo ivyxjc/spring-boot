@@ -16,15 +16,9 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.couchbase.client.spring.cache.CouchbaseCacheManager;
 import com.hazelcast.spring.cache.HazelcastCacheManager;
 import org.infinispan.spring.provider.SpringEmbeddedCacheManager;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -37,6 +31,11 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,8 +66,7 @@ abstract class AbstractCacheAutoConfigurationTests {
 				if (expected.contains(key)) {
 					expected.remove(key);
 					assertThat(value.cacheManager).isSameAs(cacheManager);
-				}
-				else {
+				} else {
 					assertThat(value.cacheManager).isNull();
 				}
 			});

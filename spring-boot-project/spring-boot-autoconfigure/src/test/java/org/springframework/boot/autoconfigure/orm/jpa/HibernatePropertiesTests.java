@@ -16,16 +16,11 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import org.hibernate.cfg.AvailableSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
@@ -33,6 +28,10 @@ import org.springframework.boot.test.context.assertj.AssertableApplicationContex
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -140,7 +139,7 @@ public class HibernatePropertiesTests {
 	}
 
 	@Configuration
-	@EnableConfigurationProperties({ JpaProperties.class, HibernateProperties.class })
+	@EnableConfigurationProperties({JpaProperties.class, HibernateProperties.class})
 	static class TestConfiguration {
 
 	}

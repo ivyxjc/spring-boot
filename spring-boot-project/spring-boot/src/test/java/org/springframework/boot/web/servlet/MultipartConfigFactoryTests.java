@@ -16,11 +16,10 @@
 
 package org.springframework.boot.web.servlet;
 
-import javax.servlet.MultipartConfigElement;
-
 import org.junit.Test;
-
 import org.springframework.util.unit.DataSize;
+
+import javax.servlet.MultipartConfigElement;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

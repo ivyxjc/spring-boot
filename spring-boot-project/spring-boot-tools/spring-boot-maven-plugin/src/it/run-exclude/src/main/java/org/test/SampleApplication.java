@@ -34,8 +34,7 @@ public class SampleApplication {
 			ClassLoader classLoader = SampleApplication.class.getClassLoader();
 			classLoader.loadClass(className);
 			return true;
-		}
-		catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException e) {
 			return false;
 		}
 	}

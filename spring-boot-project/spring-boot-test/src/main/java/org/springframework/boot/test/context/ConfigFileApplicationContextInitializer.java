@@ -27,8 +27,8 @@ import org.springframework.test.context.ContextConfiguration;
  * {@literal application.properties}.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see ConfigFileApplicationListener
+ * @since 1.4.0
  */
 public class ConfigFileApplicationContextInitializer
 		implements ApplicationContextInitializer<ConfigurableApplicationContext> {

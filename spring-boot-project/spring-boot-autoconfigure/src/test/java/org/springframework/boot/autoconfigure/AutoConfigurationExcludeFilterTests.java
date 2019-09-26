@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.context.filtersample.ExampleConfiguration;
 import org.springframework.boot.autoconfigure.context.filtersample.ExampleFilteredAutoConfiguration;
@@ -29,6 +25,9 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -61,8 +60,8 @@ public class AutoConfigurationExcludeFilterTests {
 
 	@Configuration
 	@ComponentScan(basePackageClasses = ExampleConfiguration.class,
-			excludeFilters = @ComponentScan.Filter(type = FilterType.CUSTOM,
-					classes = TestAutoConfigurationExcludeFilter.class))
+				   excludeFilters = @ComponentScan.Filter(type = FilterType.CUSTOM,
+														  classes = TestAutoConfigurationExcludeFilter.class))
 	static class Config {
 
 	}

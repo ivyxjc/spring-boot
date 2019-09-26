@@ -20,7 +20,6 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
-
 import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfigurationTests;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfigurationTests;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorControllerDirectMockMvcTests;
@@ -31,8 +30,8 @@ import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorContro
  * @author Dave Syer
  */
 @RunWith(Suite.class)
-@SuiteClasses({ BasicErrorControllerDirectMockMvcTests.class, JmxAutoConfigurationTests.class,
-		IntegrationAutoConfigurationTests.class })
+@SuiteClasses({BasicErrorControllerDirectMockMvcTests.class, JmxAutoConfigurationTests.class,
+					  IntegrationAutoConfigurationTests.class})
 @Ignore
 public class AdhocTestSuite {
 

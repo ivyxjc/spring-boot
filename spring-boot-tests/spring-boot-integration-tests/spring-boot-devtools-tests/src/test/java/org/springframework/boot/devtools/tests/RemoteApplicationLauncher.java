@@ -16,17 +16,17 @@
 
 package org.springframework.boot.devtools.tests;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BiFunction;
-
 import org.springframework.boot.devtools.RemoteSpringApplication;
 import org.springframework.boot.devtools.tests.JvmLauncher.LaunchedJvm;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BiFunction;
 
 /**
  * Base class for {@link ApplicationLauncher} implementations that use
@@ -56,8 +56,7 @@ abstract class RemoteApplicationLauncher implements ApplicationLauncher {
 						"http://localhost:" + port);
 				awaitRemoteSpringApplication(remoteSpringApplicationJvm.getStandardOut());
 				return remoteSpringApplicationJvm.getProcess();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException(ex);
 			}
 		};

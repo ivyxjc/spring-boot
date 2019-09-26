@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.batch;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.explore.JobExplorer;

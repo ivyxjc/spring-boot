@@ -22,7 +22,6 @@ import com.unboundid.ldap.sdk.DN;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -108,19 +107,19 @@ public class EmbeddedLdapAutoConfigurationTests {
 	public void testQueryEmbeddedLdap() {
 		this.contextRunner.withPropertyValues("spring.ldap.embedded.base-dn:dc=spring,dc=org")
 				.withConfiguration(AutoConfigurations.of(LdapAutoConfiguration.class)).run((context) -> {
-					assertThat(context.getBeanNamesForType(LdapTemplate.class).length).isEqualTo(1);
-					LdapTemplate ldapTemplate = context.getBean(LdapTemplate.class);
-					assertThat(ldapTemplate.list("ou=company1,c=Sweden,dc=spring,dc=org")).hasSize(4);
-				});
+			assertThat(context.getBeanNamesForType(LdapTemplate.class).length).isEqualTo(1);
+			LdapTemplate ldapTemplate = context.getBean(LdapTemplate.class);
+			assertThat(ldapTemplate.list("ou=company1,c=Sweden,dc=spring,dc=org")).hasSize(4);
+		});
 	}
 
 	@Test
 	public void testDisableSchemaValidation() {
 		this.contextRunner.withPropertyValues("spring.ldap.embedded.validation.enabled:false",
 				"spring.ldap.embedded.base-dn:dc=spring,dc=org").run((context) -> {
-					InMemoryDirectoryServer server = context.getBean(InMemoryDirectoryServer.class);
-					assertThat(server.getSchema()).isNull();
-				});
+			InMemoryDirectoryServer server = context.getBean(InMemoryDirectoryServer.class);
+			assertThat(server.getSchema()).isNull();
+		});
 	}
 
 	@Test
@@ -128,11 +127,11 @@ public class EmbeddedLdapAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.ldap.embedded.validation.schema:classpath:custom-schema.ldif",
 				"spring.ldap.embedded.ldif:classpath:custom-schema-sample.ldif",
 				"spring.ldap.embedded.base-dn:dc=spring,dc=org").run((context) -> {
-					InMemoryDirectoryServer server = context.getBean(InMemoryDirectoryServer.class);
+			InMemoryDirectoryServer server = context.getBean(InMemoryDirectoryServer.class);
 
-					assertThat(server.getSchema().getObjectClass("exampleAuxiliaryClass")).isNotNull();
-					assertThat(server.getSchema().getAttributeType("exampleAttributeName")).isNotNull();
-				});
+			assertThat(server.getSchema().getObjectClass("exampleAuxiliaryClass")).isNotNull();
+			assertThat(server.getSchema().getAttributeType("exampleAttributeName")).isNotNull();
+		});
 	}
 
 	@Test

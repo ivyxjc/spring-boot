@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.metrics.cache;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.cache.EhCache2Metrics;
-
 import org.springframework.cache.ehcache.EhCacheCache;
 
 /**

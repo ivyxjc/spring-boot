@@ -17,7 +17,6 @@
 package org.springframework.boot.context.config;
 
 import org.junit.Test;
-
 import org.springframework.context.ApplicationContextException;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -27,9 +26,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link DelegatingApplicationContextInitializer}.

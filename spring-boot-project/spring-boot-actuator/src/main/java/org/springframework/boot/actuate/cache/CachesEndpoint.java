@@ -16,13 +16,6 @@
 
 package org.springframework.boot.actuate.cache;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
@@ -30,6 +23,13 @@ import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.lang.Nullable;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * {@link Endpoint} to expose available {@link Cache caches}.
@@ -45,6 +45,7 @@ public class CachesEndpoint {
 
 	/**
 	 * Create a new endpoint with the {@link CacheManager} instances to use.
+	 *
 	 * @param cacheManagers the cache managers to use, indexed by name
 	 */
 	public CachesEndpoint(Map<String, CacheManager> cacheManagers) {
@@ -53,6 +54,7 @@ public class CachesEndpoint {
 
 	/**
 	 * Return a {@link CachesReport} of all available {@link Cache caches}.
+	 *
 	 * @return a caches reports
 	 */
 	@ReadOperation
@@ -72,11 +74,12 @@ public class CachesEndpoint {
 
 	/**
 	 * Return a {@link CacheDescriptor} for the specified cache.
-	 * @param cache the name of the cache
+	 *
+	 * @param cache        the name of the cache
 	 * @param cacheManager the name of the cacheManager (can be {@code null}
 	 * @return the descriptor of the cache or {@code null} if no such cache exists
 	 * @throws NonUniqueCacheException if more than one cache with that name exists and no
-	 * {@code cacheManager} was provided to identify a unique candidate
+	 *                                 {@code cacheManager} was provided to identify a unique candidate
 	 */
 	@ReadOperation
 	public CacheEntry cache(@Selector String cache, @Nullable String cacheManager) {
@@ -93,12 +96,13 @@ public class CachesEndpoint {
 
 	/**
 	 * Clear the specific {@link Cache}.
-	 * @param cache the name of the cache
+	 *
+	 * @param cache        the name of the cache
 	 * @param cacheManager the name of the cacheManager (can be {@code null} to match all)
 	 * @return {@code true} if the cache was cleared or {@code false} if no such cache
 	 * exists
 	 * @throws NonUniqueCacheException if more than one cache with that name exists and no
-	 * {@code cacheManager} was provided to identify a unique candidate
+	 *                                 {@code cacheManager} was provided to identify a unique candidate
 	 */
 	@DeleteOperation
 	public boolean clearCache(@Selector String cache, @Nullable String cacheManager) {
@@ -108,7 +112,7 @@ public class CachesEndpoint {
 	}
 
 	private List<CacheEntry> getCacheEntries(Predicate<String> cacheNamePredicate,
-			Predicate<String> cacheManagerNamePredicate) {
+											 Predicate<String> cacheManagerNamePredicate) {
 		return this.cacheManagers.keySet().stream().filter(cacheManagerNamePredicate)
 				.flatMap((cacheManagerName) -> getCacheEntries(cacheManagerName, cacheNamePredicate).stream())
 				.collect(Collectors.toList());
@@ -197,6 +201,7 @@ public class CachesEndpoint {
 
 		/**
 		 * Return the fully qualified name of the native cache.
+		 *
 		 * @return the fully qualified name of the native cache
 		 */
 		public String getTarget() {

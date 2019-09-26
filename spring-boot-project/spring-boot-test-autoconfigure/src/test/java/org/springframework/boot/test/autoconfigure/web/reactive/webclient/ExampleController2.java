@@ -16,13 +16,12 @@
 
 package org.springframework.boot.test.autoconfigure.web.reactive.webclient;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 /**
  * Example {@link Controller} used with {@link WebFluxTest} tests.

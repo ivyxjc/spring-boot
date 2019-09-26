@@ -16,14 +16,13 @@
 
 package org.springframework.boot.test.context.filter;
 
-import java.io.IOException;
-
 import org.junit.Test;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

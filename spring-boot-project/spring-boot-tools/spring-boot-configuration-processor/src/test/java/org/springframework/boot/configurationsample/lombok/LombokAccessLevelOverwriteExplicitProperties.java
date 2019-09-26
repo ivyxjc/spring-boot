@@ -19,7 +19,6 @@ package org.springframework.boot.configurationsample.lombok;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
 
 /**

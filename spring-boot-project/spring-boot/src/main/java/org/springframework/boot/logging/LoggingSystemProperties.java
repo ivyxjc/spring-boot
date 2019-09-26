@@ -88,6 +88,7 @@ public class LoggingSystemProperties {
 
 	/**
 	 * Create a new {@link LoggingSystemProperties} instance.
+	 *
 	 * @param environment the source environment
 	 */
 	public LoggingSystemProperties(Environment environment) {

@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.server;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.actuate.autoconfigure.web.ManagementContextConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.ManagementContextType;
@@ -33,6 +28,11 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Selects configuration classes for the management context configuration. Entries are
@@ -77,12 +77,11 @@ class ManagementContextConfigurationImportSelector implements DeferredImportSele
 	}
 
 	private void addConfiguration(SimpleMetadataReaderFactory readerFactory,
-			List<ManagementConfiguration> configurations, String className) {
+								  List<ManagementConfiguration> configurations, String className) {
 		try {
 			MetadataReader metadataReader = readerFactory.getMetadataReader(className);
 			configurations.add(new ManagementConfiguration(metadataReader));
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException("Failed to read annotation metadata for '" + className + "'", ex);
 		}
 	}

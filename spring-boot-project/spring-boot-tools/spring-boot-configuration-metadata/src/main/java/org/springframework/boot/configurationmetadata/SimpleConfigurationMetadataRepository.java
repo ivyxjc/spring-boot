@@ -49,6 +49,7 @@ public class SimpleConfigurationMetadataRepository implements ConfigurationMetad
 
 	/**
 	 * Register the specified {@link ConfigurationMetadataSource sources}.
+	 *
 	 * @param sources the sources to add
 	 */
 	public void add(Collection<ConfigurationMetadataSource> sources) {
@@ -69,8 +70,9 @@ public class SimpleConfigurationMetadataRepository implements ConfigurationMetad
 	/**
 	 * Add a {@link ConfigurationMetadataProperty} with the
 	 * {@link ConfigurationMetadataSource source} that defines it, if any.
+	 *
 	 * @param property the property to add
-	 * @param source the source
+	 * @param source   the source
 	 */
 	public void add(ConfigurationMetadataProperty property, ConfigurationMetadataSource source) {
 		if (source != null) {
@@ -81,6 +83,7 @@ public class SimpleConfigurationMetadataRepository implements ConfigurationMetad
 
 	/**
 	 * Merge the content of the specified repository to this repository.
+	 *
 	 * @param repository the repository to include
 	 */
 	public void include(ConfigurationMetadataRepository repository) {
@@ -88,8 +91,7 @@ public class SimpleConfigurationMetadataRepository implements ConfigurationMetad
 			ConfigurationMetadataGroup existingGroup = this.allGroups.get(group.getId());
 			if (existingGroup == null) {
 				this.allGroups.put(group.getId(), group);
-			}
-			else {
+			} else {
 				// Merge properties
 				group.getProperties().forEach((name, value) -> putIfAbsent(existingGroup.getProperties(), name, value));
 				// Merge sources

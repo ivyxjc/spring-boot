@@ -16,12 +16,11 @@
 
 package org.springframework.boot.devtools.classpath;
 
-import java.io.File;
-
 import org.junit.Test;
-
 import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFile.Type;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

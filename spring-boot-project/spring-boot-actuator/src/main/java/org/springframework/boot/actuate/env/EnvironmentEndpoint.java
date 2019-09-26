@@ -16,17 +16,7 @@
 
 package org.springframework.boot.actuate.env;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import org.springframework.boot.actuate.endpoint.Sanitizer;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
@@ -36,17 +26,16 @@ import org.springframework.boot.context.properties.bind.PropertySourcesPlacehold
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
-import org.springframework.core.env.CompositePropertySource;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.EnumerablePropertySource;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.*;
 import org.springframework.lang.Nullable;
 import org.springframework.util.PropertyPlaceholderHelper;
 import org.springframework.util.StringUtils;
 import org.springframework.util.SystemPropertyUtils;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * {@link Endpoint} to expose {@link ConfigurableEnvironment environment} information.
@@ -130,7 +119,7 @@ public class EnvironmentEndpoint {
 	}
 
 	private PropertySourceDescriptor describeSource(String sourceName, EnumerablePropertySource<?> source,
-			PlaceholdersResolver resolver, Predicate<String> namePredicate) {
+													PlaceholdersResolver resolver, Predicate<String> namePredicate) {
 		Map<String, PropertyValueDescriptor> properties = new LinkedHashMap<>();
 		Stream.of(source.getPropertyNames()).filter(namePredicate)
 				.forEach((name) -> properties.put(name, describeValueOf(name, source, resolver)));
@@ -139,7 +128,7 @@ public class EnvironmentEndpoint {
 
 	@SuppressWarnings("unchecked")
 	private PropertyValueDescriptor describeValueOf(String name, PropertySource<?> source,
-			PlaceholdersResolver resolver) {
+													PlaceholdersResolver resolver) {
 		Object resolved = resolver.resolvePlaceholders(source.getProperty(name));
 		String origin = ((source instanceof OriginLookup) ? getOrigin((OriginLookup<Object>) source, name) : null);
 		return new PropertyValueDescriptor(sanitize(name, resolved), origin);
@@ -176,8 +165,7 @@ public class EnvironmentEndpoint {
 			for (PropertySource<?> nest : ((CompositePropertySource) source).getPropertySources()) {
 				extract(source.getName() + ":", map, nest);
 			}
-		}
-		else {
+		} else {
 			map.put(root + source.getName(), source);
 		}
 	}
@@ -248,7 +236,7 @@ public class EnvironmentEndpoint {
 		private final List<PropertySourceEntryDescriptor> propertySources;
 
 		private EnvironmentEntryDescriptor(PropertySummaryDescriptor property, List<String> activeProfiles,
-				List<PropertySourceEntryDescriptor> propertySources) {
+										   List<PropertySourceEntryDescriptor> propertySources) {
 			this.property = property;
 			this.activeProfiles = activeProfiles;
 			this.propertySources = propertySources;

@@ -16,13 +16,12 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.util.Collections;
-
 import org.junit.Test;
-
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

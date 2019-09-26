@@ -16,13 +16,6 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.List;
-import java.util.TreeSet;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
@@ -33,6 +26,13 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Collection;
+import java.util.List;
+import java.util.TreeSet;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Base class for {@link AggregateBinder AggregateBinders} that read a sequential run of
@@ -57,16 +57,17 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 
 	/**
 	 * Bind indexed elements to the supplied collection.
-	 * @param name the name of the property to bind
-	 * @param target the target bindable
+	 *
+	 * @param name          the name of the property to bind
+	 * @param target        the target bindable
 	 * @param elementBinder the binder to use for elements
 	 * @param aggregateType the aggregate type, may be a collection or an array
-	 * @param elementType the element type
-	 * @param result the destination for results
+	 * @param elementType   the element type
+	 * @param result        the destination for results
 	 */
 	protected final void bindIndexed(ConfigurationPropertyName name, Bindable<?> target,
-			AggregateElementBinder elementBinder, ResolvableType aggregateType, ResolvableType elementType,
-			IndexedCollectionSupplier result) {
+									 AggregateElementBinder elementBinder, ResolvableType aggregateType, ResolvableType elementType,
+									 IndexedCollectionSupplier result) {
 		for (ConfigurationPropertySource source : getContext().getSources()) {
 			bindIndexed(source, name, target, elementBinder, result, aggregateType, elementType);
 			if (result.wasSupplied() && result.get() != null) {
@@ -76,19 +77,18 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	}
 
 	private void bindIndexed(ConfigurationPropertySource source, ConfigurationPropertyName root, Bindable<?> target,
-			AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType aggregateType,
-			ResolvableType elementType) {
+							 AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType aggregateType,
+							 ResolvableType elementType) {
 		ConfigurationProperty property = source.getConfigurationProperty(root);
 		if (property != null) {
 			bindValue(target, collection.get(), aggregateType, elementType, property.getValue());
-		}
-		else {
+		} else {
 			bindIndexed(source, root, elementBinder, collection, elementType);
 		}
 	}
 
 	private void bindValue(Bindable<?> target, Collection<Object> collection, ResolvableType aggregateType,
-			ResolvableType elementType, Object value) {
+						   ResolvableType elementType, Object value) {
 		if (value instanceof String && !StringUtils.hasText((String) value)) {
 			return;
 		}
@@ -99,7 +99,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	}
 
 	private void bindIndexed(ConfigurationPropertySource source, ConfigurationPropertyName root,
-			AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType elementType) {
+							 AggregateElementBinder elementBinder, IndexedCollectionSupplier collection, ResolvableType elementType) {
 		MultiValueMap<String, ConfigurationProperty> knownIndexedChildren = getKnownIndexedChildren(source, root);
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
 			ConfigurationPropertyName name = root.append((i != 0) ? "[" + i + "]" : INDEX_ZERO);
@@ -114,7 +114,7 @@ abstract class IndexedElementsBinder<T> extends AggregateBinder<T> {
 	}
 
 	private MultiValueMap<String, ConfigurationProperty> getKnownIndexedChildren(ConfigurationPropertySource source,
-			ConfigurationPropertyName root) {
+																				 ConfigurationPropertyName root) {
 		MultiValueMap<String, ConfigurationProperty> children = new LinkedMultiValueMap<>();
 		if (!(source instanceof IterableConfigurationPropertySource)) {
 			return children;

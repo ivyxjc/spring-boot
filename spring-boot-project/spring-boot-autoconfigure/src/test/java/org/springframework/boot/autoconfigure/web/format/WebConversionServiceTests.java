@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.web.format;
 
-import java.util.Date;
-
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.junit.Test;
+
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

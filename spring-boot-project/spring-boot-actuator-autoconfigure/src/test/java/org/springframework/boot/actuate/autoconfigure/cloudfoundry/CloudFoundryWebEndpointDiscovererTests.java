@@ -16,13 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
@@ -41,6 +35,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.DefaultConversionService;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -62,7 +61,7 @@ public class CloudFoundryWebEndpointDiscovererTests {
 					WebOperation operation = findMainReadOperation(endpoint);
 					assertThat(operation
 							.invoke(new InvocationContext(mock(SecurityContext.class), Collections.emptyMap())))
-									.isEqualTo("cf");
+							.isEqualTo("cf");
 				}
 			}
 		});
@@ -82,7 +81,7 @@ public class CloudFoundryWebEndpointDiscovererTests {
 	}
 
 	private void load(Function<EndpointId, Long> timeToLive, PathMapper endpointPathMapper, Class<?> configuration,
-			Consumer<CloudFoundryWebEndpointDiscoverer> consumer) {
+					  Consumer<CloudFoundryWebEndpointDiscoverer> consumer) {
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(configuration);
 		try {
 			ConversionServiceParameterValueMapper parameterMapper = new ConversionServiceParameterValueMapper(
@@ -93,8 +92,7 @@ public class CloudFoundryWebEndpointDiscovererTests {
 					parameterMapper, mediaTypes, Collections.singletonList(endpointPathMapper),
 					Collections.singleton(new CachingOperationInvokerAdvisor(timeToLive)), Collections.emptyList());
 			consumer.accept(discoverer);
-		}
-		finally {
+		} finally {
 			context.close();
 		}
 	}

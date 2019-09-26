@@ -16,18 +16,18 @@
 
 package org.springframework.boot.testsupport.rule;
 
+import org.hamcrest.Matcher;
+import org.junit.Assert;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.hamcrest.Matcher;
-import org.junit.Assert;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
 
 import static org.hamcrest.Matchers.allOf;
 
@@ -56,15 +56,13 @@ public class OutputCapture implements TestRule {
 				captureOutput();
 				try {
 					base.evaluate();
-				}
-				finally {
+				} finally {
 					try {
 						if (!OutputCapture.this.matchers.isEmpty()) {
 							String output = OutputCapture.this.toString();
 							Assert.assertThat(output, allOf(OutputCapture.this.matchers));
 						}
-					}
-					finally {
+					} finally {
 						releaseOutput();
 					}
 				}
@@ -92,8 +90,7 @@ public class OutputCapture implements TestRule {
 		try {
 			this.captureOut.flush();
 			this.captureErr.flush();
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			// ignore
 		}
 	}
@@ -107,6 +104,7 @@ public class OutputCapture implements TestRule {
 	/**
 	 * Verify that the output is matched by the supplied {@code matcher}. Verification is
 	 * performed after the test method has executed.
+	 *
 	 * @param matcher the matcher
 	 */
 	public void expect(Matcher<? super String> matcher) {

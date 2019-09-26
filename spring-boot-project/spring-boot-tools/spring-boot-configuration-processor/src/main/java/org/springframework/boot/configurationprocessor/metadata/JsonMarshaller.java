@@ -16,20 +16,16 @@
 
 package org.springframework.boot.configurationprocessor.metadata;
 
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.boot.configurationprocessor.metadata.ItemMetadata.ItemType;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.boot.configurationprocessor.metadata.ItemMetadata.ItemType;
+import java.util.*;
 
 /**
  * Marshaller to write {@link ConfigurationMetadata} as JSON.
@@ -50,8 +46,7 @@ public class JsonMarshaller {
 			object.put("properties", converter.toJsonArray(metadata, ItemType.PROPERTY));
 			object.put("hints", converter.toJsonArray(metadata.getHints()));
 			outputStream.write(object.toString(2).getBytes(StandardCharsets.UTF_8));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (ex instanceof IOException) {
 				throw (IOException) ex;
 			}
@@ -140,7 +135,7 @@ public class JsonMarshaller {
 		Map<String, Object> parameters = new HashMap<>();
 		if (object.has("parameters")) {
 			JSONObject parametersObject = object.getJSONObject("parameters");
-			for (Iterator<?> iterator = parametersObject.keys(); iterator.hasNext();) {
+			for (Iterator<?> iterator = parametersObject.keys(); iterator.hasNext(); ) {
 				String key = (String) iterator.next();
 				Object value = readItemValue(parametersObject.get(key));
 				parameters.put(key, value);

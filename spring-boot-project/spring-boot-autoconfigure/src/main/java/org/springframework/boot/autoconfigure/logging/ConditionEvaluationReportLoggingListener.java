@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.logging;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
 import org.springframework.boot.logging.LogLevel;
@@ -53,12 +52,9 @@ public class ConditionEvaluationReportLoggingListener
 		implements ApplicationContextInitializer<ConfigurableApplicationContext> {
 
 	private final Log logger = LogFactory.getLog(getClass());
-
-	private ConfigurableApplicationContext applicationContext;
-
-	private ConditionEvaluationReport report;
-
 	private final LogLevel logLevelForReport;
+	private ConfigurableApplicationContext applicationContext;
+	private ConditionEvaluationReport report;
 
 	public ConditionEvaluationReportLoggingListener() {
 		this(LogLevel.DEBUG);
@@ -93,8 +89,7 @@ public class ConditionEvaluationReportLoggingListener
 			if (((ApplicationContextEvent) event).getApplicationContext() == initializerApplicationContext) {
 				logAutoConfigurationReport();
 			}
-		}
-		else if (event instanceof ApplicationFailedEvent
+		} else if (event instanceof ApplicationFailedEvent
 				&& ((ApplicationFailedEvent) event).getApplicationContext() == initializerApplicationContext) {
 			logAutoConfigurationReport(true);
 		}
@@ -116,16 +111,13 @@ public class ConditionEvaluationReportLoggingListener
 			if (this.getLogLevelForReport().equals(LogLevel.INFO)) {
 				if (this.logger.isInfoEnabled()) {
 					this.logger.info(new ConditionEvaluationReportMessage(this.report));
-				}
-				else if (isCrashReport) {
+				} else if (isCrashReport) {
 					logMessage("info");
 				}
-			}
-			else {
+			} else {
 				if (this.logger.isDebugEnabled()) {
 					this.logger.debug(new ConditionEvaluationReportMessage(this.report));
-				}
-				else if (isCrashReport) {
+				} else if (isCrashReport) {
 					logMessage("debug");
 				}
 			}

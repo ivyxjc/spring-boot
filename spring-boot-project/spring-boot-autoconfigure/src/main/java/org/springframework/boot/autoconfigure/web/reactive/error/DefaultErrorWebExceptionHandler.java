@@ -16,14 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.reactive.error;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -36,6 +28,13 @@ import org.springframework.web.reactive.function.server.RequestPredicate;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.all;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
@@ -86,13 +85,14 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 
 	/**
 	 * Create a new {@code DefaultErrorWebExceptionHandler} instance.
-	 * @param errorAttributes the error attributes
+	 *
+	 * @param errorAttributes    the error attributes
 	 * @param resourceProperties the resources configuration properties
-	 * @param errorProperties the error configuration properties
+	 * @param errorProperties    the error configuration properties
 	 * @param applicationContext the current application context
 	 */
 	public DefaultErrorWebExceptionHandler(ErrorAttributes errorAttributes, ResourceProperties resourceProperties,
-			ErrorProperties errorProperties, ApplicationContext applicationContext) {
+										   ErrorProperties errorProperties, ApplicationContext applicationContext) {
 		super(errorAttributes, resourceProperties, applicationContext);
 		this.errorProperties = errorProperties;
 	}
@@ -104,6 +104,7 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 
 	/**
 	 * Render the error information as an HTML view.
+	 *
 	 * @param request the current request
 	 * @return a {@code Publisher} of the HTTP response
 	 */
@@ -122,6 +123,7 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 
 	/**
 	 * Render the error information as a JSON payload.
+	 *
 	 * @param request the current request
 	 * @return a {@code Publisher} of the HTTP response
 	 */
@@ -134,7 +136,8 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 
 	/**
 	 * Determine if the stacktrace attribute should be included.
-	 * @param request the source request
+	 *
+	 * @param request  the source request
 	 * @param produces the media type produced (or {@code MediaType.ALL})
 	 * @return if the stacktrace attribute should be included
 	 */
@@ -151,6 +154,7 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 
 	/**
 	 * Get the HTTP error status information from the error map.
+	 *
 	 * @param errorAttributes the current error information
 	 * @return the error HTTP status
 	 */
@@ -164,6 +168,7 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 	 * {@code "text/html"} media type.
 	 * <p>
 	 * The "match-all" media type is not considered here.
+	 *
 	 * @return the request predicate
 	 */
 	protected RequestPredicate acceptsTextHtml() {
@@ -173,8 +178,7 @@ public class DefaultErrorWebExceptionHandler extends AbstractErrorWebExceptionHa
 				acceptedMediaTypes.remove(MediaType.ALL);
 				MediaType.sortBySpecificityAndQuality(acceptedMediaTypes);
 				return acceptedMediaTypes.stream().anyMatch(MediaType.TEXT_HTML::isCompatibleWith);
-			}
-			catch (InvalidMediaTypeException ex) {
+			} catch (InvalidMediaTypeException ex) {
 				return false;
 			}
 		};

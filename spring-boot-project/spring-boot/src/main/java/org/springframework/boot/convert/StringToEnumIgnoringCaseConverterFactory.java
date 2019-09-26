@@ -16,12 +16,12 @@
 
 package org.springframework.boot.convert;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.util.Assert;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * Converts from a String to a {@link java.lang.Enum} by calling searching matching enum
@@ -29,7 +29,7 @@ import org.springframework.util.Assert;
  *
  * @author Phillip Webb
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({"unchecked", "rawtypes"})
 final class StringToEnumIgnoringCaseConverterFactory implements ConverterFactory<String, Enum> {
 
 	@Override
@@ -58,8 +58,7 @@ final class StringToEnumIgnoringCaseConverterFactory implements ConverterFactory
 			source = source.trim();
 			try {
 				return (T) Enum.valueOf(this.enumType, source);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				return findEnum(source);
 			}
 		}

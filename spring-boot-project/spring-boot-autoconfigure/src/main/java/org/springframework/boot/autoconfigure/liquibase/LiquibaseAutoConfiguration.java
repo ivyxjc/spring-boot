@@ -16,14 +16,8 @@
 
 package org.springframework.boot.autoconfigure.liquibase;
 
-import java.util.function.Supplier;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import liquibase.change.DatabaseChange;
 import liquibase.integration.spring.SpringLiquibase;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -47,6 +41,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.function.Supplier;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Liquibase.
  *
@@ -61,10 +59,10 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
  * @since 1.1.0
  */
 @Configuration
-@ConditionalOnClass({ SpringLiquibase.class, DatabaseChange.class })
+@ConditionalOnClass({SpringLiquibase.class, DatabaseChange.class})
 @ConditionalOnBean(DataSource.class)
 @ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", matchIfMissing = true)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class })
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class LiquibaseAutoConfiguration {
 
 	@Bean
@@ -75,7 +73,7 @@ public class LiquibaseAutoConfiguration {
 
 	@Configuration
 	@ConditionalOnMissingBean(SpringLiquibase.class)
-	@EnableConfigurationProperties({ DataSourceProperties.class, LiquibaseProperties.class })
+	@EnableConfigurationProperties({DataSourceProperties.class, LiquibaseProperties.class})
 	@Import(LiquibaseJpaDependencyConfiguration.class)
 	public static class LiquibaseConfiguration {
 
@@ -88,8 +86,8 @@ public class LiquibaseAutoConfiguration {
 		private final DataSource liquibaseDataSource;
 
 		public LiquibaseConfiguration(LiquibaseProperties properties, DataSourceProperties dataSourceProperties,
-				ObjectProvider<DataSource> dataSource,
-				@LiquibaseDataSource ObjectProvider<DataSource> liquibaseDataSource) {
+									  ObjectProvider<DataSource> dataSource,
+									  @LiquibaseDataSource ObjectProvider<DataSource> liquibaseDataSource) {
 			this.properties = properties;
 			this.dataSourceProperties = dataSourceProperties;
 			this.dataSource = dataSource.getIfUnique();

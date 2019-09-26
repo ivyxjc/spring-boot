@@ -16,15 +16,13 @@
 
 package org.springframework.boot.autoconfigure.liquibase;
 
-import java.lang.reflect.Method;
-
-import javax.sql.DataSource;
-
 import liquibase.exception.LiquibaseException;
 import liquibase.integration.spring.SpringLiquibase;
-
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.util.ReflectionUtils;
+
+import javax.sql.DataSource;
+import java.lang.reflect.Method;
 
 /**
  * A custom {@link SpringLiquibase} extension that closes the underlying

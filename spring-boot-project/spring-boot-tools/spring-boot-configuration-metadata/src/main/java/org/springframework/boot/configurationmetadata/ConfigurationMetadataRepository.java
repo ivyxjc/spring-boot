@@ -34,12 +34,14 @@ public interface ConfigurationMetadataRepository {
 
 	/**
 	 * Return the groups, indexed by id.
+	 *
 	 * @return all configuration meta-data groups
 	 */
 	Map<String, ConfigurationMetadataGroup> getAllGroups();
 
 	/**
 	 * Return the properties, indexed by id.
+	 *
 	 * @return all configuration meta-data properties
 	 */
 	Map<String, ConfigurationMetadataProperty> getAllProperties();

@@ -16,15 +16,9 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import javax.servlet.ServletContext;
-
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
@@ -41,6 +35,10 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.StandardServletEnvironment;
+
+import javax.servlet.ServletContext;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -112,8 +110,7 @@ public class SpringBootServletInitializerTests {
 		});
 		try {
 			webServer.start();
-		}
-		finally {
+		} finally {
 			webServer.stop();
 		}
 	}
@@ -149,46 +146,6 @@ public class SpringBootServletInitializerTests {
 
 	@Configuration
 	static class TestApp {
-
-	}
-
-	private class MockSpringBootServletInitializer extends SpringBootServletInitializer {
-
-		@Override
-		protected WebApplicationContext run(SpringApplication application) {
-			SpringBootServletInitializerTests.this.application = application;
-			return null;
-		}
-
-	}
-
-	private class CustomSpringBootServletInitializer extends MockSpringBootServletInitializer {
-
-		private final CustomSpringApplicationBuilder applicationBuilder = new CustomSpringApplicationBuilder();
-
-		@Override
-		protected SpringApplicationBuilder createSpringApplicationBuilder() {
-			return this.applicationBuilder;
-		}
-
-		@Override
-		protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-			return application.sources(Config.class);
-		}
-
-	}
-
-	@Configuration
-	public class WithConfigurationAnnotation extends MockSpringBootServletInitializer {
-
-	}
-
-	public class WithConfiguredSource extends MockSpringBootServletInitializer {
-
-		@Override
-		protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-			return application.sources(Config.class);
-		}
 
 	}
 
@@ -236,6 +193,46 @@ public class SpringBootServletInitializerTests {
 			PropertySource<?> propertySource = event.getEnvironment().getPropertySources()
 					.get(StandardServletEnvironment.SERVLET_CONTEXT_PROPERTY_SOURCE_NAME);
 			assertThat(propertySource.getProperty("spring.profiles.active")).isEqualTo("from-servlet-context");
+		}
+
+	}
+
+	private class MockSpringBootServletInitializer extends SpringBootServletInitializer {
+
+		@Override
+		protected WebApplicationContext run(SpringApplication application) {
+			SpringBootServletInitializerTests.this.application = application;
+			return null;
+		}
+
+	}
+
+	private class CustomSpringBootServletInitializer extends MockSpringBootServletInitializer {
+
+		private final CustomSpringApplicationBuilder applicationBuilder = new CustomSpringApplicationBuilder();
+
+		@Override
+		protected SpringApplicationBuilder createSpringApplicationBuilder() {
+			return this.applicationBuilder;
+		}
+
+		@Override
+		protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+			return application.sources(Config.class);
+		}
+
+	}
+
+	@Configuration
+	public class WithConfigurationAnnotation extends MockSpringBootServletInitializer {
+
+	}
+
+	public class WithConfiguredSource extends MockSpringBootServletInitializer {
+
+		@Override
+		protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+			return application.sources(Config.class);
 		}
 
 	}

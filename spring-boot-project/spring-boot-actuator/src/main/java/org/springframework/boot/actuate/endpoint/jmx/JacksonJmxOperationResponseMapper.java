@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * {@link JmxOperationResponseMapper} that delegates to a Jackson {@link ObjectMapper} to

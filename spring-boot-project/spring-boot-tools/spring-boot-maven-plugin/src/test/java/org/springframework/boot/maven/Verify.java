@@ -16,6 +16,10 @@
 
 package org.springframework.boot.maven;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,10 +30,6 @@ import java.util.Properties;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -176,7 +176,7 @@ public final class Verify {
 
 			if (scriptContents.length > 0 && executable) {
 				String contents = new String(FileCopyUtils.copyToByteArray(this.file));
-				contents = contents.substring(0, contents.indexOf(new String(new byte[] { 0x50, 0x4b, 0x03, 0x04 })));
+				contents = contents.substring(0, contents.indexOf(new String(new byte[]{0x50, 0x4b, 0x03, 0x04})));
 				for (String content : scriptContents) {
 					assertThat(contents).contains(content);
 				}
@@ -184,7 +184,7 @@ public final class Verify {
 
 			if (!executable) {
 				String contents = new String(FileCopyUtils.copyToByteArray(this.file));
-				assertThat(contents).as("Is executable").startsWith(new String(new byte[] { 0x50, 0x4b, 0x03, 0x04 }));
+				assertThat(contents).as("Is executable").startsWith(new String(new byte[]{0x50, 0x4b, 0x03, 0x04}));
 			}
 
 			try (ZipFile zipFile = new ZipFile(this.file)) {

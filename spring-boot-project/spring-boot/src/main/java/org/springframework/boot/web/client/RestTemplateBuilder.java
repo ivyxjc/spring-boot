@@ -16,19 +16,6 @@
 
 package org.springframework.boot.web.client;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.client.AbstractClientHttpRequestFactoryWrapper;
 import org.springframework.http.client.ClientHttpRequestFactory;
@@ -41,6 +28,14 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.time.Duration;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Builder that can be used to configure and create a {@link RestTemplate}. Provides
@@ -84,8 +79,9 @@ public class RestTemplateBuilder {
 
 	/**
 	 * Create a new {@link RestTemplateBuilder} instance.
+	 *
 	 * @param customizers any {@link RestTemplateCustomizer RestTemplateCustomizers} that
-	 * should be applied when the {@link RestTemplate} is built
+	 *                    should be applied when the {@link RestTemplate} is built
 	 */
 	public RestTemplateBuilder(RestTemplateCustomizer... customizers) {
 		Assert.notNull(customizers, "Customizers must not be null");
@@ -102,10 +98,10 @@ public class RestTemplateBuilder {
 	}
 
 	private RestTemplateBuilder(boolean detectRequestFactory, String rootUri,
-			Set<HttpMessageConverter<?>> messageConverters, Supplier<ClientHttpRequestFactory> requestFactorySupplier,
-			UriTemplateHandler uriTemplateHandler, ResponseErrorHandler errorHandler,
-			BasicAuthenticationInterceptor basicAuthentication, Set<RestTemplateCustomizer> restTemplateCustomizers,
-			RequestFactoryCustomizer requestFactoryCustomizer, Set<ClientHttpRequestInterceptor> interceptors) {
+								Set<HttpMessageConverter<?>> messageConverters, Supplier<ClientHttpRequestFactory> requestFactorySupplier,
+								UriTemplateHandler uriTemplateHandler, ResponseErrorHandler errorHandler,
+								BasicAuthenticationInterceptor basicAuthentication, Set<RestTemplateCustomizer> restTemplateCustomizers,
+								RequestFactoryCustomizer requestFactoryCustomizer, Set<ClientHttpRequestInterceptor> interceptors) {
 		this.detectRequestFactory = detectRequestFactory;
 		this.rootUri = rootUri;
 		this.messageConverters = messageConverters;
@@ -121,8 +117,9 @@ public class RestTemplateBuilder {
 	/**
 	 * Set if the {@link ClientHttpRequestFactory} should be detected based on the
 	 * classpath. Default if {@code true}.
+	 *
 	 * @param detectRequestFactory if the {@link ClientHttpRequestFactory} should be
-	 * detected
+	 *                             detected
 	 * @return a new builder instance
 	 */
 	public RestTemplateBuilder detectRequestFactory(boolean detectRequestFactory) {
@@ -137,6 +134,7 @@ public class RestTemplateBuilder {
 	 * {@link RestTemplate}, the root URL will only apply when {@code String} variants of
 	 * the {@link RestTemplate} methods are used for specifying the request URL. See
 	 * {@link RootUriTemplateHandler} for details.
+	 *
 	 * @param rootUri the root URI or {@code null}
 	 * @return a new builder instance
 	 */
@@ -151,6 +149,7 @@ public class RestTemplateBuilder {
 	 * the {@link RestTemplate}. Setting this value will replace any previously configured
 	 * converters and any converters configured on the builder will replace RestTemplate's
 	 * default converters.
+	 *
 	 * @param messageConverters the converters to set
 	 * @return a new builder instance
 	 * @see #additionalMessageConverters(HttpMessageConverter...)
@@ -165,6 +164,7 @@ public class RestTemplateBuilder {
 	 * the {@link RestTemplate}. Setting this value will replace any previously configured
 	 * converters and any converters configured on the builder will replace RestTemplate's
 	 * default converters.
+	 *
 	 * @param messageConverters the converters to set
 	 * @return a new builder instance
 	 * @see #additionalMessageConverters(HttpMessageConverter...)
@@ -181,6 +181,7 @@ public class RestTemplateBuilder {
 	 * Add additional {@link HttpMessageConverter HttpMessageConverters} that should be
 	 * used with the {@link RestTemplate}. Any converters configured on the builder will
 	 * replace RestTemplate's default converters.
+	 *
 	 * @param messageConverters the converters to add
 	 * @return a new builder instance
 	 * @see #messageConverters(HttpMessageConverter...)
@@ -194,6 +195,7 @@ public class RestTemplateBuilder {
 	 * Add additional {@link HttpMessageConverter HttpMessageConverters} that should be
 	 * used with the {@link RestTemplate}. Any converters configured on the builder will
 	 * replace RestTemplate's default converters.
+	 *
 	 * @param messageConverters the converters to add
 	 * @return a new builder instance
 	 * @see #messageConverters(HttpMessageConverter...)
@@ -211,6 +213,7 @@ public class RestTemplateBuilder {
 	 * Set the {@link HttpMessageConverter HttpMessageConverters} that should be used with
 	 * the {@link RestTemplate} to the default set. Calling this method will replace any
 	 * previously defined converters.
+	 *
 	 * @return a new builder instance
 	 * @see #messageConverters(HttpMessageConverter...)
 	 */
@@ -225,10 +228,11 @@ public class RestTemplateBuilder {
 	 * Set the {@link ClientHttpRequestInterceptor ClientHttpRequestInterceptors} that
 	 * should be used with the {@link RestTemplate}. Setting this value will replace any
 	 * previously defined interceptors.
+	 *
 	 * @param interceptors the interceptors to set
 	 * @return a new builder instance
-	 * @since 1.4.1
 	 * @see #additionalInterceptors(ClientHttpRequestInterceptor...)
+	 * @since 1.4.1
 	 */
 	public RestTemplateBuilder interceptors(ClientHttpRequestInterceptor... interceptors) {
 		Assert.notNull(interceptors, "interceptors must not be null");
@@ -239,10 +243,11 @@ public class RestTemplateBuilder {
 	 * Set the {@link ClientHttpRequestInterceptor ClientHttpRequestInterceptors} that
 	 * should be used with the {@link RestTemplate}. Setting this value will replace any
 	 * previously defined interceptors.
+	 *
 	 * @param interceptors the interceptors to set
 	 * @return a new builder instance
-	 * @since 1.4.1
 	 * @see #additionalInterceptors(ClientHttpRequestInterceptor...)
+	 * @since 1.4.1
 	 */
 	public RestTemplateBuilder interceptors(Collection<ClientHttpRequestInterceptor> interceptors) {
 		Assert.notNull(interceptors, "interceptors must not be null");
@@ -255,10 +260,11 @@ public class RestTemplateBuilder {
 	/**
 	 * Add additional {@link ClientHttpRequestInterceptor ClientHttpRequestInterceptors}
 	 * that should be used with the {@link RestTemplate}.
+	 *
 	 * @param interceptors the interceptors to add
 	 * @return a new builder instance
-	 * @since 1.4.1
 	 * @see #interceptors(ClientHttpRequestInterceptor...)
+	 * @since 1.4.1
 	 */
 	public RestTemplateBuilder additionalInterceptors(ClientHttpRequestInterceptor... interceptors) {
 		Assert.notNull(interceptors, "interceptors must not be null");
@@ -268,10 +274,11 @@ public class RestTemplateBuilder {
 	/**
 	 * Add additional {@link ClientHttpRequestInterceptor ClientHttpRequestInterceptors}
 	 * that should be used with the {@link RestTemplate}.
+	 *
 	 * @param interceptors the interceptors to add
 	 * @return a new builder instance
-	 * @since 1.4.1
 	 * @see #interceptors(ClientHttpRequestInterceptor...)
+	 * @since 1.4.1
 	 */
 	public RestTemplateBuilder additionalInterceptors(Collection<? extends ClientHttpRequestInterceptor> interceptors) {
 		Assert.notNull(interceptors, "interceptors must not be null");
@@ -283,6 +290,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Set the {@link ClientHttpRequestFactory} class that should be used with the
 	 * {@link RestTemplate}.
+	 *
 	 * @param requestFactory the request factory to use
 	 * @return a new builder instance
 	 */
@@ -296,8 +304,7 @@ public class RestTemplateBuilder {
 			Constructor<?> constructor = requestFactory.getDeclaredConstructor();
 			constructor.setAccessible(true);
 			return (ClientHttpRequestFactory) constructor.newInstance();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -305,6 +312,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Set the {@code Supplier} of {@link ClientHttpRequestFactory} that should be called
 	 * each time we {@link #build()} a new {@link RestTemplate} instance.
+	 *
 	 * @param requestFactorySupplier the supplier for the request factory
 	 * @return a new builder instance
 	 * @since 2.0.0
@@ -319,6 +327,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Set the {@link UriTemplateHandler} that should be used with the
 	 * {@link RestTemplate}.
+	 *
 	 * @param uriTemplateHandler the URI template handler to use
 	 * @return a new builder instance
 	 */
@@ -332,6 +341,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Set the {@link ResponseErrorHandler} that should be used with the
 	 * {@link RestTemplate}.
+	 *
 	 * @param errorHandler the error handler to use
 	 * @return a new builder instance
 	 */
@@ -345,6 +355,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Add HTTP basic authentication to requests. See
 	 * {@link BasicAuthenticationInterceptor} for details.
+	 *
 	 * @param username the user name
 	 * @param password the password
 	 * @return a new builder instance
@@ -359,6 +370,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Add HTTP basic authentication to requests. See
 	 * {@link BasicAuthenticationInterceptor} for details.
+	 *
 	 * @param username the user name
 	 * @param password the password
 	 * @return a new builder instance
@@ -376,6 +388,7 @@ public class RestTemplateBuilder {
 	 * applied to the {@link RestTemplate}. Customizers are applied in the order that they
 	 * were added after builder configuration has been applied. Setting this value will
 	 * replace any previously configured customizers.
+	 *
 	 * @param restTemplateCustomizers the customizers to set
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(RestTemplateCustomizer...)
@@ -390,6 +403,7 @@ public class RestTemplateBuilder {
 	 * applied to the {@link RestTemplate}. Customizers are applied in the order that they
 	 * were added after builder configuration has been applied. Setting this value will
 	 * replace any previously configured customizers.
+	 *
 	 * @param restTemplateCustomizers the customizers to set
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(RestTemplateCustomizer...)
@@ -406,6 +420,7 @@ public class RestTemplateBuilder {
 	 * Add {@link RestTemplateCustomizer RestTemplateCustomizers} that should be applied
 	 * to the {@link RestTemplate}. Customizers are applied in the order that they were
 	 * added after builder configuration has been applied.
+	 *
 	 * @param restTemplateCustomizers the customizers to add
 	 * @return a new builder instance
 	 * @see #customizers(RestTemplateCustomizer...)
@@ -419,6 +434,7 @@ public class RestTemplateBuilder {
 	 * Add {@link RestTemplateCustomizer RestTemplateCustomizers} that should be applied
 	 * to the {@link RestTemplate}. Customizers are applied in the order that they were
 	 * added after builder configuration has been applied.
+	 *
 	 * @param customizers the customizers to add
 	 * @return a new builder instance
 	 * @see #customizers(RestTemplateCustomizer...)
@@ -432,6 +448,7 @@ public class RestTemplateBuilder {
 
 	/**
 	 * Sets the connection timeout on the underlying {@link ClientHttpRequestFactory}.
+	 *
 	 * @param connectTimeout the connection timeout
 	 * @return a new builder instance.
 	 * @since 2.1.0
@@ -446,6 +463,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Sets the connection timeout in milliseconds on the underlying
 	 * {@link ClientHttpRequestFactory}.
+	 *
 	 * @param connectTimeout the connection timeout in milliseconds
 	 * @return a new builder instance.
 	 * @deprecated since 2.1.0 in favor of {@link #setConnectTimeout(Duration)}
@@ -457,6 +475,7 @@ public class RestTemplateBuilder {
 
 	/**
 	 * Sets the read timeout on the underlying {@link ClientHttpRequestFactory}.
+	 *
 	 * @param readTimeout the read timeout
 	 * @return a new builder instance.
 	 * @since 2.1.0
@@ -471,6 +490,7 @@ public class RestTemplateBuilder {
 	/**
 	 * Sets the read timeout in milliseconds on the underlying
 	 * {@link ClientHttpRequestFactory}.
+	 *
 	 * @param readTimeout the read timeout in milliseconds
 	 * @return a new builder instance.
 	 * @deprecated since 2.1.0 in favor of {@link #setReadTimeout(Duration)}
@@ -482,6 +502,7 @@ public class RestTemplateBuilder {
 
 	/**
 	 * Build a new {@link RestTemplate} instance and configure it using this builder.
+	 *
 	 * @return a configured {@link RestTemplate} instance.
 	 * @see #build(Class)
 	 * @see #configure(RestTemplate)
@@ -493,7 +514,8 @@ public class RestTemplateBuilder {
 	/**
 	 * Build a new {@link RestTemplate} instance of the specified type and configure it
 	 * using this builder.
-	 * @param <T> the type of rest template
+	 *
+	 * @param <T>               the type of rest template
 	 * @param restTemplateClass the template type to create
 	 * @return a configured {@link RestTemplate} instance.
 	 * @see RestTemplateBuilder#build()
@@ -506,7 +528,8 @@ public class RestTemplateBuilder {
 
 	/**
 	 * Configure the provided {@link RestTemplate} instance using this builder.
-	 * @param <T> the type of rest template
+	 *
+	 * @param <T>          the type of rest template
 	 * @param restTemplate the {@link RestTemplate} to configure
 	 * @return the rest template instance
 	 * @see RestTemplateBuilder#build()
@@ -542,8 +565,7 @@ public class RestTemplateBuilder {
 		ClientHttpRequestFactory requestFactory = null;
 		if (this.requestFactorySupplier != null) {
 			requestFactory = this.requestFactorySupplier.get();
-		}
-		else if (this.detectRequestFactory) {
+		} else if (this.detectRequestFactory) {
 			requestFactory = new ClientHttpRequestFactorySupplier().get();
 		}
 		if (requestFactory != null) {

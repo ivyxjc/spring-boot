@@ -16,11 +16,11 @@
 
 package org.springframework.boot.devtools.tunnel.client;
 
+import org.springframework.util.Assert;
+
 import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.springframework.util.Assert;
 
 /**
  * A collection of {@link TunnelClientListener}.

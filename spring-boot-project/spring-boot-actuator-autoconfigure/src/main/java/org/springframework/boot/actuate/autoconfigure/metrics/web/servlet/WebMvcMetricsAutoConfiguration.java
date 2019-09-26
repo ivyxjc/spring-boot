@@ -16,11 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.web.servlet;
 
-import javax.servlet.DispatcherType;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties.Web.Server;
@@ -46,6 +43,8 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.DispatcherType;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for instrumentation of Spring Web
  * MVC servlet-based request mappings.
@@ -55,7 +54,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @since 2.0.0
  */
 @Configuration
-@AutoConfigureAfter({ MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class })
+@AutoConfigureAfter({MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnClass(DispatcherServlet.class)
 @ConditionalOnBean(MeterRegistry.class)
@@ -76,7 +75,7 @@ public class WebMvcMetricsAutoConfiguration {
 
 	@Bean
 	public FilterRegistrationBean<WebMvcMetricsFilter> webMvcMetricsFilter(MeterRegistry registry,
-			WebMvcTagsProvider tagsProvider) {
+																		   WebMvcTagsProvider tagsProvider) {
 		Server serverProperties = this.properties.getWeb().getServer();
 		WebMvcMetricsFilter filter = new WebMvcMetricsFilter(registry, tagsProvider,
 				serverProperties.getRequestsMetricName(), serverProperties.isAutoTimeRequests());
@@ -98,7 +97,7 @@ public class WebMvcMetricsAutoConfiguration {
 
 	@Bean
 	public MetricsWebMvcConfigurer metricsWebMvcConfigurer(MeterRegistry meterRegistry,
-			WebMvcTagsProvider tagsProvider) {
+														   WebMvcTagsProvider tagsProvider) {
 		return new MetricsWebMvcConfigurer(meterRegistry, tagsProvider);
 	}
 

@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.kafka;
 
-import java.util.Map;
-
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -33,6 +30,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.kafka.annotation.KafkaStreamsDefaultConfiguration;
 import org.springframework.kafka.config.KafkaStreamsConfiguration;
 import org.springframework.kafka.config.StreamsBuilderFactoryBean;
+
+import java.util.Map;
 
 /**
  * Configuration for Kafka Streams annotation-driven support.
@@ -68,7 +67,8 @@ class KafkaStreamsAnnotationDrivenConfiguration {
 
 	@Bean
 	public KafkaStreamsFactoryBeanConfigurer kafkaStreamsFactoryBeanConfigurer(
-			@Qualifier(KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_BUILDER_BEAN_NAME) StreamsBuilderFactoryBean factoryBean) {
+			@Qualifier(KafkaStreamsDefaultConfiguration.DEFAULT_STREAMS_BUILDER_BEAN_NAME)
+					StreamsBuilderFactoryBean factoryBean) {
 		return new KafkaStreamsFactoryBeanConfigurer(this.properties, factoryBean);
 	}
 

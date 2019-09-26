@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.orm.jpa;
 
 import org.ehcache.jsr107.EhcacheCachingProvider;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;

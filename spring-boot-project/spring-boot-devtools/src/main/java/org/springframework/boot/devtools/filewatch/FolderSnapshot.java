@@ -16,19 +16,12 @@
 
 package org.springframework.boot.devtools.filewatch;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.boot.devtools.filewatch.ChangedFile.Type;
 import org.springframework.util.Assert;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.*;
 
 /**
  * A snapshot of a folder at a given point in time.
@@ -47,6 +40,7 @@ class FolderSnapshot {
 
 	/**
 	 * Create a new {@link FolderSnapshot} for the given folder.
+	 *
 	 * @param folder the source folder
 	 */
 	FolderSnapshot(File folder) {
@@ -65,8 +59,7 @@ class FolderSnapshot {
 			for (File child : children) {
 				if (child.isDirectory() && !DOT_FOLDERS.contains(child.getName())) {
 					collectFiles(child, result);
-				}
-				else if (child.isFile()) {
+				} else if (child.isFile()) {
 					result.add(new FileSnapshot(child));
 				}
 			}
@@ -84,8 +77,7 @@ class FolderSnapshot {
 				FileSnapshot previousFile = previousFiles.remove(currentFile.getFile());
 				if (previousFile == null) {
 					changes.add(new ChangedFile(folder, currentFile.getFile(), Type.ADD));
-				}
-				else if (!previousFile.equals(currentFile)) {
+				} else if (!previousFile.equals(currentFile)) {
 					changes.add(new ChangedFile(folder, currentFile.getFile(), Type.MODIFY));
 				}
 			}
@@ -155,6 +147,7 @@ class FolderSnapshot {
 
 	/**
 	 * Return the source folder of this snapshot.
+	 *
 	 * @return the source folder
 	 */
 	public File getFolder() {

@@ -32,7 +32,7 @@ class RestartLauncher extends Thread {
 	private Throwable error;
 
 	RestartLauncher(ClassLoader classLoader, String mainClassName, String[] args,
-			UncaughtExceptionHandler exceptionHandler) {
+					UncaughtExceptionHandler exceptionHandler) {
 		this.mainClassName = mainClassName;
 		this.args = args;
 		setName("restartedMain");
@@ -46,9 +46,8 @@ class RestartLauncher extends Thread {
 		try {
 			Class<?> mainClass = getContextClassLoader().loadClass(this.mainClassName);
 			Method mainMethod = mainClass.getDeclaredMethod("main", String[].class);
-			mainMethod.invoke(null, new Object[] { this.args });
-		}
-		catch (Throwable ex) {
+			mainMethod.invoke(null, new Object[]{this.args});
+		} catch (Throwable ex) {
 			this.error = ex;
 			getUncaughtExceptionHandler().uncaughtException(this, ex);
 		}

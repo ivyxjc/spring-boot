@@ -16,13 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint.annotation;
 
-import java.lang.reflect.Method;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -46,7 +45,7 @@ public class DiscoveredOperationMethodTests {
 	public void getProducesMediaTypesShouldReturnMediaTypes() {
 		Method method = ReflectionUtils.findMethod(getClass(), "example");
 		AnnotationAttributes annotationAttributes = new AnnotationAttributes();
-		String[] produces = new String[] { "application/json" };
+		String[] produces = new String[]{"application/json"};
 		annotationAttributes.put("produces", produces);
 		DiscoveredOperationMethod discovered = new DiscoveredOperationMethod(method, OperationType.READ,
 				annotationAttributes);

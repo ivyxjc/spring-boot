@@ -34,26 +34,10 @@ public class ConfigurationPropertiesBindException extends BeanCreationException 
 	private final ConfigurationProperties annotation;
 
 	ConfigurationPropertiesBindException(String beanName, Object bean, ConfigurationProperties annotation,
-			Exception cause) {
+										 Exception cause) {
 		super(beanName, getMessage(bean, annotation), cause);
 		this.beanType = bean.getClass();
 		this.annotation = annotation;
-	}
-
-	/**
-	 * Return the bean type that was being bound.
-	 * @return the bean type
-	 */
-	public Class<?> getBeanType() {
-		return this.beanType;
-	}
-
-	/**
-	 * Return the configuration properties annotation that triggered the binding.
-	 * @return the configuration properties annotation
-	 */
-	public ConfigurationProperties getAnnotation() {
-		return this.annotation;
 	}
 
 	private static String getMessage(Object bean, ConfigurationProperties annotation) {
@@ -63,6 +47,24 @@ public class ConfigurationPropertiesBindException extends BeanCreationException 
 		message.append(", ignoreInvalidFields=").append(annotation.ignoreInvalidFields());
 		message.append(", ignoreUnknownFields=").append(annotation.ignoreUnknownFields());
 		return message.toString();
+	}
+
+	/**
+	 * Return the bean type that was being bound.
+	 *
+	 * @return the bean type
+	 */
+	public Class<?> getBeanType() {
+		return this.beanType;
+	}
+
+	/**
+	 * Return the configuration properties annotation that triggered the binding.
+	 *
+	 * @return the configuration properties annotation
+	 */
+	public ConfigurationProperties getAnnotation() {
+		return this.annotation;
 	}
 
 }

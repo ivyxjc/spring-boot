@@ -18,7 +18,6 @@ package org.springframework.boot.test.json;
 
 import com.jayway.jsonpath.Configuration;
 import org.assertj.core.api.AssertProvider;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
 
@@ -44,9 +43,10 @@ public final class JsonContent<T> implements AssertProvider<JsonContentAssert> {
 
 	/**
 	 * Create a new {@link JsonContent} instance.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param type the type under test (or {@code null} if not known)
-	 * @param json the actual JSON content
+	 * @param type              the type under test (or {@code null} if not known)
+	 * @param json              the actual JSON content
 	 */
 	public JsonContent(Class<?> resourceLoadClass, ResolvableType type, String json) {
 		this(resourceLoadClass, type, json, Configuration.defaultConfiguration());
@@ -54,10 +54,11 @@ public final class JsonContent<T> implements AssertProvider<JsonContentAssert> {
 
 	/**
 	 * Create a new {@link JsonContent} instance.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param type the type under test (or {@code null} if not known)
-	 * @param json the actual JSON content
-	 * @param configuration the JsonPath configuration
+	 * @param type              the type under test (or {@code null} if not known)
+	 * @param json              the actual JSON content
+	 * @param configuration     the JsonPath configuration
 	 */
 	JsonContent(Class<?> resourceLoadClass, ResolvableType type, String json, Configuration configuration) {
 		Assert.notNull(resourceLoadClass, "ResourceLoadClass must not be null");
@@ -72,6 +73,7 @@ public final class JsonContent<T> implements AssertProvider<JsonContentAssert> {
 	/**
 	 * Use AssertJ's {@link org.assertj.core.api.Assertions#assertThat assertThat}
 	 * instead.
+	 *
 	 * @deprecated in favor of AssertJ's {@link org.assertj.core.api.Assertions#assertThat
 	 * assertThat}
 	 */
@@ -83,6 +85,7 @@ public final class JsonContent<T> implements AssertProvider<JsonContentAssert> {
 
 	/**
 	 * Return the actual JSON content string.
+	 *
 	 * @return the JSON content
 	 */
 	public String getJson() {

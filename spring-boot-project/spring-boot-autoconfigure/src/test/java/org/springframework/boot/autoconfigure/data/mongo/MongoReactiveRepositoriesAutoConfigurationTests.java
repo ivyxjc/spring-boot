@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.mongo;
 
-import java.util.Set;
-
 import com.mongodb.reactivestreams.client.MongoClient;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -37,6 +34,8 @@ import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.mongodb.repository.config.EnableReactiveMongoRepositories;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

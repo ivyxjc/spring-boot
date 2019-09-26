@@ -33,6 +33,7 @@ public interface FailureHandler {
 	/**
 	 * Handle a run failure. Implementations may block, for example to wait until specific
 	 * files are updated.
+	 *
 	 * @param failure the exception
 	 * @return the outcome
 	 */

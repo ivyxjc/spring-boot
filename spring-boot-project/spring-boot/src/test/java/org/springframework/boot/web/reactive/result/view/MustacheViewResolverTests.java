@@ -16,12 +16,11 @@
 
 package org.springframework.boot.web.reactive.result.view;
 
-import java.time.Duration;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.context.support.GenericApplicationContext;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

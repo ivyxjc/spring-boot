@@ -22,17 +22,18 @@ import org.springframework.util.ClassUtils;
  * Factory to create a {@link JsonParser}.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see JacksonJsonParser
  * @see GsonJsonParser
  * @see YamlJsonParser
  * @see BasicJsonParser
+ * @since 1.0.0
  */
 public abstract class JsonParserFactory {
 
 	/**
 	 * Static factory for the "best" JSON parser available on the classpath. Tries
 	 * Jackson, then Gson, Snake YAML, and then falls back to the {@link BasicJsonParser}.
+	 *
 	 * @return a {@link JsonParser}
 	 */
 	public static JsonParser getJsonParser() {

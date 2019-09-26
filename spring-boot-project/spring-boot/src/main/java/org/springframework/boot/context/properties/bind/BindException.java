@@ -43,8 +43,17 @@ public class BindException extends RuntimeException implements OriginProvider {
 		this.property = property;
 	}
 
+	private static String buildMessage(ConfigurationPropertyName name, Bindable<?> target) {
+		StringBuilder message = new StringBuilder();
+		message.append("Failed to bind properties");
+		message.append((name != null) ? " under '" + name + "'" : "");
+		message.append(" to ").append(target.getType());
+		return message.toString();
+	}
+
 	/**
 	 * Return the name of the configuration property being bound.
+	 *
 	 * @return the configuration property name
 	 */
 	public ConfigurationPropertyName getName() {
@@ -53,6 +62,7 @@ public class BindException extends RuntimeException implements OriginProvider {
 
 	/**
 	 * Return the target being bound.
+	 *
 	 * @return the bind target
 	 */
 	public Bindable<?> getTarget() {
@@ -61,6 +71,7 @@ public class BindException extends RuntimeException implements OriginProvider {
 
 	/**
 	 * Return the configuration property name of the item that was being bound.
+	 *
 	 * @return the configuration property name
 	 */
 	public ConfigurationProperty getProperty() {
@@ -70,14 +81,6 @@ public class BindException extends RuntimeException implements OriginProvider {
 	@Override
 	public Origin getOrigin() {
 		return Origin.from(this.name);
-	}
-
-	private static String buildMessage(ConfigurationPropertyName name, Bindable<?> target) {
-		StringBuilder message = new StringBuilder();
-		message.append("Failed to bind properties");
-		message.append((name != null) ? " under '" + name + "'" : "");
-		message.append(" to ").append(target.getType());
-		return message.toString();
 	}
 
 }

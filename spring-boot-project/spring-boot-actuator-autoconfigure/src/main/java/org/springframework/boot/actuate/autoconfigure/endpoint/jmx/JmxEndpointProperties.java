@@ -16,14 +16,14 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.jmx;
 
-import java.util.LinkedHashSet;
-import java.util.Properties;
-import java.util.Set;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
+
+import java.util.LinkedHashSet;
+import java.util.Properties;
+import java.util.Set;
 
 /**
  * Configuration properties for JMX export of endpoints.
@@ -35,22 +35,19 @@ import org.springframework.util.StringUtils;
 public class JmxEndpointProperties {
 
 	private final Exposure exposure = new Exposure();
-
-	/**
-	 * Endpoints JMX domain name. Fallback to 'spring.jmx.default-domain' if set.
-	 */
-	private String domain = "org.springframework.boot";
-
-	/**
-	 * Whether unique runtime object names should be ensured.
-	 */
-	private Boolean uniqueNames;
-
 	/**
 	 * Additional static properties to append to all ObjectNames of MBeans representing
 	 * Endpoints.
 	 */
 	private final Properties staticNames = new Properties();
+	/**
+	 * Endpoints JMX domain name. Fallback to 'spring.jmx.default-domain' if set.
+	 */
+	private String domain = "org.springframework.boot";
+	/**
+	 * Whether unique runtime object names should be ensured.
+	 */
+	private Boolean uniqueNames;
 
 	public JmxEndpointProperties(Environment environment) {
 		String defaultDomain = environment.getProperty("spring.jmx.default-domain");

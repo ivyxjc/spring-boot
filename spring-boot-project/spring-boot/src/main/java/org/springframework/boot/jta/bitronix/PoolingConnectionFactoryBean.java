@@ -16,22 +16,20 @@
 
 package org.springframework.boot.jta.bitronix;
 
-import java.util.Properties;
-
-import javax.jms.JMSException;
-import javax.jms.XAConnection;
-import javax.jms.XAConnectionFactory;
-import javax.jms.XAJMSContext;
-
 import bitronix.tm.resource.common.ResourceBean;
 import bitronix.tm.resource.common.XAStatefulHolder;
 import bitronix.tm.resource.jms.PoolingConnectionFactory;
-
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.StringUtils;
+
+import javax.jms.JMSException;
+import javax.jms.XAConnection;
+import javax.jms.XAConnectionFactory;
+import javax.jms.XAJMSContext;
+import java.util.Properties;
 
 /**
  * Spring friendly version of {@link PoolingConnectionFactory}. Provides sensible defaults
@@ -65,8 +63,7 @@ public class PoolingConnectionFactoryBean extends PoolingConnectionFactory
 		source.set(this);
 		try {
 			super.init();
-		}
-		finally {
+		} finally {
 			source.remove();
 		}
 	}
@@ -89,19 +86,20 @@ public class PoolingConnectionFactoryBean extends PoolingConnectionFactory
 		close();
 	}
 
+	protected final XAConnectionFactory getConnectionFactory() {
+		return this.connectionFactory;
+	}
+
 	/**
 	 * Set the {@link XAConnectionFactory} directly, instead of calling
 	 * {@link #setClassName(String)}.
+	 *
 	 * @param connectionFactory the connection factory to use
 	 */
 	public void setConnectionFactory(XAConnectionFactory connectionFactory) {
 		this.connectionFactory = connectionFactory;
 		setClassName(DirectXAConnectionFactory.class.getName());
 		setDriverProperties(new Properties());
-	}
-
-	protected final XAConnectionFactory getConnectionFactory() {
-		return this.connectionFactory;
 	}
 
 	@Override

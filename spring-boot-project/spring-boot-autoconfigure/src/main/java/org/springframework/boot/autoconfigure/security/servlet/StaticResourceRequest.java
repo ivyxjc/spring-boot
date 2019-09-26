@@ -16,16 +16,6 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.EnumSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
 import org.springframework.boot.security.servlet.ApplicationContextRequestMatcher;
@@ -36,14 +26,23 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.EnumSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Used to create a {@link RequestMatcher} for static resources in commonly used
  * locations. Returned by {@link PathRequest#toStaticResources()}.
  *
  * @author Madhura Bhave
  * @author Phillip Webb
- * @since 2.0.0
  * @see PathRequest
+ * @since 2.0.0
  */
 public final class StaticResourceRequest {
 
@@ -60,6 +59,7 @@ public final class StaticResourceRequest {
 	 * example: <pre class="code">
 	 * PathRequest.toStaticResources().atCommonLocations().excluding(StaticResourceLocation.CSS)
 	 * </pre>
+	 *
 	 * @return the configured {@link RequestMatcher}
 	 */
 	public StaticResourceRequestMatcher atCommonLocations() {
@@ -71,8 +71,9 @@ public final class StaticResourceRequest {
 	 * Locations}. For example: <pre class="code">
 	 * PathRequest.toStaticResources().at(StaticResourceLocation.CSS, StaticResourceLocation.JAVA_SCRIPT)
 	 * </pre>
+	 *
 	 * @param first the first location to include
-	 * @param rest additional locations to include
+	 * @param rest  additional locations to include
 	 * @return the configured {@link RequestMatcher}
 	 */
 	public StaticResourceRequestMatcher at(StaticResourceLocation first, StaticResourceLocation... rest) {
@@ -84,6 +85,7 @@ public final class StaticResourceRequest {
 	 * Locations}. For example: <pre class="code">
 	 * PathRequest.toStaticResources().at(locations)
 	 * </pre>
+	 *
 	 * @param locations the locations to include
 	 * @return the configured {@link RequestMatcher}
 	 */
@@ -111,8 +113,9 @@ public final class StaticResourceRequest {
 		/**
 		 * Return a new {@link StaticResourceRequestMatcher} based on this one but
 		 * excluding the specified locations.
+		 *
 		 * @param first the first location to exclude
-		 * @param rest additional locations to exclude
+		 * @param rest  additional locations to exclude
 		 * @return a new {@link StaticResourceRequestMatcher}
 		 */
 		public StaticResourceRequestMatcher excluding(StaticResourceLocation first, StaticResourceLocation... rest) {
@@ -122,6 +125,7 @@ public final class StaticResourceRequest {
 		/**
 		 * Return a new {@link StaticResourceRequestMatcher} based on this one but
 		 * excluding the specified locations.
+		 *
 		 * @param locations the locations to exclude
 		 * @return a new {@link StaticResourceRequestMatcher}
 		 */

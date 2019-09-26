@@ -16,12 +16,7 @@
 
 package org.springframework.boot.autoconfigure.web.reactive.function.client;
 
-import java.net.URI;
-import java.time.Duration;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.web.codec.CodecCustomizer;
@@ -33,14 +28,16 @@ import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.client.reactive.ClientHttpResponse;
 import org.springframework.http.codec.CodecConfigurer;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+import java.net.URI;
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link WebClientAutoConfiguration}
@@ -115,6 +112,10 @@ public class WebClientAutoConfigurationTests {
 				});
 	}
 
+	interface MyWebClientBuilder extends WebClient.Builder {
+
+	}
+
 	@Configuration
 	static class CodecConfiguration {
 
@@ -142,10 +143,6 @@ public class WebClientAutoConfigurationTests {
 		public MyWebClientBuilder myWebClientBuilder() {
 			return mock(MyWebClientBuilder.class);
 		}
-
-	}
-
-	interface MyWebClientBuilder extends WebClient.Builder {
 
 	}
 

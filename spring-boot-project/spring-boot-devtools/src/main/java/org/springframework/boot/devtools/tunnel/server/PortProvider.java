@@ -28,6 +28,7 @@ public interface PortProvider {
 
 	/**
 	 * Return the port number.
+	 *
 	 * @return the port number
 	 */
 	int getPort();

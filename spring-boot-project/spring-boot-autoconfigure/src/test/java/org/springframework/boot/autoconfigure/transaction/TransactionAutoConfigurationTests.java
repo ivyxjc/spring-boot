@@ -16,14 +16,8 @@
 
 package org.springframework.boot.autoconfigure.transaction;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -39,6 +33,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -68,7 +66,7 @@ public class TransactionAutoConfigurationTests {
 
 	@Test
 	public void singleTransactionManager() {
-		load(new Class<?>[] { DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class },
+		load(new Class<?>[]{DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class},
 				"spring.datasource.initialization-mode:never");
 		PlatformTransactionManager transactionManager = this.context.getBean(PlatformTransactionManager.class);
 		TransactionTemplate transactionTemplate = this.context.getBean(TransactionTemplate.class);
@@ -120,7 +118,7 @@ public class TransactionAutoConfigurationTests {
 
 	@Test
 	public void customEnableTransactionManagementTakesPrecedence() {
-		load(new Class<?>[] { CustomTransactionManagementConfiguration.class, TransactionManagersConfiguration.class },
+		load(new Class<?>[]{CustomTransactionManagementConfiguration.class, TransactionManagersConfiguration.class},
 				"spring.aop.proxy-target-class=true");
 		assertThat(this.context.getBean(AnotherService.class).isTransactionActive()).isTrue();
 		assertThat(this.context.getBeansOfType(AnotherServiceImpl.class)).hasSize(0);
@@ -128,7 +126,7 @@ public class TransactionAutoConfigurationTests {
 	}
 
 	private void load(Class<?> config, String... environment) {
-		load(new Class<?>[] { config }, environment);
+		load(new Class<?>[]{config}, environment);
 	}
 
 	private void load(Class<?>[] configs, String... environment) {
@@ -138,6 +136,19 @@ public class TransactionAutoConfigurationTests {
 		TestPropertyValues.of(environment).applyTo(applicationContext);
 		applicationContext.refresh();
 		this.context = applicationContext;
+	}
+
+	interface TransactionalService {
+
+		@Transactional
+		boolean isTransactionActive();
+
+	}
+
+	interface AnotherService {
+
+		boolean isTransactionActive();
+
 	}
 
 	@Configuration
@@ -213,25 +224,12 @@ public class TransactionAutoConfigurationTests {
 
 	}
 
-	interface TransactionalService {
-
-		@Transactional
-		boolean isTransactionActive();
-
-	}
-
 	static class TransactionalServiceImpl implements TransactionalService {
 
 		@Override
 		public boolean isTransactionActive() {
 			return TransactionSynchronizationManager.isActualTransactionActive();
 		}
-
-	}
-
-	interface AnotherService {
-
-		boolean isTransactionActive();
 
 	}
 

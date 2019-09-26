@@ -16,10 +16,10 @@
 
 package org.springframework.boot.context.properties.source;
 
-import java.util.Collections;
-
 import org.junit.Test;
 import org.mockito.Answers;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

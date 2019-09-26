@@ -16,25 +16,10 @@
 
 package org.springframework.boot.autoconfigure.thymeleaf;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.Locale;
-
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 import org.junit.Rule;
 import org.junit.Test;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.context.IContext;
-import org.thymeleaf.extras.springsecurity5.util.SpringSecurityContextUtils;
-import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
-import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
-import org.thymeleaf.spring5.context.webflux.SpringWebFluxContext;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
-import org.thymeleaf.templateresolver.ITemplateResolver;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.test.rule.OutputCapture;
@@ -46,6 +31,20 @@ import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.context.IContext;
+import org.thymeleaf.extras.springsecurity5.util.SpringSecurityContextUtils;
+import org.thymeleaf.spring5.ISpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.SpringWebFluxTemplateEngine;
+import org.thymeleaf.spring5.context.webflux.SpringWebFluxContext;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring5.view.reactive.ThymeleafReactiveViewResolver;
+import org.thymeleaf.templateresolver.ITemplateResolver;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -105,7 +104,7 @@ public class ThymeleafReactiveAutoConfigurationTests {
 	public void overrideViewNames() {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.viewNames:foo,bar")
 				.run((context) -> assertThat(context.getBean(ThymeleafReactiveViewResolver.class).getViewNames())
-						.isEqualTo(new String[] { "foo", "bar" }));
+						.isEqualTo(new String[]{"foo", "bar"}));
 	}
 
 	@Test
@@ -113,21 +112,21 @@ public class ThymeleafReactiveAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.reactive.maxChunkSize:8KB")
 				.run((context) -> assertThat(
 						context.getBean(ThymeleafReactiveViewResolver.class).getResponseMaxChunkSizeBytes())
-								.isEqualTo(Integer.valueOf(8192)));
+						.isEqualTo(Integer.valueOf(8192)));
 	}
 
 	@Test
 	public void overrideFullModeViewNames() {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.reactive.fullModeViewNames:foo,bar").run(
 				(context) -> assertThat(context.getBean(ThymeleafReactiveViewResolver.class).getFullModeViewNames())
-						.isEqualTo(new String[] { "foo", "bar" }));
+						.isEqualTo(new String[]{"foo", "bar"}));
 	}
 
 	@Test
 	public void overrideChunkedModeViewNames() {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.reactive.chunkedModeViewNames:foo,bar").run(
 				(context) -> assertThat(context.getBean(ThymeleafReactiveViewResolver.class).getChunkedModeViewNames())
-						.isEqualTo(new String[] { "foo", "bar" }));
+						.isEqualTo(new String[]{"foo", "bar"}));
 	}
 
 	@Test
@@ -149,7 +148,7 @@ public class ThymeleafReactiveAutoConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.thymeleaf.render-hidden-markers-before-checkboxes:true")
 				.run((context) -> assertThat(
 						context.getBean(SpringWebFluxTemplateEngine.class).getRenderHiddenMarkersBeforeCheckboxes())
-								.isTrue());
+						.isTrue());
 	}
 
 	@Test
@@ -219,7 +218,7 @@ public class ThymeleafReactiveAutoConfigurationTests {
 		this.contextRunner.withUserConfiguration(LayoutDialectConfiguration.class)
 				.run((context) -> assertThat(
 						ReflectionTestUtils.getField(context.getBean(LayoutDialect.class), "sortingStrategy"))
-								.isInstanceOf(GroupingStrategy.class));
+						.isInstanceOf(GroupingStrategy.class));
 	}
 
 	@Configuration

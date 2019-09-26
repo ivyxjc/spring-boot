@@ -16,16 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.servlet;
 
-import java.io.File;
-
-import javax.servlet.Filter;
-
 import org.apache.catalina.Valve;
 import org.apache.catalina.valves.AccessLogValve;
 import org.eclipse.jetty.server.NCSARequestLog;
 import org.eclipse.jetty.server.RequestLog;
 import org.eclipse.jetty.server.Server;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
@@ -56,6 +51,9 @@ import org.springframework.core.Ordered;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.util.StringUtils;
+
+import javax.servlet.Filter;
+import java.io.File;
 
 /**
  * {@link ManagementContextConfiguration} for Servlet web endpoint infrastructure when a
@@ -96,7 +94,7 @@ class ServletManagementChildContextConfiguration {
 	}
 
 	@Configuration
-	@ConditionalOnClass({ EnableWebSecurity.class, Filter.class })
+	@ConditionalOnClass({EnableWebSecurity.class, Filter.class})
 	@ConditionalOnBean(name = BeanIds.SPRING_SECURITY_FILTER_CHAIN, search = SearchStrategy.ANCESTORS)
 	static class ServletManagementContextSecurityConfiguration {
 
@@ -119,7 +117,7 @@ class ServletManagementChildContextConfiguration {
 
 		@Override
 		protected void customize(ConfigurableServletWebServerFactory webServerFactory,
-				ManagementServerProperties managementServerProperties, ServerProperties serverProperties) {
+								 ManagementServerProperties managementServerProperties, ServerProperties serverProperties) {
 			super.customize(webServerFactory, managementServerProperties, serverProperties);
 			webServerFactory.setContextPath(managementServerProperties.getServlet().getContextPath());
 		}

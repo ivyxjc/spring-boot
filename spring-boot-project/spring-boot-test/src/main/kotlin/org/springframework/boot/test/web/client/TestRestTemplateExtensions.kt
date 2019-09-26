@@ -235,7 +235,7 @@ inline fun <reified T : Any> TestRestTemplate.postForEntity(url: URI, request: A
  */
 @Throws(RestClientException::class)
 inline fun <reified T : Any> TestRestTemplate.exchange(url: String, method: HttpMethod,
-		requestEntity: HttpEntity<*>? = null, vararg uriVariables: Any): ResponseEntity<T> =
+													   requestEntity: HttpEntity<*>? = null, vararg uriVariables: Any): ResponseEntity<T> =
 		exchange(url, method, requestEntity, object : ParameterizedTypeReference<T>() {}, *uriVariables)
 
 /**
@@ -248,7 +248,7 @@ inline fun <reified T : Any> TestRestTemplate.exchange(url: String, method: Http
  */
 @Throws(RestClientException::class)
 inline fun <reified T : Any> TestRestTemplate.exchange(url: String, method: HttpMethod,
-		requestEntity: HttpEntity<*>? = null, uriVariables: Map<String, *>): ResponseEntity<T> =
+													   requestEntity: HttpEntity<*>? = null, uriVariables: Map<String, *>): ResponseEntity<T> =
 		exchange(url, method, requestEntity, object : ParameterizedTypeReference<T>() {}, uriVariables)
 
 /**
@@ -261,7 +261,7 @@ inline fun <reified T : Any> TestRestTemplate.exchange(url: String, method: Http
  */
 @Throws(RestClientException::class)
 inline fun <reified T : Any> TestRestTemplate.exchange(url: URI, method: HttpMethod,
-		requestEntity: HttpEntity<*>? = null): ResponseEntity<T> =
+													   requestEntity: HttpEntity<*>? = null): ResponseEntity<T> =
 		exchange(url, method, requestEntity, object : ParameterizedTypeReference<T>() {})
 
 /**

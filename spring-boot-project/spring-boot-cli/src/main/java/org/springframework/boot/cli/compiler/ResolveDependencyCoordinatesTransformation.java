@@ -16,20 +16,15 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import groovy.lang.Grab;
 import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.transform.ASTTransformation;
-
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
 import org.springframework.core.annotation.Order;
+
+import java.util.*;
 
 /**
  * {@link ASTTransformation} to resolve {@link Grab} artifact coordinates.
@@ -87,8 +82,7 @@ public class ResolveDependencyCoordinatesTransformation extends AnnotatedNodeAST
 	private void applyGroupAndVersion(AnnotationNode annotation, String module) {
 		if (module != null) {
 			setMember(annotation, "module", module);
-		}
-		else {
+		} else {
 			Expression expression = annotation.getMembers().get("module");
 			module = (String) ((ConstantExpression) expression).getValue();
 		}

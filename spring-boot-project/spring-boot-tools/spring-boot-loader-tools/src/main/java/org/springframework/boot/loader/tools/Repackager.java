@@ -16,6 +16,13 @@
 
 package org.springframework.boot.loader.tools;
 
+import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
+import org.springframework.boot.loader.tools.JarWriter.EntryTransformer;
+import org.springframework.boot.loader.tools.JarWriter.UnpackHandler;
+import org.springframework.core.io.support.SpringFactoriesLoader;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -28,14 +35,6 @@ import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-
-import org.apache.commons.compress.archivers.jar.JarArchiveEntry;
-
-import org.springframework.boot.loader.tools.JarWriter.EntryTransformer;
-import org.springframework.boot.loader.tools.JarWriter.UnpackHandler;
-import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Utility class that can be used to repackage an archive so that it can be executed using
@@ -58,20 +57,15 @@ public class Repackager {
 
 	private static final String BOOT_CLASSES_ATTRIBUTE = "Spring-Boot-Classes";
 
-	private static final byte[] ZIP_FILE_HEADER = new byte[] { 'P', 'K', 3, 4 };
+	private static final byte[] ZIP_FILE_HEADER = new byte[]{'P', 'K', 3, 4};
 
 	private static final long FIND_WARNING_TIMEOUT = TimeUnit.SECONDS.toMillis(10);
 
 	private static final String SPRING_BOOT_APPLICATION_CLASS_NAME = "org.springframework.boot.autoconfigure.SpringBootApplication";
-
-	private List<MainClassTimeoutWarningListener> mainClassTimeoutListeners = new ArrayList<>();
-
-	private String mainClass;
-
-	private boolean backupSource = true;
-
 	private final File source;
-
+	private List<MainClassTimeoutWarningListener> mainClassTimeoutListeners = new ArrayList<>();
+	private String mainClass;
+	private boolean backupSource = true;
 	private Layout layout;
 
 	private LayoutFactory layoutFactory;
@@ -95,6 +89,7 @@ public class Repackager {
 	/**
 	 * Add a listener that will be triggered to display a warning if searching for the
 	 * main class takes too long.
+	 *
 	 * @param listener the listener to add
 	 */
 	public void addMainClassTimeoutWarningListener(MainClassTimeoutWarningListener listener) {
@@ -105,6 +100,7 @@ public class Repackager {
 	 * Sets the main class that should be run. If not specified the value from the
 	 * MANIFEST will be used, or if no manifest entry is found the archive will be
 	 * searched for a suitable class.
+	 *
 	 * @param mainClass the main class name
 	 */
 	public void setMainClass(String mainClass) {
@@ -113,6 +109,7 @@ public class Repackager {
 
 	/**
 	 * Sets if source files should be backed up when they would be overwritten.
+	 *
 	 * @param backupSource if source files should be backed up
 	 */
 	public void setBackupSource(boolean backupSource) {
@@ -121,6 +118,7 @@ public class Repackager {
 
 	/**
 	 * Sets the layout to use for the jar. Defaults to {@link Layouts#forFile(File)}.
+	 *
 	 * @param layout the layout
 	 */
 	public void setLayout(Layout layout) {
@@ -131,16 +129,8 @@ public class Repackager {
 	}
 
 	/**
-	 * Sets the layout factory for the jar. The factory can be used when no specific
-	 * layout is specified.
-	 * @param layoutFactory the layout factory to set
-	 */
-	public void setLayoutFactory(LayoutFactory layoutFactory) {
-		this.layoutFactory = layoutFactory;
-	}
-
-	/**
 	 * Repackage the source file so that it can be run using '{@literal java -jar}'.
+	 *
 	 * @param libraries the libraries required to run the archive
 	 * @throws IOException if the file cannot be repackaged
 	 */
@@ -151,8 +141,9 @@ public class Repackager {
 	/**
 	 * Repackage to the given destination so that it can be launched using '
 	 * {@literal java -jar}'.
+	 *
 	 * @param destination the destination file (may be the same as the source)
-	 * @param libraries the libraries required to run the archive
+	 * @param libraries   the libraries required to run the archive
 	 * @throws IOException if the file cannot be repackaged
 	 */
 	public void repackage(File destination, Libraries libraries) throws IOException {
@@ -162,8 +153,9 @@ public class Repackager {
 	/**
 	 * Repackage to the given destination so that it can be launched using '
 	 * {@literal java -jar}'.
-	 * @param destination the destination file (may be the same as the source)
-	 * @param libraries the libraries required to run the archive
+	 *
+	 * @param destination  the destination file (may be the same as the source)
+	 * @param libraries    the libraries required to run the archive
 	 * @param launchScript an optional launch script prepended to the front of the jar
 	 * @throws IOException if the file cannot be repackaged
 	 * @since 1.3.0
@@ -193,8 +185,7 @@ public class Repackager {
 			try (JarFile jarFileSource = new JarFile(workingSource)) {
 				repackage(jarFileSource, destination, libraries, launchScript);
 			}
-		}
-		finally {
+		} finally {
 			if (!this.backupSource && !this.source.equals(workingSource)) {
 				deleteFile(workingSource);
 			}
@@ -214,7 +205,18 @@ public class Repackager {
 	}
 
 	/**
+	 * Sets the layout factory for the jar. The factory can be used when no specific
+	 * layout is specified.
+	 *
+	 * @param layoutFactory the layout factory to set
+	 */
+	public void setLayoutFactory(LayoutFactory layoutFactory) {
+		this.layoutFactory = layoutFactory;
+	}
+
+	/**
 	 * Return the {@link File} to use to backup the original source.
+	 *
 	 * @return the file to use to backup the original source
 	 */
 	public final File getBackupFile() {
@@ -238,8 +240,7 @@ public class Repackager {
 				writer.writeEntries(sourceJar,
 						new RenamingEntryTransformer(((RepackagingLayout) this.layout).getRepackagedClassesLocation()),
 						writeableLibraries);
-			}
-			else {
+			} else {
 				writer.writeEntries(sourceJar, writeableLibraries);
 			}
 			writeableLibraries.write(writer);
@@ -249,8 +250,7 @@ public class Repackager {
 	private void writeLoaderClasses(JarWriter writer) throws IOException {
 		if (this.layout instanceof CustomLoaderLayout) {
 			((CustomLoaderLayout) this.layout).writeLoadedClasses(writer);
-		}
-		else if (this.layout.isExecutable()) {
+		} else if (this.layout.isExecutable()) {
 			writer.writeLoaderClasses();
 		}
 	}
@@ -260,8 +260,7 @@ public class Repackager {
 			try (FileInputStream fileInputStream = new FileInputStream(file)) {
 				return isZip(fileInputStream);
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return false;
 		}
 	}
@@ -296,8 +295,7 @@ public class Repackager {
 				throw new IllegalStateException("Unable to find main class");
 			}
 			manifest.getMainAttributes().putValue(START_CLASS_ATTRIBUTE, startClass);
-		}
-		else if (startClass != null) {
+		} else if (startClass != null) {
 			manifest.getMainAttributes().putValue(MAIN_CLASS_ATTRIBUTE, startClass);
 		}
 		String bootVersion = getClass().getPackage().getImplementationVersion();
@@ -349,7 +347,8 @@ public class Repackager {
 
 		/**
 		 * Handle a timeout warning.
-		 * @param duration the amount of time it took to find the main method
+		 *
+		 * @param duration   the amount of time it took to find the main method
 		 * @param mainMethod the main method that was actually found
 		 */
 		void handleTimeoutWarning(long duration, String mainMethod);

@@ -17,13 +17,7 @@
 package org.springframework.boot.autoconfigure.http;
 
 import com.google.gson.Gson;
-
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.NoneNestedConditions;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
@@ -62,7 +56,7 @@ class GsonHttpMessageConvertersConfiguration {
 		}
 
 		@ConditionalOnProperty(name = HttpMessageConvertersAutoConfiguration.PREFERRED_MAPPER_PROPERTY,
-				havingValue = "gson")
+							   havingValue = "gson")
 		static class GsonPreferred {
 
 		}
@@ -86,7 +80,7 @@ class GsonHttpMessageConvertersConfiguration {
 		}
 
 		@ConditionalOnProperty(name = HttpMessageConvertersAutoConfiguration.PREFERRED_MAPPER_PROPERTY,
-				havingValue = "jsonb")
+							   havingValue = "jsonb")
 		static class JsonbPreferred {
 
 		}

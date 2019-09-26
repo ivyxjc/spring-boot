@@ -16,17 +16,6 @@
 
 package org.springframework.boot.web.reactive.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyStore;
-import java.time.Duration;
-import java.util.Arrays;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLException;
-
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -37,11 +26,6 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.netty.NettyPipeline;
-import reactor.netty.http.client.HttpClient;
-import reactor.test.StepVerifier;
-
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.boot.web.server.Compression;
 import org.springframework.boot.web.server.Ssl;
@@ -61,6 +45,20 @@ import org.springframework.util.SocketUtils;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+import reactor.netty.NettyPipeline;
+import reactor.netty.http.client.HttpClient;
+import reactor.test.StepVerifier;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import java.time.Duration;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -82,8 +80,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 		if (this.webServer != null) {
 			try {
 				this.webServer.stop();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore
 			}
 		}
@@ -260,7 +257,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 	public void noCompressionForMimeType() {
 		Compression compression = new Compression();
 		compression.setEnabled(true);
-		compression.setMimeTypes(new String[] { "application/json" });
+		compression.setMimeTypes(new String[]{"application/json"});
 		WebClient client = prepareCompressionTest(compression);
 		ResponseEntity<Void> response = client.get().exchange().flatMap((res) -> res.toEntity(Void.class))
 				.block(Duration.ofSeconds(30));
@@ -271,7 +268,7 @@ public abstract class AbstractReactiveWebServerFactoryTests {
 	public void noCompressionForUserAgent() {
 		Compression compression = new Compression();
 		compression.setEnabled(true);
-		compression.setExcludedUserAgents(new String[] { "testUserAgent" });
+		compression.setExcludedUserAgents(new String[]{"testUserAgent"});
 		WebClient client = prepareCompressionTest(compression);
 		ResponseEntity<Void> response = client.get().header("User-Agent", "testUserAgent").exchange()
 				.flatMap((res) -> res.toEntity(Void.class)).block(Duration.ofSeconds(30));

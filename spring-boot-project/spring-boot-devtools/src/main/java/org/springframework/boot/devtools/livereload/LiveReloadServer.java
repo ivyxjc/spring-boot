@@ -16,6 +16,10 @@
 
 package org.springframework.boot.devtools.livereload;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -29,11 +33,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.Assert;
 
 /**
  * A <a href="https://github.com/livereload">livereload</a> server.
@@ -76,6 +75,7 @@ public class LiveReloadServer {
 	/**
 	 * Create a new {@link LiveReloadServer} listening on the default port with a specific
 	 * {@link ThreadFactory}.
+	 *
 	 * @param threadFactory the thread factory
 	 */
 	public LiveReloadServer(ThreadFactory threadFactory) {
@@ -84,6 +84,7 @@ public class LiveReloadServer {
 
 	/**
 	 * Create a new {@link LiveReloadServer} listening on the specified port.
+	 *
 	 * @param port the listen port
 	 */
 	public LiveReloadServer(int port) {
@@ -93,7 +94,8 @@ public class LiveReloadServer {
 	/**
 	 * Create a new {@link LiveReloadServer} listening on the specified port with a
 	 * specific {@link ThreadFactory}.
-	 * @param port the listen port
+	 *
+	 * @param port          the listen port
 	 * @param threadFactory the thread factory
 	 */
 	public LiveReloadServer(int port, ThreadFactory threadFactory) {
@@ -103,6 +105,7 @@ public class LiveReloadServer {
 
 	/**
 	 * Start the livereload server and accept incoming connections.
+	 *
 	 * @return the port on which the server is listening
 	 * @throws IOException in case of I/O errors
 	 */
@@ -122,6 +125,7 @@ public class LiveReloadServer {
 
 	/**
 	 * Return if the server has been started.
+	 *
 	 * @return {@code true} if the server is running
 	 */
 	public boolean isStarted() {
@@ -132,6 +136,7 @@ public class LiveReloadServer {
 
 	/**
 	 * Return the port that the server is listening on.
+	 *
 	 * @return the server port
 	 */
 	public int getPort() {
@@ -144,11 +149,9 @@ public class LiveReloadServer {
 				Socket socket = this.serverSocket.accept();
 				socket.setSoTimeout(READ_TIMEOUT);
 				this.executor.execute(new ConnectionHandler(socket));
-			}
-			catch (SocketTimeoutException ex) {
+			} catch (SocketTimeoutException ex) {
 				// Ignore
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("LiveReload server error", ex);
 				}
@@ -159,6 +162,7 @@ public class LiveReloadServer {
 
 	/**
 	 * Gracefully stop the livereload server.
+	 *
 	 * @throws IOException in case of I/O errors
 	 */
 	public void stop() throws IOException {
@@ -168,15 +172,13 @@ public class LiveReloadServer {
 				try {
 					this.executor.shutdown();
 					this.executor.awaitTermination(1, TimeUnit.MINUTES);
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 				this.serverSocket.close();
 				try {
 					this.listenThread.join();
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 				this.listenThread = null;
@@ -202,8 +204,7 @@ public class LiveReloadServer {
 				for (Connection connection : this.connections) {
 					try {
 						connection.triggerReload();
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						logger.debug("Unable to send reload message", ex);
 					}
 				}
@@ -225,8 +226,9 @@ public class LiveReloadServer {
 
 	/**
 	 * Factory method used to create the {@link Connection}.
-	 * @param socket the source socket
-	 * @param inputStream the socket input stream
+	 *
+	 * @param socket       the source socket
+	 * @param inputStream  the socket input stream
 	 * @param outputStream the socket output stream
 	 * @return a connection
 	 * @throws IOException in case of I/O errors
@@ -234,6 +236,23 @@ public class LiveReloadServer {
 	protected Connection createConnection(Socket socket, InputStream inputStream, OutputStream outputStream)
 			throws IOException {
 		return new Connection(socket, inputStream, outputStream);
+	}
+
+	/**
+	 * {@link ThreadFactory} to create the worker threads.
+	 */
+	private static class WorkerThreadFactory implements ThreadFactory {
+
+		private final AtomicInteger threadNumber = new AtomicInteger(1);
+
+		@Override
+		public Thread newThread(Runnable r) {
+			Thread thread = new Thread(r);
+			thread.setDaemon(true);
+			thread.setName("Live Reload #" + this.threadNumber.getAndIncrement());
+			return thread;
+		}
+
 	}
 
 	/**
@@ -256,11 +275,9 @@ public class LiveReloadServer {
 		public void run() {
 			try {
 				handle();
-			}
-			catch (ConnectionClosedException ex) {
+			} catch (ConnectionClosedException ex) {
 				logger.debug("LiveReload connection closed");
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				if (logger.isDebugEnabled()) {
 					logger.debug("LiveReload error", ex);
 				}
@@ -272,12 +289,10 @@ public class LiveReloadServer {
 				try (OutputStream outputStream = this.socket.getOutputStream()) {
 					Connection connection = createConnection(this.socket, this.inputStream, outputStream);
 					runConnection(connection);
-				}
-				finally {
+				} finally {
 					this.inputStream.close();
 				}
-			}
-			finally {
+			} finally {
 				this.socket.close();
 			}
 		}
@@ -286,27 +301,9 @@ public class LiveReloadServer {
 			try {
 				addConnection(connection);
 				connection.run();
-			}
-			finally {
+			} finally {
 				removeConnection(connection);
 			}
-		}
-
-	}
-
-	/**
-	 * {@link ThreadFactory} to create the worker threads.
-	 */
-	private static class WorkerThreadFactory implements ThreadFactory {
-
-		private final AtomicInteger threadNumber = new AtomicInteger(1);
-
-		@Override
-		public Thread newThread(Runnable r) {
-			Thread thread = new Thread(r);
-			thread.setDaemon(true);
-			thread.setName("Live Reload #" + this.threadNumber.getAndIncrement());
-			return thread;
 		}
 
 	}

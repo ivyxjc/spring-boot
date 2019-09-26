@@ -16,27 +16,9 @@
 
 package org.springframework.boot.context.properties;
 
-import java.beans.PropertyEditorSupport;
-import java.io.File;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.annotation.PostConstruct;
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.FactoryBean;
@@ -49,11 +31,7 @@ import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.boot.convert.DataSizeUnit;
 import org.springframework.boot.testsupport.rule.OutputCapture;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.Converter;
@@ -77,13 +55,17 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.entry;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import javax.annotation.PostConstruct;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.beans.PropertyEditorSupport;
+import java.io.File;
+import java.time.Duration;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -103,10 +85,9 @@ import static org.mockito.Mockito.verify;
  */
 public class ConfigurationPropertiesTests {
 
-	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-
 	@Rule
 	public OutputCapture output = new OutputCapture();
+	private AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 
 	@After
 	public void cleanup() {
@@ -228,7 +209,7 @@ public class ConfigurationPropertiesTests {
 
 	@Test
 	public void loadWhenBindingWithDefaultsInXmlShouldBind() {
-		load(new Class<?>[] { BasicConfiguration.class, DefaultsInXmlConfiguration.class });
+		load(new Class<?>[]{BasicConfiguration.class, DefaultsInXmlConfiguration.class});
 		BasicProperties bean = this.context.getBean(BasicProperties.class);
 		assertThat(bean.name).isEqualTo("bar");
 	}
@@ -242,7 +223,7 @@ public class ConfigurationPropertiesTests {
 
 	@Test
 	public void loadWhenBindingTwoBeansShouldBind() {
-		load(new Class<?>[] { WithoutAnnotationValueConfiguration.class, BasicConfiguration.class });
+		load(new Class<?>[]{WithoutAnnotationValueConfiguration.class, BasicConfiguration.class});
 		assertThat(this.context.getBean(BasicProperties.class)).isNotNull();
 		assertThat(this.context.getBean(WithoutAnnotationValueProperties.class)).isNotNull();
 	}
@@ -252,7 +233,7 @@ public class ConfigurationPropertiesTests {
 		AnnotationConfigApplicationContext parent = load(BasicConfiguration.class, "name=parent");
 		this.context = new AnnotationConfigApplicationContext();
 		this.context.setParent(parent);
-		load(new Class[] { BasicConfiguration.class, BasicPropertiesConsumer.class }, "name=child");
+		load(new Class[]{BasicConfiguration.class, BasicPropertiesConsumer.class}, "name=child");
 		assertThat(this.context.getBean(BasicProperties.class)).isNotNull();
 		assertThat(parent.getBean(BasicProperties.class)).isNotNull();
 		assertThat(this.context.getBean(BasicPropertiesConsumer.class).getName()).isEqualTo("parent");
@@ -737,7 +718,7 @@ public class ConfigurationPropertiesTests {
 	}
 
 	private AnnotationConfigApplicationContext load(Class<?> configuration, String... inlinedProperties) {
-		return load(new Class<?>[] { configuration }, inlinedProperties);
+		return load(new Class<?>[]{configuration}, inlinedProperties);
 	}
 
 	private AnnotationConfigApplicationContext load(Class<?>[] configuration, String... inlinedProperties) {
@@ -760,6 +741,18 @@ public class ConfigurationPropertiesTests {
 	private void resetContext() {
 		this.context.close();
 		this.context = new AnnotationConfigApplicationContext();
+	}
+
+	enum FooEnum {
+
+		FOO, BAZ, BAR
+
+	}
+
+	interface InterfaceForValidatedImplementation {
+
+		String getFoo();
+
 	}
 
 	@Configuration
@@ -864,7 +857,7 @@ public class ConfigurationPropertiesTests {
 	}
 
 	@Configuration
-	@EnableConfigurationProperties({ PrefixProperties.class, AnotherPrefixProperties.class })
+	@EnableConfigurationProperties({PrefixProperties.class, AnotherPrefixProperties.class})
 	static class MultiplePrefixPropertiesDeclaredAsAnnotationValueConfiguration {
 
 	}
@@ -901,12 +894,12 @@ public class ConfigurationPropertiesTests {
 
 		private boolean initialized;
 
-		public void setBar(String bar) {
-			this.bar = bar;
-		}
-
 		public String getBar() {
 			return this.bar;
+		}
+
+		public void setBar(String bar) {
+			this.bar = bar;
 		}
 
 		@PostConstruct
@@ -1168,12 +1161,12 @@ public class ConfigurationPropertiesTests {
 			this.name = name;
 		}
 
-		public void setArray(int... values) {
-			this.array = values;
-		}
-
 		public int[] getArray() {
 			return this.array;
+		}
+
+		public void setArray(int... values) {
+			this.array = values;
 		}
 
 		public List<Integer> getList() {
@@ -1197,9 +1190,8 @@ public class ConfigurationPropertiesTests {
 	@ConfigurationProperties
 	static class NestedProperties {
 
-		private String name;
-
 		private final Nested nested = new Nested();
+		private String name;
 
 		public void setName(String name) {
 			this.name = name;
@@ -1232,12 +1224,12 @@ public class ConfigurationPropertiesTests {
 
 		private long bar;
 
-		public void setBar(long bar) {
-			this.bar = bar;
-		}
-
 		public long getBar() {
 			return this.bar;
+		}
+
+		public void setBar(long bar) {
+			this.bar = bar;
 		}
 
 	}
@@ -1328,12 +1320,12 @@ public class ConfigurationPropertiesTests {
 
 		private Map<String, String> mymap;
 
-		public void setMymap(Map<String, String> mymap) {
-			this.mymap = mymap;
-		}
-
 		public Map<String, String> getMymap() {
 			return this.mymap;
+		}
+
+		public void setMymap(Map<String, String> mymap) {
+			this.mymap = mymap;
 		}
 
 	}
@@ -1352,12 +1344,6 @@ public class ConfigurationPropertiesTests {
 		public String getName() {
 			return this.properties.name;
 		}
-
-	}
-
-	interface InterfaceForValidatedImplementation {
-
-		String getFoo();
 
 	}
 
@@ -1386,12 +1372,12 @@ public class ConfigurationPropertiesTests {
 		@Value("${default.value}")
 		private String value;
 
-		public void setValue(String value) {
-			this.value = value;
-		}
-
 		public String getValue() {
 			return this.value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
 		}
 
 	}
@@ -1404,12 +1390,12 @@ public class ConfigurationPropertiesTests {
 
 		private List<FooEnum> theValues;
 
-		public void setTheValue(FooEnum value) {
-			this.theValue = value;
-		}
-
 		public FooEnum getTheValue() {
 			return this.theValue;
+		}
+
+		public void setTheValue(FooEnum value) {
+			this.theValue = value;
 		}
 
 		public List<FooEnum> getTheValues() {
@@ -1419,12 +1405,6 @@ public class ConfigurationPropertiesTests {
 		public void setTheValues(List<FooEnum> theValues) {
 			this.theValues = theValues;
 		}
-
-	}
-
-	enum FooEnum {
-
-		FOO, BAZ, BAR
 
 	}
 
@@ -1527,12 +1507,12 @@ public class ConfigurationPropertiesTests {
 
 		private String bar;
 
-		public void setBar(String bar) {
-			this.bar = bar;
-		}
-
 		public String getBar() {
 			return this.bar;
+		}
+
+		public void setBar(String bar) {
+			this.bar = bar;
 		}
 
 		public int getFoo() {

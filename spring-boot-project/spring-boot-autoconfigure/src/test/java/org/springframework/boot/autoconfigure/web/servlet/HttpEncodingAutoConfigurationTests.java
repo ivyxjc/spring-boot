@@ -16,17 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.Filter;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
@@ -40,6 +31,13 @@ import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+
+import javax.servlet.Filter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -143,26 +141,26 @@ public class HttpEncodingAutoConfigurationTests {
 				.isEqualTo(2);
 		assertThat(
 				this.context.getBean(MockServletWebServerFactory.class).getLocaleCharsetMappings().get(Locale.ENGLISH))
-						.isEqualTo(StandardCharsets.UTF_8);
+				.isEqualTo(StandardCharsets.UTF_8);
 		assertThat(
 				this.context.getBean(MockServletWebServerFactory.class).getLocaleCharsetMappings().get(Locale.FRANCE))
-						.isEqualTo(StandardCharsets.UTF_8);
+				.isEqualTo(StandardCharsets.UTF_8);
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private Map<String, WebServerFactoryCustomizer<?>> getWebServerFactoryCustomizerBeans() {
 		return (Map) this.context.getBeansOfType(WebServerFactoryCustomizer.class);
 	}
 
 	private void assertCharacterEncodingFilter(CharacterEncodingFilter actual, String encoding,
-			boolean forceRequestEncoding, boolean forceResponseEncoding) {
+											   boolean forceRequestEncoding, boolean forceResponseEncoding) {
 		assertThat(actual.getEncoding()).isEqualTo(encoding);
 		assertThat(actual.isForceRequestEncoding()).isEqualTo(forceRequestEncoding);
 		assertThat(actual.isForceResponseEncoding()).isEqualTo(forceResponseEncoding);
 	}
 
 	private void load(Class<?> config, String... environment) {
-		this.context = doLoad(new Class<?>[] { config }, environment);
+		this.context = doLoad(new Class<?>[]{config}, environment);
 	}
 
 	private AnnotationConfigWebApplicationContext doLoad(Class<?>[] configs, String... environment) {

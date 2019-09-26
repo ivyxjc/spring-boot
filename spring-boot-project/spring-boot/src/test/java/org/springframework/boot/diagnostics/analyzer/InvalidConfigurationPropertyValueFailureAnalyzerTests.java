@@ -16,10 +16,7 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.Collections;
-
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.origin.Origin;
@@ -27,6 +24,8 @@ import org.springframework.boot.origin.OriginLookup;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -120,6 +119,10 @@ public class InvalidConfigurationPropertyValueFailureAnalyzerTests {
 			this.propertySource = propertySource;
 		}
 
+		static <T> OriginCapablePropertySource<T> get(EnumerablePropertySource<T> propertySource) {
+			return new OriginCapablePropertySource<>(propertySource);
+		}
+
 		@Override
 		public Object getProperty(String name) {
 			return this.propertySource.getProperty(name);
@@ -140,10 +143,6 @@ public class InvalidConfigurationPropertyValueFailureAnalyzerTests {
 				}
 
 			};
-		}
-
-		static <T> OriginCapablePropertySource<T> get(EnumerablePropertySource<T> propertySource) {
-			return new OriginCapablePropertySource<>(propertySource);
 		}
 
 	}

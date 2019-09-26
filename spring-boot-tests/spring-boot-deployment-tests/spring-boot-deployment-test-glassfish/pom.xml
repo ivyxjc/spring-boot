@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -14,7 +15,9 @@
 		<main.basedir>${basedir}/../../..</main.basedir>
 		<glassfish.version>4.1.1</glassfish.version>
 		<cargo.container.id>glassfish4x</cargo.container.id>
-		<cargo.container.url>https://download.oracle.com/glassfish/${glassfish.version}/release/glassfish-${glassfish.version}.zip</cargo.container.url>
+		<cargo.container.url>
+			https://download.oracle.com/glassfish/${glassfish.version}/release/glassfish-${glassfish.version}.zip
+		</cargo.container.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -89,14 +92,20 @@
 								<properties>
 									<cargo.servlet.port>${appserver.port}</cargo.servlet.port>
 									<cargo.glassfish.admin.port>${appserver.admin.port}</cargo.glassfish.admin.port>
-									<cargo.glassfish.domain.jmxPort>${appserver.jmx.port}</cargo.glassfish.domain.jmxPort>
-									<cargo.glassfish.http.ssl.port>${appserver.https.port}</cargo.glassfish.http.ssl.port>
-									<cargo.glassfish.java.debugger.port>${appserver.debugger.port}</cargo.glassfish.java.debugger.port>
+									<cargo.glassfish.domain.jmxPort>${appserver.jmx.port}
+									</cargo.glassfish.domain.jmxPort>
+									<cargo.glassfish.http.ssl.port>${appserver.https.port}
+									</cargo.glassfish.http.ssl.port>
+									<cargo.glassfish.java.debugger.port>${appserver.debugger.port}
+									</cargo.glassfish.java.debugger.port>
 									<cargo.glassfish.jms.port>${appserver.jms.port}</cargo.glassfish.jms.port>
-									<cargo.glassfish.orb.listener.port>${appserver.iiop.port}</cargo.glassfish.orb.listener.port>
-									<cargo.glassfish.orb.mutualauth.port>${appserver.iiopmutualauth.port}</cargo.glassfish.orb.mutualauth.port>
+									<cargo.glassfish.orb.listener.port>${appserver.iiop.port}
+									</cargo.glassfish.orb.listener.port>
+									<cargo.glassfish.orb.mutualauth.port>${appserver.iiopmutualauth.port}
+									</cargo.glassfish.orb.mutualauth.port>
 									<cargo.glassfish.orb.ssl.port>${appserver.iiops.port}</cargo.glassfish.orb.ssl.port>
-									<cargo.glassfish.osgi.shell.telnet.port>${appserver.osgishell.port}</cargo.glassfish.osgi.shell.telnet.port>
+									<cargo.glassfish.osgi.shell.telnet.port>${appserver.osgishell.port}
+									</cargo.glassfish.osgi.shell.telnet.port>
 								</properties>
 							</configuration>
 						</configuration>

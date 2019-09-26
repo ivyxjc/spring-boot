@@ -21,12 +21,12 @@ package org.springframework.boot.loader.tools;
  *
  * @author Andy Wilkinson
  */
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 
 import org.junit.Test;
-
 import org.springframework.boot.loader.tools.JarWriter.ZipHeaderPeekInputStream;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,7 +35,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void hasZipHeaderReturnsTrueWhenStreamStartsWithZipHeader() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 0x50, 0x4b, 0x03, 0x04, 5, 6 }))) {
+				new ByteArrayInputStream(new byte[]{0x50, 0x4b, 0x03, 0x04, 5, 6}))) {
 			assertThat(in.hasZipHeader()).isTrue();
 		}
 	}
@@ -43,7 +43,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void hasZipHeaderReturnsFalseWhenStreamDoesNotStartWithZipHeader() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5 }))) {
+				new ByteArrayInputStream(new byte[]{0, 1, 2, 3, 4, 5}))) {
 			assertThat(in.hasZipHeader()).isFalse();
 		}
 	}
@@ -51,7 +51,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void readIndividualBytes() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5 }))) {
+				new ByteArrayInputStream(new byte[]{0, 1, 2, 3, 4, 5}))) {
 			assertThat(in.read()).isEqualTo(0);
 			assertThat(in.read()).isEqualTo(1);
 			assertThat(in.read()).isEqualTo(2);
@@ -64,7 +64,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void readMultipleBytes() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5 }))) {
+				new ByteArrayInputStream(new byte[]{0, 1, 2, 3, 4, 5}))) {
 			byte[] bytes = new byte[3];
 			assertThat(in.read(bytes)).isEqualTo(3);
 			assertThat(bytes).containsExactly(0, 1, 2);
@@ -77,7 +77,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void readingMoreThanEntireStreamReadsToEndOfStream() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5 }))) {
+				new ByteArrayInputStream(new byte[]{0, 1, 2, 3, 4, 5}))) {
 			byte[] bytes = new byte[8];
 			assertThat(in.read(bytes)).isEqualTo(6);
 			assertThat(bytes).containsExactly(0, 1, 2, 3, 4, 5, 0, 0);
@@ -88,7 +88,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void readOfSomeOfTheHeaderThenMoreThanEntireStreamReadsToEndOfStream() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 0, 1, 2, 3, 4, 5 }))) {
+				new ByteArrayInputStream(new byte[]{0, 1, 2, 3, 4, 5}))) {
 			byte[] bytes = new byte[8];
 			assertThat(in.read(bytes, 0, 3)).isEqualTo(3);
 			assertThat(bytes).containsExactly(0, 1, 2, 0, 0, 0, 0, 0);
@@ -99,7 +99,7 @@ public class ZipHeaderPeekInputStreamTests {
 
 	@Test
 	public void readMoreThanEntireStreamWhenStreamLengthIsLessThanZipHeaderLength() throws IOException {
-		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(new ByteArrayInputStream(new byte[] { 10 }))) {
+		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(new ByteArrayInputStream(new byte[]{10}))) {
 			byte[] bytes = new byte[8];
 			assertThat(in.read(bytes)).isEqualTo(1);
 			assertThat(bytes).containsExactly(10, 0, 0, 0, 0, 0, 0, 0);
@@ -109,7 +109,7 @@ public class ZipHeaderPeekInputStreamTests {
 	@Test
 	public void readMoreThanEntireStreamWhenStreamLengthIsSameAsHeaderLength() throws IOException {
 		try (ZipHeaderPeekInputStream in = new ZipHeaderPeekInputStream(
-				new ByteArrayInputStream(new byte[] { 1, 2, 3, 4 }))) {
+				new ByteArrayInputStream(new byte[]{1, 2, 3, 4}))) {
 			byte[] bytes = new byte[8];
 			assertThat(in.read(bytes)).isEqualTo(4);
 			assertThat(bytes).containsExactly(1, 2, 3, 4, 0, 0, 0, 0);

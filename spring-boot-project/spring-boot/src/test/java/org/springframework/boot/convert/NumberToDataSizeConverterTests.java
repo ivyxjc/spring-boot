@@ -16,17 +16,16 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Collections;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -44,6 +43,11 @@ public class NumberToDataSizeConverterTests {
 
 	public NumberToDataSizeConverterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameterized.Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new NumberToDataSizeConverter());
 	}
 
 	@Test
@@ -64,7 +68,7 @@ public class NumberToDataSizeConverterTests {
 		return this.conversionService.convert(source, DataSize.class);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	private DataSize convert(Integer source, DataUnit defaultUnit) {
 		TypeDescriptor targetType = mock(TypeDescriptor.class);
 		if (defaultUnit != null) {
@@ -74,11 +78,6 @@ public class NumberToDataSizeConverterTests {
 		}
 		given(targetType.getType()).willReturn((Class) DataSize.class);
 		return (DataSize) this.conversionService.convert(source, TypeDescriptor.forObject(source), targetType);
-	}
-
-	@Parameterized.Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new NumberToDataSizeConverter());
 	}
 
 }

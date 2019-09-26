@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.mongo;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoClientSettings.Builder;
@@ -26,9 +23,11 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.reactivestreams.client.MongoClient;
 import com.mongodb.reactivestreams.client.MongoClients;
-
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A factory for a reactive {@link MongoClient} that applies {@link MongoProperties}.
@@ -46,7 +45,7 @@ public class ReactiveMongoClientFactory {
 	private final List<MongoClientSettingsBuilderCustomizer> builderCustomizers;
 
 	public ReactiveMongoClientFactory(MongoProperties properties, Environment environment,
-			List<MongoClientSettingsBuilderCustomizer> builderCustomizers) {
+									  List<MongoClientSettingsBuilderCustomizer> builderCustomizers) {
 		this.properties = properties;
 		this.environment = environment;
 		this.builderCustomizers = (builderCustomizers != null) ? builderCustomizers : Collections.emptyList();
@@ -56,6 +55,7 @@ public class ReactiveMongoClientFactory {
 	 * Creates a {@link MongoClient} using the given {@code settings}. If the environment
 	 * contains a {@code local.mongo.port} property, it is used to configure a client to
 	 * an embedded MongoDB instance.
+	 *
 	 * @param settings the settings
 	 * @return the Mongo client
 	 */

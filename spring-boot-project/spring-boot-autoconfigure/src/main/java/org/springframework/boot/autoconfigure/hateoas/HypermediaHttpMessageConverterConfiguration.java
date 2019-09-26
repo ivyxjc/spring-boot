@@ -16,12 +16,6 @@
 
 package org.springframework.boot.autoconfigure.hateoas;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -36,6 +30,11 @@ import org.springframework.http.converter.AbstractHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Configuration for {@link HttpMessageConverter HttpMessageConverters} when hypermedia is
  * enabled.
@@ -48,7 +47,7 @@ public class HypermediaHttpMessageConverterConfiguration {
 
 	@Bean
 	@ConditionalOnProperty(prefix = "spring.hateoas", name = "use-hal-as-default-json-media-type",
-			matchIfMissing = true)
+						   matchIfMissing = true)
 	public static HalMessageConverterSupportedMediaTypesCustomizer halMessageConverterSupportedMediaTypeCustomizer() {
 		return new HalMessageConverterSupportedMediaTypesCustomizer();
 	}

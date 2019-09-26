@@ -16,12 +16,8 @@
 
 package org.springframework.boot.web.servlet.context;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
@@ -44,6 +40,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -57,12 +56,17 @@ public class ServletWebServerMvcIntegrationTests {
 
 	private AnnotationConfigServletWebServerApplicationContext context;
 
+	// Simple main method for testing in a browser
+	@SuppressWarnings("resource")
+	public static void main(String[] args) {
+		new AnnotationConfigServletWebServerApplicationContext(JettyServletWebServerFactory.class, Config.class);
+	}
+
 	@After
 	public void closeContext() {
 		try {
 			this.context.close();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Ignore
 		}
 	}
@@ -100,12 +104,6 @@ public class ServletWebServerMvcIntegrationTests {
 			String actual = StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
 			assertThat(actual).isEqualTo("Hello World");
 		}
-	}
-
-	// Simple main method for testing in a browser
-	@SuppressWarnings("resource")
-	public static void main(String[] args) {
-		new AnnotationConfigServletWebServerApplicationContext(JettyServletWebServerFactory.class, Config.class);
 	}
 
 	@Configuration

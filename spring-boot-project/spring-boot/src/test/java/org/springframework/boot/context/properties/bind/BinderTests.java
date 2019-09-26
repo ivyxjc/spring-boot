@@ -16,21 +16,10 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.beans.PropertyEditorSupport;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.validation.Validation;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
 import org.mockito.InOrder;
-
 import org.springframework.boot.context.properties.bind.validation.ValidationBindHandler;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
@@ -48,12 +37,13 @@ import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
+import javax.validation.Validation;
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.mock;
 
@@ -286,6 +276,12 @@ public class BinderTests {
 		assertThat(result.getValue()).isEqualTo("hello");
 	}
 
+	public enum ExampleEnum {
+
+		FOO_BAR, BAR_BAZ, BAZ_BOO
+
+	}
+
 	public static class JavaBean {
 
 		private String value;
@@ -303,12 +299,6 @@ public class BinderTests {
 		public List<String> getItems() {
 			return this.items;
 		}
-
-	}
-
-	public enum ExampleEnum {
-
-		FOO_BAR, BAR_BAZ, BAZ_BOO
 
 	}
 

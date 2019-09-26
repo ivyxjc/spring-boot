@@ -30,6 +30,7 @@ public interface ErrorController {
 
 	/**
 	 * Returns the path of the error page.
+	 *
 	 * @return the error path
 	 */
 	String getErrorPath();

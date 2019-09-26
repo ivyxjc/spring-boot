@@ -16,11 +16,11 @@
 
 package org.springframework.boot.loader.jar;
 
+import org.springframework.boot.loader.data.RandomAccessData;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.boot.loader.data.RandomAccessData;
 
 /**
  * Parses the central directory from a JAR file.
@@ -42,7 +42,8 @@ class CentralDirectoryParser {
 
 	/**
 	 * Parse the source data, triggering {@link CentralDirectoryVisitor visitors}.
-	 * @param data the source data
+	 *
+	 * @param data            the source data
 	 * @param skipPrefixBytes if prefix bytes should be skipped
 	 * @return the actual archive data without any prefix bytes
 	 * @throws IOException on error

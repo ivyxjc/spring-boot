@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.couchbase;
 
-import java.util.concurrent.TimeUnit;
-
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
@@ -29,8 +27,9 @@ import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
-
 import org.springframework.beans.factory.BeanCreationException;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link TestRule} for working with an optional Couchbase server. Expects a default
@@ -46,6 +45,11 @@ public class CouchbaseTestServer implements TestRule {
 
 	private Cluster cluster;
 
+	private static void testConnection(Cluster cluster) {
+		Bucket bucket = cluster.openBucket(2, TimeUnit.SECONDS);
+		bucket.close();
+	}
+
 	@Override
 	public Statement apply(Statement base, Description description) {
 		try {
@@ -53,16 +57,10 @@ public class CouchbaseTestServer implements TestRule {
 			this.cluster = CouchbaseCluster.create(this.environment, "localhost");
 			testConnection(this.cluster);
 			return new CouchbaseStatement(base, this.environment, this.cluster);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.info("No couchbase server available");
 			return new SkipStatement();
 		}
-	}
-
-	private static void testConnection(Cluster cluster) {
-		Bucket bucket = cluster.openBucket(2, TimeUnit.SECONDS);
-		bucket.close();
 	}
 
 	/**
@@ -97,19 +95,16 @@ public class CouchbaseTestServer implements TestRule {
 		public void evaluate() throws Throwable {
 			try {
 				this.base.evaluate();
-			}
-			catch (BeanCreationException ex) {
+			} catch (BeanCreationException ex) {
 				if ("couchbaseClient".equals(ex.getBeanName())) {
 					throw new AssumptionViolatedException("Skipping test due to Couchbase error " + ex.getMessage(),
 							ex);
 				}
-			}
-			finally {
+			} finally {
 				try {
 					this.cluster.disconnect();
 					this.environment.shutdownAsync();
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					logger.warn("Exception while trying to cleanup couchbase resource", ex);
 				}
 			}

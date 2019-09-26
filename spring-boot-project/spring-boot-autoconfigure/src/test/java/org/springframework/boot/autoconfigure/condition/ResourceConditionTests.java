@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.condition;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

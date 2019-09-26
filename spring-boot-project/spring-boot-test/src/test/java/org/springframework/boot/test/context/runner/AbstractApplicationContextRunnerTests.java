@@ -16,29 +16,22 @@
 
 package org.springframework.boot.test.context.runner;
 
-import java.io.IOException;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.google.gson.Gson;
 import org.junit.Test;
-
 import org.springframework.boot.context.annotation.UserConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.ApplicationContextAssertProvider;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Condition;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.ClassUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIOException;
+import java.io.IOException;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Abstract tests for {@link AbstractApplicationContextRunner} implementations.
@@ -50,6 +43,10 @@ import static org.assertj.core.api.Assertions.assertThatIOException;
  * @author Phillip Webb
  */
 public abstract class AbstractApplicationContextRunnerTests<T extends AbstractApplicationContextRunner<T, C, A>, C extends ConfigurableApplicationContext, A extends ApplicationContextAssertProvider<C>> {
+
+	private static void throwCheckedException(String message) throws IOException {
+		throw new IOException(message);
+	}
 
 	@Test
 	public void runWithInitializerShouldInitialize() {
@@ -86,8 +83,7 @@ public abstract class AbstractApplicationContextRunnerTests<T extends AbstractAp
 			get().withSystemProperties(key + "=newValue")
 					.run((context) -> assertThat(System.getProperties()).containsEntry(key, "newValue"));
 			assertThat(System.getProperties().getProperty(key)).isEqualTo("value");
-		}
-		finally {
+		} finally {
 			System.clearProperty(key);
 		}
 	}
@@ -101,8 +97,7 @@ public abstract class AbstractApplicationContextRunnerTests<T extends AbstractAp
 			get().withSystemProperties(key + "=")
 					.run((context) -> assertThat(System.getProperties()).doesNotContainKey(key));
 			assertThat(System.getProperties().getProperty(key)).isEqualTo("value");
-		}
-		finally {
+		} finally {
 			System.clearProperty(key);
 		}
 	}
@@ -161,10 +156,6 @@ public abstract class AbstractApplicationContextRunnerTests<T extends AbstractAp
 	}
 
 	protected abstract T get();
-
-	private static void throwCheckedException(String message) throws IOException {
-		throw new IOException(message);
-	}
 
 	@Configuration
 	static class FailingConfig {

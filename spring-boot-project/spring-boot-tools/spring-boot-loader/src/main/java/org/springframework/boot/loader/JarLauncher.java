@@ -40,16 +40,16 @@ public class JarLauncher extends ExecutableArchiveLauncher {
 		super(archive);
 	}
 
+	public static void main(String[] args) throws Exception {
+		new JarLauncher().launch(args);
+	}
+
 	@Override
 	protected boolean isNestedArchive(Archive.Entry entry) {
 		if (entry.isDirectory()) {
 			return entry.getName().equals(BOOT_INF_CLASSES);
 		}
 		return entry.getName().startsWith(BOOT_INF_LIB);
-	}
-
-	public static void main(String[] args) throws Exception {
-		new JarLauncher().launch(args);
 	}
 
 }

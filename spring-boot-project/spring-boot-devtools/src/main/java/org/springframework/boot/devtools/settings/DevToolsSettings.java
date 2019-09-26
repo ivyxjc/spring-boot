@@ -16,19 +16,14 @@
 
 package org.springframework.boot.devtools.settings;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import org.apache.commons.logging.Log;
-
 import org.springframework.boot.devtools.logger.DevToolsLogFactory;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * DevTools settings loaded from {@literal /META-INF/spring-devtools.properties} files.
@@ -52,6 +47,35 @@ public class DevToolsSettings {
 	private final List<Pattern> restartExcludePatterns = new ArrayList<>();
 
 	DevToolsSettings() {
+	}
+
+	public static DevToolsSettings get() {
+		if (settings == null) {
+			settings = load();
+		}
+		return settings;
+	}
+
+	static DevToolsSettings load() {
+		return load(SETTINGS_RESOURCE_LOCATION);
+	}
+
+	static DevToolsSettings load(String location) {
+		try {
+			DevToolsSettings settings = new DevToolsSettings();
+			Enumeration<URL> urls = Thread.currentThread().getContextClassLoader().getResources(location);
+			while (urls.hasMoreElements()) {
+				settings.add(PropertiesLoaderUtils.loadProperties(new UrlResource(urls.nextElement())));
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("Included patterns for restart : " + settings.restartIncludePatterns);
+				logger.debug("Excluded patterns for restart : " + settings.restartExcludePatterns);
+			}
+			return settings;
+		} catch (Exception ex) {
+			throw new IllegalStateException("Unable to load devtools settings from " + "location [" + location + "]",
+					ex);
+		}
 	}
 
 	void add(Map<?, ?> properties) {
@@ -88,36 +112,6 @@ public class DevToolsSettings {
 			}
 		}
 		return false;
-	}
-
-	public static DevToolsSettings get() {
-		if (settings == null) {
-			settings = load();
-		}
-		return settings;
-	}
-
-	static DevToolsSettings load() {
-		return load(SETTINGS_RESOURCE_LOCATION);
-	}
-
-	static DevToolsSettings load(String location) {
-		try {
-			DevToolsSettings settings = new DevToolsSettings();
-			Enumeration<URL> urls = Thread.currentThread().getContextClassLoader().getResources(location);
-			while (urls.hasMoreElements()) {
-				settings.add(PropertiesLoaderUtils.loadProperties(new UrlResource(urls.nextElement())));
-			}
-			if (logger.isDebugEnabled()) {
-				logger.debug("Included patterns for restart : " + settings.restartIncludePatterns);
-				logger.debug("Excluded patterns for restart : " + settings.restartExcludePatterns);
-			}
-			return settings;
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException("Unable to load devtools settings from " + "location [" + location + "]",
-					ex);
-		}
 	}
 
 }

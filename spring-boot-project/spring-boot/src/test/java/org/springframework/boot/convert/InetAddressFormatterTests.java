@@ -16,17 +16,16 @@
 
 package org.springframework.boot.convert;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.junit.AssumptionViolatedException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -43,6 +42,11 @@ public class InetAddressFormatterTests {
 
 	public InetAddressFormatterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new InetAddressFormatter());
 	}
 
 	@Test
@@ -79,15 +83,9 @@ public class InetAddressFormatterTests {
 		try {
 			InetAddress.getByName(host);
 			return true;
-		}
-		catch (UnknownHostException ex) {
+		} catch (UnknownHostException ex) {
 			return false;
 		}
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new InetAddressFormatter());
 	}
 
 }

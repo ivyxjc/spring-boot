@@ -17,7 +17,6 @@
 package org.springframework.boot.diagnostics.analyzer;
 
 import org.junit.Test;
-
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -58,10 +57,15 @@ public class BeanNotOfRequiredTypeFailureAnalyzerTests {
 		try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(configuration)) {
 			fail("Expected failure did not occur");
 			return null;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return ex;
 		}
+	}
+
+	interface SomeInterface {
+
+		void bar();
+
 	}
 
 	@Configuration
@@ -97,12 +101,6 @@ public class BeanNotOfRequiredTypeFailureAnalyzerTests {
 		public void bar() {
 
 		}
-
-	}
-
-	interface SomeInterface {
-
-		void bar();
 
 	}
 

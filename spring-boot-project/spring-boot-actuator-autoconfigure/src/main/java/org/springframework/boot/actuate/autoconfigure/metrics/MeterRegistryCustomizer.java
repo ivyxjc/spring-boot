@@ -26,8 +26,8 @@ import io.micrometer.core.instrument.MeterRegistry;
  * Customizers are guaranteed to be applied before any {@link Meter} is registered with
  * the registry.
  *
- * @author Jon Schneider
  * @param <T> the registry type to customize
+ * @author Jon Schneider
  * @since 2.0.0
  */
 @FunctionalInterface
@@ -35,6 +35,7 @@ public interface MeterRegistryCustomizer<T extends MeterRegistry> {
 
 	/**
 	 * Customize the given {@code registry}.
+	 *
 	 * @param registry the registry to customize
 	 */
 	void customize(T registry);

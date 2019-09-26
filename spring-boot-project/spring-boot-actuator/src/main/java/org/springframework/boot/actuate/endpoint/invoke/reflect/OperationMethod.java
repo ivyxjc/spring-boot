@@ -16,21 +16,21 @@
 
 package org.springframework.boot.actuate.endpoint.invoke.reflect;
 
-import java.lang.reflect.Method;
-import java.util.Locale;
-
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.invoke.OperationParameters;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.util.Assert;
 
+import java.lang.reflect.Method;
+import java.util.Locale;
+
 /**
  * Information describing an operation method on an endpoint method.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see ReflectiveOperationInvoker
+ * @since 2.0.0
  */
 public class OperationMethod {
 
@@ -44,7 +44,8 @@ public class OperationMethod {
 
 	/**
 	 * Create a new {@link OperationMethod} instance.
-	 * @param method the source method
+	 *
+	 * @param method        the source method
 	 * @param operationType the operation type
 	 */
 	public OperationMethod(Method method, OperationType operationType) {
@@ -57,6 +58,7 @@ public class OperationMethod {
 
 	/**
 	 * Return the source Java method.
+	 *
 	 * @return the method
 	 */
 	public Method getMethod() {
@@ -65,6 +67,7 @@ public class OperationMethod {
 
 	/**
 	 * Return the operation type.
+	 *
 	 * @return the operation type
 	 */
 	public OperationType getOperationType() {
@@ -73,6 +76,7 @@ public class OperationMethod {
 
 	/**
 	 * Return the operation parameters.
+	 *
 	 * @return the operation parameters
 	 */
 	public OperationParameters getParameters() {

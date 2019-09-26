@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.liquibase;
 
 import liquibase.integration.spring.SpringLiquibase;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
@@ -47,13 +46,6 @@ public class LiquibaseEndpointAutoConfiguration {
 
 	@Bean
 	@ConditionalOnBean(SpringLiquibase.class)
-	@ConditionalOnMissingBean
-	public LiquibaseEndpoint liquibaseEndpoint(ApplicationContext context) {
-		return new LiquibaseEndpoint(context);
-	}
-
-	@Bean
-	@ConditionalOnBean(SpringLiquibase.class)
 	public static BeanPostProcessor preventDataSourceCloseBeanPostProcessor() {
 		return new BeanPostProcessor() {
 
@@ -71,6 +63,13 @@ public class LiquibaseEndpointAutoConfiguration {
 			}
 
 		};
+	}
+
+	@Bean
+	@ConditionalOnBean(SpringLiquibase.class)
+	@ConditionalOnMissingBean
+	public LiquibaseEndpoint liquibaseEndpoint(ApplicationContext context) {
+		return new LiquibaseEndpoint(context);
 	}
 
 }

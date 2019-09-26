@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.jms.activemq;
 
-import java.util.Collections;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

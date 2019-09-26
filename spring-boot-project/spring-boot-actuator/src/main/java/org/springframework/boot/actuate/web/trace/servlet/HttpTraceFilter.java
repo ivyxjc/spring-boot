@@ -16,9 +16,12 @@
 
 package org.springframework.boot.actuate.web.trace.servlet;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
+import org.springframework.boot.actuate.trace.http.HttpTrace;
+import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
+import org.springframework.core.Ordered;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,13 +30,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 import javax.servlet.http.HttpSession;
-
-import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
-import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
-import org.springframework.core.Ordered;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 /**
  * Servlet {@link Filter} that logs all requests to an {@link HttpTraceRepository}.
@@ -47,18 +46,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
  */
 public class HttpTraceFilter extends OncePerRequestFilter implements Ordered {
 
+	private final HttpTraceRepository repository;
+	private final HttpExchangeTracer tracer;
 	// Not LOWEST_PRECEDENCE, but near the end, so it has a good chance of catching all
 	// enriched headers, but users can add stuff after this if they want to
 	private int order = Ordered.LOWEST_PRECEDENCE - 10;
 
-	private final HttpTraceRepository repository;
-
-	private final HttpExchangeTracer tracer;
-
 	/**
 	 * Create a new {@link HttpTraceFilter} instance.
+	 *
 	 * @param repository the trace repository
-	 * @param tracer used to trace exchanges
+	 * @param tracer     used to trace exchanges
 	 */
 	public HttpTraceFilter(HttpTraceRepository repository, HttpExchangeTracer tracer) {
 		this.repository = repository;
@@ -87,8 +85,7 @@ public class HttpTraceFilter extends OncePerRequestFilter implements Ordered {
 		try {
 			filterChain.doFilter(request, response);
 			status = response.getStatus();
-		}
-		finally {
+		} finally {
 			TraceableHttpServletResponse traceableResponse = new TraceableHttpServletResponse(
 					(status != response.getStatus()) ? new CustomStatusResponseWrapper(response, status) : response);
 			this.tracer.sendingResponse(trace, traceableResponse, request::getUserPrincipal,
@@ -101,8 +98,7 @@ public class HttpTraceFilter extends OncePerRequestFilter implements Ordered {
 		try {
 			new URI(request.getRequestURL().toString());
 			return true;
-		}
-		catch (URISyntaxException ex) {
+		} catch (URISyntaxException ex) {
 			return false;
 		}
 	}

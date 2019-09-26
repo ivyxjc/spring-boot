@@ -16,14 +16,6 @@
 
 package org.springframework.boot.autoconfigure.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -37,14 +29,16 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.*;
+
 /**
  * Class for storing {@link EntityScan @EntityScan} specified packages for reference later
  * (e.g. by JPA auto-configuration).
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see EntityScan
  * @see EntityScanner
+ * @since 1.4.0
  */
 public class EntityScanPackages {
 
@@ -65,16 +59,8 @@ public class EntityScanPackages {
 	}
 
 	/**
-	 * Return the package names specified from all {@link EntityScan @EntityScan}
-	 * annotations.
-	 * @return the entity scan package names
-	 */
-	public List<String> getPackageNames() {
-		return this.packageNames;
-	}
-
-	/**
 	 * Return the {@link EntityScanPackages} for the given bean factory.
+	 *
 	 * @param beanFactory the source bean factory
 	 * @return the {@link EntityScanPackages} for the bean factory (never {@code null})
 	 */
@@ -83,15 +69,15 @@ public class EntityScanPackages {
 		// allow this to change in the future if needed
 		try {
 			return beanFactory.getBean(BEAN, EntityScanPackages.class);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			return NONE;
 		}
 	}
 
 	/**
 	 * Register the specified entity scan packages with the system.
-	 * @param registry the source registry
+	 *
+	 * @param registry     the source registry
 	 * @param packageNames the package names to register
 	 */
 	public static void register(BeanDefinitionRegistry registry, String... packageNames) {
@@ -102,7 +88,8 @@ public class EntityScanPackages {
 
 	/**
 	 * Register the specified entity scan packages with the system.
-	 * @param registry the source registry
+	 *
+	 * @param registry     the source registry
 	 * @param packageNames the package names to register
 	 */
 	public static void register(BeanDefinitionRegistry registry, Collection<String> packageNames) {
@@ -112,8 +99,7 @@ public class EntityScanPackages {
 			BeanDefinition beanDefinition = registry.getBeanDefinition(BEAN);
 			ConstructorArgumentValues constructorArguments = beanDefinition.getConstructorArgumentValues();
 			constructorArguments.addIndexedArgumentValue(0, addPackageNames(constructorArguments, packageNames));
-		}
-		else {
+		} else {
 			GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 			beanDefinition.setBeanClass(EntityScanPackages.class);
 			beanDefinition.getConstructorArgumentValues().addIndexedArgumentValue(0,
@@ -124,12 +110,22 @@ public class EntityScanPackages {
 	}
 
 	private static String[] addPackageNames(ConstructorArgumentValues constructorArguments,
-			Collection<String> packageNames) {
+											Collection<String> packageNames) {
 		String[] existing = (String[]) constructorArguments.getIndexedArgumentValue(0, String[].class).getValue();
 		Set<String> merged = new LinkedHashSet<>();
 		merged.addAll(Arrays.asList(existing));
 		merged.addAll(packageNames);
 		return StringUtils.toStringArray(merged);
+	}
+
+	/**
+	 * Return the package names specified from all {@link EntityScan @EntityScan}
+	 * annotations.
+	 *
+	 * @return the entity scan package names
+	 */
+	public List<String> getPackageNames() {
+		return this.packageNames;
 	}
 
 	/**

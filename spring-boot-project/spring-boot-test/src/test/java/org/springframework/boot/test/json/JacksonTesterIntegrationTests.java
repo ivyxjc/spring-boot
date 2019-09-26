@@ -16,18 +16,17 @@
 
 package org.springframework.boot.test.json;
 
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.core.io.ByteArrayResource;
+
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-
-import org.springframework.core.io.ByteArrayResource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,19 +39,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class JacksonTesterIntegrationTests {
 
-	private JacksonTester<ExampleObject> simpleJson;
-
-	private JacksonTester<ExampleObjectWithView> jsonWithView;
-
-	private JacksonTester<List<ExampleObject>> listJson;
-
-	private JacksonTester<Map<String, Integer>> mapJson;
-
-	private JacksonTester<String> stringJson;
-
-	private ObjectMapper objectMapper;
-
 	private static final String JSON = "{\"name\":\"Spring\",\"age\":123}";
+	private JacksonTester<ExampleObject> simpleJson;
+	private JacksonTester<ExampleObjectWithView> jsonWithView;
+	private JacksonTester<List<ExampleObject>> listJson;
+	private JacksonTester<Map<String, Integer>> mapJson;
+	private JacksonTester<String> stringJson;
+	private ObjectMapper objectMapper;
 
 	@Before
 	public void setup() {

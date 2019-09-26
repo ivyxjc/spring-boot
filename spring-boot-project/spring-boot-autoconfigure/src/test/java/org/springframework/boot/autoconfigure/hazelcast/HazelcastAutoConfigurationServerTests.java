@@ -16,15 +16,12 @@
 
 package org.springframework.boot.autoconfigure.hazelcast;
 
-import java.util.Map;
-
 import com.hazelcast.config.Config;
 import com.hazelcast.config.QueueConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -33,6 +30,8 @@ import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRu
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -101,13 +100,12 @@ public class HazelcastAutoConfigurationServerTests {
 		try {
 			this.contextRunner.withUserConfiguration(HazelcastConfigWithName.class)
 					.withPropertyValues("spring.hazelcast.config=this-is-ignored.xml").run((context) -> {
-						HazelcastInstance hazelcast = context.getBean(HazelcastInstance.class);
-						assertThat(hazelcast.getConfig().getInstanceName()).isEqualTo("my-test-instance");
-						// Should reuse any existing instance by default.
-						assertThat(hazelcast).isEqualTo(existing);
-					});
-		}
-		finally {
+				HazelcastInstance hazelcast = context.getBean(HazelcastInstance.class);
+				assertThat(hazelcast.getConfig().getInstanceName()).isEqualTo("my-test-instance");
+				// Should reuse any existing instance by default.
+				assertThat(hazelcast).isEqualTo(existing);
+			});
+		} finally {
 			existing.shutdown();
 		}
 	}
@@ -116,10 +114,10 @@ public class HazelcastAutoConfigurationServerTests {
 	public void configInstanceWithoutName() {
 		this.contextRunner.withUserConfiguration(HazelcastConfigNoName.class)
 				.withPropertyValues("spring.hazelcast.config=this-is-ignored.xml").run((context) -> {
-					Config config = context.getBean(HazelcastInstance.class).getConfig();
-					Map<String, QueueConfig> queueConfigs = config.getQueueConfigs();
-					assertThat(queueConfigs.keySet()).containsOnly("another-queue");
-				});
+			Config config = context.getBean(HazelcastInstance.class).getConfig();
+			Map<String, QueueConfig> queueConfigs = config.getQueueConfigs();
+			assertThat(queueConfigs.keySet()).containsOnly("another-queue");
+		});
 	}
 
 	@Configuration

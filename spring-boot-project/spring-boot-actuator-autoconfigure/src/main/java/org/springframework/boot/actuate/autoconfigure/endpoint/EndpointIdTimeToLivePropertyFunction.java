@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint;
 
-import java.time.Duration;
-import java.util.function.Function;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.invoker.cache.CachingOperationInvokerAdvisor;
 import org.springframework.boot.context.properties.bind.BindResult;
@@ -26,6 +23,9 @@ import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
+
+import java.time.Duration;
+import java.util.function.Function;
 
 /**
  * Function for use with {@link CachingOperationInvokerAdvisor} that extracts caching
@@ -42,6 +42,7 @@ class EndpointIdTimeToLivePropertyFunction implements Function<EndpointId, Long>
 
 	/**
 	 * Create a new instance with the {@link PropertyResolver} to use.
+	 *
 	 * @param environment the environment
 	 */
 	EndpointIdTimeToLivePropertyFunction(Environment environment) {

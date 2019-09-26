@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web;
 
-import java.util.Collections;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.web.PathMapper;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

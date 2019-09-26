@@ -16,16 +16,15 @@
 
 package org.springframework.boot.configurationprocessor.metadata;
 
+import org.assertj.core.api.Condition;
+import org.hamcrest.collection.IsMapContaining;
+import org.springframework.boot.configurationprocessor.metadata.ItemMetadata.ItemType;
+import org.springframework.util.ObjectUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.assertj.core.api.Condition;
-import org.hamcrest.collection.IsMapContaining;
-
-import org.springframework.boot.configurationprocessor.metadata.ItemMetadata.ItemType;
-import org.springframework.util.ObjectUtils;
 
 /**
  * AssertJ {@link Condition} to help test {@link ConfigurationMetadata}.
@@ -93,7 +92,7 @@ public final class Metadata {
 		}
 
 		public MetadataItemCondition(ItemType itemType, String name, String type, Class<?> sourceType,
-				String sourceMethod, String description, Object defaultValue, ItemDeprecation deprecation) {
+									 String sourceMethod, String description, Object defaultValue, ItemDeprecation deprecation) {
 			this.itemType = itemType;
 			this.name = name;
 			this.type = type;
@@ -233,7 +232,7 @@ public final class Metadata {
 		}
 
 		public MetadataHintCondition(String name, List<ItemHintValueCondition> valueConditions,
-				List<ItemHintProviderCondition> providerConditions) {
+									 List<ItemHintProviderCondition> providerConditions) {
 			this.name = name;
 			this.valueConditions = valueConditions;
 			this.providerConditions = providerConditions;

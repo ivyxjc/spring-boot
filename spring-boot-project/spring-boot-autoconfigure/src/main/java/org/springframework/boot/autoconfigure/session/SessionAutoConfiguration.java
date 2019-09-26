@@ -16,23 +16,12 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoConfiguration;
@@ -47,11 +36,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.web.servlet.server.Session.Cookie;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportSelector;
+import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.session.ReactiveSessionRepository;
 import org.springframework.session.Session;
@@ -63,6 +48,12 @@ import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.session.web.http.HttpSessionIdResolver;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Session.
@@ -77,10 +68,10 @@ import org.springframework.util.StringUtils;
 @Configuration
 @ConditionalOnClass(Session.class)
 @ConditionalOnWebApplication
-@EnableConfigurationProperties({ ServerProperties.class, SessionProperties.class })
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, HazelcastAutoConfiguration.class,
-		JdbcTemplateAutoConfiguration.class, MongoDataAutoConfiguration.class, MongoReactiveDataAutoConfiguration.class,
-		RedisAutoConfiguration.class, RedisReactiveAutoConfiguration.class })
+@EnableConfigurationProperties({ServerProperties.class, SessionProperties.class})
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, HazelcastAutoConfiguration.class,
+							JdbcTemplateAutoConfiguration.class, MongoDataAutoConfiguration.class, MongoReactiveDataAutoConfiguration.class,
+							RedisAutoConfiguration.class, RedisReactiveAutoConfiguration.class})
 @AutoConfigureBefore(HttpHandlerAutoConfiguration.class)
 public class SessionAutoConfiguration {
 
@@ -88,7 +79,7 @@ public class SessionAutoConfiguration {
 
 	@Configuration
 	@ConditionalOnWebApplication(type = Type.SERVLET)
-	@Import({ ServletSessionRepositoryValidator.class, SessionRepositoryFilterConfiguration.class })
+	@Import({ServletSessionRepositoryValidator.class, SessionRepositoryFilterConfiguration.class})
 	static class ServletSessionConfiguration {
 
 		@Bean
@@ -111,8 +102,8 @@ public class SessionAutoConfiguration {
 
 		@Configuration
 		@ConditionalOnMissingBean(SessionRepository.class)
-		@Import({ ServletSessionRepositoryImplementationValidator.class,
-				ServletSessionConfigurationImportSelector.class })
+		@Import({ServletSessionRepositoryImplementationValidator.class,
+						ServletSessionConfigurationImportSelector.class})
 		static class ServletSessionRepositoryConfiguration {
 
 		}
@@ -126,8 +117,8 @@ public class SessionAutoConfiguration {
 
 		@Configuration
 		@ConditionalOnMissingBean(ReactiveSessionRepository.class)
-		@Import({ ReactiveSessionRepositoryImplementationValidator.class,
-				ReactiveSessionConfigurationImportSelector.class })
+		@Import({ReactiveSessionRepositoryImplementationValidator.class,
+						ReactiveSessionConfigurationImportSelector.class})
 		static class ReactiveSessionRepositoryConfiguration {
 
 		}
@@ -158,7 +149,7 @@ public class SessionAutoConfiguration {
 			super(ConfigurationPhase.REGISTER_BEAN);
 		}
 
-		@ConditionalOnMissingBean({ HttpSessionIdResolver.class, CookieSerializer.class })
+		@ConditionalOnMissingBean({HttpSessionIdResolver.class, CookieSerializer.class})
 		static class NoComponentsAvailable {
 
 		}
@@ -226,7 +217,7 @@ public class SessionAutoConfiguration {
 		private final SessionProperties sessionProperties;
 
 		AbstractSessionRepositoryImplementationValidator(ApplicationContext applicationContext,
-				SessionProperties sessionProperties, List<String> candidates) {
+														 SessionProperties sessionProperties, List<String> candidates) {
 			this.classLoader = applicationContext.getClassLoader();
 			this.sessionProperties = sessionProperties;
 			this.candidates = candidates;
@@ -250,8 +241,7 @@ public class SessionAutoConfiguration {
 				if (candidate != null) {
 					candidates.add(candidate);
 				}
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				// Ignore
 			}
 		}
@@ -266,7 +256,7 @@ public class SessionAutoConfiguration {
 			extends AbstractSessionRepositoryImplementationValidator {
 
 		ServletSessionRepositoryImplementationValidator(ApplicationContext applicationContext,
-				SessionProperties sessionProperties) {
+														SessionProperties sessionProperties) {
 			super(applicationContext, sessionProperties,
 					Arrays.asList("org.springframework.session.hazelcast.HazelcastSessionRepository",
 							"org.springframework.session.jdbc.JdbcOperationsSessionRepository",
@@ -284,7 +274,7 @@ public class SessionAutoConfiguration {
 			extends AbstractSessionRepositoryImplementationValidator {
 
 		ReactiveSessionRepositoryImplementationValidator(ApplicationContext applicationContext,
-				SessionProperties sessionProperties) {
+														 SessionProperties sessionProperties) {
 			super(applicationContext, sessionProperties,
 					Arrays.asList("org.springframework.session.data.redis.ReactiveRedisOperationsSessionRepository",
 							"org.springframework.session.data.mongo.ReactiveMongoOperationsSessionRepository"));
@@ -302,7 +292,7 @@ public class SessionAutoConfiguration {
 		private final ObjectProvider<?> sessionRepositoryProvider;
 
 		protected AbstractSessionRepositoryValidator(SessionProperties sessionProperties,
-				ObjectProvider<?> sessionRepositoryProvider) {
+													 ObjectProvider<?> sessionRepositoryProvider) {
 			this.sessionProperties = sessionProperties;
 			this.sessionRepositoryProvider = sessionRepositoryProvider;
 		}
@@ -329,7 +319,7 @@ public class SessionAutoConfiguration {
 	static class ServletSessionRepositoryValidator extends AbstractSessionRepositoryValidator {
 
 		ServletSessionRepositoryValidator(SessionProperties sessionProperties,
-				ObjectProvider<SessionRepository<?>> sessionRepositoryProvider) {
+										  ObjectProvider<SessionRepository<?>> sessionRepositoryProvider) {
 			super(sessionProperties, sessionRepositoryProvider);
 		}
 
@@ -342,7 +332,7 @@ public class SessionAutoConfiguration {
 	static class ReactiveSessionRepositoryValidator extends AbstractSessionRepositoryValidator {
 
 		ReactiveSessionRepositoryValidator(SessionProperties sessionProperties,
-				ObjectProvider<ReactiveSessionRepository<?>> sessionRepositoryProvider) {
+										   ObjectProvider<ReactiveSessionRepository<?>> sessionRepositoryProvider) {
 			super(sessionProperties, sessionRepositoryProvider);
 		}
 

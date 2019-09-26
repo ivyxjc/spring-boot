@@ -16,19 +16,18 @@
 
 package org.springframework.boot.test.autoconfigure.json.app;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.boot.jackson.JsonObjectSerializer;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
+
+import java.io.IOException;
 
 /**
  * Example {@link JsonComponent} for use with {@link JsonTest @JsonTest} tests.
@@ -52,7 +51,7 @@ public class ExampleJsonComponent {
 
 		@Override
 		protected ExampleCustomObject deserializeObject(JsonParser jsonParser, DeserializationContext context,
-				ObjectCodec codec, JsonNode tree) throws IOException {
+														ObjectCodec codec, JsonNode tree) throws IOException {
 			return new ExampleCustomObject(nullSafeValue(tree.get("value"), String.class));
 		}
 

@@ -16,23 +16,21 @@
 
 package org.springframework.boot.web.embedded.netty;
 
-import java.net.URL;
-import java.security.KeyStore;
-import java.util.Arrays;
-
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.TrustManagerFactory;
-
 import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.SslContextBuilder;
-import reactor.netty.http.server.HttpServer;
-import reactor.netty.tcp.SslProvider;
-
 import org.springframework.boot.web.server.Http2;
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.SslStoreProvider;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.util.ResourceUtils;
+import reactor.netty.http.server.HttpServer;
+import reactor.netty.tcp.SslProvider;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.TrustManagerFactory;
+import java.net.URL;
+import java.security.KeyStore;
+import java.util.Arrays;
 
 /**
  * {@link NettyServerCustomizer} that configures SSL for the given Reactor Netty server
@@ -65,8 +63,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 					spec.defaultConfiguration(SslProvider.DefaultConfigurationType.H2);
 				}
 			});
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -82,8 +79,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 		}
 		if (this.ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
 			builder.clientAuth(ClientAuth.REQUIRE);
-		}
-		else if (this.ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
+		} else if (this.ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
 			builder.clientAuth(ClientAuth.OPTIONAL);
 		}
 		return builder;
@@ -100,8 +96,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 			}
 			keyManagerFactory.init(keyStore, keyPassword);
 			return keyManagerFactory;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -121,8 +116,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 					.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			trustManagerFactory.init(store);
 			return trustManagerFactory;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -154,8 +148,7 @@ public class SslServerCustomizer implements NettyServerCustomizer {
 			URL url = ResourceUtils.getURL(resource);
 			store.load(url.openStream(), (password != null) ? password.toCharArray() : null);
 			return store;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new WebServerException("Could not load key store '" + resource + "'", ex);
 		}
 

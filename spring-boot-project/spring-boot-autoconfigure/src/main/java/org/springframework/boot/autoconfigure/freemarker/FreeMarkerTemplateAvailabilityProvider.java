@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
+import org.springframework.boot.autoconfigure.template.PathBasedTemplateAvailabilityProvider;
+import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.springframework.boot.autoconfigure.template.PathBasedTemplateAvailabilityProvider;
-import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider;
 
 /**
  * {@link TemplateAvailabilityProvider} that provides availability information for

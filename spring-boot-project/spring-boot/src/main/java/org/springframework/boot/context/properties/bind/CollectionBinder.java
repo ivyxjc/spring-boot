@@ -16,14 +16,14 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Supplier;
-
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.core.CollectionFactory;
 import org.springframework.core.ResolvableType;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * {@link AggregateBinder} for collections.
@@ -39,7 +39,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 
 	@Override
 	protected Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
-			AggregateElementBinder elementBinder) {
+								   AggregateElementBinder elementBinder) {
 		Class<?> collectionType = (target.getValue() != null) ? List.class : target.getType().resolve(Object.class);
 		ResolvableType aggregateType = ResolvableType.forClassWithGenerics(List.class,
 				target.getType().asCollection().getGenerics());
@@ -63,8 +63,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 			existingCollection.clear();
 			existingCollection.addAll(additional);
 			return copyIfPossible(existingCollection);
-		}
-		catch (UnsupportedOperationException ex) {
+		} catch (UnsupportedOperationException ex) {
 			return createNewCollection(additional);
 		}
 	}
@@ -72,8 +71,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 	private Collection<Object> getExistingIfPossible(Supplier<Collection<Object>> existing) {
 		try {
 			return existing.get();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}
@@ -81,8 +79,7 @@ class CollectionBinder extends IndexedElementsBinder<Collection<Object>> {
 	private Collection<Object> copyIfPossible(Collection<Object> collection) {
 		try {
 			return createNewCollection(collection);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return collection;
 		}
 	}

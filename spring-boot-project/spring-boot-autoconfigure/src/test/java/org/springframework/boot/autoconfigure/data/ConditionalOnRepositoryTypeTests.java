@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
 

@@ -16,23 +16,18 @@
 
 package org.springframework.boot.web.embedded.netty;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.stream.Collectors;
-
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaders;
+import org.springframework.boot.web.server.Compression;
+import org.springframework.util.*;
 import reactor.netty.http.server.HttpServer;
 import reactor.netty.http.server.HttpServerRequest;
 import reactor.netty.http.server.HttpServerResponse;
 
-import org.springframework.boot.web.server.Compression;
-import org.springframework.util.InvalidMimeTypeException;
-import org.springframework.util.MimeType;
-import org.springframework.util.MimeTypeUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.stream.Collectors;
 
 /**
  * Configure the HTTP compression on a Reactor Netty request/response handler.
@@ -77,8 +72,7 @@ final class CompressionCustomizer implements NettyServerCustomizer {
 			try {
 				MimeType contentMimeType = MimeTypeUtils.parseMimeType(contentType);
 				return mimeTypes.stream().anyMatch((candidate) -> candidate.isCompatibleWith(contentMimeType));
-			}
-			catch (InvalidMimeTypeException ex) {
+			} catch (InvalidMimeTypeException ex) {
 				return false;
 			}
 		};

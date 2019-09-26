@@ -16,13 +16,9 @@
 
 package org.springframework.boot.web.server;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.springframework.util.Assert;
+
+import java.util.*;
 
 /**
  * Simple server-independent abstraction for mime mappings. Roughly equivalent to the
@@ -230,6 +226,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Create a new {@link MimeMappings} instance from the specified mappings.
+	 *
 	 * @param mappings the source mappings
 	 */
 	public MimeMappings(MimeMappings mappings) {
@@ -238,8 +235,9 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Create a new {@link MimeMappings} from the specified mappings.
+	 *
 	 * @param mappings the source mappings with extension as the key and mime-type as the
-	 * value
+	 *                 value
 	 */
 	public MimeMappings(Map<String, String> mappings) {
 		Assert.notNull(mappings, "Mappings must not be null");
@@ -249,12 +247,24 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Internal constructor.
+	 *
 	 * @param mappings source mappings
-	 * @param mutable if the new object should be mutable.
+	 * @param mutable  if the new object should be mutable.
 	 */
 	private MimeMappings(MimeMappings mappings, boolean mutable) {
 		Assert.notNull(mappings, "Mappings must not be null");
 		this.map = (mutable ? new LinkedHashMap<>(mappings.map) : Collections.unmodifiableMap(mappings.map));
+	}
+
+	/**
+	 * Create a new unmodifiable view of the specified mapping. Methods that attempt to
+	 * modify the returned map will throw {@link UnsupportedOperationException}s.
+	 *
+	 * @param mappings the mappings
+	 * @return an unmodifiable view of the specified mappings.
+	 */
+	public static MimeMappings unmodifiableMappings(MimeMappings mappings) {
+		return new MimeMappings(mappings, false);
 	}
 
 	@Override
@@ -264,6 +274,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Returns all defined mappings.
+	 *
 	 * @return the mappings.
 	 */
 	public Collection<Mapping> getAll() {
@@ -272,8 +283,9 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Add a new mime mapping.
+	 *
 	 * @param extension the file extension (excluding '.')
-	 * @param mimeType the mime type to map
+	 * @param mimeType  the mime type to map
 	 * @return any previous mapping or {@code null}
 	 */
 	public String add(String extension, String mimeType) {
@@ -283,6 +295,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Get a mime mapping for the given extension.
+	 *
 	 * @param extension the file extension (excluding '.')
 	 * @return a mime mapping or {@code null}
 	 */
@@ -293,6 +306,7 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 
 	/**
 	 * Remove an existing mapping.
+	 *
 	 * @param extension the file extension (excluding '.')
 	 * @return the removed mime mapping or {@code null} if no item was removed
 	 */
@@ -319,16 +333,6 @@ public final class MimeMappings implements Iterable<MimeMappings.Mapping> {
 	@Override
 	public int hashCode() {
 		return this.map.hashCode();
-	}
-
-	/**
-	 * Create a new unmodifiable view of the specified mapping. Methods that attempt to
-	 * modify the returned map will throw {@link UnsupportedOperationException}s.
-	 * @param mappings the mappings
-	 * @return an unmodifiable view of the specified mappings.
-	 */
-	public static MimeMappings unmodifiableMappings(MimeMappings mappings) {
-		return new MimeMappings(mappings, false);
 	}
 
 	/**

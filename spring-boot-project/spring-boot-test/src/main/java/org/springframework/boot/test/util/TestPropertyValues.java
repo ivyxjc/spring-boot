@@ -16,28 +16,18 @@
 
 package org.springframework.boot.test.util;
 
-import java.io.Closeable;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.MutablePropertySources;
-import org.springframework.core.env.PropertySource;
-import org.springframework.core.env.StandardEnvironment;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
+import org.springframework.core.env.*;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.io.Closeable;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Test utilities for adding properties. Properties can be applied to a Spring
@@ -59,7 +49,62 @@ public final class TestPropertyValues {
 	}
 
 	/**
+	 * Return a new {@link TestPropertyValues} with the underlying map populated with the
+	 * given property pairs. Name-value pairs can be specified with colon (":") or equals
+	 * ("=") separators.
+	 *
+	 * @param pairs the name-value pairs for properties that need to be added to the
+	 *              environment
+	 * @return the new instance
+	 */
+	public static TestPropertyValues of(String... pairs) {
+		return of(Stream.of(pairs));
+	}
+
+	/**
+	 * Return a new {@link TestPropertyValues} with the underlying map populated with the
+	 * given property pairs. Name-value pairs can be specified with colon (":") or equals
+	 * ("=") separators.
+	 *
+	 * @param pairs the name-value pairs for properties that need to be added to the
+	 *              environment
+	 * @return the new instance
+	 */
+	public static TestPropertyValues of(Iterable<String> pairs) {
+		if (pairs == null) {
+			return empty();
+		}
+		return of(StreamSupport.stream(pairs.spliterator(), false));
+	}
+
+	/**
+	 * Return a new {@link TestPropertyValues} with the underlying map populated with the
+	 * given property pairs. Name-value pairs can be specified with colon (":") or equals
+	 * ("=") separators.
+	 *
+	 * @param pairs the name-value pairs for properties that need to be added to the
+	 *              environment
+	 * @return the new instance
+	 */
+	public static TestPropertyValues of(Stream<String> pairs) {
+		if (pairs == null) {
+			return empty();
+		}
+		return empty().and(pairs.map(Pair::parse));
+	}
+
+	/**
+	 * Return an empty {@link TestPropertyValues} instance.
+	 *
+	 * @return an empty instance
+	 */
+	public static TestPropertyValues empty() {
+		return EMPTY;
+	}
+
+	/**
 	 * Builder method to add more properties.
+	 *
 	 * @param pairs the property pairs to add
 	 * @return a new {@link TestPropertyValues} instance
 	 */
@@ -76,6 +121,7 @@ public final class TestPropertyValues {
 	/**
 	 * Add the properties from the underlying map to the environment owned by an
 	 * {@link ApplicationContext}.
+	 *
 	 * @param context the context with an environment to modify
 	 */
 	public void applyTo(ConfigurableApplicationContext context) {
@@ -85,6 +131,7 @@ public final class TestPropertyValues {
 	/**
 	 * Add the properties from the underlying map to the environment. The default property
 	 * source used is {@link MapPropertySource}.
+	 *
 	 * @param environment the environment that needs to be modified
 	 */
 	public void applyTo(ConfigurableEnvironment environment) {
@@ -94,8 +141,9 @@ public final class TestPropertyValues {
 	/**
 	 * Add the properties from the underlying map to the environment using the specified
 	 * property source type.
+	 *
 	 * @param environment the environment that needs to be modified
-	 * @param type the type of {@link PropertySource} to be added. See {@link Type}
+	 * @param type        the type of {@link PropertySource} to be added. See {@link Type}
 	 */
 	public void applyTo(ConfigurableEnvironment environment, Type type) {
 		applyTo(environment, type, type.applySuffix("test"));
@@ -104,9 +152,10 @@ public final class TestPropertyValues {
 	/**
 	 * Add the properties from the underlying map to the environment using the specified
 	 * property source type and name.
+	 *
 	 * @param environment the environment that needs to be modified
-	 * @param type the type of {@link PropertySource} to be added. See {@link Type}
-	 * @param name the name for the property source
+	 * @param type        the type of {@link PropertySource} to be added. See {@link Type}
+	 * @param name        the name for the property source
 	 */
 	public void applyTo(ConfigurableEnvironment environment, Type type, String name) {
 		Assert.notNull(environment, "Environment must not be null");
@@ -120,15 +169,15 @@ public final class TestPropertyValues {
 	/**
 	 * Add the properties to the {@link System#getProperties() system properties} for the
 	 * duration of the {@code call}, restoring previous values when the call completes.
-	 * @param <T> the result type
+	 *
+	 * @param <T>  the result type
 	 * @param call the call to make
 	 * @return the result of the call
 	 */
 	public <T> T applyToSystemProperties(Callable<T> call) {
 		try (SystemPropertiesHandler handler = new SystemPropertiesHandler()) {
 			return call.call();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			rethrow(ex);
 			throw new IllegalStateException("Original cause not rethrown", ex);
 		}
@@ -151,56 +200,6 @@ public final class TestPropertyValues {
 		Map<String, Object> source = new LinkedHashMap<>(this.properties);
 		sources.addFirst((type.equals(Type.MAP) ? new MapPropertySource(name, source)
 				: new SystemEnvironmentPropertySource(name, source)));
-	}
-
-	/**
-	 * Return a new {@link TestPropertyValues} with the underlying map populated with the
-	 * given property pairs. Name-value pairs can be specified with colon (":") or equals
-	 * ("=") separators.
-	 * @param pairs the name-value pairs for properties that need to be added to the
-	 * environment
-	 * @return the new instance
-	 */
-	public static TestPropertyValues of(String... pairs) {
-		return of(Stream.of(pairs));
-	}
-
-	/**
-	 * Return a new {@link TestPropertyValues} with the underlying map populated with the
-	 * given property pairs. Name-value pairs can be specified with colon (":") or equals
-	 * ("=") separators.
-	 * @param pairs the name-value pairs for properties that need to be added to the
-	 * environment
-	 * @return the new instance
-	 */
-	public static TestPropertyValues of(Iterable<String> pairs) {
-		if (pairs == null) {
-			return empty();
-		}
-		return of(StreamSupport.stream(pairs.spliterator(), false));
-	}
-
-	/**
-	 * Return a new {@link TestPropertyValues} with the underlying map populated with the
-	 * given property pairs. Name-value pairs can be specified with colon (":") or equals
-	 * ("=") separators.
-	 * @param pairs the name-value pairs for properties that need to be added to the
-	 * environment
-	 * @return the new instance
-	 */
-	public static TestPropertyValues of(Stream<String> pairs) {
-		if (pairs == null) {
-			return empty();
-		}
-		return empty().and(pairs.map(Pair::parse));
-	}
-
-	/**
-	 * Return an empty {@link TestPropertyValues} instance.
-	 * @return an empty instance
-	 */
-	public static TestPropertyValues empty() {
-		return EMPTY;
 	}
 
 	/**
@@ -253,10 +252,6 @@ public final class TestPropertyValues {
 			this.value = value;
 		}
 
-		public void addTo(Map<String, Object> properties) {
-			properties.put(this.name, this.value);
-		}
-
 		public static Pair parse(String pair) {
 			int index = getSeparatorIndex(pair);
 			String name = (index > 0) ? pair.substring(0, index) : pair;
@@ -281,6 +276,10 @@ public final class TestPropertyValues {
 				return null;
 			}
 			return new Pair(name, value);
+		}
+
+		public void addTo(Map<String, Object> properties) {
+			properties.put(this.name, this.value);
 		}
 
 	}

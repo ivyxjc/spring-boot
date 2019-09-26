@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.security;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.access.event.AbstractAuthorizationEvent;
 import org.springframework.security.access.event.AuthenticationCredentialsNotFoundEvent;
 import org.springframework.security.access.event.AuthorizationFailureEvent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Default implementation of {@link AbstractAuthorizationAuditListener}.
@@ -42,8 +42,7 @@ public class AuthorizationAuditListener extends AbstractAuthorizationAuditListen
 	public void onApplicationEvent(AbstractAuthorizationEvent event) {
 		if (event instanceof AuthenticationCredentialsNotFoundEvent) {
 			onAuthenticationCredentialsNotFoundEvent((AuthenticationCredentialsNotFoundEvent) event);
-		}
-		else if (event instanceof AuthorizationFailureEvent) {
+		} else if (event instanceof AuthorizationFailureEvent) {
 			onAuthorizationFailureEvent((AuthorizationFailureEvent) event);
 		}
 	}

@@ -16,27 +16,18 @@
 
 package org.springframework.boot.actuate.env;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.junit.After;
 import org.junit.Test;
-
-import org.springframework.boot.actuate.env.EnvironmentEndpoint.EnvironmentDescriptor;
-import org.springframework.boot.actuate.env.EnvironmentEndpoint.EnvironmentEntryDescriptor;
-import org.springframework.boot.actuate.env.EnvironmentEndpoint.PropertySourceDescriptor;
-import org.springframework.boot.actuate.env.EnvironmentEndpoint.PropertySourceEntryDescriptor;
-import org.springframework.boot.actuate.env.EnvironmentEndpoint.PropertyValueDescriptor;
+import org.springframework.boot.actuate.env.EnvironmentEndpoint.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.CompositePropertySource;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.Environment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.*;
+
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -51,6 +42,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Andy Wilkinson
  */
 public class EnvironmentEndpointTests {
+
+	private static ConfigurableEnvironment emptyEnvironment() {
+		StandardEnvironment environment = new StandardEnvironment();
+		environment.getPropertySources().remove(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME);
+		environment.getPropertySources().remove(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME);
+		return environment;
+	}
 
 	@After
 	public void close() {
@@ -88,21 +86,21 @@ public class EnvironmentEndpointTests {
 	public void sensitiveKeysHaveTheirValuesSanitized() {
 		TestPropertyValues.of("dbPassword=123456", "apiKey=123456", "mySecret=123456", "myCredentials=123456",
 				"VCAP_SERVICES=123456").applyToSystemProperties(() -> {
-					EnvironmentDescriptor descriptor = new EnvironmentEndpoint(new StandardEnvironment())
-							.environment(null);
-					Map<String, PropertyValueDescriptor> systemProperties = propertySources(descriptor)
-							.get("systemProperties").getProperties();
-					assertThat(systemProperties.get("dbPassword").getValue()).isEqualTo("******");
-					assertThat(systemProperties.get("apiKey").getValue()).isEqualTo("******");
-					assertThat(systemProperties.get("mySecret").getValue()).isEqualTo("******");
-					assertThat(systemProperties.get("myCredentials").getValue()).isEqualTo("******");
-					assertThat(systemProperties.get("VCAP_SERVICES").getValue()).isEqualTo("******");
-					PropertyValueDescriptor command = systemProperties.get("sun.java.command");
-					if (command != null) {
-						assertThat(command.getValue()).isEqualTo("******");
-					}
-					return null;
-				});
+			EnvironmentDescriptor descriptor = new EnvironmentEndpoint(new StandardEnvironment())
+					.environment(null);
+			Map<String, PropertyValueDescriptor> systemProperties = propertySources(descriptor)
+					.get("systemProperties").getProperties();
+			assertThat(systemProperties.get("dbPassword").getValue()).isEqualTo("******");
+			assertThat(systemProperties.get("apiKey").getValue()).isEqualTo("******");
+			assertThat(systemProperties.get("mySecret").getValue()).isEqualTo("******");
+			assertThat(systemProperties.get("myCredentials").getValue()).isEqualTo("******");
+			assertThat(systemProperties.get("VCAP_SERVICES").getValue()).isEqualTo("******");
+			PropertyValueDescriptor command = systemProperties.get("sun.java.command");
+			if (command != null) {
+				assertThat(command.getValue()).isEqualTo("******");
+			}
+			return null;
+		});
 	}
 
 	@Test
@@ -244,13 +242,6 @@ public class EnvironmentEndpointTests {
 		assertThat(sources.get("two").getProperties().get("a").getValue()).isEqualTo("apple");
 	}
 
-	private static ConfigurableEnvironment emptyEnvironment() {
-		StandardEnvironment environment = new StandardEnvironment();
-		environment.getPropertySources().remove(StandardEnvironment.SYSTEM_ENVIRONMENT_PROPERTY_SOURCE_NAME);
-		environment.getPropertySources().remove(StandardEnvironment.SYSTEM_PROPERTIES_PROPERTY_SOURCE_NAME);
-		return environment;
-	}
-
 	private MapPropertySource singleKeyPropertySource(String name, String key, Object value) {
 		return new MapPropertySource(name, Collections.singletonMap(key, value));
 	}
@@ -268,13 +259,12 @@ public class EnvironmentEndpointTests {
 	}
 
 	private void assertPropertySourceEntryDescriptor(PropertySourceEntryDescriptor actual, Object value,
-			String origin) {
+													 String origin) {
 		assertThat(actual).isNotNull();
 		if (value != null) {
 			assertThat(actual.getProperty().getValue()).isEqualTo(value);
 			assertThat(actual.getProperty().getOrigin()).isEqualTo(origin);
-		}
-		else {
+		} else {
 			assertThat(actual.getProperty()).isNull();
 		}
 

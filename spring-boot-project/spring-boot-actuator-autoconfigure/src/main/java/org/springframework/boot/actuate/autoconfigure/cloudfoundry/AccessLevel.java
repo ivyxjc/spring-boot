@@ -48,6 +48,7 @@ public enum AccessLevel {
 
 	/**
 	 * Returns if the access level should allow access to the specified ID.
+	 *
 	 * @param id the ID to check
 	 * @return {@code true} if access is allowed
 	 */

@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.flyway;
 
 import org.flywaydb.core.Flyway;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.Ordered;
 import org.springframework.util.Assert;
@@ -39,6 +38,7 @@ public class FlywayMigrationInitializer implements InitializingBean, Ordered {
 
 	/**
 	 * Create a new {@link FlywayMigrationInitializer} instance.
+	 *
 	 * @param flyway the flyway instance
 	 */
 	public FlywayMigrationInitializer(Flyway flyway) {
@@ -47,7 +47,8 @@ public class FlywayMigrationInitializer implements InitializingBean, Ordered {
 
 	/**
 	 * Create a new {@link FlywayMigrationInitializer} instance.
-	 * @param flyway the flyway instance
+	 *
+	 * @param flyway            the flyway instance
 	 * @param migrationStrategy the migration strategy or {@code null}
 	 */
 	public FlywayMigrationInitializer(Flyway flyway, FlywayMigrationStrategy migrationStrategy) {
@@ -60,8 +61,7 @@ public class FlywayMigrationInitializer implements InitializingBean, Ordered {
 	public void afterPropertiesSet() throws Exception {
 		if (this.migrationStrategy != null) {
 			this.migrationStrategy.migrate(this.flyway);
-		}
-		else {
+		} else {
 			this.flyway.migrate();
 		}
 	}

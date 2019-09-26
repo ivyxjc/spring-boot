@@ -16,14 +16,13 @@
 
 package org.springframework.boot.jdbc;
 
-import java.sql.Wrapper;
-
-import javax.sql.DataSource;
-
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
 import org.springframework.util.ClassUtils;
+
+import javax.sql.DataSource;
+import java.sql.Wrapper;
 
 /**
  * Unwraps a {@link DataSource} that may have been proxied or wrapped in a custom
@@ -44,9 +43,10 @@ public final class DataSourceUnwrapper {
 	/**
 	 * Return an object that implements the given {@code target} type, unwrapping delegate
 	 * or proxy if necessary.
+	 *
 	 * @param dataSource the datasource to handle
-	 * @param target the type that the result must implement
-	 * @param <T> the target type
+	 * @param target     the type that the result must implement
+	 * @param <T>        the target type
 	 * @return an object that implements the target type or {@code null}
 	 */
 	public static <T> T unwrap(DataSource dataSource, Class<T> target) {
@@ -77,8 +77,7 @@ public final class DataSourceUnwrapper {
 			if (wrapper.isWrapperFor(target)) {
 				return wrapper.unwrap(target);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Continue
 		}
 		return null;

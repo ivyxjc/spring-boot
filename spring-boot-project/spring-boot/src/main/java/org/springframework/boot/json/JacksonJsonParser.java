@@ -16,18 +16,18 @@
 
 package org.springframework.boot.json;
 
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Thin wrapper to adapt Jackson 2 {@link ObjectMapper} to {@link JsonParser}.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see JsonParserFactory
+ * @since 1.0.0
  */
 public class JacksonJsonParser extends AbstractJsonParser {
 
@@ -39,6 +39,7 @@ public class JacksonJsonParser extends AbstractJsonParser {
 
 	/**
 	 * Creates an instance with the specified {@link ObjectMapper}.
+	 *
 	 * @param objectMapper the object mapper to use
 	 */
 	public JacksonJsonParser(ObjectMapper objectMapper) {

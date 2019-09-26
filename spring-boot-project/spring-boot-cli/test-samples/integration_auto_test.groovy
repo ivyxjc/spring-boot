@@ -1,4 +1,4 @@
-@SpringBootTest(classes=App)
+@SpringBootTest(classes = App)
 class AppTests {
 
 	@Autowired

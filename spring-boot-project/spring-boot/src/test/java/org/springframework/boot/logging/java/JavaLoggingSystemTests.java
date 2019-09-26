@@ -16,6 +16,15 @@
 
 package org.springframework.boot.logging.java;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.springframework.boot.logging.*;
+import org.springframework.boot.testsupport.rule.OutputCapture;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.util.EnumSet;
@@ -23,20 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.springframework.boot.logging.AbstractLoggingSystemTests;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.LoggingSystemProperties;
-import org.springframework.boot.testsupport.rule.OutputCapture;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;

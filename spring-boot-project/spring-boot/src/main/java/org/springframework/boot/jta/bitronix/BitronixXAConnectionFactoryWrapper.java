@@ -16,10 +16,10 @@
 
 package org.springframework.boot.jta.bitronix;
 
+import org.springframework.boot.jms.XAConnectionFactoryWrapper;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.XAConnectionFactory;
-
-import org.springframework.boot.jms.XAConnectionFactoryWrapper;
 
 /**
  * {@link XAConnectionFactoryWrapper} that uses a Bitronix

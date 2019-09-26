@@ -16,13 +16,13 @@
 
 package org.springframework.boot.devtools.remote.client;
 
-import java.io.IOException;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
 
 /**
  * {@link ClientHttpRequestInterceptor} to populate arbitrary HTTP headers with a value.
@@ -40,7 +40,8 @@ public class HttpHeaderInterceptor implements ClientHttpRequestInterceptor {
 
 	/**
 	 * Creates a new {@link HttpHeaderInterceptor} instance.
-	 * @param name the header name to populate. Cannot be null or empty.
+	 *
+	 * @param name  the header name to populate. Cannot be null or empty.
 	 * @param value the header value to populate. Cannot be null or empty.
 	 */
 	public HttpHeaderInterceptor(String name, String value) {

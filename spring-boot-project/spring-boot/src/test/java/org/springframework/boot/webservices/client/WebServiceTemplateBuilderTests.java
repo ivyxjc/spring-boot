@@ -16,19 +16,11 @@
 
 package org.springframework.boot.webservices.client;
 
-import java.net.URI;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
-
-import javax.xml.transform.sax.SAXTransformerFactory;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.oxm.Marshaller;
@@ -42,13 +34,16 @@ import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
 import org.springframework.ws.transport.http.HttpUrlConnectionMessageSender;
 
+import javax.xml.transform.sax.SAXTransformerFactory;
+import java.net.URI;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link WebServiceTemplateBuilder}.
@@ -202,7 +197,7 @@ public class WebServiceTemplateBuilderTests {
 		ClientInterceptor f1 = Mockito.mock(ClientInterceptor.class);
 		ClientInterceptor f2 = Mockito.mock(ClientInterceptor.class);
 		WebServiceTemplate webServiceTemplate = new WebServiceTemplate();
-		webServiceTemplate.setInterceptors(new ClientInterceptor[] { f1 });
+		webServiceTemplate.setInterceptors(new ClientInterceptor[]{f1});
 		this.builder.additionalInterceptors(f2).configure(webServiceTemplate);
 		assertThat(webServiceTemplate.getInterceptors()).containsExactlyInAnyOrder(f2, f1);
 	}

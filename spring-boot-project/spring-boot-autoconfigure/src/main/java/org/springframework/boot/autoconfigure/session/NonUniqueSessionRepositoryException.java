@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.session.SessionRepository;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Exception thrown when multiple {@link SessionRepository} implementations are available

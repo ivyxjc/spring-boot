@@ -16,14 +16,13 @@
 
 package org.springframework.boot.test.web.client;
 
+import org.junit.Test;
+import org.springframework.mock.env.MockEnvironment;
+import org.springframework.web.util.UriTemplateHandler;
+
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Test;
-
-import org.springframework.mock.env.MockEnvironment;
-import org.springframework.web.util.UriTemplateHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

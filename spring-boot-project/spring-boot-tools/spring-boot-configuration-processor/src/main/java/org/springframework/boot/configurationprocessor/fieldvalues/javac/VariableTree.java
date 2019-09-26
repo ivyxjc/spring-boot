@@ -16,10 +16,9 @@
 
 package org.springframework.boot.configurationprocessor.fieldvalues.javac;
 
+import javax.lang.model.element.Modifier;
 import java.util.Collections;
 import java.util.Set;
-
-import javax.lang.model.element.Modifier;
 
 /**
  * Reflection based access to {@code com.sun.source.tree.VariableTree}.

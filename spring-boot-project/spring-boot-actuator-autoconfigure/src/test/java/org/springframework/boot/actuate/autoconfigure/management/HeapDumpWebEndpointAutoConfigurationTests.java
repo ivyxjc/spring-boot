@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.management;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.management.HeapDumpWebEndpoint;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 

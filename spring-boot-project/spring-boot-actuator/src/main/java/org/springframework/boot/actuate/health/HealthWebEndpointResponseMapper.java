@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.Set;
-import java.util.function.Supplier;
-
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
 import org.springframework.util.CollectionUtils;
+
+import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Maps a {@link Health} to a {@link WebEndpointResponse}.
@@ -38,7 +38,7 @@ public class HealthWebEndpointResponseMapper {
 	private final Set<String> authorizedRoles;
 
 	public HealthWebEndpointResponseMapper(HealthStatusHttpMapper statusHttpMapper, ShowDetails showDetails,
-			Set<String> authorizedRoles) {
+										   Set<String> authorizedRoles) {
 		this.statusHttpMapper = statusHttpMapper;
 		this.showDetails = showDetails;
 		this.authorizedRoles = authorizedRoles;
@@ -50,8 +50,9 @@ public class HealthWebEndpointResponseMapper {
 	 * <p>
 	 * If the current user does not have the right to see the details, the
 	 * {@link Supplier} is not invoked and a 404 response is returned instead.
-	 * @param health the provider of health details, invoked if the current user has the
-	 * right to see them
+	 *
+	 * @param health          the provider of health details, invoked if the current user has the
+	 *                        right to see them
 	 * @param securityContext the security context
 	 * @return the mapped response
 	 */
@@ -68,7 +69,8 @@ public class HealthWebEndpointResponseMapper {
 	/**
 	 * Maps the given {@code health} to a {@link WebEndpointResponse}, honouring the
 	 * mapper's default {@link ShowDetails} using the given {@code securityContext}.
-	 * @param health the health to map
+	 *
+	 * @param health          the health to map
 	 * @param securityContext the security context
 	 * @return the mapped response
 	 */
@@ -79,9 +81,10 @@ public class HealthWebEndpointResponseMapper {
 	/**
 	 * Maps the given {@code health} to a {@link WebEndpointResponse}, honouring the given
 	 * {@code showDetails} using the given {@code securityContext}.
-	 * @param health the health to map
+	 *
+	 * @param health          the health to map
 	 * @param securityContext the security context
-	 * @param showDetails when to show details in the response
+	 * @param showDetails     when to show details in the response
 	 * @return the mapped response
 	 */
 	public WebEndpointResponse<Health> map(Health health, SecurityContext securityContext, ShowDetails showDetails) {

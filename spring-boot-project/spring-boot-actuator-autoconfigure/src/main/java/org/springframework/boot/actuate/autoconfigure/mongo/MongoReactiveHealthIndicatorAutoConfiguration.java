@@ -16,10 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.mongo;
 
-import java.util.Map;
-
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeReactiveHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -35,6 +31,9 @@ import org.springframework.boot.autoconfigure.data.mongo.MongoReactiveDataAutoCo
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
+import reactor.core.publisher.Flux;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
@@ -44,7 +43,7 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
  * @since 2.1.0
  */
 @Configuration
-@ConditionalOnClass({ ReactiveMongoTemplate.class, Flux.class })
+@ConditionalOnClass({ReactiveMongoTemplate.class, Flux.class})
 @ConditionalOnBean(ReactiveMongoTemplate.class)
 @ConditionalOnEnabledHealthIndicator("mongo")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)

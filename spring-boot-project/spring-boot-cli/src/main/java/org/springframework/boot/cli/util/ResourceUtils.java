@@ -16,6 +16,12 @@
 
 package org.springframework.boot.cli.util;
 
+import org.springframework.core.io.*;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,16 +29,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * Utilities for manipulating resource paths and URLs.
@@ -62,7 +58,8 @@ public abstract class ResourceUtils {
 	 * Return URLs from a given source path. Source paths can be simple file locations
 	 * (/some/file.java) or wildcard patterns (/some/**). Additionally the prefixes
 	 * "file:", "classpath:" and "classpath*:" can be used for specific path types.
-	 * @param path the source path
+	 *
+	 * @param path        the source path
 	 * @param classLoader the class loader or {@code null} to use the default
 	 * @return a list of URLs
 	 */
@@ -73,8 +70,7 @@ public abstract class ResourceUtils {
 		path = StringUtils.cleanPath(path);
 		try {
 			return getUrlsFromWildcardPath(path, classLoader);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalArgumentException("Cannot create URL from path [" + path + "]", ex);
 		}
 	}
@@ -86,8 +82,7 @@ public abstract class ResourceUtils {
 		Set<String> result = new LinkedHashSet<>();
 		try {
 			result.addAll(getUrls(FILE_URL_PREFIX + path, classLoader));
-		}
-		catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException ex) {
 			// ignore
 		}
 		path = stripLeadingSlashes(path);
@@ -151,8 +146,7 @@ public abstract class ResourceUtils {
 			Assert.notNull(location, "Location must not be null");
 			if (location.startsWith(CLASSPATH_URL_PREFIX)) {
 				return new ClassPathResource(location.substring(CLASSPATH_URL_PREFIX.length()), getClassLoader());
-			}
-			else {
+			} else {
 				if (location.startsWith(FILE_URL_PREFIX)) {
 					return this.files.getResource(location);
 				}
@@ -160,8 +154,7 @@ public abstract class ResourceUtils {
 					// Try to parse the location as a URL...
 					URL url = new URL(location);
 					return new UrlResource(url);
-				}
-				catch (MalformedURLException ex) {
+				} catch (MalformedURLException ex) {
 					// No URL -> resolve as resource path.
 					return getResourceByPath(location);
 				}

@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jms.artemis;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.apache.activemq.artemis.jms.server.config.JMSConfiguration;
 import org.apache.activemq.artemis.jms.server.config.JMSQueueConfiguration;
 import org.apache.activemq.artemis.jms.server.config.TopicConfiguration;
@@ -27,13 +23,16 @@ import org.apache.activemq.artemis.jms.server.config.impl.JMSConfigurationImpl;
 import org.apache.activemq.artemis.jms.server.config.impl.JMSQueueConfigurationImpl;
 import org.apache.activemq.artemis.jms.server.config.impl.TopicConfigurationImpl;
 import org.apache.activemq.artemis.jms.server.embedded.EmbeddedJMS;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Configuration used to create the embedded Artemis server.
@@ -45,7 +44,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(EmbeddedJMS.class)
 @ConditionalOnProperty(prefix = "spring.artemis.embedded", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 class ArtemisEmbeddedServerConfiguration {
 
 	private final ArtemisProperties properties;
@@ -57,9 +56,9 @@ class ArtemisEmbeddedServerConfiguration {
 	private final List<TopicConfiguration> topicsConfiguration;
 
 	ArtemisEmbeddedServerConfiguration(ArtemisProperties properties,
-			ObjectProvider<ArtemisConfigurationCustomizer> configurationCustomizers,
-			ObjectProvider<JMSQueueConfiguration> queuesConfiguration,
-			ObjectProvider<TopicConfiguration> topicsConfiguration) {
+									   ObjectProvider<ArtemisConfigurationCustomizer> configurationCustomizers,
+									   ObjectProvider<JMSQueueConfiguration> queuesConfiguration,
+									   ObjectProvider<TopicConfiguration> topicsConfiguration) {
 		this.properties = properties;
 		this.configurationCustomizers = configurationCustomizers;
 		this.queuesConfiguration = queuesConfiguration.orderedStream().collect(Collectors.toList());
@@ -75,7 +74,7 @@ class ArtemisEmbeddedServerConfiguration {
 	@Bean(initMethod = "start", destroyMethod = "stop")
 	@ConditionalOnMissingBean
 	public EmbeddedJMS artemisServer(org.apache.activemq.artemis.core.config.Configuration configuration,
-			JMSConfiguration jmsConfiguration) {
+									 JMSConfiguration jmsConfiguration) {
 		EmbeddedJMS server = new EmbeddedJMS();
 		customize(configuration);
 		server.setConfiguration(configuration);

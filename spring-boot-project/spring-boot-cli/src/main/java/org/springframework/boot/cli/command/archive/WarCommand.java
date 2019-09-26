@@ -16,14 +16,14 @@
 
 package org.springframework.boot.cli.command.archive;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.loader.tools.JarWriter;
 import org.springframework.boot.loader.tools.Layouts;
 import org.springframework.boot.loader.tools.LibraryScope;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * {@link Command} to create a self-contained executable jar file from a CLI application.

@@ -30,22 +30,11 @@ public class EndpointMapping {
 
 	/**
 	 * Creates a new {@code EndpointMapping} using the given {@code path}.
+	 *
 	 * @param path the path
 	 */
 	public EndpointMapping(String path) {
 		this.path = normalizePath(path);
-	}
-
-	/**
-	 * Returns the path to which endpoints should be mapped.
-	 * @return the path
-	 */
-	public String getPath() {
-		return this.path;
-	}
-
-	public String createSubPath(String path) {
-		return this.path + normalizePath(path);
 	}
 
 	private static String normalizePath(String path) {
@@ -60,6 +49,19 @@ public class EndpointMapping {
 			normalizedPath = normalizedPath.substring(0, normalizedPath.length() - 1);
 		}
 		return normalizedPath;
+	}
+
+	/**
+	 * Returns the path to which endpoints should be mapped.
+	 *
+	 * @return the path
+	 */
+	public String getPath() {
+		return this.path;
+	}
+
+	public String createSubPath(String path) {
+		return this.path + normalizePath(path);
 	}
 
 }

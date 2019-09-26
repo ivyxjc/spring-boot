@@ -16,14 +16,13 @@
 
 package org.springframework.boot.cli;
 
-import java.util.Properties;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.cli.command.run.RunCommand;
+
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

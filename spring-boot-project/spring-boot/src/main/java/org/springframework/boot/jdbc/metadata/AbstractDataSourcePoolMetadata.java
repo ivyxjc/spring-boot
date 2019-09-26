@@ -31,6 +31,7 @@ public abstract class AbstractDataSourcePoolMetadata<T extends DataSource> imple
 
 	/**
 	 * Create an instance with the data source to use.
+	 *
 	 * @param dataSource the data source
 	 */
 	protected AbstractDataSourcePoolMetadata(T dataSource) {

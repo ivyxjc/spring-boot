@@ -16,17 +16,8 @@
 
 package org.springframework.boot.autoconfigure.validation;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.validation.ValidationAutoConfigurationTests.CustomValidatorConfiguration.TestBeanPostProcessor;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -40,6 +31,13 @@ import org.springframework.validation.beanvalidation.CustomValidatorBean;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
+
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -211,6 +209,12 @@ public class ValidationAutoConfigurationTests {
 		this.context = ctx;
 	}
 
+	interface AnotherSampleService {
+
+		void doSomething(@Min(42) Integer counter);
+
+	}
+
 	@Configuration
 	static class Config {
 
@@ -286,12 +290,6 @@ public class ValidationAutoConfigurationTests {
 
 	}
 
-	interface AnotherSampleService {
-
-		void doSomething(@Min(42) Integer counter);
-
-	}
-
 	@Validated
 	static class DefaultAnotherSampleService implements AnotherSampleService {
 
@@ -330,13 +328,13 @@ public class ValidationAutoConfigurationTests {
 		}
 
 		@Bean
-		Validator customValidator() {
-			return new CustomValidatorBean();
+		static TestBeanPostProcessor testBeanPostProcessor() {
+			return new TestBeanPostProcessor();
 		}
 
 		@Bean
-		static TestBeanPostProcessor testBeanPostProcessor() {
-			return new TestBeanPostProcessor();
+		Validator customValidator() {
+			return new CustomValidatorBean();
 		}
 
 		@Configuration

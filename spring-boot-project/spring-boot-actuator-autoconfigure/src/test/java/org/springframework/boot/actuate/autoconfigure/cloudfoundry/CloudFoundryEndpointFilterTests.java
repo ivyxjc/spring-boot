@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.annotation.DiscoveredEndpoint;
 
 import static org.assertj.core.api.Assertions.assertThat;

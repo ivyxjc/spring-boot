@@ -16,14 +16,14 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Configuration properties for web management endpoints.
@@ -36,17 +36,15 @@ import org.springframework.util.StringUtils;
 public class WebEndpointProperties {
 
 	private final Exposure exposure = new Exposure();
-
+	/**
+	 * Mapping between endpoint IDs and the path that should expose them.
+	 */
+	private final Map<String, String> pathMapping = new LinkedHashMap<>();
 	/**
 	 * Base path for Web endpoints. Relative to server.servlet.context-path or
 	 * management.server.servlet.context-path if management.server.port is configured.
 	 */
 	private String basePath = "/actuator";
-
-	/**
-	 * Mapping between endpoint IDs and the path that should expose them.
-	 */
-	private final Map<String, String> pathMapping = new LinkedHashMap<>();
 
 	public Exposure getExposure() {
 		return this.exposure;

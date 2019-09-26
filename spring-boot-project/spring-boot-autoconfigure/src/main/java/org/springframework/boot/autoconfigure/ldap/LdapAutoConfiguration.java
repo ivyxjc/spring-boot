@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.ldap;
 
-import java.util.Collections;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -30,6 +28,8 @@ import org.springframework.ldap.core.ContextSource;
 import org.springframework.ldap.core.LdapOperations;
 import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
+
+import java.util.Collections;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for LDAP.

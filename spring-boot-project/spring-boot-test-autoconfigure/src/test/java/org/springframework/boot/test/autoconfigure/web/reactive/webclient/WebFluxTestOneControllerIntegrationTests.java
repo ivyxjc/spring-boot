@@ -18,7 +18,6 @@ package org.springframework.boot.test.autoconfigure.web.reactive.webclient;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.security.test.context.support.WithMockUser;

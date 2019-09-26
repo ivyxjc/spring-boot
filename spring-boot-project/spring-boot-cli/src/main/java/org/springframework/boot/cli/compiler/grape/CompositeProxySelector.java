@@ -16,12 +16,12 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.aether.repository.Proxy;
 import org.eclipse.aether.repository.ProxySelector;
 import org.eclipse.aether.repository.RemoteRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Composite {@link ProxySelector}.

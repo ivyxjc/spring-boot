@@ -31,7 +31,8 @@ public interface RepositorySystemSessionAutoConfiguration {
 
 	/**
 	 * Apply the configuration.
-	 * @param session the repository system session
+	 *
+	 * @param session          the repository system session
 	 * @param repositorySystem the repository system
 	 */
 	void apply(DefaultRepositorySystemSession session, RepositorySystem repositorySystem);

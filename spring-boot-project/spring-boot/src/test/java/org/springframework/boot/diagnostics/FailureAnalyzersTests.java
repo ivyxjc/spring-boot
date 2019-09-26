@@ -16,13 +16,8 @@
 
 package org.springframework.boot.diagnostics;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -30,10 +25,12 @@ import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.core.env.Environment;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link FailureAnalyzers}.
@@ -91,6 +88,10 @@ public class FailureAnalyzersTests {
 		new FailureAnalyzers(context, classLoader).reportException(failure);
 	}
 
+	interface AwareFailureAnalyzer extends BeanFactoryAware, EnvironmentAware, FailureAnalyzer {
+
+	}
+
 	static class BasicFailureAnalyzer implements FailureAnalyzer {
 
 		@Override
@@ -120,10 +121,6 @@ public class FailureAnalyzersTests {
 		public FailureAnalysis analyze(Throwable failure) {
 			throw new NoClassDefFoundError();
 		}
-
-	}
-
-	interface AwareFailureAnalyzer extends BeanFactoryAware, EnvironmentAware, FailureAnalyzer {
 
 	}
 

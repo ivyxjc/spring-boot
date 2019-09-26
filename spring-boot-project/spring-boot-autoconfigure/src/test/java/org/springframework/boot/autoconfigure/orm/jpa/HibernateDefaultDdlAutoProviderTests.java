@@ -16,17 +16,15 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.Collections;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.jdbc.SchemaManagement;
 import org.springframework.boot.jdbc.SchemaManagementProvider;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+
+import javax.sql.DataSource;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

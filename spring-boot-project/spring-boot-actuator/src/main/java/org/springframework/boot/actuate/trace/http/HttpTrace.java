@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.trace.http;
 
+import org.springframework.util.StringUtils;
+
 import java.net.URI;
 import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.util.StringUtils;
 
 /**
  * A trace event for handling of an HTTP request and response exchange. Can be used for
@@ -35,13 +35,9 @@ import org.springframework.util.StringUtils;
 public final class HttpTrace {
 
 	private final Instant timestamp;
-
-	private volatile Principal principal;
-
-	private volatile Session session;
-
 	private final Request request;
-
+	private volatile Principal principal;
+	private volatile Session session;
 	private volatile Response response;
 
 	private volatile Long timeTaken;
@@ -50,17 +46,18 @@ public final class HttpTrace {
 	 * Creates a fully-configured {@code HttpTrace} instance. Primarily for use by
 	 * {@link HttpTraceRepository} implementations when recreating a trace from a
 	 * persistent store.
-	 * @param request the request
-	 * @param response the response
+	 *
+	 * @param request   the request
+	 * @param response  the response
 	 * @param timestamp the timestamp of the request-response exchange
 	 * @param principal the principal, if any
-	 * @param session the session, if any
+	 * @param session   the session, if any
 	 * @param timeTaken the time taken, in milliseconds, to complete the request-response
-	 * exchange, if known
+	 *                  exchange, if known
 	 * @since 2.1.0
 	 */
 	public HttpTrace(Request request, Response response, Instant timestamp, Principal principal, Session session,
-			Long timeTaken) {
+					 Long timeTaken) {
 		this.request = request;
 		this.response = response;
 		this.timestamp = timestamp;
@@ -78,14 +75,14 @@ public final class HttpTrace {
 		return this.timestamp;
 	}
 
+	public Principal getPrincipal() {
+		return this.principal;
+	}
+
 	void setPrincipal(java.security.Principal principal) {
 		if (principal != null) {
 			this.principal = new Principal(principal.getName());
 		}
-	}
-
-	public Principal getPrincipal() {
-		return this.principal;
 	}
 
 	public Session getSession() {
@@ -139,9 +136,10 @@ public final class HttpTrace {
 		 * Creates a fully-configured {@code Request} instance. Primarily for use by
 		 * {@link HttpTraceRepository} implementations when recreating a request from a
 		 * persistent store.
-		 * @param method the HTTP method of the request
-		 * @param uri the URI of the request
-		 * @param headers the request headers
+		 *
+		 * @param method        the HTTP method of the request
+		 * @param uri           the URI of the request
+		 * @param headers       the request headers
 		 * @param remoteAddress remote address from which the request was sent, if known
 		 * @since 2.1.0
 		 */
@@ -187,7 +185,8 @@ public final class HttpTrace {
 		 * Creates a fully-configured {@code Response} instance. Primarily for use by
 		 * {@link HttpTraceRepository} implementations when recreating a response from a
 		 * persistent store.
-		 * @param status the status of the response
+		 *
+		 * @param status  the status of the response
 		 * @param headers the response headers
 		 * @since 2.1.0
 		 */
@@ -215,6 +214,7 @@ public final class HttpTrace {
 
 		/**
 		 * Creates a {@code Session}.
+		 *
 		 * @param id the session id
 		 * @since 2.1.0
 		 */
@@ -237,6 +237,7 @@ public final class HttpTrace {
 
 		/**
 		 * Creates a {@code Principal}.
+		 *
 		 * @param name the name of the principal
 		 * @since 2.1.0
 		 */

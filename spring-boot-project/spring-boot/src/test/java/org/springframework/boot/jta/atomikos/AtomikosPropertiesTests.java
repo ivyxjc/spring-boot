@@ -16,14 +16,13 @@
 
 package org.springframework.boot.jta.atomikos;
 
-import java.time.Duration;
-import java.util.Properties;
-
 import org.assertj.core.data.MapEntry;
 import org.junit.Test;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+
+import java.time.Duration;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -109,8 +108,7 @@ public class AtomikosPropertiesTests {
 		try {
 
 			return PropertiesLoaderUtils.loadProperties(new ClassPathResource("transactions-defaults.properties"));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Failed to get default from Atomikos", ex);
 		}
 	}

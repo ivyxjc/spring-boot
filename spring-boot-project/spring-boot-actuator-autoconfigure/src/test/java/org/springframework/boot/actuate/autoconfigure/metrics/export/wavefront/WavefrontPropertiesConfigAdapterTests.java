@@ -16,11 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.wavefront;
 
-import java.net.URI;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryPropertiesConfigAdapterTests;
+
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

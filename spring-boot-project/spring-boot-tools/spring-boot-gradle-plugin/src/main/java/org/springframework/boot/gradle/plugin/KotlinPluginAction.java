@@ -52,8 +52,7 @@ class KotlinPluginAction implements PluginApplicationAction {
 		try {
 			return (Class<? extends Plugin<? extends Project>>) Class
 					.forName("org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper");
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return null;
 		}
 	}

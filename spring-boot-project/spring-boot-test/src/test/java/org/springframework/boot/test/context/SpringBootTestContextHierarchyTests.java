@@ -18,7 +18,6 @@ package org.springframework.boot.test.context;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.test.context.SpringBootTestContextHierarchyTests.ChildConfiguration;
 import org.springframework.boot.test.context.SpringBootTestContextHierarchyTests.ParentConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -33,8 +32,8 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author Andy Wilkinson
  */
 @SpringBootTest
-@ContextHierarchy({ @ContextConfiguration(classes = ParentConfiguration.class),
-		@ContextConfiguration(classes = ChildConfiguration.class) })
+@ContextHierarchy({@ContextConfiguration(classes = ParentConfiguration.class),
+						  @ContextConfiguration(classes = ChildConfiguration.class)})
 @RunWith(SpringRunner.class)
 public class SpringBootTestContextHierarchyTests {
 

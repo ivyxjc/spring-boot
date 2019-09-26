@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.properties;
 
-import java.time.Duration;
-
 import io.micrometer.core.instrument.step.StepRegistryConfig;
+
+import java.time.Duration;
 
 /**
  * Base class for {@link StepRegistryProperties} to {@link StepRegistryConfig} adapters.

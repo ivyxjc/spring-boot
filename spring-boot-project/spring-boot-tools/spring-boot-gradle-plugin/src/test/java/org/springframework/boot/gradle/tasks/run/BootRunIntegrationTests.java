@@ -16,20 +16,17 @@
 
 package org.springframework.boot.gradle.tasks.run;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.gradle.testkit.runner.BuildResult;
 import org.gradle.testkit.runner.TaskOutcome;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.gradle.junit.GradleCompatibilitySuite;
 import org.springframework.boot.gradle.testkit.GradleBuild;
 import org.springframework.util.FileSystemUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Integration tests for the {@link BootRun} task.

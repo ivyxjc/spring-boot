@@ -16,15 +16,14 @@
 
 package org.springframework.boot.test.autoconfigure.jdbc;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Collection;
-
-import javax.transaction.Transactional;
-
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
 
 /**
  * Example repository used with {@link JdbcTest} tests.
@@ -48,7 +47,7 @@ public class ExampleRepository {
 	}
 
 	public ExampleEntity findById(int id) {
-		return this.jdbcTemplate.queryForObject("select id, name from example where id =?", new Object[] { id },
+		return this.jdbcTemplate.queryForObject("select id, name from example where id =?", new Object[]{id},
 				ROW_MAPPER);
 	}
 

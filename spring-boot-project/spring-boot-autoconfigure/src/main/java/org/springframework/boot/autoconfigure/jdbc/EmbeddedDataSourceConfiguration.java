@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.annotation.PreDestroy;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -26,23 +24,23 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 
+import javax.annotation.PreDestroy;
+
 /**
  * Configuration for embedded data sources.
  *
  * @author Phillip Webb
  * @author Stephane Nicoll
- * @since 1.0.0
  * @see DataSourceAutoConfiguration
+ * @since 1.0.0
  */
 @Configuration
 @EnableConfigurationProperties(DataSourceProperties.class)
 public class EmbeddedDataSourceConfiguration implements BeanClassLoaderAware {
 
-	private EmbeddedDatabase database;
-
-	private ClassLoader classLoader;
-
 	private final DataSourceProperties properties;
+	private EmbeddedDatabase database;
+	private ClassLoader classLoader;
 
 	public EmbeddedDataSourceConfiguration(DataSourceProperties properties) {
 		this.properties = properties;

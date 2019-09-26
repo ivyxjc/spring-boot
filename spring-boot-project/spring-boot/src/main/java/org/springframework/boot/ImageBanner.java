@@ -16,13 +16,12 @@
 
 package org.springframework.boot;
 
-import java.awt.Color;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintStream;
-import java.util.Iterator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.ansi.*;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReadParam;
@@ -30,18 +29,12 @@ import javax.imageio.ImageReader;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageInputStream;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.ansi.AnsiBackground;
-import org.springframework.boot.ansi.AnsiColor;
-import org.springframework.boot.ansi.AnsiColors;
-import org.springframework.boot.ansi.AnsiElement;
-import org.springframework.boot.ansi.AnsiOutput;
-import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
-import org.springframework.util.Assert;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Iterator;
 
 /**
  * Banner implementation that prints ASCII art generated from an image resource
@@ -59,9 +52,9 @@ public class ImageBanner implements Banner {
 
 	private static final Log logger = LogFactory.getLog(ImageBanner.class);
 
-	private static final double[] RGB_WEIGHT = { 0.2126d, 0.7152d, 0.0722d };
+	private static final double[] RGB_WEIGHT = {0.2126d, 0.7152d, 0.0722d};
 
-	private static final char[] PIXEL = { ' ', '.', '*', ':', 'o', '&', '8', '#', '@' };
+	private static final char[] PIXEL = {' ', '.', '*', ':', 'o', '&', '8', '#', '@'};
 
 	private static final int LUMINANCE_INCREMENT = 10;
 
@@ -75,23 +68,32 @@ public class ImageBanner implements Banner {
 		this.image = image;
 	}
 
+	private static IIOMetadataNode findNode(IIOMetadataNode rootNode, String nodeName) {
+		if (rootNode == null) {
+			return null;
+		}
+		for (int i = 0; i < rootNode.getLength(); i++) {
+			if (rootNode.item(i).getNodeName().equalsIgnoreCase(nodeName)) {
+				return ((IIOMetadataNode) rootNode.item(i));
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
 		String headless = System.getProperty("java.awt.headless");
 		try {
 			System.setProperty("java.awt.headless", "true");
 			printBanner(environment, out);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			logger.warn("Image banner not printable: " + this.image + " (" + ex.getClass() + ": '" + ex.getMessage()
 					+ "')");
 			logger.debug("Image banner printing failure", ex);
-		}
-		finally {
+		} finally {
 			if (headless == null) {
 				System.clearProperty("java.awt.headless");
-			}
-			else {
+			} else {
 				System.setProperty("java.awt.headless", headless);
 			}
 		}
@@ -137,8 +139,7 @@ public class ImageBanner implements Banner {
 				frames[i] = readFrame(width, height, reader, i, readParam);
 			}
 			return frames;
-		}
-		finally {
+		} finally {
 			reader.dispose();
 		}
 	}
@@ -157,18 +158,6 @@ public class ImageBanner implements Banner {
 		IIOMetadataNode extension = findNode(root, "GraphicControlExtension");
 		String attribute = (extension != null) ? extension.getAttribute("delayTime") : null;
 		return (attribute != null) ? Integer.parseInt(attribute) * 10 : 0;
-	}
-
-	private static IIOMetadataNode findNode(IIOMetadataNode rootNode, String nodeName) {
-		if (rootNode == null) {
-			return null;
-		}
-		for (int i = 0; i < rootNode.getLength(); i++) {
-			if (rootNode.item(i).getNodeName().equalsIgnoreCase(nodeName)) {
-				return ((IIOMetadataNode) rootNode.item(i));
-			}
-		}
-		return null;
 	}
 
 	private BufferedImage resizeImage(BufferedImage image, int width, int height) {
@@ -242,8 +231,7 @@ public class ImageBanner implements Banner {
 	private void sleep(int delay) {
 		try {
 			Thread.sleep(delay);
-		}
-		catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 	}

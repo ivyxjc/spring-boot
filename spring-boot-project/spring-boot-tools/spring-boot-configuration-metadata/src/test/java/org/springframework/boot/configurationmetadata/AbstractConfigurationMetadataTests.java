@@ -16,11 +16,11 @@
 
 package org.springframework.boot.configurationmetadata;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +39,7 @@ public abstract class AbstractConfigurationMetadataTests {
 	}
 
 	protected void assertProperty(ConfigurationMetadataProperty actual, String id, String name, Class<?> type,
-			Object defaultValue) {
+								  Object defaultValue) {
 		assertThat(actual).isNotNull();
 		assertThat(actual.getId()).isEqualTo(id);
 		assertThat(actual.getName()).isEqualTo(name);

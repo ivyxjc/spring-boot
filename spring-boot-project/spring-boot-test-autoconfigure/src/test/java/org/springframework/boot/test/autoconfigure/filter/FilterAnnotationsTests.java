@@ -16,15 +16,7 @@
 
 package org.springframework.boot.test.autoconfigure.filter;
 
-import java.io.IOException;
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.junit.Test;
-
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -33,6 +25,9 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.core.type.filter.TypeFilter;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.lang.annotation.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -89,6 +84,15 @@ public class FilterAnnotationsTests {
 		return filterAnnotations.anyMatches(metadataReader, metadataReaderFactory);
 	}
 
+	@Target({ElementType.TYPE})
+	@Retention(RetentionPolicy.RUNTIME)
+	@Documented
+	@interface Filters {
+
+		Filter[] value();
+
+	}
+
 	@Filters(@Filter(Service.class))
 	static class FilterByAnnotation {
 
@@ -111,15 +115,6 @@ public class FilterAnnotationsTests {
 
 	@Filters(@Filter(type = FilterType.REGEX, pattern = ".*ExampleWithoutAnnotation"))
 	static class FilterByRegex {
-
-	}
-
-	@Target({ ElementType.TYPE })
-	@Retention(RetentionPolicy.RUNTIME)
-	@Documented
-	@interface Filters {
-
-		Filter[] value();
 
 	}
 

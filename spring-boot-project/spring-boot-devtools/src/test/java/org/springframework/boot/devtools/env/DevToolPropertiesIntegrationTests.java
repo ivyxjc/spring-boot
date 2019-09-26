@@ -16,13 +16,9 @@
 
 package org.springframework.boot.devtools.env;
 
-import java.net.URL;
-import java.util.Collections;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -34,6 +30,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
+
+import java.net.URL;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -49,7 +48,7 @@ public class DevToolPropertiesIntegrationTests {
 
 	@Before
 	public void setup() {
-		Restarter.initialize(new String[] {}, false, new MockInitializer(), false);
+		Restarter.initialize(new String[]{}, false, new MockInitializer(), false);
 	}
 
 	@After
@@ -138,7 +137,7 @@ public class DevToolPropertiesIntegrationTests {
 
 		@Override
 		public URL[] getInitialUrls(Thread thread) {
-			return new URL[] {};
+			return new URL[]{};
 		}
 
 	}

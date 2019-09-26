@@ -58,6 +58,7 @@ public class Ssl {
 
 	/**
 	 * Return whether to enable SSL support.
+	 *
 	 * @return whether to enable SSL support
 	 */
 	public boolean isEnabled() {
@@ -71,6 +72,7 @@ public class Ssl {
 	/**
 	 * Return Whether client authentication is not wanted ("none"), wanted ("want") or
 	 * needed ("need"). Requires a trust store.
+	 *
 	 * @return the {@link ClientAuth} to use
 	 */
 	public ClientAuth getClientAuth() {
@@ -83,6 +85,7 @@ public class Ssl {
 
 	/**
 	 * Return the supported SSL ciphers.
+	 *
 	 * @return the supported SSL ciphers
 	 */
 	public String[] getCiphers() {
@@ -95,6 +98,7 @@ public class Ssl {
 
 	/**
 	 * Return the enabled SSL protocols.
+	 *
 	 * @return the enabled SSL protocols.
 	 */
 	public String[] getEnabledProtocols() {
@@ -107,6 +111,7 @@ public class Ssl {
 
 	/**
 	 * Return the alias that identifies the key in the key store.
+	 *
 	 * @return the key alias
 	 */
 	public String getKeyAlias() {
@@ -119,6 +124,7 @@ public class Ssl {
 
 	/**
 	 * Return the password used to access the key in the key store.
+	 *
 	 * @return the key password
 	 */
 	public String getKeyPassword() {
@@ -132,6 +138,7 @@ public class Ssl {
 	/**
 	 * Return the path to the key store that holds the SSL certificate (typically a jks
 	 * file).
+	 *
 	 * @return the path to the key store
 	 */
 	public String getKeyStore() {
@@ -144,6 +151,7 @@ public class Ssl {
 
 	/**
 	 * Return the password used to access the key store.
+	 *
 	 * @return the key store password
 	 */
 	public String getKeyStorePassword() {
@@ -156,6 +164,7 @@ public class Ssl {
 
 	/**
 	 * Return the type of the key store.
+	 *
 	 * @return the key store type
 	 */
 	public String getKeyStoreType() {
@@ -168,6 +177,7 @@ public class Ssl {
 
 	/**
 	 * Return the provider for the key store.
+	 *
 	 * @return the key store provider
 	 */
 	public String getKeyStoreProvider() {
@@ -180,6 +190,7 @@ public class Ssl {
 
 	/**
 	 * Return the trust store that holds SSL certificates.
+	 *
 	 * @return the trust store
 	 */
 	public String getTrustStore() {
@@ -192,6 +203,7 @@ public class Ssl {
 
 	/**
 	 * Return the password used to access the trust store.
+	 *
 	 * @return the trust store password
 	 */
 	public String getTrustStorePassword() {
@@ -204,6 +216,7 @@ public class Ssl {
 
 	/**
 	 * Return the type of the trust store.
+	 *
 	 * @return the trust store type
 	 */
 	public String getTrustStoreType() {
@@ -216,6 +229,7 @@ public class Ssl {
 
 	/**
 	 * Return the provider for the trust store.
+	 *
 	 * @return the trust store provider
 	 */
 	public String getTrustStoreProvider() {
@@ -228,6 +242,7 @@ public class Ssl {
 
 	/**
 	 * Return the SSL protocol to use.
+	 *
 	 * @return the SSL protocol
 	 */
 	public String getProtocol() {

@@ -16,15 +16,8 @@
 
 package org.springframework.boot.cli.command.init;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.HelpExample;
 import org.springframework.boot.cli.command.OptionParsingCommand;
@@ -32,6 +25,12 @@ import org.springframework.boot.cli.command.options.OptionHandler;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.Log;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link Command} that initializes a project using Spring initializr.
@@ -141,7 +140,7 @@ public class InitCommand extends OptionParsingCommand {
 			this.type = option(Arrays.asList("type", "t"),
 					"Project type. Not normally needed if you use --build "
 							+ "and/or --format. Check the capabilities of the service " + "(--list) for more details")
-									.withRequiredArg();
+					.withRequiredArg();
 			this.packaging = option(Arrays.asList("packaging", "p"), "Project packaging (for example 'jar')")
 					.withRequiredArg();
 			this.build = option("build", "Build system to use (for example 'maven' or 'gradle')").withRequiredArg()
@@ -156,7 +155,7 @@ public class InitCommand extends OptionParsingCommand {
 					"Spring Boot version (for example '1.2.0.RELEASE')").withRequiredArg();
 			this.dependencies = option(Arrays.asList("dependencies", "d"),
 					"Comma-separated list of dependency identifiers to include in the " + "generated project")
-							.withRequiredArg();
+					.withRequiredArg();
 		}
 
 		private void otherOptions() {
@@ -170,17 +169,14 @@ public class InitCommand extends OptionParsingCommand {
 			try {
 				if (options.has(this.listCapabilities)) {
 					generateReport(options);
-				}
-				else {
+				} else {
 					generateProject(options);
 				}
 				return ExitStatus.OK;
-			}
-			catch (ReportableException ex) {
+			} catch (ReportableException ex) {
 				Log.error(ex.getMessage());
 				return ExitStatus.ERROR;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				Log.error(ex);
 				return ExitStatus.ERROR;
 			}

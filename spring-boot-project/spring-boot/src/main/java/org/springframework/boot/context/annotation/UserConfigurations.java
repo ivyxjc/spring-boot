@@ -16,12 +16,12 @@
 
 package org.springframework.boot.context.annotation;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.PriorityOrdered;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
-
-import org.springframework.core.Ordered;
-import org.springframework.core.PriorityOrdered;
 
 /**
  * {@link Configurations} representing user-defined {@code @Configuration} classes (i.e.
@@ -36,6 +36,10 @@ public class UserConfigurations extends Configurations implements PriorityOrdere
 		super(classes);
 	}
 
+	public static UserConfigurations of(Class<?>... classes) {
+		return new UserConfigurations(Arrays.asList(classes));
+	}
+
 	@Override
 	public int getOrder() {
 		return Ordered.LOWEST_PRECEDENCE;
@@ -44,10 +48,6 @@ public class UserConfigurations extends Configurations implements PriorityOrdere
 	@Override
 	protected UserConfigurations merge(Set<Class<?>> mergedClasses) {
 		return new UserConfigurations(mergedClasses);
-	}
-
-	public static UserConfigurations of(Class<?>... classes) {
-		return new UserConfigurations(Arrays.asList(classes));
 	}
 
 }

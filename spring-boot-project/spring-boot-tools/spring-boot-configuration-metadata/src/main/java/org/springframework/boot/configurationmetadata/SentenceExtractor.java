@@ -38,8 +38,7 @@ class SentenceExtractor {
 			breakIterator.setText(text);
 			String sentence = text.substring(breakIterator.first(), breakIterator.next());
 			return removeSpaceBetweenLine(sentence.trim());
-		}
-		else {
+		} else {
 			String[] lines = text.split(System.lineSeparator());
 			return lines[0].trim();
 		}

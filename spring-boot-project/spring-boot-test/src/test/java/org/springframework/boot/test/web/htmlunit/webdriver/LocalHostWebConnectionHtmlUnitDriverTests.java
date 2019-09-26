@@ -16,21 +16,16 @@
 
 package org.springframework.boot.test.web.htmlunit.webdriver;
 
-import java.net.URL;
-
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebClientOptions;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.WebWindow;
+import com.gargoylesoftware.htmlunit.*;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.openqa.selenium.Capabilities;
-
 import org.springframework.core.env.Environment;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
@@ -104,19 +99,6 @@ public class LocalHostWebConnectionHtmlUnitDriverTests {
 		return argThat(new WebRequestUrlArgumentMatcher(url));
 	}
 
-	public class TestLocalHostWebConnectionHtmlUnitDriver extends LocalHostWebConnectionHtmlUnitDriver {
-
-		public TestLocalHostWebConnectionHtmlUnitDriver(Environment environment) {
-			super(environment);
-		}
-
-		@Override
-		public WebClient getWebClient() {
-			return LocalHostWebConnectionHtmlUnitDriverTests.this.webClient;
-		}
-
-	}
-
 	private static final class WebRequestUrlArgumentMatcher implements ArgumentMatcher<WebRequest> {
 
 		private final URL expectedUrl;
@@ -128,6 +110,19 @@ public class LocalHostWebConnectionHtmlUnitDriverTests {
 		@Override
 		public boolean matches(WebRequest argument) {
 			return argument.getUrl().equals(this.expectedUrl);
+		}
+
+	}
+
+	public class TestLocalHostWebConnectionHtmlUnitDriver extends LocalHostWebConnectionHtmlUnitDriver {
+
+		public TestLocalHostWebConnectionHtmlUnitDriver(Environment environment) {
+			super(environment);
+		}
+
+		@Override
+		public WebClient getWebClient() {
+			return LocalHostWebConnectionHtmlUnitDriverTests.this.webClient;
 		}
 
 	}

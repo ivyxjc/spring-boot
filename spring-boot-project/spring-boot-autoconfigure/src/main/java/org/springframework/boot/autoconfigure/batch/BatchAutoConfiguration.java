@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.batch;
 
-import javax.sql.DataSource;
-
 import org.springframework.batch.core.configuration.ListableJobLocator;
 import org.springframework.batch.core.converter.JobParametersConverter;
 import org.springframework.batch.core.explore.JobExplorer;
@@ -42,6 +40,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.util.StringUtils;
 
+import javax.sql.DataSource;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Batch. By default a
  * Runner will be created and all jobs in the context will be executed on startup.
@@ -60,7 +60,7 @@ import org.springframework.util.StringUtils;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ JobLauncher.class, DataSource.class })
+@ConditionalOnClass({JobLauncher.class, DataSource.class})
 @AutoConfigureAfter(HibernateJpaAutoConfiguration.class)
 @ConditionalOnBean(JobLauncher.class)
 @EnableConfigurationProperties(BatchProperties.class)
@@ -71,7 +71,7 @@ public class BatchAutoConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnProperty(prefix = "spring.batch.job", name = "enabled", havingValue = "true", matchIfMissing = true)
 	public JobLauncherCommandLineRunner jobLauncherCommandLineRunner(JobLauncher jobLauncher, JobExplorer jobExplorer,
-			JobRepository jobRepository, BatchProperties properties) {
+																	 JobRepository jobRepository, BatchProperties properties) {
 		JobLauncherCommandLineRunner runner = new JobLauncherCommandLineRunner(jobLauncher, jobExplorer, jobRepository);
 		String jobNames = properties.getJob().getNames();
 		if (StringUtils.hasText(jobNames)) {
@@ -89,8 +89,8 @@ public class BatchAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean(JobOperator.class)
 	public SimpleJobOperator jobOperator(JobExplorer jobExplorer, JobLauncher jobLauncher,
-			ListableJobLocator jobRegistry, JobRepository jobRepository,
-			ObjectProvider<JobParametersConverter> jobParametersConverter) {
+										 ListableJobLocator jobRegistry, JobRepository jobRepository,
+										 ObjectProvider<JobParametersConverter> jobParametersConverter) {
 		SimpleJobOperator factory = new SimpleJobOperator();
 		factory.setJobExplorer(jobExplorer);
 		factory.setJobLauncher(jobLauncher);
@@ -108,7 +108,7 @@ public class BatchAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		public BatchDataSourceInitializer batchDataSourceInitializer(DataSource dataSource,
-				ResourceLoader resourceLoader, BatchProperties properties) {
+																	 ResourceLoader resourceLoader, BatchProperties properties) {
 			return new BatchDataSourceInitializer(dataSource, resourceLoader, properties);
 		}
 

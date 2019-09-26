@@ -16,12 +16,6 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
@@ -35,6 +29,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Abstract base class for nested conditions.
@@ -131,8 +131,7 @@ public abstract class AbstractNestedCondition extends SpringBootCondition implem
 		private AnnotationMetadata getMetadata(String className) {
 			try {
 				return this.readerFactory.getMetadataReader(className).getAnnotationMetadata();
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new IllegalStateException(ex);
 			}
 		}

@@ -16,17 +16,15 @@
 
 package org.springframework.boot.actuate.metrics.web.servlet;
 
-import java.util.regex.Pattern;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.util.pattern.PathPattern;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 
 /**
  * Factory methods for {@link Tag Tags} associated with a request-response exchange that
@@ -78,6 +76,7 @@ public final class WebMvcTags {
 	/**
 	 * Creates a {@code method} tag based on the {@link HttpServletRequest#getMethod()
 	 * method} of the given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the method tag whose value is a capitalized method (e.g. GET).
 	 */
@@ -87,6 +86,7 @@ public final class WebMvcTags {
 
 	/**
 	 * Creates a {@code status} tag based on the status of the given {@code response}.
+	 *
 	 * @param response the HTTP response
 	 * @return the status tag derived from the status of the response
 	 */
@@ -100,7 +100,8 @@ public final class WebMvcTags {
 	 * available. Falling back to {@code REDIRECTION} for 3xx responses, {@code NOT_FOUND}
 	 * for 404 responses, {@code root} for requests with no path info, and {@code UNKNOWN}
 	 * for all other requests.
-	 * @param request the request
+	 *
+	 * @param request  the request
 	 * @param response the response
 	 * @return the uri tag derived from the request
 	 */
@@ -132,8 +133,7 @@ public final class WebMvcTags {
 	private static HttpStatus extractStatus(HttpServletResponse response) {
 		try {
 			return HttpStatus.valueOf(response.getStatus());
-		}
-		catch (IllegalArgumentException ex) {
+		} catch (IllegalArgumentException ex) {
 			return null;
 		}
 	}
@@ -156,6 +156,7 @@ public final class WebMvcTags {
 	/**
 	 * Creates a {@code exception} tag based on the {@link Class#getSimpleName() simple
 	 * name} of the class of the given {@code exception}.
+	 *
 	 * @param exception the exception, may be {@code null}
 	 * @return the exception tag derived from the exception
 	 */
@@ -169,6 +170,7 @@ public final class WebMvcTags {
 
 	/**
 	 * Creates an {@code outcome} tag based on the status of the given {@code response}.
+	 *
 	 * @param response the HTTP response
 	 * @return the outcome tag derived from the status of the response
 	 * @since 2.1.0

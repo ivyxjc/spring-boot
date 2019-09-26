@@ -16,11 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.elasticsearch;
 
-import java.time.Duration;
-import java.util.Map;
-
 import org.elasticsearch.client.Client;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -36,6 +32,9 @@ import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchAu
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
@@ -59,7 +58,7 @@ public class ElasticSearchClientHealthIndicatorAutoConfiguration
 	private final ElasticsearchHealthIndicatorProperties properties;
 
 	public ElasticSearchClientHealthIndicatorAutoConfiguration(Map<String, Client> clients,
-			ElasticsearchHealthIndicatorProperties properties) {
+															   ElasticsearchHealthIndicatorProperties properties) {
 		this.clients = clients;
 		this.properties = properties;
 	}

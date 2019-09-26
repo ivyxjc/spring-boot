@@ -16,23 +16,18 @@
 
 package org.springframework.boot.cli.command.shell;
 
+import jline.console.ConsoleReader;
+import jline.console.completer.*;
+import jline.console.completer.ArgumentCompleter.ArgumentDelimiter;
+import org.springframework.boot.cli.command.Command;
+import org.springframework.boot.cli.command.options.OptionHelp;
+import org.springframework.boot.cli.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import jline.console.ConsoleReader;
-import jline.console.completer.AggregateCompleter;
-import jline.console.completer.ArgumentCompleter;
-import jline.console.completer.ArgumentCompleter.ArgumentDelimiter;
-import jline.console.completer.Completer;
-import jline.console.completer.FileNameCompleter;
-import jline.console.completer.StringsCompleter;
-
-import org.springframework.boot.cli.command.Command;
-import org.springframework.boot.cli.command.options.OptionHelp;
-import org.springframework.boot.cli.util.Log;
 
 /**
  * JLine {@link Completer} for Spring Boot {@link Command}s.
@@ -50,7 +45,7 @@ public class CommandCompleter extends StringsCompleter {
 	private final ConsoleReader console;
 
 	public CommandCompleter(ConsoleReader consoleReader, ArgumentDelimiter argumentDelimiter,
-			Iterable<Command> commands) {
+							Iterable<Command> commands) {
 		this.console = consoleReader;
 		List<String> names = new ArrayList<>();
 		for (Command command : commands) {
@@ -110,8 +105,7 @@ public class CommandCompleter extends StringsCompleter {
 						optionHelpLine.getUsage()));
 			}
 			this.console.drawLine();
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			Log.error(ex.getMessage() + " (" + ex.getClass().getName() + ")");
 		}
 	}

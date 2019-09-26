@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -29,6 +24,11 @@ import org.springframework.boot.autoconfigure.AutoConfigurationImportFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract base class for a {@link SpringBootCondition} that also implements
@@ -61,15 +61,15 @@ abstract class FilteringSpringBootCondition extends SpringBootCondition
 	}
 
 	protected abstract ConditionOutcome[] getOutcomes(String[] autoConfigurationClasses,
-			AutoConfigurationMetadata autoConfigurationMetadata);
+													  AutoConfigurationMetadata autoConfigurationMetadata);
+
+	protected final BeanFactory getBeanFactory() {
+		return this.beanFactory;
+	}
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
-	}
-
-	protected final BeanFactory getBeanFactory() {
-		return this.beanFactory;
 	}
 
 	protected final ClassLoader getBeanClassLoader() {
@@ -82,7 +82,7 @@ abstract class FilteringSpringBootCondition extends SpringBootCondition
 	}
 
 	protected List<String> filter(Collection<String> classNames, ClassNameFilter classNameFilter,
-			ClassLoader classLoader) {
+								  ClassLoader classLoader) {
 		if (CollectionUtils.isEmpty(classNames)) {
 			return Collections.emptyList();
 		}
@@ -98,7 +98,6 @@ abstract class FilteringSpringBootCondition extends SpringBootCondition
 	protected enum ClassNameFilter {
 
 		PRESENT {
-
 			@Override
 			public boolean matches(String className, ClassLoader classLoader) {
 				return isPresent(className, classLoader);
@@ -107,15 +106,12 @@ abstract class FilteringSpringBootCondition extends SpringBootCondition
 		},
 
 		MISSING {
-
 			@Override
 			public boolean matches(String className, ClassLoader classLoader) {
 				return !isPresent(className, classLoader);
 			}
 
 		};
-
-		public abstract boolean matches(String className, ClassLoader classLoader);
 
 		public static boolean isPresent(String className, ClassLoader classLoader) {
 			if (classLoader == null) {
@@ -124,8 +120,7 @@ abstract class FilteringSpringBootCondition extends SpringBootCondition
 			try {
 				forName(className, classLoader);
 				return true;
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				return false;
 			}
 		}
@@ -136,6 +131,8 @@ abstract class FilteringSpringBootCondition extends SpringBootCondition
 			}
 			return Class.forName(className);
 		}
+
+		public abstract boolean matches(String className, ClassLoader classLoader);
 
 	}
 

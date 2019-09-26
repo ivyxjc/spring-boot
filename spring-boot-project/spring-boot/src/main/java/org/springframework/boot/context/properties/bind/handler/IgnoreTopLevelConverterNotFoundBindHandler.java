@@ -41,6 +41,7 @@ public class IgnoreTopLevelConverterNotFoundBindHandler extends AbstractBindHand
 	/**
 	 * Create a new {@link IgnoreTopLevelConverterNotFoundBindHandler} instance with a
 	 * specific parent.
+	 *
 	 * @param parent the parent handler
 	 */
 	public IgnoreTopLevelConverterNotFoundBindHandler(BindHandler parent) {

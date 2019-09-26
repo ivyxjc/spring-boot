@@ -38,7 +38,7 @@ class UnboundConfigurationPropertyFailureAnalyzer
 	}
 
 	private FailureAnalysis analyzeUnboundConfigurationPropertiesException(BindException cause,
-			UnboundConfigurationPropertiesException exception) {
+																		   UnboundConfigurationPropertiesException exception) {
 		StringBuilder description = new StringBuilder(
 				String.format("Binding to target %s failed:%n", cause.getTarget()));
 		for (ConfigurationProperty property : exception.getUnboundProperties()) {

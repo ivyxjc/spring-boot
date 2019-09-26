@@ -16,11 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web;
 
-import java.util.Collections;
-
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.web.ServletEndpointRegistrar;
 import org.springframework.boot.actuate.endpoint.web.annotation.ServletEndpointsSupplier;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
@@ -33,6 +30,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

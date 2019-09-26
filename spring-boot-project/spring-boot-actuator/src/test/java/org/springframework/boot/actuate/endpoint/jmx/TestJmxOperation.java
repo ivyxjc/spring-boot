@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
+import org.springframework.boot.actuate.endpoint.InvocationContext;
+import org.springframework.boot.actuate.endpoint.OperationType;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.boot.actuate.endpoint.InvocationContext;
-import org.springframework.boot.actuate.endpoint.OperationType;
 
 /**
  * Test {@link JmxOperation} implementation.

@@ -16,13 +16,12 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.stream.StreamSupport;
-
-import javax.sql.DataSource;
-
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.jdbc.SchemaManagement;
 import org.springframework.boot.jdbc.SchemaManagementProvider;
+
+import javax.sql.DataSource;
+import java.util.stream.StreamSupport;
 
 /**
  * A {@link SchemaManagementProvider} that invokes a configurable number of

@@ -16,17 +16,16 @@
 
 package org.springframework.boot.autoconfigure.mustache;
 
-import java.io.InputStreamReader;
-import java.io.Reader;
-
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
 import com.samskivert.mustache.Mustache.TemplateLoader;
-
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+
+import java.io.InputStreamReader;
+import java.io.Reader;
 
 /**
  * Mustache TemplateLoader implementation that uses a prefix, suffix and the Spring
@@ -35,9 +34,9 @@ import org.springframework.core.io.ResourceLoader;
  * partials (i.e. tiles-like features).
  *
  * @author Dave Syer
- * @since 1.2.2
  * @see Mustache
  * @see Resource
+ * @since 1.2.2
  */
 public class MustacheResourceTemplateLoader implements TemplateLoader, ResourceLoaderAware {
 
@@ -59,6 +58,7 @@ public class MustacheResourceTemplateLoader implements TemplateLoader, ResourceL
 
 	/**
 	 * Set the charset.
+	 *
 	 * @param charSet the charset
 	 */
 	public void setCharset(String charSet) {
@@ -67,6 +67,7 @@ public class MustacheResourceTemplateLoader implements TemplateLoader, ResourceL
 
 	/**
 	 * Set the resource loader.
+	 *
 	 * @param resourceLoader the resource loader
 	 */
 	@Override

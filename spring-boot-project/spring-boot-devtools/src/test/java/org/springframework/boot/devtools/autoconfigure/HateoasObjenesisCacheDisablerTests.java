@@ -16,16 +16,15 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.hateoas.core.DummyInvocationUtils;
 import org.springframework.objenesis.ObjenesisStd;
 import org.springframework.objenesis.instantiator.ObjectInstantiator;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

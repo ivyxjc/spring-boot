@@ -16,19 +16,18 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.actuate.endpoint.web.test.WebEndpointRunners;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Integration tests for {@link InfoEndpoint} exposed by Jersey, Spring MVC, and WebFlux.
@@ -38,7 +37,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
  * @author Andy Wilkinson
  */
 @RunWith(WebEndpointRunners.class)
-@TestPropertySource(properties = { "info.app.name=MyService" })
+@TestPropertySource(properties = {"info.app.name=MyService"})
 public class InfoEndpointWebIntegrationTests {
 
 	private static WebTestClient client;

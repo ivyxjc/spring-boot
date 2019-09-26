@@ -37,6 +37,7 @@ public class OrderedRequestContextFilter extends RequestContextFilter implements
 
 	/**
 	 * Set the order for this filter.
+	 *
 	 * @param order the order to set
 	 */
 	public void setOrder(int order) {

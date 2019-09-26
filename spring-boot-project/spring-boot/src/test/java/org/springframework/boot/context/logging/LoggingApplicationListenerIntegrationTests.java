@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -43,10 +42,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LoggingApplicationListenerIntegrationTests {
 
 	@Rule
-	public OutputCapture outputCapture = new OutputCapture();
-
-	@Rule
 	public final TemporaryFolder temp = new TemporaryFolder();
+	@Rule
+	public OutputCapture outputCapture = new OutputCapture();
 
 	@Test
 	public void loggingSystemRegisteredInTheContext() {
@@ -73,14 +71,14 @@ public class LoggingApplicationListenerIntegrationTests {
 		new SpringApplicationBuilder(Config.class).web(WebApplicationType.NONE).child(Config.class)
 				.web(WebApplicationType.NONE).listeners(new ApplicationListener<ApplicationStartingEvent>() {
 
-					private final Logger logger = LoggerFactory.getLogger(getClass());
+			private final Logger logger = LoggerFactory.getLogger(getClass());
 
-					@Override
-					public void onApplicationEvent(ApplicationStartingEvent event) {
-						this.logger.info("Child application starting");
-					}
+			@Override
+			public void onApplicationEvent(ApplicationStartingEvent event) {
+				this.logger.info("Child application starting");
+			}
 
-				}).run();
+		}).run();
 		assertThat(this.outputCapture.toString()).contains("Child application starting");
 	}
 

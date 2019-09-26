@@ -28,23 +28,20 @@ import org.springframework.beans.factory.annotation.Value;
  */
 public class ErrorProperties {
 
+	private final Whitelabel whitelabel = new Whitelabel();
 	/**
 	 * Path of the error controller.
 	 */
 	@Value("${error.path:/error}")
 	private String path = "/error";
-
 	/**
 	 * Include the "exception" attribute.
 	 */
 	private boolean includeException;
-
 	/**
 	 * When to include a "stacktrace" attribute.
 	 */
 	private IncludeStacktrace includeStacktrace = IncludeStacktrace.NEVER;
-
-	private final Whitelabel whitelabel = new Whitelabel();
 
 	public String getPath() {
 		return this.path;

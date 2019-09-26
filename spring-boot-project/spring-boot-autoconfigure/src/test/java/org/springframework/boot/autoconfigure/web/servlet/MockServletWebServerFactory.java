@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.util.Arrays;
-
-import javax.servlet.ServletContext;
-
 import org.springframework.boot.testsupport.web.servlet.MockServletWebServer.RegisteredFilter;
 import org.springframework.boot.testsupport.web.servlet.MockServletWebServer.RegisteredServlet;
 import org.springframework.boot.web.server.WebServer;
@@ -27,6 +23,9 @@ import org.springframework.boot.web.server.WebServerException;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+
+import javax.servlet.ServletContext;
+import java.util.Arrays;
 
 import static org.mockito.Mockito.spy;
 

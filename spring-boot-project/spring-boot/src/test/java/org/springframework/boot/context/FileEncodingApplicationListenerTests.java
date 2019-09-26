@@ -17,7 +17,6 @@
 package org.springframework.boot.context;
 
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;

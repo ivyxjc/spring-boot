@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
@@ -42,6 +41,11 @@ public class StringToDataSizeConverterTests {
 
 	public StringToDataSizeConverterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new StringToDataSizeConverter());
 	}
 
 	@Test
@@ -111,11 +115,6 @@ public class StringToDataSizeConverterTests {
 	private DataSize convert(String source, DataUnit unit) {
 		return (DataSize) this.conversionService.convert(source, TypeDescriptor.forObject(source),
 				MockDataSizeTypeDescriptor.get(unit));
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new StringToDataSizeConverter());
 	}
 
 }

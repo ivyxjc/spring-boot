@@ -16,6 +16,14 @@
 
 package org.springframework.boot.devtools.restart.classloader;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StreamUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -29,18 +37,7 @@ import java.util.List;
 import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StreamUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link RestartClassLoader}.
@@ -70,7 +67,7 @@ public class RestartClassLoaderTests {
 		this.sampleJarFile = createSampleJarFile();
 		URL url = this.sampleJarFile.toURI().toURL();
 		ClassLoader classLoader = getClass().getClassLoader();
-		URL[] urls = new URL[] { url };
+		URL[] urls = new URL[]{url};
 		this.parentClassLoader = new URLClassLoader(urls, classLoader);
 		this.updatedFiles = new ClassLoaderFiles();
 		this.reloadClassLoader = new RestartClassLoader(this.parentClassLoader, urls, this.updatedFiles);
@@ -91,14 +88,14 @@ public class RestartClassLoaderTests {
 
 	@Test
 	public void parentMustNotBeNull() {
-		assertThatIllegalArgumentException().isThrownBy(() -> new RestartClassLoader(null, new URL[] {}))
+		assertThatIllegalArgumentException().isThrownBy(() -> new RestartClassLoader(null, new URL[]{}))
 				.withMessageContaining("Parent must not be null");
 	}
 
 	@Test
 	public void updatedFilesMustNotBeNull() {
 		assertThatIllegalArgumentException()
-				.isThrownBy(() -> new RestartClassLoader(this.parentClassLoader, new URL[] {}, null))
+				.isThrownBy(() -> new RestartClassLoader(this.parentClassLoader, new URL[]{}, null))
 				.withMessageContaining("UpdatedFiles must not be null");
 	}
 

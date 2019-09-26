@@ -36,6 +36,7 @@ public class CommandException extends RuntimeException {
 
 	/**
 	 * Create a new {@link CommandException} with the specified options.
+	 *
 	 * @param options the exception options
 	 */
 	public CommandException(Option... options) {
@@ -44,6 +45,7 @@ public class CommandException extends RuntimeException {
 
 	/**
 	 * Create a new {@link CommandException} with the specified options.
+	 *
 	 * @param message the exception message to display to the user
 	 * @param options the exception options
 	 */
@@ -54,8 +56,9 @@ public class CommandException extends RuntimeException {
 
 	/**
 	 * Create a new {@link CommandException} with the specified options.
+	 *
 	 * @param message the exception message to display to the user
-	 * @param cause the underlying cause
+	 * @param cause   the underlying cause
 	 * @param options the exception options
 	 */
 	public CommandException(String message, Throwable cause, Option... options) {
@@ -65,7 +68,8 @@ public class CommandException extends RuntimeException {
 
 	/**
 	 * Create a new {@link CommandException} with the specified options.
-	 * @param cause the underlying cause
+	 *
+	 * @param cause   the underlying cause
 	 * @param options the exception options
 	 */
 	public CommandException(Throwable cause, Option... options) {
@@ -82,6 +86,7 @@ public class CommandException extends RuntimeException {
 
 	/**
 	 * Returns a set of options that are understood by the {@link CommandRunner}.
+	 *
 	 * @return the options understood by the runner
 	 */
 	public Set<Option> getOptions() {

@@ -16,22 +16,9 @@
 
 package org.springframework.boot.context.properties.bind.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import org.springframework.boot.context.properties.bind.AbstractBindHandler;
-import org.springframework.boot.context.properties.bind.BindContext;
-import org.springframework.boot.context.properties.bind.BindException;
-import org.springframework.boot.context.properties.bind.Bindable;
-import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.bind.*;
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
@@ -42,6 +29,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -195,8 +189,7 @@ public class ValidationBindHandlerTests {
 	private BindValidationException bindAndExpectValidationError(Runnable action) {
 		try {
 			action.run();
-		}
-		catch (BindException ex) {
+		} catch (BindException ex) {
 			BindValidationException cause = (BindValidationException) ex.getCause();
 			return cause;
 		}
@@ -324,7 +317,7 @@ public class ValidationBindHandlerTests {
 
 		@Override
 		public Object onFailure(ConfigurationPropertyName name, Bindable<?> target, BindContext context,
-				Exception error) throws Exception {
+								Exception error) throws Exception {
 			return this.result;
 		}
 

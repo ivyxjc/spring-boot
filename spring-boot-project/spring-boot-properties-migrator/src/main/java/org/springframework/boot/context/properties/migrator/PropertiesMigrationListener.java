@@ -16,12 +16,8 @@
 
 package org.springframework.boot.context.properties.migrator;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.configurationmetadata.ConfigurationMetadataRepository;
 import org.springframework.boot.configurationmetadata.ConfigurationMetadataRepositoryJsonBuilder;
 import org.springframework.boot.context.event.ApplicationFailedEvent;
@@ -32,6 +28,9 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * An {@link ApplicationListener} that inspects the {@link ConfigurableEnvironment
@@ -69,8 +68,7 @@ public class PropertiesMigrationListener implements ApplicationListener<SpringAp
 	private ConfigurationMetadataRepository loadRepository() {
 		try {
 			return loadRepository(ConfigurationMetadataRepositoryJsonBuilder.create());
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException("Failed to load metadata", ex);
 		}
 	}

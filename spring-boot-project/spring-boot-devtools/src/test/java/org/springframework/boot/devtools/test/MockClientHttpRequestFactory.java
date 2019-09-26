@@ -16,14 +16,6 @@
 
 package org.springframework.boot.devtools.test;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,6 +24,14 @@ import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.mock.http.client.MockClientHttpRequest;
 import org.springframework.mock.http.client.MockClientHttpResponse;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Mock {@link ClientHttpRequestFactory}.
@@ -80,27 +80,6 @@ public class MockClientHttpRequestFactory implements ClientHttpRequestFactory {
 		return this.executedRequests;
 	}
 
-	private class MockRequest extends MockClientHttpRequest {
-
-		MockRequest(URI uri, HttpMethod httpMethod) {
-			super(httpMethod, uri);
-		}
-
-		@Override
-		protected ClientHttpResponse executeInternal() throws IOException {
-			MockClientHttpRequestFactory.this.executedRequests.add(this);
-			Object response = MockClientHttpRequestFactory.this.responses.pollFirst();
-			if (response instanceof IOException) {
-				throw (IOException) response;
-			}
-			if (response == null) {
-				response = new Response(0, null, HttpStatus.GONE);
-			}
-			return ((Response) response).asHttpResponse(MockClientHttpRequestFactory.this.seq);
-		}
-
-	}
-
 	static class Response {
 
 		private final int delay;
@@ -131,11 +110,31 @@ public class MockClientHttpRequestFactory implements ClientHttpRequestFactory {
 			if (this.delay > 0) {
 				try {
 					Thread.sleep(this.delay);
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					// Ignore
 				}
 			}
+		}
+
+	}
+
+	private class MockRequest extends MockClientHttpRequest {
+
+		MockRequest(URI uri, HttpMethod httpMethod) {
+			super(httpMethod, uri);
+		}
+
+		@Override
+		protected ClientHttpResponse executeInternal() throws IOException {
+			MockClientHttpRequestFactory.this.executedRequests.add(this);
+			Object response = MockClientHttpRequestFactory.this.responses.pollFirst();
+			if (response instanceof IOException) {
+				throw (IOException) response;
+			}
+			if (response == null) {
+				response = new Response(0, null, HttpStatus.GONE);
+			}
+			return ((Response) response).asHttpResponse(MockClientHttpRequestFactory.this.seq);
 		}
 
 	}

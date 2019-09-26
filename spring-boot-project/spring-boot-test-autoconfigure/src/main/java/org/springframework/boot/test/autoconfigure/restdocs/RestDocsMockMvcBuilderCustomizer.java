@@ -39,7 +39,7 @@ public class RestDocsMockMvcBuilderCustomizer implements InitializingBean, MockM
 	private final RestDocumentationResultHandler resultHandler;
 
 	RestDocsMockMvcBuilderCustomizer(RestDocsProperties properties, MockMvcRestDocumentationConfigurer delegate,
-			RestDocumentationResultHandler resultHandler) {
+									 RestDocumentationResultHandler resultHandler) {
 		this.properties = properties;
 		this.delegate = delegate;
 		this.resultHandler = resultHandler;

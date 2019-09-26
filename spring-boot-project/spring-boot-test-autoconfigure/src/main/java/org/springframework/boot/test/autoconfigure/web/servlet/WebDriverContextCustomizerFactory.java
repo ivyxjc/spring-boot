@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.util.List;
-
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
 import org.springframework.test.context.MergedContextConfiguration;
+
+import java.util.List;
 
 /**
  * {@link ContextCustomizerFactory} to register a {@link WebDriverScope} and configure
@@ -37,7 +37,7 @@ class WebDriverContextCustomizerFactory implements ContextCustomizerFactory {
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
-			List<ContextConfigurationAttributes> configAttributes) {
+													 List<ContextConfigurationAttributes> configAttributes) {
 		return new Customizer();
 	}
 

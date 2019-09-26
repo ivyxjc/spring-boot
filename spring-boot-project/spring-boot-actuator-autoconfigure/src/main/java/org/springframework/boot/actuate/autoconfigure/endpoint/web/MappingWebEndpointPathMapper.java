@@ -16,14 +16,14 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.web.PathMapper;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A {@link PathMapper} implementation that uses a simple {@link Map} to determine the

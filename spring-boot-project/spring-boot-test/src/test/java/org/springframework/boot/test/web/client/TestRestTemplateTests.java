@@ -16,15 +16,8 @@
 
 package org.springframework.boot.test.web.client;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.net.URI;
-import java.util.List;
-
 import org.apache.http.client.config.RequestConfig;
 import org.junit.Test;
-
 import org.springframework.boot.test.web.client.TestRestTemplate.CustomHttpComponentsClientHttpRequestFactory;
 import org.springframework.boot.test.web.client.TestRestTemplate.HttpClientOption;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -33,13 +26,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
-import org.springframework.http.client.ClientHttpRequest;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.InterceptingClientHttpRequestFactory;
-import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.client.*;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.http.client.MockClientHttpRequest;
@@ -51,6 +38,12 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.net.URI;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -170,8 +163,7 @@ public class TestRestTemplateTests {
 						.as("Method %s should have been public", equivalent).isTrue();
 				try {
 					equivalent.invoke(restTemplate, mockArguments(method.getParameterTypes()));
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new IllegalStateException(ex);
 				}
 			}
@@ -221,7 +213,7 @@ public class TestRestTemplateTests {
 				.isInstanceOf(InterceptingClientHttpRequestFactory.class);
 		assertThat(
 				ReflectionTestUtils.getField(basicAuthTemplate.getRestTemplate().getRequestFactory(), "requestFactory"))
-						.isInstanceOf(CustomHttpComponentsClientHttpRequestFactory.class);
+				.isInstanceOf(CustomHttpComponentsClientHttpRequestFactory.class);
 		assertThat(basicAuthTemplate.getRestTemplate().getUriTemplateHandler())
 				.isSameAs(originalTemplate.getRestTemplate().getUriTemplateHandler());
 		assertThat(basicAuthTemplate.getRestTemplate().getInterceptors()).hasSize(1);
@@ -356,7 +348,7 @@ public class TestRestTemplateTests {
 	}
 
 	private void assertBasicAuthorizationInterceptorCredentials(TestRestTemplate testRestTemplate, String username,
-			String password) {
+																String password) {
 		@SuppressWarnings("unchecked")
 		List<ClientHttpRequestInterceptor> requestFactoryInterceptors = (List<ClientHttpRequestInterceptor>) ReflectionTestUtils
 				.getField(testRestTemplate.getRestTemplate().getRequestFactory(), "interceptors");

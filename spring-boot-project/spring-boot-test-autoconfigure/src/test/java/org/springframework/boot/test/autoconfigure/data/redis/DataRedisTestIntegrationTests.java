@@ -16,13 +16,9 @@
 
 package org.springframework.boot.test.autoconfigure.data.redis;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -34,6 +30,9 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -48,19 +47,15 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 @DataRedisTest
 public class DataRedisTestIntegrationTests {
 
+	private static final Charset CHARSET = StandardCharsets.UTF_8;
 	@ClassRule
 	public static RedisContainer redis = new RedisContainer();
-
 	@Autowired
 	private RedisOperations<Object, Object> operations;
-
 	@Autowired
 	private ExampleRepository exampleRepository;
-
 	@Autowired
 	private ApplicationContext applicationContext;
-
-	private static final Charset CHARSET = StandardCharsets.UTF_8;
 
 	@Test
 	public void testRepository() {

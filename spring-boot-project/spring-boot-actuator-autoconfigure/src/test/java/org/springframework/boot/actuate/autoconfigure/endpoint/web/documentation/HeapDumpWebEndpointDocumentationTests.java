@@ -16,11 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.io.FileWriter;
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.management.HeapDumpWebEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +25,9 @@ import org.springframework.restdocs.cli.CliDocumentation;
 import org.springframework.restdocs.cli.CurlRequestSnippet;
 import org.springframework.restdocs.operation.Operation;
 import org.springframework.util.FileCopyUtils;
+
+import java.io.FileWriter;
+import java.util.Map;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

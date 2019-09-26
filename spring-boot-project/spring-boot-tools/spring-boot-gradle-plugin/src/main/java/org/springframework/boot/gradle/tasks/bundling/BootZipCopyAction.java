@@ -16,16 +16,6 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.zip.CRC32;
-
 import org.apache.commons.compress.archivers.zip.UnixStat;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream;
@@ -36,9 +26,18 @@ import org.gradle.api.internal.file.copy.CopyAction;
 import org.gradle.api.internal.file.copy.CopyActionProcessingStream;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.WorkResult;
-
 import org.springframework.boot.loader.tools.DefaultLaunchScript;
 import org.springframework.boot.loader.tools.FileUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.zip.CRC32;
 
 /**
  * A {@link CopyAction} for creating a Spring Boot zip archive (typically a jar or war).
@@ -69,9 +68,9 @@ class BootZipCopyAction implements CopyAction {
 	private final String encoding;
 
 	BootZipCopyAction(File output, boolean preserveFileTimestamps, boolean includeDefaultLoader,
-			Spec<FileTreeElement> requiresUnpack, Spec<FileTreeElement> exclusions,
-			LaunchScriptConfiguration launchScript, Function<FileCopyDetails, ZipCompression> compressionResolver,
-			String encoding) {
+					  Spec<FileTreeElement> requiresUnpack, Spec<FileTreeElement> exclusions,
+					  LaunchScriptConfiguration launchScript, Function<FileCopyDetails, ZipCompression> compressionResolver,
+					  String encoding) {
 		this.output = output;
 		this.preserveFileTimestamps = preserveFileTimestamps;
 		this.includeDefaultLoader = includeDefaultLoader;
@@ -87,8 +86,7 @@ class BootZipCopyAction implements CopyAction {
 		try {
 			writeArchive(stream);
 			return () -> true;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new GradleException("Failed to create " + this.output, ex);
 		}
 	}
@@ -105,12 +103,10 @@ class BootZipCopyAction implements CopyAction {
 				Processor processor = new Processor(zipOutputStream);
 				stream.process(processor::process);
 				processor.finish();
-			}
-			finally {
+			} finally {
 				closeQuietly(zipOutputStream);
 			}
-		}
-		finally {
+		} finally {
 			closeQuietly(outputStream);
 		}
 	}
@@ -125,8 +121,7 @@ class BootZipCopyAction implements CopyAction {
 			outputStream.write(new DefaultLaunchScript(file, properties).toByteArray());
 			outputStream.flush();
 			this.output.setExecutable(true);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new GradleException("Failed to write launch script to " + this.output, ex);
 		}
 	}
@@ -134,9 +129,36 @@ class BootZipCopyAction implements CopyAction {
 	private void closeQuietly(OutputStream outputStream) {
 		try {
 			outputStream.close();
+		} catch (IOException ex) {
 		}
-		catch (IOException ex) {
+	}
+
+	/**
+	 * An {@code OutputStream} that provides a CRC-32 of the data that is written to it.
+	 */
+	private static final class Crc32OutputStream extends OutputStream {
+
+		private final CRC32 crc = new CRC32();
+
+		@Override
+		public void write(int b) throws IOException {
+			this.crc.update(b);
 		}
+
+		@Override
+		public void write(byte[] b) throws IOException {
+			this.crc.update(b);
+		}
+
+		@Override
+		public void write(byte[] b, int off, int len) throws IOException {
+			this.crc.update(b, off, len);
+		}
+
+		private long getCrc() {
+			return this.crc.getValue();
+		}
+
 	}
 
 	/**
@@ -161,12 +183,10 @@ class BootZipCopyAction implements CopyAction {
 				writeLoaderEntriesIfNecessary(details);
 				if (details.isDirectory()) {
 					processDirectory(details);
-				}
-				else {
+				} else {
 					processFile(details);
 				}
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new GradleException("Failed to add " + details + " to " + BootZipCopyAction.this.output, ex);
 			}
 		}
@@ -233,34 +253,6 @@ class BootZipCopyAction implements CopyAction {
 		private long getTime(FileCopyDetails details) {
 			return BootZipCopyAction.this.preserveFileTimestamps ? details.getLastModified()
 					: CONSTANT_TIME_FOR_ZIP_ENTRIES;
-		}
-
-	}
-
-	/**
-	 * An {@code OutputStream} that provides a CRC-32 of the data that is written to it.
-	 */
-	private static final class Crc32OutputStream extends OutputStream {
-
-		private final CRC32 crc = new CRC32();
-
-		@Override
-		public void write(int b) throws IOException {
-			this.crc.update(b);
-		}
-
-		@Override
-		public void write(byte[] b) throws IOException {
-			this.crc.update(b);
-		}
-
-		@Override
-		public void write(byte[] b, int off, int len) throws IOException {
-			this.crc.update(b, off, len);
-		}
-
-		private long getCrc() {
-			return this.crc.getValue();
 		}
 
 	}

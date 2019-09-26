@@ -16,9 +16,6 @@
 
 package org.springframework.boot.cli.compiler.maven;
 
-import java.io.File;
-import java.lang.reflect.Field;
-
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.building.DefaultSettingsBuilderFactory;
 import org.apache.maven.settings.building.DefaultSettingsBuildingRequest;
@@ -31,8 +28,10 @@ import org.apache.maven.settings.crypto.SettingsDecryptionResult;
 import org.sonatype.plexus.components.cipher.DefaultPlexusCipher;
 import org.sonatype.plexus.components.cipher.PlexusCipherException;
 import org.sonatype.plexus.components.sec.dispatcher.DefaultSecDispatcher;
-
 import org.springframework.boot.cli.util.Log;
+
+import java.io.File;
+import java.lang.reflect.Field;
 
 /**
  * {@code MavenSettingsReader} reads settings from a user's Maven settings.xml file,
@@ -70,8 +69,7 @@ public class MavenSettingsReader {
 		request.setSystemProperties(System.getProperties());
 		try {
 			return new DefaultSettingsBuilderFactory().newInstance().build(request).getEffectiveSettings();
-		}
-		catch (SettingsBuildingException ex) {
+		} catch (SettingsBuildingException ex) {
 			throw new IllegalStateException("Failed to build settings from " + settingsFile, ex);
 		}
 	}
@@ -94,8 +92,7 @@ public class MavenSettingsReader {
 			Field field = sourceClass.getDeclaredField(fieldName);
 			field.setAccessible(true);
 			field.set(target, value);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Failed to set field '" + fieldName + "' on '" + target + "'", ex);
 		}
 	}
@@ -109,8 +106,7 @@ public class MavenSettingsReader {
 			this._configurationFile = file.getAbsolutePath();
 			try {
 				this._cipher = new DefaultPlexusCipher();
-			}
-			catch (PlexusCipherException ex) {
+			} catch (PlexusCipherException ex) {
 				throw new IllegalStateException(ex);
 			}
 		}

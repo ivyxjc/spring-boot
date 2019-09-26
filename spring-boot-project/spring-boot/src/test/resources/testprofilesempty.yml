@@ -1,14 +1,14 @@
 ---
 my:
-  property: fromyamlfile
-  other: notempty
+    property: fromyamlfile
+    other: notempty
 ---
 spring:
-  profiles:
+    profiles:
 my:
-  property: fromemptyprofile
+    property: fromemptyprofile
 ---
 spring:
-  profiles: other
+    profiles: other
 my:
-  property: fromotherprofile
+    property: fromotherprofile

@@ -16,13 +16,6 @@
 
 package org.springframework.boot.context.properties.bind.validation;
 
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.context.properties.bind.AbstractBindHandler;
 import org.springframework.boot.context.properties.bind.BindContext;
 import org.springframework.boot.context.properties.bind.BindHandler;
@@ -32,6 +25,9 @@ import org.springframework.boot.context.properties.source.ConfigurationPropertyN
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * {@link BindHandler} to apply {@link Validator Validators} to bound results.

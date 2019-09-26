@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data.cassandra.city;
 
 import com.datastax.driver.core.DataType.Name;
-
 import org.springframework.data.cassandra.core.mapping.CassandraType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKey;

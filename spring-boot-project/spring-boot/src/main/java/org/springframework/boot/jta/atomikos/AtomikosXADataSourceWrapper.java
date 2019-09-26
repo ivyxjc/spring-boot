@@ -16,9 +16,9 @@
 
 package org.springframework.boot.jta.atomikos;
 
-import javax.sql.XADataSource;
-
 import org.springframework.boot.jdbc.XADataSourceWrapper;
+
+import javax.sql.XADataSource;
 
 /**
  * {@link XADataSourceWrapper} that uses an {@link AtomikosDataSourceBean} to wrap a

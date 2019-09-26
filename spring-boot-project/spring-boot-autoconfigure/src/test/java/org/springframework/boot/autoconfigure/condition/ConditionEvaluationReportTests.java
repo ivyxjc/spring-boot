@@ -16,16 +16,10 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionEvaluationReport.ConditionAndOutcome;
@@ -35,16 +29,14 @@ import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfigura
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.testsupport.assertj.Matched;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Condition;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ConfigurationCondition;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.ClassUtils;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -275,12 +267,12 @@ public class ConditionEvaluationReportTests {
 	}
 
 	@Configuration
-	@Conditional({ ConditionEvaluationReportTests.MatchParseCondition.class,
-			ConditionEvaluationReportTests.NoMatchBeanCondition.class })
+	@Conditional({ConditionEvaluationReportTests.MatchParseCondition.class,
+						 ConditionEvaluationReportTests.NoMatchBeanCondition.class})
 	public static class NegativeOuterConfig {
 
 		@Configuration
-		@Conditional({ ConditionEvaluationReportTests.MatchParseCondition.class })
+		@Conditional({ConditionEvaluationReportTests.MatchParseCondition.class})
 		public static class PositiveInnerConfig {
 
 			@Bean

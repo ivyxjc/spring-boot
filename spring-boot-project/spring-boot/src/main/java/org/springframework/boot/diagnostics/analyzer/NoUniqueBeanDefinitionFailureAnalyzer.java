@@ -46,7 +46,7 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
 
 	@Override
 	protected FailureAnalysis analyze(Throwable rootFailure, NoUniqueBeanDefinitionException cause,
-			String description) {
+									  String description) {
 		if (description == null) {
 			return null;
 		}
@@ -70,8 +70,7 @@ class NoUniqueBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnal
 		try {
 			BeanDefinition definition = this.beanFactory.getMergedBeanDefinition(beanName);
 			message.append(getDefinitionDescription(beanName, definition));
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			message.append(String.format("\t- %s: a programmatically registered singleton", beanName));
 		}
 	}

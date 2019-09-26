@@ -16,11 +16,11 @@
 
 package org.springframework.boot.web.reactive.server;
 
-import java.util.Map;
-
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.HttpHandler;
+
+import java.util.Map;
 
 import static org.mockito.Mockito.spy;
 

@@ -16,16 +16,15 @@
 
 package org.springframework.boot.autoconfigure.jms.artemis;
 
+import org.apache.activemq.artemis.core.remoting.impl.invm.TransportConstants;
+import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.apache.activemq.artemis.core.remoting.impl.invm.TransportConstants;
-
-import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Configuration properties for Artemis.
@@ -37,35 +36,29 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 @ConfigurationProperties(prefix = "spring.artemis")
 public class ArtemisProperties {
 
+	private final Embedded embedded = new Embedded();
+	@NestedConfigurationProperty
+	private final JmsPoolConnectionFactoryProperties pool = new JmsPoolConnectionFactoryProperties();
 	/**
 	 * Artemis deployment mode, auto-detected by default.
 	 */
 	private ArtemisMode mode;
-
 	/**
 	 * Artemis broker host.
 	 */
 	private String host = "localhost";
-
 	/**
 	 * Artemis broker port.
 	 */
 	private int port = 61616;
-
 	/**
 	 * Login user of the broker.
 	 */
 	private String user;
-
 	/**
 	 * Login password of the broker.
 	 */
 	private String password;
-
-	private final Embedded embedded = new Embedded();
-
-	@NestedConfigurationProperty
-	private final JmsPoolConnectionFactoryProperties pool = new JmsPoolConnectionFactoryProperties();
 
 	public ArtemisMode getMode() {
 		return this.mode;
@@ -223,6 +216,7 @@ public class ArtemisProperties {
 		/**
 		 * Creates the minimal transport parameters for an embedded transport
 		 * configuration.
+		 *
 		 * @return the transport parameters
 		 * @see TransportConstants#SERVER_ID_PROP_NAME
 		 */

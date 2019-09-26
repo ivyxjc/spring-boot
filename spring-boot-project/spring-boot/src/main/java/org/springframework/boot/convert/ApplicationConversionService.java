@@ -59,6 +59,7 @@ public class ApplicationConversionService extends FormattingConversionService {
 	 * Note: This method actually returns an {@link ApplicationConversionService}
 	 * instance. However, the {@code ConversionService} signature has been preserved for
 	 * binary compatibility.
+	 *
 	 * @return the shared {@code ApplicationConversionService} instance (never
 	 * {@code null})
 	 */
@@ -79,10 +80,11 @@ public class ApplicationConversionService extends FormattingConversionService {
 	/**
 	 * Configure the given {@link FormatterRegistry} with formatters and converters
 	 * appropriate for most Spring Boot applications.
+	 *
 	 * @param registry the registry of converters to add to (must also be castable to
-	 * ConversionService, e.g. being a {@link ConfigurableConversionService})
+	 *                 ConversionService, e.g. being a {@link ConfigurableConversionService})
 	 * @throws ClassCastException if the given FormatterRegistry could not be cast to a
-	 * ConversionService
+	 *                            ConversionService
 	 */
 	public static void configure(FormatterRegistry registry) {
 		DefaultConversionService.addDefaultConverters(registry);
@@ -93,10 +95,11 @@ public class ApplicationConversionService extends FormattingConversionService {
 
 	/**
 	 * Add converters useful for most Spring Boot applications.
+	 *
 	 * @param registry the registry of converters to add to (must also be castable to
-	 * ConversionService, e.g. being a {@link ConfigurableConversionService})
+	 *                 ConversionService, e.g. being a {@link ConfigurableConversionService})
 	 * @throws ClassCastException if the given ConverterRegistry could not be cast to a
-	 * ConversionService
+	 *                            ConversionService
 	 */
 	public static void addApplicationConverters(ConverterRegistry registry) {
 		addDelimitedStringConverters(registry);
@@ -111,10 +114,11 @@ public class ApplicationConversionService extends FormattingConversionService {
 
 	/**
 	 * Add converters to support delimited strings.
+	 *
 	 * @param registry the registry of converters to add to (must also be castable to
-	 * ConversionService, e.g. being a {@link ConfigurableConversionService})
+	 *                 ConversionService, e.g. being a {@link ConfigurableConversionService})
 	 * @throws ClassCastException if the given ConverterRegistry could not be cast to a
-	 * ConversionService
+	 *                            ConversionService
 	 */
 	public static void addDelimitedStringConverters(ConverterRegistry registry) {
 		ConversionService service = (ConversionService) registry;
@@ -126,6 +130,7 @@ public class ApplicationConversionService extends FormattingConversionService {
 
 	/**
 	 * Add formatters useful for most Spring Boot applications.
+	 *
 	 * @param registry the service to register default formatters with
 	 */
 	public static void addApplicationFormatters(FormatterRegistry registry) {

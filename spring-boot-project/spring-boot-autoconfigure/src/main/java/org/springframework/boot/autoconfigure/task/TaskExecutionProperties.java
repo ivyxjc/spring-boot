@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.task;
 
-import java.time.Duration;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * Configuration properties for task execution.

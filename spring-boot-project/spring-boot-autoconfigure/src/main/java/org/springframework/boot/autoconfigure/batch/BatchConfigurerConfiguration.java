@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.batch;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -28,6 +25,9 @@ import org.springframework.boot.autoconfigure.transaction.TransactionManagerCust
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 
 /**
  * Provide a {@link BatchConfigurer} according to the current environment.
@@ -46,7 +46,7 @@ class BatchConfigurerConfiguration {
 
 		@Bean
 		public BasicBatchConfigurer batchConfigurer(BatchProperties properties, DataSource dataSource,
-				ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
+													ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
 			return new BasicBatchConfigurer(properties, dataSource, transactionManagerCustomizers.getIfAvailable());
 		}
 
@@ -59,8 +59,8 @@ class BatchConfigurerConfiguration {
 
 		@Bean
 		public JpaBatchConfigurer batchConfigurer(BatchProperties properties, DataSource dataSource,
-				ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers,
-				EntityManagerFactory entityManagerFactory) {
+												  ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers,
+												  EntityManagerFactory entityManagerFactory) {
 			return new JpaBatchConfigurer(properties, dataSource, transactionManagerCustomizers.getIfAvailable(),
 					entityManagerFactory);
 		}

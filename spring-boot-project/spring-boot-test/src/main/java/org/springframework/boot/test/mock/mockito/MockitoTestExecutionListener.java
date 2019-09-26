@@ -16,21 +16,20 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.FieldCallback;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 /**
  * {@link TestExecutionListener} to trigger {@link MockitoAnnotations#initMocks(Object)}

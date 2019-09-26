@@ -51,8 +51,7 @@ class JSON {
 		if (value instanceof String) {
 			try {
 				return Double.valueOf((String) value);
-			}
-			catch (NumberFormatException ignored) {
+			} catch (NumberFormatException ignored) {
 			}
 		}
 		return null;
@@ -68,8 +67,7 @@ class JSON {
 		if (value instanceof String) {
 			try {
 				return (int) Double.parseDouble((String) value);
-			}
-			catch (NumberFormatException ignored) {
+			} catch (NumberFormatException ignored) {
 			}
 		}
 		return null;
@@ -85,8 +83,7 @@ class JSON {
 		if (value instanceof String) {
 			try {
 				return (long) Double.parseDouble((String) value);
-			}
-			catch (NumberFormatException ignored) {
+			} catch (NumberFormatException ignored) {
 			}
 		}
 		return null;
@@ -103,7 +100,7 @@ class JSON {
 	}
 
 	public static JSONException typeMismatch(Object indexOrName, Object actual,
-			String requiredType) throws JSONException {
+											 String requiredType) throws JSONException {
 		if (actual == null) {
 			throw new JSONException("Value at " + indexOrName + " is null.");
 		}

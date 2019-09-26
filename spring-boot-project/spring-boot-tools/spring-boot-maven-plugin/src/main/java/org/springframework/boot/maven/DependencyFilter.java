@@ -16,14 +16,14 @@
 
 package org.springframework.boot.maven;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.shared.artifact.filter.collection.AbstractArtifactsFilter;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactFilterException;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Base class for {@link ArtifactsFilter} based on a {@link FilterableDependency} list.
@@ -39,6 +39,7 @@ public abstract class DependencyFilter extends AbstractArtifactsFilter {
 	/**
 	 * Create a new instance with the list of {@link FilterableDependency} instance(s) to
 	 * use.
+	 *
 	 * @param dependencies the source dependencies
 	 */
 	public DependencyFilter(List<? extends FilterableDependency> dependencies) {
@@ -46,7 +47,7 @@ public abstract class DependencyFilter extends AbstractArtifactsFilter {
 	}
 
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public Set filter(Set artifacts) throws ArtifactFilterException {
 		Set result = new HashSet();
 		for (Object artifact : artifacts) {
@@ -63,7 +64,8 @@ public abstract class DependencyFilter extends AbstractArtifactsFilter {
 	 * Check if the specified {@link org.apache.maven.artifact.Artifact} matches the
 	 * specified {@link org.springframework.boot.maven.FilterableDependency}. Returns
 	 * {@code true} if it should be excluded
-	 * @param artifact the Maven {@link Artifact}
+	 *
+	 * @param artifact   the Maven {@link Artifact}
 	 * @param dependency the {@link FilterableDependency}
 	 * @return {@code true} if the artifact matches the dependency
 	 */

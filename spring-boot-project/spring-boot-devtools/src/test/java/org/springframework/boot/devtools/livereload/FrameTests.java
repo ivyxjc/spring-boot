@@ -16,15 +16,13 @@
 
 package org.springframework.boot.devtools.livereload;
 
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 
-import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link Frame}.
@@ -56,7 +54,7 @@ public class FrameTests {
 	public void typedPayload() {
 		Frame frame = new Frame(Frame.Type.CLOSE);
 		assertThat(frame.getType()).isEqualTo(Frame.Type.CLOSE);
-		assertThat(frame.getPayload()).isEqualTo(new byte[] {});
+		assertThat(frame.getPayload()).isEqualTo(new byte[]{});
 	}
 
 	@Test
@@ -65,7 +63,7 @@ public class FrameTests {
 		Frame frame = new Frame(payload);
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		frame.write(bos);
-		assertThat(bos.toByteArray()).isEqualTo(new byte[] { (byte) 0x81, 0x01, 0x41 });
+		assertThat(bos.toByteArray()).isEqualTo(new byte[]{(byte) 0x81, 0x01, 0x41});
 	}
 
 	@Test
@@ -86,32 +84,32 @@ public class FrameTests {
 
 	@Test
 	public void readFragmentedNotSupported() throws Exception {
-		byte[] bytes = new byte[] { 0x0F };
+		byte[] bytes = new byte[]{0x0F};
 		assertThatIllegalStateException().isThrownBy(() -> Frame.read(newConnectionInputStream(bytes)))
 				.withMessageContaining("Fragmented frames are not supported");
 	}
 
 	@Test
 	public void readLargeFramesNotSupported() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x80, (byte) 0xFF };
+		byte[] bytes = new byte[]{(byte) 0x80, (byte) 0xFF};
 		assertThatIllegalStateException().isThrownBy(() -> Frame.read(newConnectionInputStream(bytes)))
 				.withMessageContaining("Large frames are not supported");
 	}
 
 	@Test
 	public void readSmallTextFrame() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x81, (byte) 0x02, 0x41, 0x41 };
+		byte[] bytes = new byte[]{(byte) 0x81, (byte) 0x02, 0x41, 0x41};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.TEXT);
-		assertThat(frame.getPayload()).isEqualTo(new byte[] { 0x41, 0x41 });
+		assertThat(frame.getPayload()).isEqualTo(new byte[]{0x41, 0x41});
 	}
 
 	@Test
 	public void readMaskedTextFrame() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x81, (byte) 0x82, 0x0F, 0x0F, 0x0F, 0x0F, 0x4E, 0x4E };
+		byte[] bytes = new byte[]{(byte) 0x81, (byte) 0x82, 0x0F, 0x0F, 0x0F, 0x0F, 0x4E, 0x4E};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.TEXT);
-		assertThat(frame.getPayload()).isEqualTo(new byte[] { 0x41, 0x41 });
+		assertThat(frame.getPayload()).isEqualTo(new byte[]{0x41, 0x41});
 	}
 
 	@Test
@@ -133,35 +131,35 @@ public class FrameTests {
 
 	@Test
 	public void readContinuation() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x80, (byte) 0x00 };
+		byte[] bytes = new byte[]{(byte) 0x80, (byte) 0x00};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.CONTINUATION);
 	}
 
 	@Test
 	public void readBinary() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x82, (byte) 0x00 };
+		byte[] bytes = new byte[]{(byte) 0x82, (byte) 0x00};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.BINARY);
 	}
 
 	@Test
 	public void readClose() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x88, (byte) 0x00 };
+		byte[] bytes = new byte[]{(byte) 0x88, (byte) 0x00};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.CLOSE);
 	}
 
 	@Test
 	public void readPing() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x89, (byte) 0x00 };
+		byte[] bytes = new byte[]{(byte) 0x89, (byte) 0x00};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.PING);
 	}
 
 	@Test
 	public void readPong() throws Exception {
-		byte[] bytes = new byte[] { (byte) 0x8A, (byte) 0x00 };
+		byte[] bytes = new byte[]{(byte) 0x8A, (byte) 0x00};
 		Frame frame = Frame.read(newConnectionInputStream(bytes));
 		assertThat(frame.getType()).isEqualTo(Frame.Type.PONG);
 	}

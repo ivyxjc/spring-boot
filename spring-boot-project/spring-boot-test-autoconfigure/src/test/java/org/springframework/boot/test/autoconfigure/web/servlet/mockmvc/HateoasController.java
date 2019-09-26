@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet.mockmvc;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * {@link RestController} used by {@link WebMvcTestHateoasIntegrationTests}.

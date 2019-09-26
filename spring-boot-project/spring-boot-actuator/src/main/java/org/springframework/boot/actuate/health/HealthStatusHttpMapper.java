@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
+import org.springframework.util.Assert;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
-import org.springframework.util.Assert;
 
 /**
  * Map a {@link Status} to an HTTP status code.
@@ -46,16 +46,8 @@ public class HealthStatusHttpMapper {
 	}
 
 	/**
-	 * Set specific status mappings.
-	 * @param statusMapping a map of health status code to HTTP status code
-	 */
-	public void setStatusMapping(Map<String, Integer> statusMapping) {
-		Assert.notNull(statusMapping, "StatusMapping must not be null");
-		this.statusMapping = new HashMap<>(statusMapping);
-	}
-
-	/**
 	 * Add specific status mappings to the existing set.
+	 *
 	 * @param statusMapping a map of health status code to HTTP status code
 	 */
 	public void addStatusMapping(Map<String, Integer> statusMapping) {
@@ -65,7 +57,8 @@ public class HealthStatusHttpMapper {
 
 	/**
 	 * Add a status mapping to the existing set.
-	 * @param status the status to map
+	 *
+	 * @param status     the status to map
 	 * @param httpStatus the http status
 	 */
 	public void addStatusMapping(Status status, Integer httpStatus) {
@@ -76,6 +69,7 @@ public class HealthStatusHttpMapper {
 
 	/**
 	 * Add a status mapping to the existing set.
+	 *
 	 * @param statusCode the status code to map
 	 * @param httpStatus the http status
 	 */
@@ -87,6 +81,7 @@ public class HealthStatusHttpMapper {
 
 	/**
 	 * Return an immutable view of the status mapping.
+	 *
 	 * @return the http status codes mapped by status name
 	 */
 	public Map<String, Integer> getStatusMapping() {
@@ -94,7 +89,18 @@ public class HealthStatusHttpMapper {
 	}
 
 	/**
+	 * Set specific status mappings.
+	 *
+	 * @param statusMapping a map of health status code to HTTP status code
+	 */
+	public void setStatusMapping(Map<String, Integer> statusMapping) {
+		Assert.notNull(statusMapping, "StatusMapping must not be null");
+		this.statusMapping = new HashMap<>(statusMapping);
+	}
+
+	/**
 	 * Map the specified {@link Status} to an HTTP status code.
+	 *
 	 * @param status the health {@link Status}
 	 * @return the corresponding HTTP status code
 	 */

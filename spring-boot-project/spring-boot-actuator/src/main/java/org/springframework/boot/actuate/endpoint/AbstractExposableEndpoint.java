@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.endpoint;
 
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.util.Assert;
 
 /**
  * Abstract base class for {@link ExposableEndpoint} implementations.
@@ -40,9 +40,10 @@ public abstract class AbstractExposableEndpoint<O extends Operation> implements 
 
 	/**
 	 * Create a new {@link AbstractExposableEndpoint} instance.
-	 * @param id the endpoint id
+	 *
+	 * @param id               the endpoint id
 	 * @param enabledByDefault if the endpoint is enabled by default
-	 * @param operations the endpoint operations
+	 * @param operations       the endpoint operations
 	 */
 	public AbstractExposableEndpoint(EndpointId id, boolean enabledByDefault, Collection<? extends O> operations) {
 		Assert.notNull(id, "ID must not be null");

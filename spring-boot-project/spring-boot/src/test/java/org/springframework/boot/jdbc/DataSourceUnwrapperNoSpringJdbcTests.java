@@ -16,16 +16,15 @@
 
 package org.springframework.boot.jdbc;
 
-import javax.sql.DataSource;
-
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.tomcat.jdbc.pool.DataSourceProxy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
+
+import javax.sql.DataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

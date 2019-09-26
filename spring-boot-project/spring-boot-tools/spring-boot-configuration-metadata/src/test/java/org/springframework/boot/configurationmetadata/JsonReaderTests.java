@@ -16,13 +16,13 @@
 
 package org.springframework.boot.configurationmetadata;
 
+import org.json.JSONException;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-
-import org.json.JSONException;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;

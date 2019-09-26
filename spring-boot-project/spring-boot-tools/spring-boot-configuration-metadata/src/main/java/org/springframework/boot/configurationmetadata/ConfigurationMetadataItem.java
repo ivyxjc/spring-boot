@@ -32,6 +32,7 @@ class ConfigurationMetadataItem extends ConfigurationMetadataProperty {
 	 * The class name of the source that contributed this property. For example, if the
 	 * property was from a class annotated with {@code @ConfigurationProperties} this
 	 * attribute would contain the fully qualified name of that class.
+	 *
 	 * @return the source type
 	 */
 	public String getSourceType() {
@@ -46,6 +47,7 @@ class ConfigurationMetadataItem extends ConfigurationMetadataProperty {
 	 * The full name of the method (including parenthesis and argument types) that
 	 * contributed this property. For example, the name of a getter in a
 	 * {@code @ConfigurationProperties} annotated class.
+	 *
 	 * @return the source method
 	 */
 	public String getSourceMethod() {

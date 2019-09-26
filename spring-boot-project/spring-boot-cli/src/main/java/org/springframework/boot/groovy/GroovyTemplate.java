@@ -16,18 +16,18 @@
 
 package org.springframework.boot.groovy;
 
+import groovy.lang.Writable;
+import groovy.text.GStringTemplateEngine;
+import groovy.text.Template;
+import groovy.text.TemplateEngine;
+import org.codehaus.groovy.control.CompilationFailedException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Map;
-
-import groovy.lang.Writable;
-import groovy.text.GStringTemplateEngine;
-import groovy.text.Template;
-import groovy.text.TemplateEngine;
-import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
  * Helpful utilities for working with Groovy {@link Template}s.

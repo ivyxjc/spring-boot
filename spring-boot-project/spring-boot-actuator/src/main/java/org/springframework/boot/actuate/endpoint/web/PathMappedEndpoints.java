@@ -16,18 +16,13 @@
 
 package org.springframework.boot.actuate.endpoint.web;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.EndpointsSupplier;
 import org.springframework.util.Assert;
+
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A collection of {@link PathMappedEndpoint path mapped endpoints}.
@@ -43,6 +38,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 
 	/**
 	 * Create a new {@link PathMappedEndpoints} instance for the given supplier.
+	 *
 	 * @param basePath the base path of the endpoints
 	 * @param supplier the endpoint supplier
 	 */
@@ -54,7 +50,8 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 
 	/**
 	 * Create a new {@link PathMappedEndpoints} instance for the given suppliers.
-	 * @param basePath the base path of the endpoints
+	 *
+	 * @param basePath  the base path of the endpoints
 	 * @param suppliers the endpoint suppliers
 	 */
 	public PathMappedEndpoints(String basePath, Collection<EndpointsSupplier<?>> suppliers) {
@@ -77,6 +74,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 
 	/**
 	 * Return the base path for the endpoints.
+	 *
 	 * @return the base path
 	 */
 	public String getBasePath() {
@@ -86,6 +84,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 	/**
 	 * Return the root path for the endpoint with the given ID or {@code null} if the
 	 * endpoint cannot be found.
+	 *
 	 * @param endpointId the endpoint ID
 	 * @return the root path or {@code null}
 	 */
@@ -97,6 +96,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 	/**
 	 * Return the full path for the endpoint with the given ID or {@code null} if the
 	 * endpoint cannot be found.
+	 *
 	 * @param endpointId the endpoint ID
 	 * @return the full path or {@code null}
 	 */
@@ -106,6 +106,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 
 	/**
 	 * Return the root paths for each mapped endpoint.
+	 *
 	 * @return all root paths
 	 */
 	public Collection<String> getAllRootPaths() {
@@ -114,6 +115,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 
 	/**
 	 * Return the full paths for each mapped endpoint.
+	 *
 	 * @return all root paths
 	 */
 	public Collection<String> getAllPaths() {
@@ -123,6 +125,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 	/**
 	 * Return the {@link PathMappedEndpoint} with the given ID or {@code null} if the
 	 * endpoint cannot be found.
+	 *
 	 * @param endpointId the endpoint ID
 	 * @return the path mapped endpoint or {@code null}
 	 */
@@ -132,6 +135,7 @@ public class PathMappedEndpoints implements Iterable<PathMappedEndpoint> {
 
 	/**
 	 * Stream all {@link PathMappedEndpoint path mapped endpoints}.
+	 *
 	 * @return a stream of endpoints
 	 */
 	public Stream<PathMappedEndpoint> stream() {

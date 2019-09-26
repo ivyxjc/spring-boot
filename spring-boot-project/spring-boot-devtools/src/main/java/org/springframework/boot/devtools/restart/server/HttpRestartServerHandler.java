@@ -16,12 +16,12 @@
 
 package org.springframework.boot.devtools.restart.server;
 
-import java.io.IOException;
-
 import org.springframework.boot.devtools.remote.server.Handler;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
 
 /**
  * Adapts {@link HttpRestartServer} to a {@link Handler}.
@@ -35,6 +35,7 @@ public class HttpRestartServerHandler implements Handler {
 
 	/**
 	 * Create a new {@link HttpRestartServerHandler} instance.
+	 *
 	 * @param server the server to adapt
 	 */
 	public HttpRestartServerHandler(HttpRestartServer server) {

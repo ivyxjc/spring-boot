@@ -39,16 +39,16 @@ public class SecurityResponse {
 		this.message = message;
 	}
 
+	public static SecurityResponse success() {
+		return new SecurityResponse(HttpStatus.OK);
+	}
+
 	public HttpStatus getStatus() {
 		return this.status;
 	}
 
 	public String getMessage() {
 		return this.message;
-	}
-
-	public static SecurityResponse success() {
-		return new SecurityResponse(HttpStatus.OK);
 	}
 
 }

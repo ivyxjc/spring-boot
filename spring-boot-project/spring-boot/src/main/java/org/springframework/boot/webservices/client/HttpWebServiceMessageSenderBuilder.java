@@ -16,16 +16,16 @@
 
 package org.springframework.boot.webservices.client;
 
-import java.lang.reflect.Method;
-import java.time.Duration;
-import java.util.function.Supplier;
-
 import org.springframework.boot.web.client.ClientHttpRequestFactorySupplier;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
+
+import java.lang.reflect.Method;
+import java.time.Duration;
+import java.util.function.Supplier;
 
 /**
  * {@link WebServiceMessageSender} builder that can detect a suitable HTTP library based
@@ -44,6 +44,7 @@ public class HttpWebServiceMessageSenderBuilder {
 
 	/**
 	 * Set the connection timeout.
+	 *
 	 * @param connectTimeout the connection timeout
 	 * @return a new builder instance
 	 */
@@ -54,6 +55,7 @@ public class HttpWebServiceMessageSenderBuilder {
 
 	/**
 	 * Set the read timeout.
+	 *
 	 * @param readTimeout the read timeout
 	 * @return a new builder instance
 	 */
@@ -65,6 +67,7 @@ public class HttpWebServiceMessageSenderBuilder {
 	/**
 	 * Set the {@code Supplier} of {@link ClientHttpRequestFactory} that should be called
 	 * to create the HTTP-based {@link WebServiceMessageSender}.
+	 *
 	 * @param requestFactorySupplier the supplier for the request factory
 	 * @return a new builder instance
 	 */

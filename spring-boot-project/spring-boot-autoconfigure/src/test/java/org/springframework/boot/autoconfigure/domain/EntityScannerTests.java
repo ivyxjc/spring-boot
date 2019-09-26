@@ -16,13 +16,7 @@
 
 package org.springframework.boot.autoconfigure.domain;
 
-import java.util.Set;
-
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.domain.scan.a.EmbeddableA;
 import org.springframework.boot.autoconfigure.domain.scan.a.EntityA;
 import org.springframework.boot.autoconfigure.domain.scan.b.EmbeddableB;
@@ -31,6 +25,10 @@ import org.springframework.boot.autoconfigure.domain.scan.c.EmbeddableC;
 import org.springframework.boot.autoconfigure.domain.scan.c.EntityC;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
+
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

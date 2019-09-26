@@ -16,13 +16,6 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogManager;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
@@ -43,14 +36,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.slf4j.impl.StaticLoggerBinder;
-
-import org.springframework.boot.logging.AbstractLoggingSystemTests;
-import org.springframework.boot.logging.LogFile;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingInitializationContext;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.LoggingSystemProperties;
+import org.springframework.boot.logging.*;
 import org.springframework.boot.testsupport.assertj.Matched;
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;
@@ -60,13 +46,18 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.FileReader;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.logging.Handler;
+import java.util.logging.LogManager;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link LogbackLoggingSystem}.
@@ -82,16 +73,32 @@ import static org.mockito.Mockito.verify;
 @ClassPathExclusions("log4j-*.jar")
 public class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 
+	private final LogbackLoggingSystem loggingSystem = new LogbackLoggingSystem(getClass().getClassLoader());
 	@Rule
 	public OutputCapture output = new OutputCapture();
-
-	private final LogbackLoggingSystem loggingSystem = new LogbackLoggingSystem(getClass().getClassLoader());
-
 	private Log logger;
 
 	private LoggingInitializationContext initializationContext;
 
 	private MockEnvironment environment;
+
+	private static Logger getRootLogger() {
+		ILoggerFactory factory = StaticLoggerBinder.getSingleton().getLoggerFactory();
+		LoggerContext context = (LoggerContext) factory;
+		return context.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+	}
+
+	private static ConsoleAppender<?> getConsoleAppender() {
+		return (ConsoleAppender<?>) getRootLogger().getAppender("CONSOLE");
+	}
+
+	private static RollingFileAppender<?> getFileAppender() {
+		return (RollingFileAppender<?>) getRootLogger().getAppender("FILE");
+	}
+
+	private static SizeAndTimeBasedRollingPolicy<?> getRollingPolicy() {
+		return (SizeAndTimeBasedRollingPolicy<?>) getFileAppender().getRollingPolicy();
+	}
 
 	@Before
 	public void setup() {
@@ -167,8 +174,7 @@ public class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 			String output = this.output.toString().trim();
 			assertThat(output).contains(
 					"Ignoring 'logback.configurationFile' " + "system property. Please use 'logging.config' instead.");
-		}
-		finally {
+		} finally {
 			System.clearProperty("logback.configurationFile");
 		}
 	}
@@ -415,8 +421,7 @@ public class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 			this.logger.warn("Expected exception", new RuntimeException("Expected", new RuntimeException("Cause")));
 			String fileContents = FileCopyUtils.copyToString(new FileReader(new File(tmpDir() + "/spring.log")));
 			assertThat(fileContents).is(Matched.by(expectedOutput));
-		}
-		finally {
+		} finally {
 			System.clearProperty(LoggingSystemProperties.EXCEPTION_CONVERSION_WORD);
 		}
 	}
@@ -482,28 +487,9 @@ public class LogbackLoggingSystemTests extends AbstractLoggingSystemTests {
 			String output = this.output.toString().trim();
 			assertThat(output).contains("LevelChangePropagator").contains("SizeAndTimeBasedFNATP")
 					.contains("DebugLogbackConfigurator");
-		}
-		finally {
+		} finally {
 			System.clearProperty("logback.debug");
 		}
-	}
-
-	private static Logger getRootLogger() {
-		ILoggerFactory factory = StaticLoggerBinder.getSingleton().getLoggerFactory();
-		LoggerContext context = (LoggerContext) factory;
-		return context.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-	}
-
-	private static ConsoleAppender<?> getConsoleAppender() {
-		return (ConsoleAppender<?>) getRootLogger().getAppender("CONSOLE");
-	}
-
-	private static RollingFileAppender<?> getFileAppender() {
-		return (RollingFileAppender<?>) getRootLogger().getAppender("FILE");
-	}
-
-	private static SizeAndTimeBasedRollingPolicy<?> getRollingPolicy() {
-		return (SizeAndTimeBasedRollingPolicy<?>) getFileAppender().getRollingPolicy();
 	}
 
 	private String getLineWithText(File file, String outputSearch) throws Exception {

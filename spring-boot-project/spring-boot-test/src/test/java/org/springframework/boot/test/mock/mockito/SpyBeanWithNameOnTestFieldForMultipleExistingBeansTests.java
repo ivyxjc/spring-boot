@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.MockingDetails;
 import org.mockito.Mockito;
-
 import org.springframework.boot.test.mock.mockito.example.SimpleExampleStringGenericService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

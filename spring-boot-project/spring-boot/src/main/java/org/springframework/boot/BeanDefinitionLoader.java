@@ -16,12 +16,7 @@
 
 package org.springframework.boot;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 import groovy.lang.Closure;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.groovy.GroovyBeanDefinitionReader;
@@ -45,6 +40,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Loads bean definitions from underlying sources, including XML and JavaConfig. Acts as a
  * simple facade over {@link AnnotatedBeanDefinitionReader},
@@ -61,18 +60,16 @@ class BeanDefinitionLoader {
 	private final AnnotatedBeanDefinitionReader annotatedReader;
 
 	private final XmlBeanDefinitionReader xmlReader;
-
-	private BeanDefinitionReader groovyReader;
-
 	private final ClassPathBeanDefinitionScanner scanner;
-
+	private BeanDefinitionReader groovyReader;
 	private ResourceLoader resourceLoader;
 
 	/**
 	 * Create a new {@link BeanDefinitionLoader} that will load beans into the specified
 	 * {@link BeanDefinitionRegistry}.
+	 *
 	 * @param registry the bean definition registry that will contain the loaded beans
-	 * @param sources the bean sources
+	 * @param sources  the bean sources
 	 */
 	BeanDefinitionLoader(BeanDefinitionRegistry registry, Object... sources) {
 		Assert.notNull(registry, "Registry must not be null");
@@ -89,6 +86,7 @@ class BeanDefinitionLoader {
 
 	/**
 	 * Set the bean name generator to be used by the underlying readers and scanner.
+	 *
 	 * @param beanNameGenerator the bean name generator
 	 */
 	public void setBeanNameGenerator(BeanNameGenerator beanNameGenerator) {
@@ -99,6 +97,7 @@ class BeanDefinitionLoader {
 
 	/**
 	 * Set the resource loader to be used by the underlying readers and scanner.
+	 *
 	 * @param resourceLoader the resource loader
 	 */
 	public void setResourceLoader(ResourceLoader resourceLoader) {
@@ -109,6 +108,7 @@ class BeanDefinitionLoader {
 
 	/**
 	 * Set the environment to be used by the underlying readers and scanner.
+	 *
 	 * @param environment the environment
 	 */
 	public void setEnvironment(ConfigurableEnvironment environment) {
@@ -119,6 +119,7 @@ class BeanDefinitionLoader {
 
 	/**
 	 * Load the sources into the reader.
+	 *
 	 * @return the number of loaded beans
 	 */
 	public int load() {
@@ -185,8 +186,7 @@ class BeanDefinitionLoader {
 		// Attempt as a Class
 		try {
 			return load(ClassUtils.forName(resolvedSource, null));
-		}
-		catch (IllegalArgumentException | ClassNotFoundException ex) {
+		} catch (IllegalArgumentException | ClassNotFoundException ex) {
 			// swallow exception and continue
 		}
 		// Attempt as resources
@@ -221,9 +221,8 @@ class BeanDefinitionLoader {
 			if (loader instanceof ResourcePatternResolver) {
 				return ((ResourcePatternResolver) loader).getResources(source);
 			}
-			return new Resource[] { loader.getResource(source) };
-		}
-		catch (IOException ex) {
+			return new Resource[]{loader.getResource(source)};
+		} catch (IOException ex) {
 			throw new IllegalStateException("Error reading source '" + source + "'");
 		}
 	}
@@ -241,8 +240,7 @@ class BeanDefinitionLoader {
 			if (path.indexOf('.') == -1) {
 				try {
 					return Package.getPackage(path) == null;
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					// Ignore
 				}
 			}
@@ -265,8 +263,7 @@ class BeanDefinitionLoader {
 				load(Class.forName(source.toString() + "." + className));
 				break;
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// swallow exception and continue
 		}
 		return Package.getPackage(source.toString());
@@ -285,6 +282,16 @@ class BeanDefinitionLoader {
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Source for Bean definitions defined in Groovy.
+	 */
+	@FunctionalInterface
+	protected interface GroovyBeanDefinitionSource {
+
+		Closure<?> getBeans();
+
 	}
 
 	/**
@@ -308,16 +315,6 @@ class BeanDefinitionLoader {
 		protected boolean matchClassName(String className) {
 			return this.classNames.contains(className);
 		}
-
-	}
-
-	/**
-	 * Source for Bean definitions defined in Groovy.
-	 */
-	@FunctionalInterface
-	protected interface GroovyBeanDefinitionSource {
-
-		Closure<?> getBeans();
 
 	}
 

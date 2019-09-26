@@ -36,6 +36,7 @@ public final class SpringBootVersion {
 	/**
 	 * Return the full version string of the present Spring Boot codebase, or {@code null}
 	 * if it cannot be determined.
+	 *
 	 * @return the version of Spring Boot or {@code null}
 	 * @see Package#getImplementationVersion()
 	 */

@@ -16,21 +16,17 @@
 
 package org.springframework.boot.actuate.endpoint.web.reactive;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
-import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
-import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
-import org.springframework.boot.actuate.endpoint.web.ExposableWebEndpoint;
-import org.springframework.boot.actuate.endpoint.web.Link;
+import org.springframework.boot.actuate.endpoint.web.*;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.HandlerMapping;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * A custom {@link HandlerMapping} that makes web endpoints available over HTTP using
@@ -48,15 +44,16 @@ public class WebFluxEndpointHandlerMapping extends AbstractWebFluxEndpointHandle
 	/**
 	 * Creates a new {@code WebFluxEndpointHandlerMapping} instance that provides mappings
 	 * for the given endpoints.
-	 * @param endpointMapping the base mapping for all endpoints
-	 * @param endpoints the web endpoints
+	 *
+	 * @param endpointMapping    the base mapping for all endpoints
+	 * @param endpoints          the web endpoints
 	 * @param endpointMediaTypes media types consumed and produced by the endpoints
-	 * @param corsConfiguration the CORS configuration for the endpoints or {@code null}
-	 * @param linksResolver resolver for determining links to available endpoints
+	 * @param corsConfiguration  the CORS configuration for the endpoints or {@code null}
+	 * @param linksResolver      resolver for determining links to available endpoints
 	 */
 	public WebFluxEndpointHandlerMapping(EndpointMapping endpointMapping, Collection<ExposableWebEndpoint> endpoints,
-			EndpointMediaTypes endpointMediaTypes, CorsConfiguration corsConfiguration,
-			EndpointLinksResolver linksResolver) {
+										 EndpointMediaTypes endpointMediaTypes, CorsConfiguration corsConfiguration,
+										 EndpointLinksResolver linksResolver) {
 		super(endpointMapping, endpoints, endpointMediaTypes, corsConfiguration);
 		this.linksResolver = linksResolver;
 		setOrder(-100);

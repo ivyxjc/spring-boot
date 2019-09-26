@@ -16,18 +16,17 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.mockito.Answers;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.mock.mockito.example.ExampleExtraInterface;
 import org.springframework.boot.test.mock.mockito.example.ExampleService;
 import org.springframework.boot.test.mock.mockito.example.ExampleServiceCaller;
 import org.springframework.boot.test.mock.mockito.example.RealExampleService;
 import org.springframework.util.ReflectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -195,13 +194,13 @@ public class DefinitionsParserTests {
 
 	}
 
-	@MockBeans({ @MockBean(ExampleService.class), @MockBean(ExampleServiceCaller.class) })
+	@MockBeans({@MockBean(ExampleService.class), @MockBean(ExampleServiceCaller.class)})
 	static class RepeatMockBean {
 
 	}
 
 	@MockBean(name = "Name", classes = ExampleService.class, extraInterfaces = ExampleExtraInterface.class,
-			answer = Answers.RETURNS_SMART_NULLS, serializable = true, reset = MockReset.NONE)
+			  answer = Answers.RETURNS_SMART_NULLS, serializable = true, reset = MockReset.NONE)
 	static class MockBeanAttributes {
 
 	}
@@ -215,12 +214,12 @@ public class DefinitionsParserTests {
 
 	}
 
-	@MockBean({ ExampleService.class, ExampleServiceCaller.class })
+	@MockBean({ExampleService.class, ExampleServiceCaller.class})
 	static class MockBeanMultipleClasses {
 
 	}
 
-	@MockBean(name = "name", classes = { ExampleService.class, ExampleServiceCaller.class })
+	@MockBean(name = "name", classes = {ExampleService.class, ExampleServiceCaller.class})
 	static class MockBeanMultipleClassesWithName {
 
 	}
@@ -242,7 +241,7 @@ public class DefinitionsParserTests {
 
 	}
 
-	@SpyBeans({ @SpyBean(RealExampleService.class), @SpyBean(ExampleServiceCaller.class) })
+	@SpyBeans({@SpyBean(RealExampleService.class), @SpyBean(ExampleServiceCaller.class)})
 	static class RepeatSpyBean {
 
 	}
@@ -261,12 +260,12 @@ public class DefinitionsParserTests {
 
 	}
 
-	@SpyBean({ RealExampleService.class, ExampleServiceCaller.class })
+	@SpyBean({RealExampleService.class, ExampleServiceCaller.class})
 	static class SpyBeanMultipleClasses {
 
 	}
 
-	@SpyBean(name = "name", classes = { RealExampleService.class, ExampleServiceCaller.class })
+	@SpyBean(name = "name", classes = {RealExampleService.class, ExampleServiceCaller.class})
 	static class SpyBeanMultipleClassesWithName {
 
 	}

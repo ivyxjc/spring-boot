@@ -35,13 +35,9 @@ class JarEntry extends java.util.jar.JarEntry implements FileHeader {
 	private final AsciiBytes name;
 
 	private final AsciiBytes headerName;
-
-	private Certificate[] certificates;
-
-	private CodeSigner[] codeSigners;
-
 	private final JarFile jarFile;
-
+	private Certificate[] certificates;
+	private CodeSigner[] codeSigners;
 	private long localHeaderOffset;
 
 	JarEntry(JarFile jarFile, CentralDirectoryFileHeader header, AsciiBytes nameAlias) {
@@ -70,6 +66,7 @@ class JarEntry extends java.util.jar.JarEntry implements FileHeader {
 
 	/**
 	 * Return a {@link URL} for this {@link JarEntry}.
+	 *
 	 * @return the URL for the entry
 	 * @throws MalformedURLException if the URL is not valid
 	 */
@@ -91,17 +88,17 @@ class JarEntry extends java.util.jar.JarEntry implements FileHeader {
 		return this.certificates;
 	}
 
+	void setCertificates(java.util.jar.JarEntry entry) {
+		this.certificates = entry.getCertificates();
+		this.codeSigners = entry.getCodeSigners();
+	}
+
 	@Override
 	public CodeSigner[] getCodeSigners() {
 		if (this.jarFile.isSigned() && this.codeSigners == null) {
 			this.jarFile.setupEntryCertificates(this);
 		}
 		return this.codeSigners;
-	}
-
-	void setCertificates(java.util.jar.JarEntry entry) {
-		this.certificates = entry.getCertificates();
-		this.codeSigners = entry.getCodeSigners();
 	}
 
 	@Override

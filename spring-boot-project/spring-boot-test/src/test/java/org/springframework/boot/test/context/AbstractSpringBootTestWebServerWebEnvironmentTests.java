@@ -16,10 +16,7 @@
 
 package org.springframework.boot.test.context;
 
-import javax.servlet.ServletContext;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -33,6 +30,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.ServletContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -96,6 +95,11 @@ public abstract class AbstractSpringBootTestWebServerWebEnvironmentTests {
 		private int port = 8080;
 
 		@Bean
+		public static PropertySourcesPlaceholderConfigurer propertyPlaceholder() {
+			return new PropertySourcesPlaceholderConfigurer();
+		}
+
+		@Bean
 		public DispatcherServlet dispatcherServlet() {
 			return new DispatcherServlet();
 		}
@@ -105,11 +109,6 @@ public abstract class AbstractSpringBootTestWebServerWebEnvironmentTests {
 			TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
 			factory.setPort(this.port);
 			return factory;
-		}
-
-		@Bean
-		public static PropertySourcesPlaceholderConfigurer propertyPlaceholder() {
-			return new PropertySourcesPlaceholderConfigurer();
 		}
 
 		@RequestMapping("/")

@@ -16,25 +16,19 @@
 
 package org.springframework.boot.configurationprocessor.fieldvalues;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
-import javax.annotation.processing.RoundEnvironment;
-import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.TypeElement;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.configurationsample.fieldvalues.FieldValues;
 import org.springframework.boot.testsupport.compiler.TestCompiler;
+
+import javax.annotation.processing.*;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.TypeElement;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -80,12 +74,12 @@ public abstract class AbstractFieldValuesProcessorTests {
 		assertThat(values.get("objectNone")).isNull();
 		assertThat(values.get("objectConst")).isEqualTo("c");
 		assertThat(values.get("objectInstance")).isNull();
-		assertThat(values.get("stringArray")).isEqualTo(new Object[] { "FOO", "BAR" });
+		assertThat(values.get("stringArray")).isEqualTo(new Object[]{"FOO", "BAR"});
 		assertThat(values.get("stringArrayNone")).isNull();
 		assertThat(values.get("stringEmptyArray")).isEqualTo(new Object[0]);
-		assertThat(values.get("stringArrayConst")).isEqualTo(new Object[] { "OK", "KO" });
-		assertThat(values.get("stringArrayConstElements")).isEqualTo(new Object[] { "c" });
-		assertThat(values.get("integerArray")).isEqualTo(new Object[] { 42, 24 });
+		assertThat(values.get("stringArrayConst")).isEqualTo(new Object[]{"OK", "KO"});
+		assertThat(values.get("stringArrayConstElements")).isEqualTo(new Object[]{"c"});
+		assertThat(values.get("integerArray")).isEqualTo(new Object[]{42, 24});
 		assertThat(values.get("unknownArray")).isNull();
 		assertThat(values.get("durationNone")).isNull();
 		assertThat(values.get("durationNanos")).isEqualTo("5ns");
@@ -102,7 +96,7 @@ public abstract class AbstractFieldValuesProcessorTests {
 		assertThat(values.get("dataSizeTerabytes")).isEqualTo("40TB");
 	}
 
-	@SupportedAnnotationTypes({ "org.springframework.boot.configurationsample.ConfigurationProperties" })
+	@SupportedAnnotationTypes({"org.springframework.boot.configurationsample.ConfigurationProperties"})
 	@SupportedSourceVersion(SourceVersion.RELEASE_6)
 	private class TestProcessor extends AbstractProcessor {
 
@@ -122,8 +116,7 @@ public abstract class AbstractFieldValuesProcessorTests {
 					if (element instanceof TypeElement) {
 						try {
 							this.values.putAll(this.processor.getFieldValues((TypeElement) element));
-						}
-						catch (Exception ex) {
+						} catch (Exception ex) {
 							throw new IllegalStateException(ex);
 						}
 					}

@@ -16,6 +16,10 @@
 
 package org.springframework.boot.devtools.tunnel.server;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
@@ -24,11 +28,6 @@ import java.nio.channels.ByteChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.SocketChannel;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.Assert;
 
 /**
  * Socket based {@link TargetServerConnection}.
@@ -44,6 +43,7 @@ public class SocketTargetServerConnection implements TargetServerConnection {
 
 	/**
 	 * Create a new {@link SocketTargetServerConnection}.
+	 *
 	 * @param portProvider the port provider
 	 */
 	public SocketTargetServerConnection(PortProvider portProvider) {

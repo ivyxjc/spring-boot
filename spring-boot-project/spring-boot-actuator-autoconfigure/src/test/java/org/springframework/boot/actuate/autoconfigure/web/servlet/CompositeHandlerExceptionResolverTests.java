@@ -16,11 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +27,9 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -99,7 +98,7 @@ public class CompositeHandlerExceptionResolverTests {
 
 		@Override
 		public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler,
-				Exception ex) {
+											 Exception ex) {
 			return new ModelAndView("test-view");
 		}
 

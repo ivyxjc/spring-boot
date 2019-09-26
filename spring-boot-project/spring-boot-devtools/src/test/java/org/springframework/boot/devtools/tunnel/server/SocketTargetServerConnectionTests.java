@@ -16,6 +16,9 @@
 
 package org.springframework.boot.devtools.tunnel.server;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketTimeoutException;
@@ -23,9 +26,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ByteChannel;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-
-import org.junit.Before;
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -155,8 +155,7 @@ public class SocketTargetServerConnectionTests {
 						MockServer.this.actualRead = buffer;
 					}
 					channel.close();
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new RuntimeException(ex);
 				}
 			}

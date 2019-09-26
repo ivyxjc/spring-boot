@@ -16,14 +16,10 @@
 
 package org.springframework.boot.context.properties;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+
+import java.lang.annotation.*;
 
 /**
  * Enable support for {@link ConfigurationProperties} annotated beans.
@@ -43,6 +39,7 @@ public @interface EnableConfigurationProperties {
 	/**
 	 * Convenient way to quickly register {@link ConfigurationProperties} annotated beans
 	 * with Spring. Standard Spring Beans will also be scanned regardless of this value.
+	 *
 	 * @return {@link ConfigurationProperties} annotated beans to register
 	 */
 	Class<?>[] value() default {};

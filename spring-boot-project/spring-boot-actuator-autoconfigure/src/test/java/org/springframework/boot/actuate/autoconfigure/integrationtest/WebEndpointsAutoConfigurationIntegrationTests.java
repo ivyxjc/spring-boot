@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
 import org.junit.Test;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.health.HealthEndpointWebExtension;
@@ -77,14 +76,14 @@ public class WebEndpointsAutoConfigurationIntegrationTests {
 				.withConfiguration(UserConfigurations.of(WebEndpointTestApplication.class));
 	}
 
-	@EnableAutoConfiguration(exclude = { FlywayAutoConfiguration.class, LiquibaseAutoConfiguration.class,
+	@EnableAutoConfiguration(exclude = {FlywayAutoConfiguration.class, LiquibaseAutoConfiguration.class,
 			CassandraAutoConfiguration.class, CassandraDataAutoConfiguration.class, Neo4jDataAutoConfiguration.class,
 			Neo4jRepositoriesAutoConfiguration.class, MongoAutoConfiguration.class, MongoDataAutoConfiguration.class,
 			MongoReactiveAutoConfiguration.class, MongoReactiveDataAutoConfiguration.class,
 			RepositoryRestMvcAutoConfiguration.class, HazelcastAutoConfiguration.class,
 			ElasticsearchAutoConfiguration.class, ElasticsearchDataAutoConfiguration.class, JestAutoConfiguration.class,
 			SolrRepositoriesAutoConfiguration.class, SolrAutoConfiguration.class, RedisAutoConfiguration.class,
-			RedisRepositoriesAutoConfiguration.class, MetricsAutoConfiguration.class })
+			RedisRepositoriesAutoConfiguration.class, MetricsAutoConfiguration.class})
 	@SpringBootConfiguration
 	public static class WebEndpointTestApplication {
 

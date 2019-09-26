@@ -22,9 +22,6 @@ import org.apache.coyote.UpgradeProtocol;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.Loader;
 import org.eclipse.jetty.webapp.WebAppContext;
-import org.xnio.SslClientAuthMode;
-import reactor.netty.http.server.HttpServer;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -33,6 +30,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.xnio.SslClientAuthMode;
+import reactor.netty.http.server.HttpServer;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for embedded servlet and reactive
@@ -50,12 +49,12 @@ public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 	 * Nested configuration if Tomcat is being used.
 	 */
 	@Configuration
-	@ConditionalOnClass({ Tomcat.class, UpgradeProtocol.class })
+	@ConditionalOnClass({Tomcat.class, UpgradeProtocol.class})
 	public static class TomcatWebServerFactoryCustomizerConfiguration {
 
 		@Bean
 		public TomcatWebServerFactoryCustomizer tomcatWebServerFactoryCustomizer(Environment environment,
-				ServerProperties serverProperties) {
+																				 ServerProperties serverProperties) {
 			return new TomcatWebServerFactoryCustomizer(environment, serverProperties);
 		}
 
@@ -65,12 +64,12 @@ public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 	 * Nested configuration if Jetty is being used.
 	 */
 	@Configuration
-	@ConditionalOnClass({ Server.class, Loader.class, WebAppContext.class })
+	@ConditionalOnClass({Server.class, Loader.class, WebAppContext.class})
 	public static class JettyWebServerFactoryCustomizerConfiguration {
 
 		@Bean
 		public JettyWebServerFactoryCustomizer jettyWebServerFactoryCustomizer(Environment environment,
-				ServerProperties serverProperties) {
+																			   ServerProperties serverProperties) {
 			return new JettyWebServerFactoryCustomizer(environment, serverProperties);
 		}
 
@@ -80,12 +79,12 @@ public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 	 * Nested configuration if Undertow is being used.
 	 */
 	@Configuration
-	@ConditionalOnClass({ Undertow.class, SslClientAuthMode.class })
+	@ConditionalOnClass({Undertow.class, SslClientAuthMode.class})
 	public static class UndertowWebServerFactoryCustomizerConfiguration {
 
 		@Bean
 		public UndertowWebServerFactoryCustomizer undertowWebServerFactoryCustomizer(Environment environment,
-				ServerProperties serverProperties) {
+																					 ServerProperties serverProperties) {
 			return new UndertowWebServerFactoryCustomizer(environment, serverProperties);
 		}
 
@@ -100,7 +99,7 @@ public class EmbeddedWebServerFactoryCustomizerAutoConfiguration {
 
 		@Bean
 		public NettyWebServerFactoryCustomizer nettyWebServerFactoryCustomizer(Environment environment,
-				ServerProperties serverProperties) {
+																			   ServerProperties serverProperties) {
 			return new NettyWebServerFactoryCustomizer(environment, serverProperties);
 		}
 

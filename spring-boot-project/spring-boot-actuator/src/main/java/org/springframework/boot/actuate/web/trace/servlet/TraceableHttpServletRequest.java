@@ -16,20 +16,15 @@
 
 package org.springframework.boot.actuate.web.trace.servlet;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.boot.actuate.trace.http.TraceableRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 /**
  * An adapter that exposes an {@link HttpServletRequest} as a {@link TraceableRequest}.
@@ -58,8 +53,7 @@ final class TraceableHttpServletRequest implements TraceableRequest {
 		try {
 			StringBuffer urlBuffer = appendQueryString(queryString);
 			return new URI(urlBuffer.toString());
-		}
-		catch (URISyntaxException ex) {
+		} catch (URISyntaxException ex) {
 			String encoded = UriUtils.encodeQuery(queryString, StandardCharsets.UTF_8);
 			StringBuffer urlBuffer = appendQueryString(encoded);
 			return URI.create(urlBuffer.toString());

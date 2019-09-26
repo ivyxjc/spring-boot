@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.format.support.FormattingConversionService;
@@ -42,9 +41,18 @@ public class ArrayToDelimitedStringConverterTests {
 		this.conversionService = conversionService;
 	}
 
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(ArrayToDelimitedStringConverterTests::addConverter);
+	}
+
+	private static void addConverter(FormattingConversionService service) {
+		service.addConverter(new ArrayToDelimitedStringConverter(service));
+	}
+
 	@Test
 	public void convertListToStringShouldConvert() {
-		String[] list = { "a", "b", "c" };
+		String[] list = {"a", "b", "c"};
 		String converted = this.conversionService.convert(list, String.class);
 		assertThat(converted).isEqualTo("a,b,c");
 	}
@@ -52,7 +60,7 @@ public class ArrayToDelimitedStringConverterTests {
 	@Test
 	public void convertWhenHasDelimiterNoneShouldConvert() {
 		Data data = new Data();
-		data.none = new String[] { "1", "2", "3" };
+		data.none = new String[]{"1", "2", "3"};
 		String converted = (String) this.conversionService.convert(data.none,
 				TypeDescriptor.nested(ReflectionUtils.findField(Data.class, "none"), 0),
 				TypeDescriptor.valueOf(String.class));
@@ -62,7 +70,7 @@ public class ArrayToDelimitedStringConverterTests {
 	@Test
 	public void convertWhenHasDelimiterDashShouldConvert() {
 		Data data = new Data();
-		data.dash = new String[] { "1", "2", "3" };
+		data.dash = new String[]{"1", "2", "3"};
 		String converted = (String) this.conversionService.convert(data.dash,
 				TypeDescriptor.nested(ReflectionUtils.findField(Data.class, "dash"), 0),
 				TypeDescriptor.valueOf(String.class));
@@ -73,7 +81,7 @@ public class ArrayToDelimitedStringConverterTests {
 	public void convertShouldConvertElements() {
 		if (this.conversionService instanceof ApplicationConversionService) {
 			Data data = new Data();
-			data.type = new int[] { 1, 2, 3 };
+			data.type = new int[]{1, 2, 3};
 			String converted = (String) this.conversionService.convert(data.type,
 					TypeDescriptor.nested(ReflectionUtils.findField(Data.class, "type"), 0),
 					TypeDescriptor.valueOf(String.class));
@@ -86,15 +94,6 @@ public class ArrayToDelimitedStringConverterTests {
 		String[] list = null;
 		String converted = this.conversionService.convert(list, String.class);
 		assertThat(converted).isNull();
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(ArrayToDelimitedStringConverterTests::addConverter);
-	}
-
-	private static void addConverter(FormattingConversionService service) {
-		service.addConverter(new ArrayToDelimitedStringConverter(service));
 	}
 
 	static class Data {

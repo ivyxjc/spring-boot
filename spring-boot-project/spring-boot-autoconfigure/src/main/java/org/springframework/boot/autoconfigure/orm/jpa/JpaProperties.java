@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.orm.jpa.vendor.Database;
+
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.sql.DataSource;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.orm.jpa.vendor.Database;
 
 /**
  * External configuration properties for a JPA EntityManagerFactory created by Spring.
@@ -40,15 +39,13 @@ import org.springframework.orm.jpa.vendor.Database;
 public class JpaProperties {
 
 	/**
-	 * Additional native properties to set on the JPA provider.
-	 */
-	private Map<String, String> properties = new HashMap<>();
-
-	/**
 	 * Mapping resources (equivalent to "mapping-file" entries in persistence.xml).
 	 */
 	private final List<String> mappingResources = new ArrayList<>();
-
+	/**
+	 * Additional native properties to set on the JPA provider.
+	 */
+	private Map<String, String> properties = new HashMap<>();
 	/**
 	 * Name of the target database to operate on, auto-detected by default. Can be
 	 * alternatively set using the "Database" enum.
@@ -132,6 +129,7 @@ public class JpaProperties {
 	/**
 	 * Determine the {@link Database} to use based on this configuration and the primary
 	 * {@link DataSource}.
+	 *
 	 * @param dataSource the auto-configured data source
 	 * @return {@code Database}
 	 */

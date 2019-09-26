@@ -16,12 +16,12 @@
 
 package org.springframework.boot.json;
 
+import org.springframework.util.StringUtils;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.util.StringUtils;
 
 /**
  * Really basic JSON parser for when you have nothing else available. Comes with some
@@ -32,10 +32,24 @@ import org.springframework.util.StringUtils;
  * @author Dave Syer
  * @author Jean de Klerk
  * @author Stephane Nicoll
- * @since 1.2.0
  * @see JsonParserFactory
+ * @since 1.2.0
  */
 public class BasicJsonParser extends AbstractJsonParser {
+
+	private static String trimTrailingCharacter(String string, char c) {
+		if (!string.isEmpty() && string.charAt(string.length() - 1) == c) {
+			return string.substring(0, string.length() - 1);
+		}
+		return string;
+	}
+
+	private static String trimLeadingCharacter(String string, char c) {
+		if (!string.isEmpty() && string.charAt(0) == c) {
+			return string.substring(1);
+		}
+		return string;
+	}
 
 	@Override
 	public Map<String, Object> parseMap(String json) {
@@ -68,31 +82,15 @@ public class BasicJsonParser extends AbstractJsonParser {
 		}
 		try {
 			return Long.valueOf(json);
-		}
-		catch (NumberFormatException ex) {
+		} catch (NumberFormatException ex) {
 			// ignore
 		}
 		try {
 			return Double.valueOf(json);
-		}
-		catch (NumberFormatException ex) {
+		} catch (NumberFormatException ex) {
 			// ignore
 		}
 		return json;
-	}
-
-	private static String trimTrailingCharacter(String string, char c) {
-		if (!string.isEmpty() && string.charAt(string.length() - 1) == c) {
-			return string.substring(0, string.length() - 1);
-		}
-		return string;
-	}
-
-	private static String trimLeadingCharacter(String string, char c) {
-		if (!string.isEmpty() && string.charAt(0) == c) {
-			return string.substring(1);
-		}
-		return string;
 	}
 
 	private Map<String, Object> parseMapInternal(String json) {
@@ -141,11 +139,9 @@ public class BasicJsonParser extends AbstractJsonParser {
 			if (current == ',' && inObject == 0 && inList == 0 && !inValue) {
 				list.add(build.toString());
 				build.setLength(0);
-			}
-			else if (current == '\\') {
+			} else if (current == '\\') {
 				inEscape = true;
-			}
-			else {
+			} else {
 				build.append(current);
 			}
 			index++;

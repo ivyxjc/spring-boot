@@ -16,6 +16,23 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import io.undertow.Handlers;
+import io.undertow.Undertow;
+import io.undertow.UndertowOptions;
+import io.undertow.server.HttpHandler;
+import io.undertow.server.handlers.accesslog.AccessLogHandler;
+import io.undertow.server.handlers.accesslog.DefaultAccessLogReceiver;
+import io.undertow.servlet.api.DeploymentInfo;
+import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactory;
+import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter;
+import org.springframework.util.Assert;
+import org.xnio.OptionMap;
+import org.xnio.Options;
+import org.xnio.Xnio;
+import org.xnio.XnioWorker;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -24,24 +41,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import io.undertow.Handlers;
-import io.undertow.Undertow;
-import io.undertow.UndertowOptions;
-import io.undertow.server.HttpHandler;
-import io.undertow.server.handlers.accesslog.AccessLogHandler;
-import io.undertow.server.handlers.accesslog.DefaultAccessLogReceiver;
-import io.undertow.servlet.api.DeploymentInfo;
-import org.xnio.OptionMap;
-import org.xnio.Options;
-import org.xnio.Xnio;
-import org.xnio.XnioWorker;
-
-import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactory;
-import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.http.server.reactive.UndertowHttpHandlerAdapter;
-import org.springframework.util.Assert;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link UndertowWebServer}s.
@@ -88,6 +87,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	/**
 	 * Create a new {@link UndertowReactiveWebServerFactory} that listens for requests
 	 * using the specified port.
+	 *
 	 * @param port the port to listen on
 	 */
 	public UndertowReactiveWebServerFactory(int port) {
@@ -117,8 +117,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 		}
 		if (getSsl() != null && getSsl().isEnabled()) {
 			customizeSsl(builder);
-		}
-		else {
+		} else {
 			builder.addHttpListener(port, getListenAddress());
 		}
 		for (UndertowBuilderCustomizer customizer : this.builderCustomizers) {
@@ -128,7 +127,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	}
 
 	private Closeable configureHandler(Undertow.Builder builder,
-			org.springframework.http.server.reactive.HttpHandler httpHandler) {
+									   org.springframework.http.server.reactive.HttpHandler httpHandler) {
 		HttpHandler handler = new UndertowHttpHandlerAdapter(httpHandler);
 		if (this.useForwardHeaders) {
 			handler = Handlers.proxyPeerAddress(handler);
@@ -137,8 +136,7 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 		Closeable closeable = null;
 		if (isAccessLogEnabled()) {
 			closeable = configureAccessLogHandler(builder, handler);
-		}
-		else {
+		} else {
 			builder.setHandler(handler);
 		}
 		return closeable;
@@ -159,16 +157,13 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 					accessLogReceiver.close();
 					worker.shutdown();
 					worker.awaitTermination(30, TimeUnit.SECONDS);
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					throw new IllegalStateException(ex);
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 			};
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException("Failed to create AccessLogHandler", ex);
 		}
 	}
@@ -200,9 +195,23 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	}
 
 	/**
+	 * Returns a mutable collection of the {@link UndertowDeploymentInfoCustomizer}s that
+	 * will be applied to the Undertow {@link DeploymentInfo}.
+	 *
+	 * @return the customizers that will be applied
+	 * @deprecated since 2.1.7 as the factory does not create a {@link DeploymentInfo}
+	 * making customization redundant
+	 */
+	@Deprecated
+	public Collection<UndertowDeploymentInfoCustomizer> getDeploymentInfoCustomizers() {
+		return this.deploymentInfoCustomizers;
+	}
+
+	/**
 	 * Set {@link UndertowDeploymentInfoCustomizer}s that should be applied to the
 	 * Undertow {@link DeploymentInfo}. Calling this method will replace any existing
 	 * customizers.
+	 *
 	 * @param customizers the customizers to set
 	 * @deprecated since 2.1.7 as the factory does not create a {@link DeploymentInfo}
 	 * making customization redundant
@@ -211,18 +220,6 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	public void setDeploymentInfoCustomizers(Collection<? extends UndertowDeploymentInfoCustomizer> customizers) {
 		Assert.notNull(customizers, "Customizers must not be null");
 		this.deploymentInfoCustomizers = new ArrayList<>(customizers);
-	}
-
-	/**
-	 * Returns a mutable collection of the {@link UndertowDeploymentInfoCustomizer}s that
-	 * will be applied to the Undertow {@link DeploymentInfo}.
-	 * @return the customizers that will be applied
-	 * @deprecated since 2.1.7 as the factory does not create a {@link DeploymentInfo}
-	 * making customization redundant
-	 */
-	@Deprecated
-	public Collection<UndertowDeploymentInfoCustomizer> getDeploymentInfoCustomizers() {
-		return this.deploymentInfoCustomizers;
 	}
 
 	@Override
@@ -295,9 +292,20 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	}
 
 	/**
+	 * Returns a mutable collection of the {@link UndertowBuilderCustomizer}s that will be
+	 * applied to the Undertow {@link io.undertow.Undertow.Builder Builder}.
+	 *
+	 * @return the customizers that will be applied
+	 */
+	public Collection<UndertowBuilderCustomizer> getBuilderCustomizers() {
+		return this.builderCustomizers;
+	}
+
+	/**
 	 * Set {@link UndertowBuilderCustomizer}s that should be applied to the Undertow
 	 * {@link io.undertow.Undertow.Builder Builder}. Calling this method will replace any
 	 * existing customizers.
+	 *
 	 * @param customizers the customizers to set
 	 */
 	public void setBuilderCustomizers(Collection<? extends UndertowBuilderCustomizer> customizers) {
@@ -306,17 +314,9 @@ public class UndertowReactiveWebServerFactory extends AbstractReactiveWebServerF
 	}
 
 	/**
-	 * Returns a mutable collection of the {@link UndertowBuilderCustomizer}s that will be
-	 * applied to the Undertow {@link io.undertow.Undertow.Builder Builder}.
-	 * @return the customizers that will be applied
-	 */
-	public Collection<UndertowBuilderCustomizer> getBuilderCustomizers() {
-		return this.builderCustomizers;
-	}
-
-	/**
 	 * Add {@link UndertowBuilderCustomizer}s that should be used to customize the
 	 * Undertow {@link io.undertow.Undertow.Builder Builder}.
+	 *
 	 * @param customizers the customizers to add
 	 */
 	@Override

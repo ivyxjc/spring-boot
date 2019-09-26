@@ -16,6 +16,9 @@
 
 package org.springframework.boot.loader.jar;
 
+import org.springframework.boot.loader.data.RandomAccessData;
+import org.springframework.boot.loader.data.RandomAccessDataFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,9 +33,6 @@ import java.util.function.Supplier;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
-
-import org.springframework.boot.loader.data.RandomAccessData;
-import org.springframework.boot.loader.data.RandomAccessDataFile;
 
 /**
  * Extended variant of {@link java.util.jar.JarFile} that behaves in the same way but
@@ -82,6 +82,7 @@ public class JarFile extends java.util.jar.JarFile {
 
 	/**
 	 * Create a new {@link JarFile} backed by the specified file.
+	 *
 	 * @param file the root jar file
 	 * @throws IOException if the file cannot be read
 	 */
@@ -91,6 +92,7 @@ public class JarFile extends java.util.jar.JarFile {
 
 	/**
 	 * Create a new {@link JarFile} backed by the specified file.
+	 *
 	 * @param file the root jar file
 	 * @throws IOException if the file cannot be read
 	 */
@@ -101,10 +103,11 @@ public class JarFile extends java.util.jar.JarFile {
 	/**
 	 * Private constructor used to create a new {@link JarFile} either directly or from a
 	 * nested entry.
-	 * @param rootFile the root jar file
+	 *
+	 * @param rootFile     the root jar file
 	 * @param pathFromRoot the name of this file
-	 * @param data the underlying data
-	 * @param type the type of the jar file
+	 * @param data         the underlying data
+	 * @param type         the type of the jar file
 	 * @throws IOException if the file cannot be read
 	 */
 	private JarFile(RandomAccessDataFile rootFile, String pathFromRoot, RandomAccessData data, JarFileType type)
@@ -113,7 +116,7 @@ public class JarFile extends java.util.jar.JarFile {
 	}
 
 	private JarFile(RandomAccessDataFile rootFile, String pathFromRoot, RandomAccessData data, JarEntryFilter filter,
-			JarFileType type, Supplier<Manifest> manifestSupplier) throws IOException {
+					JarFileType type, Supplier<Manifest> manifestSupplier) throws IOException {
 		super(rootFile.getFile());
 		this.rootFile = rootFile;
 		this.pathFromRoot = pathFromRoot;
@@ -123,8 +126,7 @@ public class JarFile extends java.util.jar.JarFile {
 		parser.addVisitor(centralDirectoryVisitor());
 		try {
 			this.data = parser.parse(data, filter == null);
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			close();
 			throw ex;
 		}
@@ -134,11 +136,34 @@ public class JarFile extends java.util.jar.JarFile {
 					return null;
 				}
 				return new Manifest(inputStream);
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new RuntimeException(ex);
 			}
 		};
+	}
+
+	/**
+	 * Register a {@literal 'java.protocol.handler.pkgs'} property so that a
+	 * {@link URLStreamHandler} will be located to deal with jar URLs.
+	 */
+	public static void registerUrlProtocolHandler() {
+		String handlers = System.getProperty(PROTOCOL_HANDLER, "");
+		System.setProperty(PROTOCOL_HANDLER,
+				("".equals(handlers) ? HANDLERS_PACKAGE : handlers + "|" + HANDLERS_PACKAGE));
+		resetCachedUrlHandlers();
+	}
+
+	/**
+	 * Reset any cached handlers just in case a jar protocol has already been used. We
+	 * reset the handler by trying to set a null {@link URLStreamHandlerFactory} which
+	 * should have no effect other than clearing the handlers cache.
+	 */
+	private static void resetCachedUrlHandlers() {
+		try {
+			URL.setURLStreamHandlerFactory(null);
+		} catch (Error ex) {
+			// Ignore
+		}
 	}
 
 	private CentralDirectoryVisitor centralDirectoryVisitor() {
@@ -177,8 +202,7 @@ public class JarFile extends java.util.jar.JarFile {
 		if (manifest == null) {
 			try {
 				manifest = this.manifestSupplier.get();
-			}
-			catch (RuntimeException ex) {
+			} catch (RuntimeException ex) {
 				throw new IOException(ex);
 			}
 			this.manifest = new SoftReference<>(manifest);
@@ -236,6 +260,7 @@ public class JarFile extends java.util.jar.JarFile {
 
 	/**
 	 * Return a nested {@link JarFile} loaded from the specified entry.
+	 *
 	 * @param entry the zip entry
 	 * @return a {@link JarFile} for the entry
 	 * @throws IOException if the nested jar file cannot be read
@@ -246,6 +271,7 @@ public class JarFile extends java.util.jar.JarFile {
 
 	/**
 	 * Return a nested {@link JarFile} loaded from the specified entry.
+	 *
 	 * @param entry the zip entry
 	 * @return a {@link JarFile} for the entry
 	 * @throws IOException if the nested jar file cannot be read
@@ -253,8 +279,7 @@ public class JarFile extends java.util.jar.JarFile {
 	public synchronized JarFile getNestedJarFile(JarEntry entry) throws IOException {
 		try {
 			return createJarFileFromEntry(entry);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IOException("Unable to open nested jar file '" + entry.getName() + "'", ex);
 		}
 	}
@@ -313,6 +338,7 @@ public class JarFile extends java.util.jar.JarFile {
 	/**
 	 * Return a URL that can be used to access this JAR file. NOTE: the specified URL
 	 * cannot be serialized and or cloned.
+	 *
 	 * @return the URL
 	 * @throws MalformedURLException if the URL is malformed
 	 */
@@ -355,8 +381,7 @@ public class JarFile extends java.util.jar.JarFile {
 					certEntry = inputStream.getNextJarEntry();
 				}
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -377,31 +402,6 @@ public class JarFile extends java.util.jar.JarFile {
 
 	JarFileType getType() {
 		return this.type;
-	}
-
-	/**
-	 * Register a {@literal 'java.protocol.handler.pkgs'} property so that a
-	 * {@link URLStreamHandler} will be located to deal with jar URLs.
-	 */
-	public static void registerUrlProtocolHandler() {
-		String handlers = System.getProperty(PROTOCOL_HANDLER, "");
-		System.setProperty(PROTOCOL_HANDLER,
-				("".equals(handlers) ? HANDLERS_PACKAGE : handlers + "|" + HANDLERS_PACKAGE));
-		resetCachedUrlHandlers();
-	}
-
-	/**
-	 * Reset any cached handlers just in case a jar protocol has already been used. We
-	 * reset the handler by trying to set a null {@link URLStreamHandlerFactory} which
-	 * should have no effect other than clearing the handlers cache.
-	 */
-	private static void resetCachedUrlHandlers() {
-		try {
-			URL.setURLStreamHandlerFactory(null);
-		}
-		catch (Error ex) {
-			// Ignore
-		}
 	}
 
 	/**

@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.data.rest;
 
-import java.net.URI;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -43,6 +40,8 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -133,9 +132,9 @@ public class RepositoryRestMvcAutoConfigurationTests {
 
 	@Configuration
 	@Import(EmbeddedDataSourceConfiguration.class)
-	@ImportAutoConfiguration({ HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class,
-			JacksonAutoConfiguration.class })
+	@ImportAutoConfiguration({HibernateJpaAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class,
+									 PropertyPlaceholderAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class,
+									 JacksonAutoConfiguration.class})
 	protected static class BaseConfiguration {
 
 	}
@@ -147,12 +146,12 @@ public class RepositoryRestMvcAutoConfigurationTests {
 
 	}
 
-	@Import({ TestConfiguration.class, TestRepositoryRestConfigurer.class })
+	@Import({TestConfiguration.class, TestRepositoryRestConfigurer.class})
 	protected static class TestConfigurationWithConfigurer {
 
 	}
 
-	@Import({ TestConfiguration.class, RepositoryRestMvcConfiguration.class })
+	@Import({TestConfiguration.class, RepositoryRestMvcConfiguration.class})
 	protected static class TestConfigurationWithRestMvcConfig {
 
 	}

@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.session;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisReactiveAutoConfiguration;
@@ -70,7 +69,7 @@ public class ReactiveSessionAutoConfigurationRedisTests extends AbstractSessionA
 	}
 
 	private ContextConsumer<AssertableReactiveWebApplicationContext> validateSpringSessionUsesRedis(String namespace,
-			RedisFlushMode flushMode) {
+																									RedisFlushMode flushMode) {
 		return (context) -> {
 			ReactiveRedisOperationsSessionRepository repository = validateSessionRepository(context,
 					ReactiveRedisOperationsSessionRepository.class);

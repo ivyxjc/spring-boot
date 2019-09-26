@@ -17,7 +17,6 @@
 package org.springframework.boot.cloud.cloudfoundry;
 
 import org.junit.Test;
-
 import org.springframework.boot.cloud.CloudFoundryVcapEnvironmentPostProcessor;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

@@ -16,19 +16,19 @@
 
 package org.springframework.boot.cli.command;
 
-import java.util.Collection;
-
 import org.springframework.boot.cli.command.options.OptionHandler;
 import org.springframework.boot.cli.command.options.OptionHelp;
 import org.springframework.boot.cli.command.status.ExitStatus;
+
+import java.util.Collection;
 
 /**
  * Base class for a {@link Command} that parse options using an {@link OptionHandler}.
  *
  * @author Phillip Webb
  * @author Dave Syer
- * @since 1.0.0
  * @see OptionHandler
+ * @since 1.0.0
  */
 public abstract class OptionParsingCommand extends AbstractCommand {
 

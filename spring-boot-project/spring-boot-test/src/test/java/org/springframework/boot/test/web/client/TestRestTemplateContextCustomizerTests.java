@@ -17,7 +17,6 @@
 package org.springframework.boot.test.web.client;
 
 import org.junit.Test;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -39,7 +38,7 @@ import static org.mockito.Mockito.mock;
 public class TestRestTemplateContextCustomizerTests {
 
 	@Test
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void whenContextIsNotABeanDefinitionRegistryTestRestTemplateIsRegistered() {
 		new ApplicationContextRunner(TestApplicationContext::new).withInitializer((context) -> {
 			MergedContextConfiguration configuration = mock(MergedContextConfiguration.class);

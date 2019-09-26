@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.simple;
 
-import java.time.Duration;
-
 import io.micrometer.core.instrument.simple.CountingMode;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * {@link ConfigurationProperties} for configuring metrics export to a

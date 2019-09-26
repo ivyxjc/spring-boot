@@ -16,11 +16,15 @@
 
 package org.springframework.boot.loader.archive;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.loader.TestJarCreator;
+import org.springframework.boot.loader.archive.Archive.Entry;
+import org.springframework.util.StringUtils;
+
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -28,15 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.loader.TestJarCreator;
-import org.springframework.boot.loader.archive.Archive.Entry;
-import org.springframework.util.StringUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -79,8 +74,7 @@ public class ExplodedArchiveTests {
 			destination.getParentFile().mkdirs();
 			if (entry.isDirectory()) {
 				destination.mkdir();
-			}
-			else {
+			} else {
 				copy(jarFile.getInputStream(entry), new FileOutputStream(destination));
 			}
 		}
@@ -162,7 +156,7 @@ public class ExplodedArchiveTests {
 	public void getResourceAsStream() throws Exception {
 		ExplodedArchive archive = new ExplodedArchive(new File("src/test/resources/root"));
 		assertThat(archive.getManifest()).isNotNull();
-		URLClassLoader loader = new URLClassLoader(new URL[] { archive.getUrl() });
+		URLClassLoader loader = new URLClassLoader(new URL[]{archive.getUrl()});
 		assertThat(loader.getResourceAsStream("META-INF/spring/application.xml")).isNotNull();
 		loader.close();
 	}
@@ -171,7 +165,7 @@ public class ExplodedArchiveTests {
 	public void getResourceAsStreamNonRecursive() throws Exception {
 		ExplodedArchive archive = new ExplodedArchive(new File("src/test/resources/root"), false);
 		assertThat(archive.getManifest()).isNotNull();
-		URLClassLoader loader = new URLClassLoader(new URL[] { archive.getUrl() });
+		URLClassLoader loader = new URLClassLoader(new URL[]{archive.getUrl()});
 		assertThat(loader.getResourceAsStream("META-INF/spring/application.xml")).isNotNull();
 		loader.close();
 	}

@@ -16,20 +16,12 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.io.File;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.catalina.Container;
 import org.apache.catalina.core.StandardWrapper;
 import org.apache.jasper.EmbeddedServletOptions;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -53,14 +45,18 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
+
+import java.io.File;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link LocalDevToolsAutoConfiguration}.
@@ -105,8 +101,7 @@ public class LocalDevToolsAutoConfigurationTests {
 			this.context = initializeAndRun(Config.class);
 			SpringResourceTemplateResolver resolver = this.context.getBean(SpringResourceTemplateResolver.class);
 			assertThat(resolver.isCacheable()).isTrue();
-		}
-		finally {
+		} finally {
 			System.setProperty("user.home", userHome);
 		}
 	}
@@ -236,7 +231,7 @@ public class LocalDevToolsAutoConfigurationTests {
 	}
 
 	private ConfigurableApplicationContext initializeAndRun(Class<?> config, Map<String, Object> properties,
-			String... args) {
+															String... args) {
 		Restarter.initialize(new String[0], false, new MockRestartInitializer(), false);
 		SpringApplication application = new SpringApplication(config);
 		application.setDefaultProperties(getDefaultProperties(properties));
@@ -254,15 +249,15 @@ public class LocalDevToolsAutoConfigurationTests {
 	}
 
 	@Configuration
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, LocalDevToolsAutoConfiguration.class,
-			ThymeleafAutoConfiguration.class })
+	@Import({ServletWebServerFactoryAutoConfiguration.class, LocalDevToolsAutoConfiguration.class,
+					ThymeleafAutoConfiguration.class})
 	public static class Config {
 
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ ServletWebServerFactoryAutoConfiguration.class, LocalDevToolsAutoConfiguration.class,
-			ThymeleafAutoConfiguration.class })
+	@ImportAutoConfiguration({ServletWebServerFactoryAutoConfiguration.class, LocalDevToolsAutoConfiguration.class,
+									 ThymeleafAutoConfiguration.class})
 	public static class ConfigWithMockLiveReload {
 
 		@Bean
@@ -273,8 +268,8 @@ public class LocalDevToolsAutoConfigurationTests {
 	}
 
 	@Configuration
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, LocalDevToolsAutoConfiguration.class,
-			ResourceProperties.class })
+	@Import({ServletWebServerFactoryAutoConfiguration.class, LocalDevToolsAutoConfiguration.class,
+					ResourceProperties.class})
 	public static class WebResourcesConfig {
 
 	}

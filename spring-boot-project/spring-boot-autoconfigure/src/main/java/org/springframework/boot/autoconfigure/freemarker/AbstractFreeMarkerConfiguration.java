@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
-import java.util.Properties;
-
 import org.springframework.ui.freemarker.FreeMarkerConfigurationFactory;
+
+import java.util.Properties;
 
 /**
  * Base class for shared FreeMarker configuration.

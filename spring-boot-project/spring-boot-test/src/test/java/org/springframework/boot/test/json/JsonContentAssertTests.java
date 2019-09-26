@@ -16,11 +16,6 @@
 
 package org.springframework.boot.test.json;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.assertj.core.api.AssertProvider;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,16 +23,18 @@ import org.junit.rules.TemporaryFolder;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.skyscreamer.jsonassert.comparator.DefaultComparator;
 import org.skyscreamer.jsonassert.comparator.JSONComparator;
-
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.util.JsonPathExpectationsHelper;
 import org.springframework.util.FileCopyUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.entry;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link JsonContentAssert}. Some tests here are based on Spring Framework
@@ -61,6 +58,16 @@ public class JsonContentAssertTests {
 
 	@Rule
 	public TemporaryFolder tempFolder = new TemporaryFolder();
+
+	private static String loadJson(String path) {
+		try {
+			ClassPathResource resource = new ClassPathResource(path, JsonContentAssertTests.class);
+			return new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
+		} catch (Exception ex) {
+			throw new IllegalStateException(ex);
+		}
+
+	}
 
 	@Test
 	public void isEqualToWhenStringIsMatchingShouldPass() {
@@ -1136,17 +1143,6 @@ public class JsonContentAssertTests {
 
 	private Resource createResource(String content) {
 		return new ByteArrayResource(content.getBytes());
-	}
-
-	private static String loadJson(String path) {
-		try {
-			ClassPathResource resource = new ClassPathResource(path, JsonContentAssertTests.class);
-			return new String(FileCopyUtils.copyToByteArray(resource.getInputStream()));
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException(ex);
-		}
-
 	}
 
 	private AssertProvider<JsonContentAssert> forJson(String json) {

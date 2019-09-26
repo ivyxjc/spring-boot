@@ -32,6 +32,7 @@ public interface PlatformTransactionManagerCustomizer<T extends PlatformTransact
 
 	/**
 	 * Customize the given transaction manager.
+	 *
 	 * @param transactionManager the transaction manager to customize
 	 */
 	void customize(T transactionManager);

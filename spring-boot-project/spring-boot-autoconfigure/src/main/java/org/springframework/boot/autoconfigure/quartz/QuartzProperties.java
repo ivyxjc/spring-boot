@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.quartz;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceInitializationMode;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceInitializationMode;
 
 /**
  * Configuration properties for the Quartz Scheduler integration.
@@ -34,43 +34,36 @@ import org.springframework.boot.jdbc.DataSourceInitializationMode;
 public class QuartzProperties {
 
 	/**
+	 * Additional Quartz Scheduler properties.
+	 */
+	private final Map<String, String> properties = new HashMap<>();
+	private final Jdbc jdbc = new Jdbc();
+	/**
 	 * Quartz job store type.
 	 */
 	private JobStoreType jobStoreType = JobStoreType.MEMORY;
-
 	/**
 	 * Name of the scheduler.
 	 */
 	private String schedulerName;
-
 	/**
 	 * Whether to automatically start the scheduler after initialization.
 	 */
 	private boolean autoStartup = true;
-
 	/**
 	 * Delay after which the scheduler is started once initialization completes. Setting
 	 * this property makes sense if no jobs should be run before the entire application
 	 * has started up.
 	 */
 	private Duration startupDelay = Duration.ofSeconds(0);
-
 	/**
 	 * Whether to wait for running jobs to complete on shutdown.
 	 */
 	private boolean waitForJobsToCompleteOnShutdown = false;
-
 	/**
 	 * Whether configured jobs should overwrite existing job definitions.
 	 */
 	private boolean overwriteExistingJobs = false;
-
-	/**
-	 * Additional Quartz Scheduler properties.
-	 */
-	private final Map<String, String> properties = new HashMap<>();
-
-	private final Jdbc jdbc = new Jdbc();
 
 	public JobStoreType getJobStoreType() {
 		return this.jobStoreType;

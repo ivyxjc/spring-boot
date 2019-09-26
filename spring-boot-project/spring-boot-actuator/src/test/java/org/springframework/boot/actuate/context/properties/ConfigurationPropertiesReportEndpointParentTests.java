@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.context.properties;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.context.properties.ConfigurationPropertiesReportEndpoint.ApplicationConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -58,14 +57,14 @@ public class ConfigurationPropertiesReportEndpointParentTests {
 		new ApplicationContextRunner().withUserConfiguration(Parent.class).run((parent) -> {
 			new ApplicationContextRunner().withUserConfiguration(BeanMethodConfigurationProperties.class)
 					.withParent(parent).run((child) -> {
-						ConfigurationPropertiesReportEndpoint endpoint = child
-								.getBean(ConfigurationPropertiesReportEndpoint.class);
-						ApplicationConfigurationProperties applicationProperties = endpoint.configurationProperties();
-						assertThat(applicationProperties.getContexts().get(child.getId()).getBeans().keySet())
-								.containsExactlyInAnyOrder("otherProperties");
-						assertThat((applicationProperties.getContexts().get(parent.getId()).getBeans().keySet()))
-								.containsExactly("testProperties");
-					});
+				ConfigurationPropertiesReportEndpoint endpoint = child
+						.getBean(ConfigurationPropertiesReportEndpoint.class);
+				ApplicationConfigurationProperties applicationProperties = endpoint.configurationProperties();
+				assertThat(applicationProperties.getContexts().get(child.getId()).getBeans().keySet())
+						.containsExactlyInAnyOrder("otherProperties");
+				assertThat((applicationProperties.getContexts().get(parent.getId()).getBeans().keySet()))
+						.containsExactly("testProperties");
+			});
 		});
 	}
 

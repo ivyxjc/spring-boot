@@ -34,7 +34,8 @@ public class UrlHandlerMapper implements HandlerMapper {
 
 	/**
 	 * Create a new {@link UrlHandlerMapper}.
-	 * @param url the URL to map
+	 *
+	 * @param url     the URL to map
 	 * @param handler the handler to use
 	 */
 	public UrlHandlerMapper(String url, Handler handler) {

@@ -16,12 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.util.Arrays;
-import java.util.List;
-
 import liquibase.changelog.ChangeSet.ExecType;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.liquibase.LiquibaseEndpoint;
 import org.springframework.boot.autoconfigure.jdbc.EmbeddedDataSourceConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -32,6 +28,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -53,9 +52,9 @@ public class LiquibaseEndpointDocumentationTests extends MockMvcEndpointDocument
 				.andDo(MockMvcRestDocumentation.document("liquibase",
 						responseFields(fieldWithPath("contexts").description("Application contexts keyed by id"),
 								changeSetsField)
-										.andWithPrefix("contexts.*.liquibaseBeans.*.changeSets[].",
-												getChangeSetFieldDescriptors())
-										.and(parentIdField())));
+								.andWithPrefix("contexts.*.liquibaseBeans.*.changeSets[].",
+										getChangeSetFieldDescriptors())
+								.and(parentIdField())));
 	}
 
 	private List<FieldDescriptor> getChangeSetFieldDescriptors() {
@@ -77,8 +76,8 @@ public class LiquibaseEndpointDocumentationTests extends MockMvcEndpointDocument
 	}
 
 	@Configuration
-	@Import({ BaseDocumentationConfiguration.class, EmbeddedDataSourceConfiguration.class,
-			LiquibaseAutoConfiguration.class })
+	@Import({BaseDocumentationConfiguration.class, EmbeddedDataSourceConfiguration.class,
+					LiquibaseAutoConfiguration.class})
 	static class TestConfiguration {
 
 		@Bean

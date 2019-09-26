@@ -17,24 +17,16 @@
 package org.springframework.boot.actuate.autoconfigure.health;
 
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthEndpoint;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Mono;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link HealthEndpointAutoConfiguration}.
@@ -64,14 +56,14 @@ public class HealthEndpointAutoConfigurationTests {
 	public void healthEndpointAdaptReactiveHealthIndicator() {
 		this.contextRunner.withPropertyValues("management.endpoint.health.show-details=always")
 				.withUserConfiguration(ReactiveHealthIndicatorConfiguration.class).run((context) -> {
-					ReactiveHealthIndicator indicator = context.getBean("reactiveHealthIndicator",
-							ReactiveHealthIndicator.class);
-					verify(indicator, never()).health();
-					Health health = context.getBean(HealthEndpoint.class).health();
-					assertThat(health.getStatus()).isEqualTo(Status.UP);
-					assertThat(health.getDetails()).containsOnlyKeys("reactive");
-					verify(indicator, times(1)).health();
-				});
+			ReactiveHealthIndicator indicator = context.getBean("reactiveHealthIndicator",
+					ReactiveHealthIndicator.class);
+			verify(indicator, never()).health();
+			Health health = context.getBean(HealthEndpoint.class).health();
+			assertThat(health.getStatus()).isEqualTo(Status.UP);
+			assertThat(health.getDetails()).containsOnlyKeys("reactive");
+			verify(indicator, times(1)).health();
+		});
 	}
 
 	@Test

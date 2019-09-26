@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Import;
  * @author Phillip Webb
  */
 @Configuration
-@Import({ ExampleServiceCaller.class, SimpleExampleService.class })
+@Import({ExampleServiceCaller.class, SimpleExampleService.class})
 public class SpyBeanOnTestFieldForExistingBeanConfig {
 
 }

@@ -18,7 +18,6 @@ package org.springframework.boot.context.properties.source;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 

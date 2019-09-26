@@ -18,11 +18,10 @@ package org.springframework.boot.actuate.health;
 
 import org.junit.Rule;
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-import reactor.test.StepVerifier;
-
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.test.rule.OutputCapture;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

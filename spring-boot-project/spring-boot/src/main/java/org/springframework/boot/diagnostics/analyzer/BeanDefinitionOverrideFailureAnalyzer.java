@@ -16,12 +16,12 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import org.springframework.beans.factory.support.BeanDefinitionOverrideException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a

@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.jersey;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link ConfigurationProperties} for Jersey.
@@ -32,20 +32,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "spring.jersey")
 public class JerseyProperties {
 
+	private final Filter filter = new Filter();
+	private final Servlet servlet = new Servlet();
 	/**
 	 * Jersey integration type.
 	 */
 	private Type type = Type.SERVLET;
-
 	/**
 	 * Init parameters to pass to Jersey through the servlet or filter.
 	 */
 	private Map<String, String> init = new HashMap<>();
-
-	private final Filter filter = new Filter();
-
-	private final Servlet servlet = new Servlet();
-
 	/**
 	 * Path that serves as the base URI for the application. If specified, overrides the
 	 * value of "@ApplicationPath".

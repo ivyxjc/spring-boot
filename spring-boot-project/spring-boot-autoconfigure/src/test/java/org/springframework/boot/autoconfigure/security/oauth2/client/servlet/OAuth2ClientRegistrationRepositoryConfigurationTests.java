@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.security.oauth2.client.servlet;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -31,9 +30,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class OAuth2ClientRegistrationRepositoryConfigurationTests {
 
-	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
-
 	private static final String REGISTRATION_PREFIX = "spring.security.oauth2.client.registration";
+	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner();
 
 	@Test
 	public void clientRegistrationRepositoryBeanShouldNotBeCreatedWhenPropertiesAbsent() {

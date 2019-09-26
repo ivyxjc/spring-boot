@@ -42,6 +42,7 @@ public class Hints {
 	 * item is a {@link java.util.Map}. If no extra {@link ValueProvider provider} is
 	 * specified, these values are to be considered a closed-set of the available keys for
 	 * the map.
+	 *
 	 * @return the key hints
 	 */
 	public List<ValueHint> getKeyHints() {
@@ -53,6 +54,7 @@ public class Hints {
 	 * if the type of the related item is a {@link java.util.Map}. Only one
 	 * {@link ValueProvider} is enabled for a key: the first in the list that is supported
 	 * should be used.
+	 *
 	 * @return the key providers
 	 */
 	public List<ValueProvider> getKeyProviders() {
@@ -63,6 +65,7 @@ public class Hints {
 	 * The list of well-defined values, if any. If no extra {@link ValueProvider provider}
 	 * is specified, these values are to be considered a closed-set of the available
 	 * values for this item.
+	 *
 	 * @return the value hints
 	 */
 	public List<ValueHint> getValueHints() {
@@ -73,6 +76,7 @@ public class Hints {
 	 * The value providers that are applicable to this item. Only one
 	 * {@link ValueProvider} is enabled for an item: the first in the list that is
 	 * supported should be used.
+	 *
 	 * @return the value providers
 	 */
 	public List<ValueProvider> getValueProviders() {

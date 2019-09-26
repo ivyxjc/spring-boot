@@ -15,8 +15,6 @@
  */
 package org.springframework.boot.test.web;
 
-import java.util.Objects;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.convert.ConversionFailedException;
@@ -25,6 +23,8 @@ import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.ClassUtils;
+
+import java.util.Objects;
 
 /**
  * {@link EnvironmentPostProcessor} implementation to start the management context on a
@@ -54,8 +54,7 @@ class SpringBootTestRandomPortEnvironmentPostProcessor implements EnvironmentPos
 		Integer serverPort = getPropertyAsInteger(environment, SERVER_PORT_PROPERTY, 8080);
 		if (!managementPort.equals(serverPort)) {
 			source.getSource().put(MANAGEMENT_PORT_PROPERTY, "0");
-		}
-		else {
+		} else {
 			source.getSource().put(MANAGEMENT_PORT_PROPERTY, "");
 		}
 	}
@@ -76,7 +75,7 @@ class SpringBootTestRandomPortEnvironmentPostProcessor implements EnvironmentPos
 	}
 
 	private Integer getPropertyAsInteger(PropertySource<?> source, String property,
-			ConfigurableEnvironment environment) {
+										 ConfigurableEnvironment environment) {
 		Object value = source.getProperty(property);
 		if (value == null) {
 			return null;
@@ -86,8 +85,7 @@ class SpringBootTestRandomPortEnvironmentPostProcessor implements EnvironmentPos
 		}
 		try {
 			return environment.getConversionService().convert(value, Integer.class);
-		}
-		catch (ConversionFailedException ex) {
+		} catch (ConversionFailedException ex) {
 			if (ClassUtils.isAssignable(value.getClass(), String.class)) {
 				return getResolvedValueIfPossible(environment, (String) value);
 			}

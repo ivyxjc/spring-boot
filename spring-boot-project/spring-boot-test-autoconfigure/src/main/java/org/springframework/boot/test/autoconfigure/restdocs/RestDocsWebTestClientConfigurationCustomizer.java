@@ -34,6 +34,7 @@ public interface RestDocsWebTestClientConfigurationCustomizer {
 
 	/**
 	 * Customize the given {@code configurer}.
+	 *
 	 * @param configurer the configurer
 	 */
 	void customize(WebTestClientRestDocumentationConfigurer configurer);

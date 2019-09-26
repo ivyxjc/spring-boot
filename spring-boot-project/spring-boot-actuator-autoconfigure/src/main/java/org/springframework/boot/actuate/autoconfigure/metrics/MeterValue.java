@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
+import io.micrometer.core.instrument.Meter.Type;
+import org.springframework.boot.convert.DurationStyle;
+
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-
-import io.micrometer.core.instrument.Meter.Type;
-
-import org.springframework.boot.convert.DurationStyle;
 
 /**
  * A meter value that is used when configuring micrometer. Can be a String representation
@@ -43,8 +42,37 @@ final class MeterValue {
 	}
 
 	/**
+	 * Return a new {@link MeterValue} instance for the given String value. The value may
+	 * contain a simple number, or a {@link DurationStyle duration style string}.
+	 *
+	 * @param value the source value
+	 * @return a {@link MeterValue} instance
+	 */
+	public static MeterValue valueOf(String value) {
+		if (isNumber(value)) {
+			return new MeterValue(Long.parseLong(value));
+		}
+		return new MeterValue(DurationStyle.detectAndParse(value));
+	}
+
+	/**
+	 * Return a new {@link MeterValue} instance for the given long value.
+	 *
+	 * @param value the source value
+	 * @return a {@link MeterValue} instance
+	 */
+	public static MeterValue valueOf(long value) {
+		return new MeterValue(value);
+	}
+
+	private static boolean isNumber(String value) {
+		return value.chars().allMatch(Character::isDigit);
+	}
+
+	/**
 	 * Return the underlying value of the SLA in form suitable to apply to the given meter
 	 * type.
+	 *
 	 * @param meterType the meter type
 	 * @return the value or {@code null} if the value cannot be applied
 	 */
@@ -73,32 +101,6 @@ final class MeterValue {
 			return ((Duration) this.value).toNanos();
 		}
 		return null;
-	}
-
-	/**
-	 * Return a new {@link MeterValue} instance for the given String value. The value may
-	 * contain a simple number, or a {@link DurationStyle duration style string}.
-	 * @param value the source value
-	 * @return a {@link MeterValue} instance
-	 */
-	public static MeterValue valueOf(String value) {
-		if (isNumber(value)) {
-			return new MeterValue(Long.parseLong(value));
-		}
-		return new MeterValue(DurationStyle.detectAndParse(value));
-	}
-
-	/**
-	 * Return a new {@link MeterValue} instance for the given long value.
-	 * @param value the source value
-	 * @return a {@link MeterValue} instance
-	 */
-	public static MeterValue valueOf(long value) {
-		return new MeterValue(value);
-	}
-
-	private static boolean isNumber(String value) {
-		return value.chars().allMatch(Character::isDigit);
 	}
 
 }

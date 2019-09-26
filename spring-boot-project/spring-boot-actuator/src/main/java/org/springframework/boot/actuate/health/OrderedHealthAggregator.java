@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-
-import org.springframework.util.Assert;
 
 /**
  * Default {@link HealthAggregator} implementation that aggregates {@link Health}
@@ -46,6 +46,7 @@ public class OrderedHealthAggregator extends AbstractHealthAggregator {
 
 	/**
 	 * Set the ordering of the status.
+	 *
 	 * @param statusOrder an ordered list of the status
 	 */
 	public void setStatusOrder(Status... statusOrder) {
@@ -58,6 +59,7 @@ public class OrderedHealthAggregator extends AbstractHealthAggregator {
 
 	/**
 	 * Set the ordering of the status.
+	 *
 	 * @param statusOrder an ordered list of the status codes
 	 */
 	public void setStatusOrder(List<String> statusOrder) {

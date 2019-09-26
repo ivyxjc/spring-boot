@@ -16,12 +16,11 @@
 
 package org.springframework.boot.web.servlet.mock;
 
-import java.io.IOException;
-
 import javax.servlet.GenericServlet;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import java.io.IOException;
 
 /**
  * Simple mock Servlet that does nothing.

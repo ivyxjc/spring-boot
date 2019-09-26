@@ -16,10 +16,10 @@
 
 package org.springframework.boot.devtools.restart;
 
+import org.springframework.util.Assert;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-
-import org.springframework.util.Assert;
 
 /**
  * The "main" method located from a running thread.
@@ -58,8 +58,7 @@ class MainMethod {
 			if (Modifier.isStatic(method.getModifiers())) {
 				return method;
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Ignore
 		}
 		return null;
@@ -67,6 +66,7 @@ class MainMethod {
 
 	/**
 	 * Returns the actual main method.
+	 *
 	 * @return the main method
 	 */
 	public Method getMethod() {
@@ -75,6 +75,7 @@ class MainMethod {
 
 	/**
 	 * Return the name of the declaring class.
+	 *
 	 * @return the declaring class name
 	 */
 	public String getDeclaringClassName() {

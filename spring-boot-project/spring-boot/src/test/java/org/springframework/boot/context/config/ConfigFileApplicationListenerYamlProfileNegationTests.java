@@ -18,7 +18,6 @@ package org.springframework.boot.context.config;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -145,7 +144,7 @@ public class ConfigFileApplicationListenerYamlProfileNegationTests {
 	}
 
 	private void assertVersionProperty(ConfigurableApplicationContext context, String expectedVersion,
-			String... expectedActiveProfiles) {
+									   String... expectedActiveProfiles) {
 		assertThat(context.getEnvironment().getActiveProfiles()).isEqualTo(expectedActiveProfiles);
 		assertThat(context.getEnvironment().getProperty("version")).as("version mismatch").isEqualTo(expectedVersion);
 	}

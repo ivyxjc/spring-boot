@@ -38,6 +38,7 @@ public class Deprecation implements Serializable {
 
 	/**
 	 * Define the {@link Level} of deprecation.
+	 *
 	 * @return the deprecation level
 	 */
 	public Level getLevel() {
@@ -50,6 +51,7 @@ public class Deprecation implements Serializable {
 
 	/**
 	 * A reason why the related property is deprecated, if any. Can be multi-lines.
+	 *
 	 * @return the deprecation reason
 	 * @see #getShortReason()
 	 */
@@ -64,6 +66,7 @@ public class Deprecation implements Serializable {
 	/**
 	 * A single-line, single-sentence reason why the related property is deprecated, if
 	 * any.
+	 *
 	 * @return the short deprecation reason
 	 * @see #getReason()
 	 */
@@ -78,6 +81,7 @@ public class Deprecation implements Serializable {
 	/**
 	 * The full name of the property that replaces the related deprecated property, if
 	 * any.
+	 *
 	 * @return the replacement property name
 	 */
 	public String getReplacement() {

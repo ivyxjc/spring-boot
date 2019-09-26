@@ -16,13 +16,10 @@
 
 package org.springframework.boot.test.autoconfigure.restdocs;
 
-import java.io.File;
-
 import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -34,6 +31,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
@@ -55,16 +54,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureRestDocs
 public class MockMvcRestDocsAutoConfigurationAdvancedConfigurationIntegrationTests {
 
+	@Autowired
+	private MockMvc mvc;
+	@Autowired
+	private RestDocumentationResultHandler documentationHandler;
+
 	@Before
 	public void deleteSnippets() {
 		FileSystemUtils.deleteRecursively(new File("target/generated-snippets"));
 	}
-
-	@Autowired
-	private MockMvc mvc;
-
-	@Autowired
-	private RestDocumentationResultHandler documentationHandler;
 
 	@Test
 	public void snippetGeneration() throws Exception {

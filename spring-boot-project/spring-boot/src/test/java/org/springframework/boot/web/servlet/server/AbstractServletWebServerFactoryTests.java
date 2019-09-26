@@ -16,56 +16,6 @@
 
 package org.springframework.boot.web.servlet.server;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.InputStreamFactory;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -84,20 +34,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.InOrder;
-
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.boot.testsupport.web.servlet.ExampleFilter;
 import org.springframework.boot.testsupport.web.servlet.ExampleServlet;
-import org.springframework.boot.web.server.Compression;
-import org.springframework.boot.web.server.ErrorPage;
-import org.springframework.boot.web.server.MimeMappings;
-import org.springframework.boot.web.server.Ssl;
+import org.springframework.boot.web.server.*;
 import org.springframework.boot.web.server.Ssl.ClientAuth;
-import org.springframework.boot.web.server.SslStoreProvider;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.server.WebServerException;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -114,19 +57,34 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.util.SocketUtils;
 import org.springframework.util.StreamUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIOException;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.servlet.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.zip.GZIPInputStream;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Base for testing classes that extends {@link AbstractServletWebServerFactory}.
@@ -138,23 +96,19 @@ import static org.mockito.Mockito.verify;
  */
 public abstract class AbstractServletWebServerFactoryTests {
 
+	private final HttpClientContext httpClientContext = HttpClientContext.create();
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
 	@Rule
 	public OutputCapture output = new OutputCapture();
-
 	protected WebServer webServer;
-
-	private final HttpClientContext httpClientContext = HttpClientContext.create();
 
 	@After
 	public void tearDown() {
 		if (this.webServer != null) {
 			try {
 				this.webServer.stop();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Ignore
 			}
 		}
@@ -225,8 +179,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 			try {
 				Thread.sleep(500);
 				date[0] = new Date();
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				throw new ServletException(ex);
 			}
 		});
@@ -504,7 +457,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		AbstractServletWebServerFactory factory = getFactory();
 		addTestTxtFile(factory);
 		factory.setSsl(
-				getSsl(ClientAuth.WANT, "password", "classpath:test.jks", null, new String[] { "TLSv1.2" }, null));
+				getSsl(ClientAuth.WANT, "password", "classpath:test.jks", null, new String[]{"TLSv1.2"}, null));
 		this.webServer = factory.getWebServer();
 		this.webServer.start();
 		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
@@ -584,12 +537,12 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	private Ssl getSsl(ClientAuth clientAuth, String keyPassword, String keyStore, String trustStore,
-			String[] supportedProtocols, String[] ciphers) {
+					   String[] supportedProtocols, String[] ciphers) {
 		return getSsl(clientAuth, keyPassword, null, keyStore, trustStore, supportedProtocols, ciphers);
 	}
 
 	private Ssl getSsl(ClientAuth clientAuth, String keyPassword, String keyAlias, String keyStore, String trustStore,
-			String[] supportedProtocols, String[] ciphers) {
+					   String[] supportedProtocols, String[] ciphers) {
 		Ssl ssl = new Ssl();
 		ssl.setClientAuth(clientAuth);
 		if (keyPassword != null) {
@@ -748,13 +701,13 @@ public abstract class AbstractServletWebServerFactoryTests {
 
 	@Test
 	public void noCompressionForMimeType() throws Exception {
-		String[] mimeTypes = new String[] { "text/html", "text/xml", "text/css" };
+		String[] mimeTypes = new String[]{"text/html", "text/xml", "text/css"};
 		assertThat(doTestCompression(10000, mimeTypes, null)).isFalse();
 	}
 
 	@Test
 	public void noCompressionForUserAgent() throws Exception {
-		assertThat(doTestCompression(10000, null, new String[] { "testUserAgent" })).isFalse();
+		assertThat(doTestCompression(10000, null, new String[]{"testUserAgent"})).isFalse();
 	}
 
 	@Test
@@ -793,8 +746,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 		this.webServer = factory.getWebServer((servletContext) -> {
 			try {
 				rootResource.set(servletContext.getResource("/"));
-			}
-			catch (MalformedURLException ex) {
+			} catch (MalformedURLException ex) {
 				throw new ServletException(ex);
 			}
 		});
@@ -967,7 +919,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	private boolean doTestCompression(int contentSize, String[] mimeTypes, String[] excludedUserAgents,
-			HttpMethod method) throws Exception {
+									  HttpMethod method) throws Exception {
 		String testContent = setUpFactoryForCompression(contentSize, mimeTypes, excludedUserAgents);
 		TestGzipInputStreamFactory inputStreamFactory = new TestGzipInputStreamFactory();
 		Map<String, InputStreamFactory> contentDecoderMap = Collections.singletonMap("gzip", inputStreamFactory);
@@ -1046,7 +998,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	protected String getResponse(String url, HttpMethod method, HttpComponentsClientHttpRequestFactory requestFactory,
-			String... headers) throws IOException, URISyntaxException {
+								 String... headers) throws IOException, URISyntaxException {
 		try (ClientHttpResponse response = getClientResponse(url, method, requestFactory, headers)) {
 			return StreamUtils.copyToString(response.getBody(), StandardCharsets.UTF_8);
 		}
@@ -1070,7 +1022,7 @@ public abstract class AbstractServletWebServerFactoryTests {
 	}
 
 	protected ClientHttpResponse getClientResponse(String url, HttpMethod method,
-			HttpComponentsClientHttpRequestFactory requestFactory, String... headers)
+												   HttpComponentsClientHttpRequestFactory requestFactory, String... headers)
 			throws IOException, URISyntaxException {
 		ClientHttpRequest request = requestFactory.createRequest(new URI(url), method);
 		request.getHeaders().add("Cookie", "JSESSIONID=" + "123");
@@ -1136,14 +1088,12 @@ public abstract class AbstractServletWebServerFactoryTests {
 			try {
 				serverSocket.bind(new InetSocketAddress(port));
 				break;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 			}
 		}
 		try {
 			action.run(port);
-		}
-		finally {
+		} finally {
 			serverSocket.close();
 		}
 	}
@@ -1157,22 +1107,9 @@ public abstract class AbstractServletWebServerFactoryTests {
 		}
 	}
 
-	private class TestGzipInputStreamFactory implements InputStreamFactory {
+	public interface BlockedPortAction {
 
-		private final AtomicBoolean requested = new AtomicBoolean(false);
-
-		@Override
-		public InputStream create(InputStream in) throws IOException {
-			if (this.requested.get()) {
-				throw new IllegalStateException("On deflated InputStream already requested");
-			}
-			this.requested.set(true);
-			return new GZIPInputStream(in);
-		}
-
-		public boolean wasCompressionUsed() {
-			return this.requested.get();
-		}
+		void run(int port);
 
 	}
 
@@ -1193,12 +1130,6 @@ public abstract class AbstractServletWebServerFactoryTests {
 		public int getInitCount() {
 			return this.initCount;
 		}
-
-	}
-
-	public interface BlockedPortAction {
-
-		void run(int port);
 
 	}
 
@@ -1244,6 +1175,25 @@ public abstract class AbstractServletWebServerFactoryTests {
 
 		FailingServletException() {
 			super("Init Failure");
+		}
+
+	}
+
+	private class TestGzipInputStreamFactory implements InputStreamFactory {
+
+		private final AtomicBoolean requested = new AtomicBoolean(false);
+
+		@Override
+		public InputStream create(InputStream in) throws IOException {
+			if (this.requested.get()) {
+				throw new IllegalStateException("On deflated InputStream already requested");
+			}
+			this.requested.set(true);
+			return new GZIPInputStream(in);
+		}
+
+		public boolean wasCompressionUsed() {
+			return this.requested.get();
 		}
 
 	}

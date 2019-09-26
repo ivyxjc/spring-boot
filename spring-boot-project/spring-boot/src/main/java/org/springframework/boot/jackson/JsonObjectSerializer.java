@@ -16,20 +16,20 @@
 
 package org.springframework.boot.jackson;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
+
+import java.io.IOException;
 
 /**
  * Helper base class for {@link JsonSerializer} implementations that serialize objects.
  *
  * @param <T> the supported object type
  * @author Phillip Webb
- * @since 1.4.0
  * @see JsonObjectDeserializer
+ * @since 1.4.0
  */
 public abstract class JsonObjectSerializer<T> extends JsonSerializer<T> {
 
@@ -39,8 +39,7 @@ public abstract class JsonObjectSerializer<T> extends JsonSerializer<T> {
 			jgen.writeStartObject();
 			serializeObject(value, jgen, provider);
 			jgen.writeEndObject();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (ex instanceof IOException) {
 				throw (IOException) ex;
 			}
@@ -50,8 +49,9 @@ public abstract class JsonObjectSerializer<T> extends JsonSerializer<T> {
 
 	/**
 	 * Serialize JSON content into the value type this serializer handles.
-	 * @param value the source value
-	 * @param jgen the JSON generator
+	 *
+	 * @param value    the source value
+	 * @param jgen     the JSON generator
 	 * @param provider the serializer provider
 	 * @throws IOException on error
 	 */

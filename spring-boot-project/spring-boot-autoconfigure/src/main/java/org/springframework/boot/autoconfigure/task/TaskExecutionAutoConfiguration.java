@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.task;
 
-import java.util.concurrent.Executor;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,6 +30,8 @@ import org.springframework.core.task.TaskDecorator;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.AsyncAnnotationBeanPostProcessor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.Executor;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link TaskExecutor}.
@@ -57,8 +57,8 @@ public class TaskExecutionAutoConfiguration {
 	private final ObjectProvider<TaskDecorator> taskDecorator;
 
 	public TaskExecutionAutoConfiguration(TaskExecutionProperties properties,
-			ObjectProvider<TaskExecutorCustomizer> taskExecutorCustomizers,
-			ObjectProvider<TaskDecorator> taskDecorator) {
+										  ObjectProvider<TaskExecutorCustomizer> taskExecutorCustomizers,
+										  ObjectProvider<TaskDecorator> taskDecorator) {
 		this.properties = properties;
 		this.taskExecutorCustomizers = taskExecutorCustomizers;
 		this.taskDecorator = taskDecorator;
@@ -81,8 +81,8 @@ public class TaskExecutionAutoConfiguration {
 	}
 
 	@Lazy
-	@Bean(name = { APPLICATION_TASK_EXECUTOR_BEAN_NAME,
-			AsyncAnnotationBeanPostProcessor.DEFAULT_TASK_EXECUTOR_BEAN_NAME })
+	@Bean(name = {APPLICATION_TASK_EXECUTOR_BEAN_NAME,
+			AsyncAnnotationBeanPostProcessor.DEFAULT_TASK_EXECUTOR_BEAN_NAME})
 	@ConditionalOnMissingBean(Executor.class)
 	public ThreadPoolTaskExecutor applicationTaskExecutor(TaskExecutorBuilder builder) {
 		return builder.build();

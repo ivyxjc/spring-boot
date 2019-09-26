@@ -16,25 +16,17 @@
 
 package org.springframework.boot.docs.cloudfoundry;
 
-import java.io.IOException;
-import java.util.Collections;
-
-import javax.servlet.GenericServlet;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.apache.catalina.Host;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
-
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.servlet.*;
+import java.io.IOException;
+import java.util.Collections;
 
 /**
  * Example configuration for custom context path in Cloud Foundry.

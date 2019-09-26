@@ -39,6 +39,13 @@ class ZipInflaterInputStream extends InflaterInputStream {
 		this.available = size;
 	}
 
+	private static int getInflaterBufferSize(long size) {
+		size += 2; // inflater likes some space
+		size = (size > 65536) ? 8192 : size;
+		size = (size <= 0) ? 4096 : size;
+		return (int) size;
+	}
+
 	@Override
 	public int available() throws IOException {
 		if (this.available < 0) {
@@ -66,8 +73,7 @@ class ZipInflaterInputStream extends InflaterInputStream {
 	protected void fill() throws IOException {
 		try {
 			super.fill();
-		}
-		catch (EOFException ex) {
+		} catch (EOFException ex) {
 			if (this.extraBytesWritten) {
 				throw ex;
 			}
@@ -76,13 +82,6 @@ class ZipInflaterInputStream extends InflaterInputStream {
 			this.extraBytesWritten = true;
 			this.inf.setInput(this.buf, 0, this.len);
 		}
-	}
-
-	private static int getInflaterBufferSize(long size) {
-		size += 2; // inflater likes some space
-		size = (size > 65536) ? 8192 : size;
-		size = (size <= 0) ? 4096 : size;
-		return (int) size;
 	}
 
 }

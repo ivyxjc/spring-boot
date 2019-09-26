@@ -16,18 +16,17 @@
 
 package org.springframework.boot.web.client;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -43,12 +42,10 @@ import static org.mockito.Mockito.verify;
  */
 public class RootUriTemplateHandlerTests {
 
-	private URI uri;
-
 	@Mock
 	public UriTemplateHandler delegate;
-
 	public UriTemplateHandler handler;
+	private URI uri;
 
 	@Before
 	@SuppressWarnings("unchecked")

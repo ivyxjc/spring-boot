@@ -16,18 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.trace;
 
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.trace.http.HttpTraceAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.trace.http.HttpTraceProperties;
-import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
-import org.springframework.boot.actuate.trace.http.HttpTrace;
-import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
-import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
-import org.springframework.boot.actuate.trace.http.Include;
+import org.springframework.boot.actuate.trace.http.*;
 import org.springframework.boot.actuate.web.trace.reactive.HttpTraceWebFilter;
 import org.springframework.boot.actuate.web.trace.servlet.HttpTraceFilter;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -35,6 +27,9 @@ import org.springframework.boot.test.context.runner.ReactiveWebApplicationContex
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -55,10 +50,10 @@ public class HttpTraceAutoConfigurationTests {
 	public void usesUserProvidedRepository() {
 		new WebApplicationContextRunner().withConfiguration(AutoConfigurations.of(HttpTraceAutoConfiguration.class))
 				.withUserConfiguration(CustomRepositoryConfiguration.class).run((context) -> {
-					assertThat(context).hasSingleBean(HttpTraceRepository.class);
-					assertThat(context.getBean(HttpTraceRepository.class))
-							.isInstanceOf(CustomHttpTraceRepository.class);
-				});
+			assertThat(context).hasSingleBean(HttpTraceRepository.class);
+			assertThat(context.getBean(HttpTraceRepository.class))
+					.isInstanceOf(CustomHttpTraceRepository.class);
+		});
 	}
 
 	@Test
@@ -71,9 +66,9 @@ public class HttpTraceAutoConfigurationTests {
 	public void usesUserProvidedTracer() {
 		new WebApplicationContextRunner().withConfiguration(AutoConfigurations.of(HttpTraceAutoConfiguration.class))
 				.withUserConfiguration(CustomTracerConfiguration.class).run((context) -> {
-					assertThat(context).hasSingleBean(HttpExchangeTracer.class);
-					assertThat(context.getBean(HttpExchangeTracer.class)).isInstanceOf(CustomHttpExchangeTracer.class);
-				});
+			assertThat(context).hasSingleBean(HttpExchangeTracer.class);
+			assertThat(context.getBean(HttpExchangeTracer.class)).isInstanceOf(CustomHttpExchangeTracer.class);
+		});
 	}
 
 	@Test
@@ -88,9 +83,9 @@ public class HttpTraceAutoConfigurationTests {
 		new ReactiveWebApplicationContextRunner()
 				.withConfiguration(AutoConfigurations.of(HttpTraceAutoConfiguration.class))
 				.withUserConfiguration(CustomWebFilterConfiguration.class).run((context) -> {
-					assertThat(context).hasSingleBean(HttpTraceWebFilter.class);
-					assertThat(context.getBean(HttpTraceWebFilter.class)).isInstanceOf(CustomHttpTraceWebFilter.class);
-				});
+			assertThat(context).hasSingleBean(HttpTraceWebFilter.class);
+			assertThat(context.getBean(HttpTraceWebFilter.class)).isInstanceOf(CustomHttpTraceWebFilter.class);
+		});
 	}
 
 	@Test
@@ -103,9 +98,9 @@ public class HttpTraceAutoConfigurationTests {
 	public void usesUserProvidedServletFilter() {
 		new WebApplicationContextRunner().withConfiguration(AutoConfigurations.of(HttpTraceAutoConfiguration.class))
 				.withUserConfiguration(CustomFilterConfiguration.class).run((context) -> {
-					assertThat(context).hasSingleBean(HttpTraceFilter.class);
-					assertThat(context.getBean(HttpTraceFilter.class)).isInstanceOf(CustomHttpTraceFilter.class);
-				});
+			assertThat(context).hasSingleBean(HttpTraceFilter.class);
+			assertThat(context.getBean(HttpTraceFilter.class)).isInstanceOf(CustomHttpTraceFilter.class);
+		});
 	}
 
 	@Test
@@ -161,7 +156,7 @@ public class HttpTraceAutoConfigurationTests {
 	private static final class CustomHttpTraceWebFilter extends HttpTraceWebFilter {
 
 		private CustomHttpTraceWebFilter(HttpTraceRepository repository, HttpExchangeTracer tracer,
-				Set<Include> includes) {
+										 Set<Include> includes) {
 			super(repository, tracer, includes);
 		}
 
@@ -172,7 +167,7 @@ public class HttpTraceAutoConfigurationTests {
 
 		@Bean
 		public CustomHttpTraceWebFilter customWebFilter(HttpTraceRepository repository, HttpExchangeTracer tracer,
-				HttpTraceProperties properties) {
+														HttpTraceProperties properties) {
 			return new CustomHttpTraceWebFilter(repository, tracer, properties.getInclude());
 		}
 

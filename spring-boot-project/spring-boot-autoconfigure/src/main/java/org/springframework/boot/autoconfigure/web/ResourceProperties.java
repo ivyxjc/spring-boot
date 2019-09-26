@@ -16,14 +16,14 @@
 
 package org.springframework.boot.autoconfigure.web;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.convert.DurationUnit;
 import org.springframework.http.CacheControl;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Properties used to configure resource handling.
@@ -38,23 +38,19 @@ import org.springframework.http.CacheControl;
 @ConfigurationProperties(prefix = "spring.resources", ignoreUnknownFields = false)
 public class ResourceProperties {
 
-	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = { "classpath:/META-INF/resources/",
-			"classpath:/resources/", "classpath:/static/", "classpath:/public/" };
-
+	private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {"classpath:/META-INF/resources/",
+			"classpath:/resources/", "classpath:/static/", "classpath:/public/"};
+	private final Chain chain = new Chain();
+	private final Cache cache = new Cache();
 	/**
 	 * Locations of static resources. Defaults to classpath:[/META-INF/resources/,
 	 * /resources/, /static/, /public/].
 	 */
 	private String[] staticLocations = CLASSPATH_RESOURCE_LOCATIONS;
-
 	/**
 	 * Whether to enable default resource handling.
 	 */
 	private boolean addMappings = true;
-
-	private final Chain chain = new Chain();
-
-	private final Cache cache = new Cache();
 
 	public String[] getStaticLocations() {
 		return this.staticLocations;
@@ -94,33 +90,34 @@ public class ResourceProperties {
 	 */
 	public static class Chain {
 
+		private final Strategy strategy = new Strategy();
 		/**
 		 * Whether to enable the Spring Resource Handling chain. By default, disabled
 		 * unless at least one strategy has been enabled.
 		 */
 		private Boolean enabled;
-
 		/**
 		 * Whether to enable caching in the Resource chain.
 		 */
 		private boolean cache = true;
-
 		/**
 		 * Whether to enable HTML5 application cache manifest rewriting.
 		 */
 		private boolean htmlApplicationCache = false;
-
 		/**
 		 * Whether to enable resolution of already compressed resources (gzip, brotli).
 		 * Checks for a resource name with the '.gz' or '.br' file extensions.
 		 */
 		private boolean compressed = false;
 
-		private final Strategy strategy = new Strategy();
+		static Boolean getEnabled(boolean fixedEnabled, boolean contentEnabled, Boolean chainEnabled) {
+			return (fixedEnabled || contentEnabled) ? Boolean.TRUE : chainEnabled;
+		}
 
 		/**
 		 * Return whether the resource chain is enabled. Return {@code null} if no
 		 * specific settings are present.
+		 *
 		 * @return whether the resource chain is enabled or {@code null} if no specified
 		 * settings are present.
 		 */
@@ -161,10 +158,6 @@ public class ResourceProperties {
 			this.compressed = compressed;
 		}
 
-		static Boolean getEnabled(boolean fixedEnabled, boolean contentEnabled, Boolean chainEnabled) {
-			return (fixedEnabled || contentEnabled) ? Boolean.TRUE : chainEnabled;
-		}
-
 	}
 
 	/**
@@ -199,7 +192,7 @@ public class ResourceProperties {
 		/**
 		 * Comma-separated list of patterns to apply to the content Version Strategy.
 		 */
-		private String[] paths = new String[] { "/**" };
+		private String[] paths = new String[]{"/**"};
 
 		public boolean isEnabled() {
 			return this.enabled;
@@ -232,7 +225,7 @@ public class ResourceProperties {
 		/**
 		 * Comma-separated list of patterns to apply to the fixed Version Strategy.
 		 */
-		private String[] paths = new String[] { "/**" };
+		private String[] paths = new String[]{"/**"};
 
 		/**
 		 * Version string to use for the fixed Version Strategy.
@@ -271,18 +264,17 @@ public class ResourceProperties {
 	public static class Cache {
 
 		/**
+		 * Cache control HTTP headers, only allows valid directive combinations. Overrides
+		 * the 'spring.resources.cache.period' property.
+		 */
+		private final Cachecontrol cachecontrol = new Cachecontrol();
+		/**
 		 * Cache period for the resources served by the resource handler. If a duration
 		 * suffix is not specified, seconds will be used. Can be overridden by the
 		 * 'spring.resources.cache.cachecontrol' properties.
 		 */
 		@DurationUnit(ChronoUnit.SECONDS)
 		private Duration period;
-
-		/**
-		 * Cache control HTTP headers, only allows valid directive combinations. Overrides
-		 * the 'spring.resources.cache.period' property.
-		 */
-		private final Cachecontrol cachecontrol = new Cachecontrol();
 
 		public Duration getPeriod() {
 			return this.period;

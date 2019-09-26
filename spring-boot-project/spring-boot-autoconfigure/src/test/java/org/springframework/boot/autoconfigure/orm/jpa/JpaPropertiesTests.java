@@ -16,15 +16,7 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
-import java.util.function.Consumer;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -32,11 +24,15 @@ import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.vendor.Database;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.SQLException;
+import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link JpaProperties}.
@@ -57,8 +53,7 @@ public class JpaPropertiesTests {
 					assertThat(database).isEqualTo(Database.POSTGRESQL);
 					try {
 						verify(dataSource, never()).getConnection();
-					}
-					catch (SQLException ex) {
+					} catch (SQLException ex) {
 						throw new IllegalStateException("Should not happen", ex);
 					}
 				}));
@@ -93,8 +88,7 @@ public class JpaPropertiesTests {
 			DataSource ds = mock(DataSource.class);
 			given(ds.getConnection()).willThrow(SQLException.class);
 			return ds;
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			throw new IllegalStateException("Should not happen", ex);
 		}
 	}
@@ -107,8 +101,7 @@ public class JpaPropertiesTests {
 			Connection connection = mock(Connection.class);
 			given(connection.getMetaData()).willReturn(metadata);
 			given(ds.getConnection()).willReturn(connection);
-		}
-		catch (SQLException ex) {
+		} catch (SQLException ex) {
 			// Do nothing
 		}
 		return ds;

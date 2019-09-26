@@ -48,6 +48,20 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 		this.origin = origin;
 	}
 
+	static ConfigurationProperty of(ConfigurationPropertyName name, OriginTrackedValue value) {
+		if (value == null) {
+			return null;
+		}
+		return new ConfigurationProperty(name, value.getValue(), value.getOrigin());
+	}
+
+	static ConfigurationProperty of(ConfigurationPropertyName name, Object value, Origin origin) {
+		if (value == null) {
+			return null;
+		}
+		return new ConfigurationProperty(name, value, origin);
+	}
+
 	public ConfigurationPropertyName getName() {
 		return this.name;
 	}
@@ -92,20 +106,6 @@ public final class ConfigurationProperty implements OriginProvider, Comparable<C
 	@Override
 	public int compareTo(ConfigurationProperty other) {
 		return this.name.compareTo(other.name);
-	}
-
-	static ConfigurationProperty of(ConfigurationPropertyName name, OriginTrackedValue value) {
-		if (value == null) {
-			return null;
-		}
-		return new ConfigurationProperty(name, value.getValue(), value.getOrigin());
-	}
-
-	static ConfigurationProperty of(ConfigurationPropertyName name, Object value, Origin origin) {
-		if (value == null) {
-			return null;
-		}
-		return new ConfigurationProperty(name, value, origin);
 	}
 
 }

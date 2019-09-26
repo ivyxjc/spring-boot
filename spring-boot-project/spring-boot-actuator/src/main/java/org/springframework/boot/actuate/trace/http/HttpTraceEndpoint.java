@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.trace.http;
 
-import java.util.List;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * {@link Endpoint} to expose {@link HttpTrace} information.
@@ -36,6 +36,7 @@ public class HttpTraceEndpoint {
 
 	/**
 	 * Create a new {@link HttpTraceEndpoint} instance.
+	 *
 	 * @param repository the trace repository
 	 */
 	public HttpTraceEndpoint(HttpTraceRepository repository) {

@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.ganglia;
 
+import info.ganglia.gmetric4j.gmetric.GMetric;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
-
-import info.ganglia.gmetric4j.gmetric.GMetric;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * {@link ConfigurationProperties} for configuring Ganglia metrics export.

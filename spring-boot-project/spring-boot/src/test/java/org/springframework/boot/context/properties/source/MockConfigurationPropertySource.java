@@ -16,13 +16,13 @@
 
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.boot.origin.MockOrigin;
+import org.springframework.boot.origin.OriginTrackedValue;
+
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Stream;
-
-import org.springframework.boot.origin.MockOrigin;
-import org.springframework.boot.origin.OriginTrackedValue;
 
 /**
  * Mock {@link ConfigurationPropertySource} implementation used for testing.

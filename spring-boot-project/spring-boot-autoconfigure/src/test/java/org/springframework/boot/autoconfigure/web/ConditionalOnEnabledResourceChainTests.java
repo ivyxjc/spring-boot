@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.web;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;

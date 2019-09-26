@@ -16,16 +16,14 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
-import java.util.Set;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import javax.servlet.ServletContainerInitializer;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.web.servlet.ServletContextInitializer;
+import java.util.Set;
 
 /**
  * {@link ServletContainerInitializer} used to trigger {@link ServletContextInitializer
@@ -52,8 +50,7 @@ class TomcatStarter implements ServletContainerInitializer {
 			for (ServletContextInitializer initializer : this.initializers) {
 				initializer.onStartup(servletContext);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			this.startUpException = ex;
 			// Prevent Tomcat from logging and re-throwing when we know we can
 			// deal with it in the main thread, but log for information here.

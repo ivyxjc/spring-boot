@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.solr;
 
-import java.io.IOException;
-
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.impl.HttpSolrClient.RemoteSolrException;
 import org.apache.solr.client.solrj.request.CoreAdminRequest;
@@ -25,19 +23,17 @@ import org.apache.solr.client.solrj.response.SolrPingResponse;
 import org.apache.solr.common.util.NamedList;
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link SolrHealthIndicator}
@@ -133,7 +129,7 @@ public class SolrHealthIndicatorTests {
 	}
 
 	private void assertHealth(SolrHealthIndicator healthIndicator, Status expectedStatus, int expectedStatusCode,
-			String expectedPathType) {
+							  String expectedPathType) {
 		Health health = healthIndicator.health();
 		assertThat(health.getStatus()).isEqualTo(expectedStatus);
 		assertThat(health.getDetails().get("status")).isEqualTo(expectedStatusCode);

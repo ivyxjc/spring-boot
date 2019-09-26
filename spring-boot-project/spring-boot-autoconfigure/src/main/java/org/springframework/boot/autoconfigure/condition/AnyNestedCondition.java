@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.context.annotation.Condition;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * {@link Condition} that will match when any nested class condition matches. Can be used

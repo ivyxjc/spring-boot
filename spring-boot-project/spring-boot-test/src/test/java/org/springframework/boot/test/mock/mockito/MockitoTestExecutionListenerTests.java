@@ -16,27 +16,24 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.io.InputStream;
-import java.lang.reflect.Field;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+
+import java.io.InputStream;
+import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link MockitoTestExecutionListener}.
@@ -96,7 +93,7 @@ public class MockitoTestExecutionListenerTests {
 		assertThat(this.fieldCaptor.getValue().getName()).isEqualTo("mockBean");
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	private TestContext mockTestContext(Object instance) {
 		TestContext testContext = mock(TestContext.class);
 		given(testContext.getTestInstance()).willReturn(instance);

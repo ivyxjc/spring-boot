@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.web.reactive;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.boot.web.embedded.tomcat.TomcatReactiveWebServerFactory;
@@ -42,7 +41,7 @@ public class ReactiveWebServerFactoryAutoConfigurationTests {
 
 	private ReactiveWebApplicationContextRunner contextRunner = new ReactiveWebApplicationContextRunner(
 			AnnotationConfigReactiveWebServerApplicationContext::new)
-					.withConfiguration(AutoConfigurations.of(ReactiveWebServerFactoryAutoConfiguration.class));
+			.withConfiguration(AutoConfigurations.of(ReactiveWebServerFactoryAutoConfiguration.class));
 
 	@Test
 	public void createFromConfigClass() {

@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.security.servlet;
 
-import java.io.IOException;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.env.EnvironmentEndpointAutoConfiguration;
@@ -41,6 +38,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

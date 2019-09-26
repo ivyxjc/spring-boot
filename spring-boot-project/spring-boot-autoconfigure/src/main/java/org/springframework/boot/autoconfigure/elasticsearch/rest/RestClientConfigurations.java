@@ -25,7 +25,6 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -47,7 +46,7 @@ class RestClientConfigurations {
 		@Bean
 		@ConditionalOnMissingBean
 		public RestClientBuilder elasticsearchRestClientBuilder(RestClientProperties properties,
-				ObjectProvider<RestClientBuilderCustomizer> builderCustomizers) {
+																ObjectProvider<RestClientBuilderCustomizer> builderCustomizers) {
 			HttpHost[] hosts = properties.getUris().stream().map(HttpHost::create).toArray(HttpHost[]::new);
 			RestClientBuilder builder = RestClient.builder(hosts);
 			PropertyMapper map = PropertyMapper.get();
@@ -78,7 +77,7 @@ class RestClientConfigurations {
 		@Bean
 		@ConditionalOnMissingBean
 		public RestClient elasticsearchRestClient(RestClientBuilder builder,
-				ObjectProvider<RestHighLevelClient> restHighLevelClient) {
+												  ObjectProvider<RestHighLevelClient> restHighLevelClient) {
 			RestHighLevelClient client = restHighLevelClient.getIfUnique();
 			if (client != null) {
 				return client.getLowLevelClient();

@@ -21,7 +21,6 @@ import org.apache.coyote.ProtocolHandler;
 import org.apache.coyote.UpgradeProtocol;
 import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.apache.coyote.http2.Http2Protocol;
-
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.StringUtils;
 

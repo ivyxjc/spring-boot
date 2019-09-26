@@ -18,7 +18,6 @@ package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.support.RootBeanDefinition;
@@ -121,6 +120,10 @@ public class MockitoPostProcessorTests {
 		assertThat(Mockito.mockingDetails(context.getBean(ExampleService.class)).isSpy()).isFalse();
 		assertThat(Mockito.mockingDetails(context.getBean("examplePrimary", ExampleService.class)).isSpy()).isFalse();
 		assertThat(Mockito.mockingDetails(context.getBean("exampleQualified", ExampleService.class)).isSpy()).isTrue();
+	}
+
+	interface SomeInterface {
+
 	}
 
 	@Configuration
@@ -274,10 +277,6 @@ public class MockitoPostProcessorTests {
 		public boolean isSingleton() {
 			return true;
 		}
-
-	}
-
-	interface SomeInterface {
 
 	}
 

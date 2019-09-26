@@ -16,12 +16,11 @@
 
 package org.springframework.boot.origin;
 
-import java.util.HashMap;
-
 import org.junit.Test;
-
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
+
+import java.util.HashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

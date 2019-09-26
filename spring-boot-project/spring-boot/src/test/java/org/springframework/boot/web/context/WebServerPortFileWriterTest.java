@@ -16,21 +16,20 @@
 
 package org.springframework.boot.web.context;
 
-import java.io.File;
-import java.io.FileReader;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.FileReader;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

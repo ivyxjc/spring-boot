@@ -16,16 +16,15 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import org.springframework.boot.configurationprocessor.metadata.ConfigurationMetadata;
+import org.springframework.boot.configurationprocessor.metadata.JsonMarshaller;
 
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
-
-import org.springframework.boot.configurationprocessor.metadata.ConfigurationMetadata;
-import org.springframework.boot.configurationprocessor.metadata.JsonMarshaller;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 /**
  * Test {@link ConfigurationMetadataAnnotationProcessor}.
@@ -35,7 +34,7 @@ import org.springframework.boot.configurationprocessor.metadata.JsonMarshaller;
  * @author Andy Wilkinson
  * @author Kris De Volder
  */
-@SupportedAnnotationTypes({ "*" })
+@SupportedAnnotationTypes({"*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class TestConfigurationMetadataAnnotationProcessor extends ConfigurationMetadataAnnotationProcessor {
 
@@ -48,10 +47,8 @@ public class TestConfigurationMetadataAnnotationProcessor extends ConfigurationM
 	static final String ENDPOINT_ANNOTATION = "org.springframework.boot.configurationsample.Endpoint";
 
 	static final String READ_OPERATION_ANNOTATION = "org.springframework.boot.configurationsample.ReadOperation";
-
-	private ConfigurationMetadata metadata;
-
 	private final File outputLocation;
+	private ConfigurationMetadata metadata;
 
 	public TestConfigurationMetadataAnnotationProcessor(File outputLocation) {
 		this.outputLocation = outputLocation;
@@ -89,13 +86,11 @@ public class TestConfigurationMetadataAnnotationProcessor extends ConfigurationM
 			File metadataFile = new File(this.outputLocation, "META-INF/spring-configuration-metadata.json");
 			if (metadataFile.isFile()) {
 				this.metadata = new JsonMarshaller().read(new FileInputStream(metadataFile));
-			}
-			else {
+			} else {
 				this.metadata = new ConfigurationMetadata();
 			}
 			return this.metadata;
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException("Failed to read metadata from disk", ex);
 		}
 	}

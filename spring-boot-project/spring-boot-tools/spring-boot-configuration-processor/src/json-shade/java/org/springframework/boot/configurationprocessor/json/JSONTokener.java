@@ -72,7 +72,7 @@ public class JSONTokener {
 
 	/**
 	 * @param in JSON encoded string. Null is not permitted and will yield a tokener that
-	 * throws {@code NullPointerExceptions} when methods are called.
+	 *           throws {@code NullPointerExceptions} when methods are called.
 	 */
 	public JSONTokener(String in) {
 		// consume an optional byte order mark (BOM) if it exists
@@ -82,8 +82,21 @@ public class JSONTokener {
 		this.in = in;
 	}
 
+	public static int dehexchar(char hex) {
+		if (hex >= '0' && hex <= '9') {
+			return hex - '0';
+		} else if (hex >= 'A' && hex <= 'F') {
+			return hex - 'A' + 10;
+		} else if (hex >= 'a' && hex <= 'f') {
+			return hex - 'a' + 10;
+		} else {
+			return -1;
+		}
+	}
+
 	/**
 	 * Returns the next value from the input.
+	 *
 	 * @return a {@link JSONObject}, {@link JSONArray}, String, Boolean, Integer, Long,
 	 * Double or {@link JSONObject#NULL}.
 	 * @throws JSONException if the input is malformed.
@@ -91,22 +104,22 @@ public class JSONTokener {
 	public Object nextValue() throws JSONException {
 		int c = nextCleanInternal();
 		switch (c) {
-		case -1:
-			throw syntaxError("End of input");
+			case -1:
+				throw syntaxError("End of input");
 
-		case '{':
-			return readObject();
+			case '{':
+				return readObject();
 
-		case '[':
-			return readArray();
+			case '[':
+				return readArray();
 
-		case '\'':
-		case '"':
-			return nextString((char) c);
+			case '\'':
+			case '"':
+				return nextString((char) c);
 
-		default:
-			this.pos--;
-			return readLiteral();
+			default:
+				this.pos--;
+				return readLiteral();
 		}
 	}
 
@@ -114,50 +127,50 @@ public class JSONTokener {
 		while (this.pos < this.in.length()) {
 			int c = this.in.charAt(this.pos++);
 			switch (c) {
-			case '\t':
-			case ' ':
-			case '\n':
-			case '\r':
-				continue;
-
-			case '/':
-				if (this.pos == this.in.length()) {
-					return c;
-				}
-
-				char peek = this.in.charAt(this.pos);
-				switch (peek) {
-				case '*':
-					// skip a /* c-style comment */
-					this.pos++;
-					int commentEnd = this.in.indexOf("*/", this.pos);
-					if (commentEnd == -1) {
-						throw syntaxError("Unterminated comment");
-					}
-					this.pos = commentEnd + 2;
+				case '\t':
+				case ' ':
+				case '\n':
+				case '\r':
 					continue;
 
 				case '/':
-					// skip a // end-of-line comment
-					this.pos++;
+					if (this.pos == this.in.length()) {
+						return c;
+					}
+
+					char peek = this.in.charAt(this.pos);
+					switch (peek) {
+						case '*':
+							// skip a /* c-style comment */
+							this.pos++;
+							int commentEnd = this.in.indexOf("*/", this.pos);
+							if (commentEnd == -1) {
+								throw syntaxError("Unterminated comment");
+							}
+							this.pos = commentEnd + 2;
+							continue;
+
+						case '/':
+							// skip a // end-of-line comment
+							this.pos++;
+							skipToEndOfLine();
+							continue;
+
+						default:
+							return c;
+					}
+
+				case '#':
+					/*
+					 * Skip a # hash end-of-line comment. The JSON RFC doesn't specify this
+					 * behavior, but it's required to parse existing documents. See
+					 * http://b/2571423.
+					 */
 					skipToEndOfLine();
 					continue;
 
 				default:
 					return c;
-				}
-
-			case '#':
-				/*
-				 * Skip a # hash end-of-line comment. The JSON RFC doesn't specify this
-				 * behavior, but it's required to parse existing documents. See
-				 * http://b/2571423.
-				 */
-				skipToEndOfLine();
-				continue;
-
-			default:
-				return c;
 			}
 		}
 
@@ -183,10 +196,11 @@ public class JSONTokener {
 	 * escape sequences encountered along the way. The opening quote should have already
 	 * been read. This consumes the closing quote, but does not include it in the returned
 	 * string.
+	 *
 	 * @param quote either ' or ".
 	 * @return the string up to but not including {@code quote}
 	 * @throws NumberFormatException if any unicode escape sequences are malformed.
-	 * @throws JSONException if processing of json failed
+	 * @throws JSONException         if processing of json failed
 	 */
 	public String nextString(char quote) throws JSONException {
 		/*
@@ -205,8 +219,7 @@ public class JSONTokener {
 				if (builder == null) {
 					// a new string avoids leaking memory
 					return new String(this.in.substring(start, this.pos - 1));
-				}
-				else {
+				} else {
 					builder.append(this.in, start, this.pos - 1);
 					return builder.toString();
 				}
@@ -232,47 +245,49 @@ public class JSONTokener {
 	 * Unescapes the character identified by the character or characters that immediately
 	 * follow a backslash. The backslash '\' should have already been read. This supports
 	 * both unicode escapes "u000A" and two-character escapes "\n".
+	 *
 	 * @return the unescaped char
 	 * @throws NumberFormatException if any unicode escape sequences are malformed.
-	 * @throws JSONException if processing of json failed
+	 * @throws JSONException         if processing of json failed
 	 */
 	private char readEscapeCharacter() throws JSONException {
 		char escaped = this.in.charAt(this.pos++);
 		switch (escaped) {
-		case 'u':
-			if (this.pos + 4 > this.in.length()) {
-				throw syntaxError("Unterminated escape sequence");
-			}
-			String hex = this.in.substring(this.pos, this.pos + 4);
-			this.pos += 4;
-			return (char) Integer.parseInt(hex, 16);
+			case 'u':
+				if (this.pos + 4 > this.in.length()) {
+					throw syntaxError("Unterminated escape sequence");
+				}
+				String hex = this.in.substring(this.pos, this.pos + 4);
+				this.pos += 4;
+				return (char) Integer.parseInt(hex, 16);
 
-		case 't':
-			return '\t';
+			case 't':
+				return '\t';
 
-		case 'b':
-			return '\b';
+			case 'b':
+				return '\b';
 
-		case 'n':
-			return '\n';
+			case 'n':
+				return '\n';
 
-		case 'r':
-			return '\r';
+			case 'r':
+				return '\r';
 
-		case 'f':
-			return '\f';
+			case 'f':
+				return '\f';
 
-		case '\'':
-		case '"':
-		case '\\':
-		default:
-			return escaped;
+			case '\'':
+			case '"':
+			case '\\':
+			default:
+				return escaped;
 		}
 	}
 
 	/**
 	 * Reads a null, boolean, numeric or unquoted string literal value. Numeric values
 	 * will be returned as an Integer, Long, or Double, in that order of preference.
+	 *
 	 * @return a literal value
 	 * @throws JSONException if processing of json failed
 	 */
@@ -281,14 +296,11 @@ public class JSONTokener {
 
 		if (literal.isEmpty()) {
 			throw syntaxError("Expected literal value");
-		}
-		else if ("null".equalsIgnoreCase(literal)) {
+		} else if ("null".equalsIgnoreCase(literal)) {
 			return JSONObject.NULL;
-		}
-		else if ("true".equalsIgnoreCase(literal)) {
+		} else if ("true".equalsIgnoreCase(literal)) {
 			return Boolean.TRUE;
-		}
-		else if ("false".equalsIgnoreCase(literal)) {
+		} else if ("false".equalsIgnoreCase(literal)) {
 			return Boolean.FALSE;
 		}
 
@@ -299,8 +311,7 @@ public class JSONTokener {
 			if (number.startsWith("0x") || number.startsWith("0X")) {
 				number = number.substring(2);
 				base = 16;
-			}
-			else if (number.startsWith("0") && number.length() > 1) {
+			} else if (number.startsWith("0") && number.length() > 1) {
 				number = number.substring(1);
 				base = 8;
 			}
@@ -308,12 +319,10 @@ public class JSONTokener {
 				long longValue = Long.parseLong(number, base);
 				if (longValue <= Integer.MAX_VALUE && longValue >= Integer.MIN_VALUE) {
 					return (int) longValue;
-				}
-				else {
+				} else {
 					return longValue;
 				}
-			}
-			catch (NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				/*
 				 * This only happens for integral numbers greater than Long.MAX_VALUE,
 				 * numbers in exponential form (5e-10) and unquoted strings. Fall through
@@ -325,8 +334,7 @@ public class JSONTokener {
 		/* ...next try to parse as a floating point... */
 		try {
 			return Double.valueOf(literal);
-		}
-		catch (NumberFormatException ignored) {
+		} catch (NumberFormatException ignored) {
 		}
 
 		/* ... finally give up. We have an unquoted string */
@@ -336,6 +344,7 @@ public class JSONTokener {
 	/**
 	 * Returns the string up to but not including any of the given characters or a newline
 	 * character. This does not consume the excluded character.
+	 *
 	 * @return the string up to but not including any of the given characters or a newline
 	 * character
 	 */
@@ -353,6 +362,7 @@ public class JSONTokener {
 	/**
 	 * Reads a sequence of key/value pairs and the trailing closing brace '}' of an
 	 * object. The opening brace '{' should have already been read.
+	 *
 	 * @return an object
 	 * @throws JSONException if processing of json failed
 	 */
@@ -363,8 +373,7 @@ public class JSONTokener {
 		int first = nextCleanInternal();
 		if (first == '}') {
 			return result;
-		}
-		else if (first != -1) {
+		} else if (first != -1) {
 			this.pos--;
 		}
 
@@ -373,8 +382,7 @@ public class JSONTokener {
 			if (!(name instanceof String)) {
 				if (name == null) {
 					throw syntaxError("Names cannot be null");
-				}
-				else {
+				} else {
 					throw syntaxError("Names must be strings, but " + name
 							+ " is of type " + name.getClass().getName());
 				}
@@ -396,13 +404,13 @@ public class JSONTokener {
 			result.put((String) name, nextValue());
 
 			switch (nextCleanInternal()) {
-			case '}':
-				return result;
-			case ';':
-			case ',':
-				continue;
-			default:
-				throw syntaxError("Unterminated object");
+				case '}':
+					return result;
+				case ';':
+				case ',':
+					continue;
+				default:
+					throw syntaxError("Unterminated object");
 			}
 		}
 	}
@@ -411,6 +419,7 @@ public class JSONTokener {
 	 * Reads a sequence of values and the trailing closing brace ']' of an array. The
 	 * opening brace '[' should have already been read. Note that "[]" yields an empty
 	 * array, but "[,]" returns a two-element array equivalent to "[null,null]".
+	 *
 	 * @return an array
 	 * @throws JSONException if processing of json failed
 	 */
@@ -422,34 +431,34 @@ public class JSONTokener {
 
 		while (true) {
 			switch (nextCleanInternal()) {
-			case -1:
-				throw syntaxError("Unterminated array");
-			case ']':
-				if (hasTrailingSeparator) {
+				case -1:
+					throw syntaxError("Unterminated array");
+				case ']':
+					if (hasTrailingSeparator) {
+						result.put(null);
+					}
+					return result;
+				case ',':
+				case ';':
+					/* A separator without a value first means "null". */
 					result.put(null);
-				}
-				return result;
-			case ',':
-			case ';':
-				/* A separator without a value first means "null". */
-				result.put(null);
-				hasTrailingSeparator = true;
-				continue;
-			default:
-				this.pos--;
+					hasTrailingSeparator = true;
+					continue;
+				default:
+					this.pos--;
 			}
 
 			result.put(nextValue());
 
 			switch (nextCleanInternal()) {
-			case ']':
-				return result;
-			case ',':
-			case ';':
-				hasTrailingSeparator = true;
-				continue;
-			default:
-				throw syntaxError("Unterminated array");
+				case ']':
+					return result;
+				case ',':
+				case ';':
+					hasTrailingSeparator = true;
+					continue;
+				default:
+					throw syntaxError("Unterminated array");
 			}
 		}
 	}
@@ -457,21 +466,12 @@ public class JSONTokener {
 	/**
 	 * Returns an exception containing the given message plus the current position and the
 	 * entire input string.
+	 *
 	 * @param message the message
 	 * @return an exception
 	 */
 	public JSONException syntaxError(String message) {
 		return new JSONException(message + this);
-	}
-
-	/**
-	 * Returns the current position and the entire input string.
-	 * @return the current position and the entire input string.
-	 */
-	@Override
-	public String toString() {
-		// consistent with the original implementation
-		return " at character " + this.pos + " of " + this.in;
 	}
 
 	/*
@@ -481,6 +481,17 @@ public class JSONTokener {
 	 * exist only because they were exposed by the original implementation and may be used
 	 * by some clients.
 	 */
+
+	/**
+	 * Returns the current position and the entire input string.
+	 *
+	 * @return the current position and the entire input string.
+	 */
+	@Override
+	public String toString() {
+		// consistent with the original implementation
+		return " at character " + this.pos + " of " + this.in;
+	}
 
 	public boolean more() {
 		return this.pos < this.in.length();
@@ -533,8 +544,7 @@ public class JSONTokener {
 		if (index != -1) {
 			this.pos = index;
 			return to;
-		}
-		else {
+		} else {
 			return '\0';
 		}
 	}
@@ -542,21 +552,6 @@ public class JSONTokener {
 	public void back() {
 		if (--this.pos == -1) {
 			this.pos = 0;
-		}
-	}
-
-	public static int dehexchar(char hex) {
-		if (hex >= '0' && hex <= '9') {
-			return hex - '0';
-		}
-		else if (hex >= 'A' && hex <= 'F') {
-			return hex - 'A' + 10;
-		}
-		else if (hex >= 'a' && hex <= 'f') {
-			return hex - 'a' + 10;
-		}
-		else {
-			return -1;
 		}
 	}
 

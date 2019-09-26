@@ -16,12 +16,12 @@
 
 package org.springframework.boot.loader.tools;
 
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Provides access to the java binary executable, regardless of OS.
@@ -49,6 +49,7 @@ public class JavaExecutable {
 
 	/**
 	 * Create a new {@link ProcessBuilder} that will run with the Java executable.
+	 *
 	 * @param arguments the command arguments
 	 * @return a {@link ProcessBuilder}
 	 */
@@ -62,8 +63,7 @@ public class JavaExecutable {
 	public String toString() {
 		try {
 			return this.file.getCanonicalPath();
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

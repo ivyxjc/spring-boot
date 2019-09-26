@@ -16,14 +16,7 @@
 
 package org.springframework.boot.web.servlet.error;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-
 import org.junit.Test;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.validation.BindException;
@@ -34,6 +27,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.ServletException;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

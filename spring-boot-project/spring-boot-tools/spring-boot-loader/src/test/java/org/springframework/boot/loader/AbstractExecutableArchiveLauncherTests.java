@@ -16,6 +16,11 @@
 
 package org.springframework.boot.loader;
 
+import org.junit.Rule;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.loader.archive.Archive;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -31,12 +36,6 @@ import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
-
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.loader.archive.Archive;
-import org.springframework.util.FileCopyUtils;
 
 /**
  * Base class for testing {@link ExecutableArchiveLauncher} implementations.
@@ -77,8 +76,7 @@ public abstract class AbstractExecutableArchiveLauncherTests {
 			File entryFile = new File(exploded, entry.getName());
 			if (entry.isDirectory()) {
 				entryFile.mkdirs();
-			}
-			else {
+			} else {
 				FileCopyUtils.copy(jarFile.getInputStream(entry), new FileOutputStream(entryFile));
 			}
 		}

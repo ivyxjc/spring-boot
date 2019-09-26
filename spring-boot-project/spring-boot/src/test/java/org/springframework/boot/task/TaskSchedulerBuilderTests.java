@@ -16,19 +16,15 @@
 
 package org.springframework.boot.task;
 
+import org.junit.Test;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
 import java.util.Collections;
 import java.util.Set;
 
-import org.junit.Test;
-
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link TaskSchedulerBuilder}.

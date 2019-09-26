@@ -16,16 +16,16 @@
 
 package org.springframework.boot.web.servlet;
 
-import javax.servlet.Filter;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
+
+import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 /**
  * A {@link ServletContextInitializer} to register {@link DelegatingFilterProxy}s in a
@@ -45,28 +45,28 @@ import org.springframework.web.filter.DelegatingFilterProxy;
  * be used as the filter name if not otherwise specified.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see ServletContextInitializer
  * @see ServletContext#addFilter(String, Filter)
  * @see FilterRegistrationBean
  * @see DelegatingFilterProxy
+ * @since 1.4.0
  */
 public class DelegatingFilterProxyRegistrationBean extends AbstractFilterRegistrationBean<DelegatingFilterProxy>
 		implements ApplicationContextAware {
 
-	private ApplicationContext applicationContext;
-
 	private final String targetBeanName;
+	private ApplicationContext applicationContext;
 
 	/**
 	 * Create a new {@link DelegatingFilterProxyRegistrationBean} instance to be
 	 * registered with the specified {@link ServletRegistrationBean}s.
-	 * @param targetBeanName name of the target filter bean to look up in the Spring
-	 * application context (must not be {@code null}).
+	 *
+	 * @param targetBeanName           name of the target filter bean to look up in the Spring
+	 *                                 application context (must not be {@code null}).
 	 * @param servletRegistrationBeans associate {@link ServletRegistrationBean}s
 	 */
 	public DelegatingFilterProxyRegistrationBean(String targetBeanName,
-			ServletRegistrationBean<?>... servletRegistrationBeans) {
+												 ServletRegistrationBean<?>... servletRegistrationBeans) {
 		super(servletRegistrationBeans);
 		Assert.hasLength(targetBeanName, "TargetBeanName must not be null or empty");
 		this.targetBeanName = targetBeanName;

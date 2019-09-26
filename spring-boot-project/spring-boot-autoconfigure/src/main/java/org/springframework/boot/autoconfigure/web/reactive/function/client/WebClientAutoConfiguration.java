@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.reactive.function.client;
 
-import java.util.List;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -33,6 +31,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link WebClient}.
  * <p>
@@ -46,7 +46,7 @@ import org.springframework.web.reactive.function.client.WebClient;
  */
 @Configuration
 @ConditionalOnClass(WebClient.class)
-@AutoConfigureAfter({ CodecsAutoConfiguration.class, ClientHttpConnectorAutoConfiguration.class })
+@AutoConfigureAfter({CodecsAutoConfiguration.class, ClientHttpConnectorAutoConfiguration.class})
 public class WebClientAutoConfiguration {
 
 	private final WebClient.Builder webClientBuilder;

@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.context;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -46,13 +45,13 @@ public class ConfigurationPropertiesAutoConfigurationTests {
 
 	@Test
 	public void processAnnotatedBean() {
-		load(new Class[] { AutoConfig.class, SampleBean.class }, "foo.name:test");
+		load(new Class[]{AutoConfig.class, SampleBean.class}, "foo.name:test");
 		assertThat(this.context.getBean(SampleBean.class).getName()).isEqualTo("test");
 	}
 
 	@Test
 	public void processAnnotatedBeanNoAutoConfig() {
-		load(new Class[] { SampleBean.class }, "foo.name:test");
+		load(new Class[]{SampleBean.class}, "foo.name:test");
 		assertThat(this.context.getBean(SampleBean.class).getName()).isEqualTo("default");
 	}
 

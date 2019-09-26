@@ -16,20 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.bind.JavaBeanBinder.Bean;
 import org.springframework.boot.context.properties.bind.JavaBeanBinder.BeanProperty;
 import org.springframework.boot.context.properties.bind.handler.IgnoreErrorsBindHandler;
@@ -40,9 +28,12 @@ import org.springframework.boot.convert.Delimiter;
 import org.springframework.core.ResolvableType;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.entry;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.time.LocalDate;
+import java.util.*;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link JavaBeanBinder}.
@@ -507,8 +498,7 @@ public class JavaBeanBinderTests {
 					if (method.getName().equals("setProperty")) {
 						if (method.getParameters()[0].getType().equals(int.class)) {
 							intSetter = i;
-						}
-						else {
+						} else {
 							stringSetter = i;
 						}
 					}
@@ -525,6 +515,14 @@ public class JavaBeanBinderTests {
 		BeanProperty property = bean.getProperties().get("property");
 		PropertyWithOverloadedSetter target = new PropertyWithOverloadedSetter();
 		property.setValue(() -> target, "some string");
+	}
+
+	public enum ExampleEnum {
+
+		FOO_BAR,
+
+		BAR_BAZ
+
 	}
 
 	public static class ExampleValueBean {
@@ -910,14 +908,6 @@ public class JavaBeanBinderTests {
 
 	}
 
-	public enum ExampleEnum {
-
-		FOO_BAR,
-
-		BAR_BAZ
-
-	}
-
 	public static class ConverterAnnotatedExampleBean {
 
 		@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
@@ -981,16 +971,16 @@ public class JavaBeanBinderTests {
 
 		private String property;
 
+		public String getProperty() {
+			return this.property;
+		}
+
 		public void setProperty(int property) {
 			this.property = String.valueOf(property);
 		}
 
 		public void setProperty(String property) {
 			this.property = property;
-		}
-
-		public String getProperty() {
-			return this.property;
 		}
 
 	}

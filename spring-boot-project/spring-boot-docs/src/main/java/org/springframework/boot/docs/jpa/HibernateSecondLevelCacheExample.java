@@ -17,7 +17,6 @@
 package org.springframework.boot.docs.jpa;
 
 import org.hibernate.cache.jcache.ConfigSettings;
-
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.cache.jcache.JCacheCacheManager;
 import org.springframework.context.annotation.Bean;

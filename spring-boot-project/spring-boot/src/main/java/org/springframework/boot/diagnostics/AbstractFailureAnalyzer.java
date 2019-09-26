@@ -40,8 +40,9 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 	/**
 	 * Returns an analysis of the given {@code rootFailure}, or {@code null} if no
 	 * analysis was possible.
+	 *
 	 * @param rootFailure the root failure passed to the analyzer
-	 * @param cause the actual found cause
+	 * @param cause       the actual found cause
 	 * @return the analysis or {@code null}
 	 */
 	protected abstract FailureAnalysis analyze(Throwable rootFailure, T cause);
@@ -49,6 +50,7 @@ public abstract class AbstractFailureAnalyzer<T extends Throwable> implements Fa
 	/**
 	 * Return the cause type being handled by the analyzer. By default the class generic
 	 * is used.
+	 *
 	 * @return the cause type
 	 */
 	@SuppressWarnings("unchecked")

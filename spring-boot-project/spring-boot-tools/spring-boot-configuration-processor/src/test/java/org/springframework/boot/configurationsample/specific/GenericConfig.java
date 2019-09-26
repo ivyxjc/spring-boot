@@ -16,11 +16,11 @@
 
 package org.springframework.boot.configurationsample.specific;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
 import org.springframework.boot.configurationsample.NestedConfigurationProperty;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Demonstrate that only relevant generics are stored in the metadata.
@@ -39,14 +39,11 @@ public class GenericConfig<T> {
 
 	public static class Foo {
 
-		private String name;
-
 		@NestedConfigurationProperty
 		private final Bar<String> bar = new Bar<>();
-
 		private final Map<String, Bar<Integer>> stringToBar = new HashMap<>();
-
 		private final Map<String, Integer> stringToInteger = new HashMap<>();
+		private String name;
 
 		public String getName() {
 			return this.name;
@@ -72,10 +69,9 @@ public class GenericConfig<T> {
 
 	public static class Bar<U> {
 
-		private String name;
-
 		@NestedConfigurationProperty
 		private final Biz<String> biz = new Biz<>();
+		private String name;
 
 		public String getName() {
 			return this.name;

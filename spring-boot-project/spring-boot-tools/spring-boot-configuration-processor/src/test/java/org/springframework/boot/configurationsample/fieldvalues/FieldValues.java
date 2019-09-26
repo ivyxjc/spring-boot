@@ -16,13 +16,13 @@
 
 package org.springframework.boot.configurationsample.fieldvalues;
 
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
 import org.springframework.util.MimeType;
 import org.springframework.util.unit.DataSize;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 
 /**
  * Sample object containing fields with initial values.
@@ -48,7 +48,7 @@ public class FieldValues {
 
 	private static final MimeType DEFAULT_MIME_TYPE = MimeType.valueOf("text/plain");
 
-	private static final String[] STRING_ARRAY_CONST = new String[] { "OK", "KO" };
+	private static final String[] STRING_ARRAY_CONST = new String[]{"OK", "KO"};
 
 	private String string = "1";
 
@@ -96,7 +96,7 @@ public class FieldValues {
 
 	private Object objectInstance = new StringBuffer();
 
-	private String[] stringArray = new String[] { "FOO", "BAR" };
+	private String[] stringArray = new String[]{"FOO", "BAR"};
 
 	private String[] stringArrayNone;
 
@@ -104,11 +104,11 @@ public class FieldValues {
 
 	private String[] stringArrayConst = STRING_ARRAY_CONST;
 
-	private String[] stringArrayConstElements = new String[] { STRING_CONST };
+	private String[] stringArrayConstElements = new String[]{STRING_CONST};
 
-	private Integer[] integerArray = new Integer[] { 42, 24 };
+	private Integer[] integerArray = new Integer[]{42, 24};
 
-	private FieldValues[] unknownArray = new FieldValues[] { new FieldValues() };
+	private FieldValues[] unknownArray = new FieldValues[]{new FieldValues()};
 
 	private Duration durationNone;
 

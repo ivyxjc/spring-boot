@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.client;
 
-import java.util.Arrays;
-
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
+
+import java.util.Arrays;
 
 /**
  * Default implementation of {@link WebClientExchangeTagsProvider}.
@@ -38,8 +37,7 @@ public class DefaultWebClientExchangeTagsProvider implements WebClientExchangeTa
 		Tag clientName = WebClientExchangeTags.clientName(request);
 		if (response != null) {
 			return Arrays.asList(method, uri, clientName, WebClientExchangeTags.status(response));
-		}
-		else {
+		} else {
 			return Arrays.asList(method, uri, clientName, WebClientExchangeTags.status(throwable));
 		}
 	}

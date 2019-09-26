@@ -16,18 +16,17 @@
 
 package org.springframework.boot.test.autoconfigure.restdocs;
 
-import java.io.File;
-
 import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -43,13 +42,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.example.com", uriPort = 443)
 public class MockMvcRestDocsAutoConfigurationIntegrationTests {
 
+	@Autowired
+	private MockMvc mvc;
+
 	@Before
 	public void deleteSnippets() {
 		FileSystemUtils.deleteRecursively(new File("target/generated-snippets"));
 	}
-
-	@Autowired
-	private MockMvc mvc;
 
 	@Test
 	public void defaultSnippetsAreWritten() throws Exception {

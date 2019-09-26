@@ -16,18 +16,10 @@
 
 package org.springframework.boot.actuate.endpoint.web.test;
 
-import java.lang.reflect.Modifier;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
-
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +30,13 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory.EncodingMode;
+
+import java.lang.reflect.Modifier;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Base class for web endpoint runners.
@@ -93,8 +92,7 @@ abstract class AbstractWebEndpointRunner extends BlockJUnit4ClassRunner {
 			public void evaluate() throws Throwable {
 				try {
 					delegate.evaluate();
-				}
-				finally {
+				} finally {
 					AbstractWebEndpointRunner.this.testContext.afterClass();
 				}
 			}
@@ -125,8 +123,7 @@ abstract class AbstractWebEndpointRunner extends BlockJUnit4ClassRunner {
 			public void evaluate() throws Throwable {
 				try {
 					delegate.evaluate();
-				}
-				finally {
+				} finally {
 					AbstractWebEndpointRunner.this.testContext.afterTest();
 				}
 			}

@@ -16,9 +16,6 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.undertow.attribute.RequestHeaderAttribute;
 import io.undertow.predicate.Predicate;
 import io.undertow.predicate.Predicates;
@@ -29,11 +26,13 @@ import io.undertow.server.handlers.encoding.EncodingHandler;
 import io.undertow.server.handlers.encoding.GzipEncodingProvider;
 import io.undertow.util.Headers;
 import io.undertow.util.HttpString;
-
 import org.springframework.boot.web.server.Compression;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configure the HTTP compression on an Undertow {@link HttpHandler}.
@@ -48,6 +47,7 @@ final class UndertowCompressionConfigurer {
 
 	/**
 	 * Optionally wrap the given {@link HttpHandler} for HTTP compression support.
+	 *
 	 * @param compression the HTTP compression configuration
 	 * @param httpHandler the HTTP handler to wrap
 	 * @return the wrapped HTTP handler if compression is enabled, or the handler itself

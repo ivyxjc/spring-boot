@@ -16,15 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProviders;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
@@ -33,6 +26,11 @@ import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * An {@link AbstractUrlHandlerMapping} for an application's welcome page. Supports both
@@ -49,19 +47,18 @@ final class WelcomePageHandlerMapping extends AbstractUrlHandlerMapping {
 	private static final List<MediaType> MEDIA_TYPES_ALL = Collections.singletonList(MediaType.ALL);
 
 	WelcomePageHandlerMapping(TemplateAvailabilityProviders templateAvailabilityProviders,
-			ApplicationContext applicationContext, Optional<Resource> welcomePage, String staticPathPattern) {
+							  ApplicationContext applicationContext, Optional<Resource> welcomePage, String staticPathPattern) {
 		if (welcomePage.isPresent() && "/**".equals(staticPathPattern)) {
 			logger.info("Adding welcome page: " + welcomePage.get());
 			setRootViewName("forward:index.html");
-		}
-		else if (welcomeTemplateExists(templateAvailabilityProviders, applicationContext)) {
+		} else if (welcomeTemplateExists(templateAvailabilityProviders, applicationContext)) {
 			logger.info("Adding welcome page template: index");
 			setRootViewName("index");
 		}
 	}
 
 	private boolean welcomeTemplateExists(TemplateAvailabilityProviders templateAvailabilityProviders,
-			ApplicationContext applicationContext) {
+										  ApplicationContext applicationContext) {
 		return templateAvailabilityProviders.getProvider("index", applicationContext) != null;
 	}
 

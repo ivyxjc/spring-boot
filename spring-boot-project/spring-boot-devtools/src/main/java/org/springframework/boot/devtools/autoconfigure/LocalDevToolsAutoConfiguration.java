@@ -16,10 +16,6 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -43,6 +39,10 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.GenericApplicationListener;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for local development support.
@@ -138,7 +138,7 @@ public class LocalDevToolsAutoConfiguration {
 
 		@Bean
 		@ConditionalOnProperty(prefix = "spring.devtools.restart", name = "log-condition-evaluation-delta",
-				matchIfMissing = true)
+							   matchIfMissing = true)
 		public ConditionEvaluationDeltaLoggingListener conditionEvaluationDeltaLoggingListener() {
 			return new ConditionEvaluationDeltaLoggingListener();
 		}

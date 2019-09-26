@@ -16,13 +16,13 @@
 
 package org.springframework.boot.jdbc;
 
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
-
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Enumeration of common database drivers.
@@ -71,7 +71,6 @@ public enum DatabaseDriver {
 	 * Maria DB.
 	 */
 	MARIADB("MySQL", "org.mariadb.jdbc.Driver", "org.mariadb.jdbc.MariaDbDataSource", "SELECT 1") {
-
 		@Override
 		public String getId() {
 			return "mysql";
@@ -96,6 +95,7 @@ public enum DatabaseDriver {
 
 	/**
 	 * HANA - SAP HANA Database - HDB.
+	 *
 	 * @since 2.1.0
 	 */
 	HANA("HDB", "com.sap.db.jdbc.Driver", "com.sap.db.jdbcext.XADataSourceSAP", "SELECT 1 FROM SYS.DUMMY") {
@@ -116,7 +116,6 @@ public enum DatabaseDriver {
 	 */
 	SQLSERVER("Microsoft SQL Server", "com.microsoft.sqlserver.jdbc.SQLServerDriver",
 			"com.microsoft.sqlserver.jdbc.SQLServerXADataSource", "SELECT 1") {
-
 		@Override
 		protected boolean matchProductName(String productName) {
 			return super.matchProductName(productName) || "SQL SERVER".equalsIgnoreCase(productName);
@@ -130,7 +129,6 @@ public enum DatabaseDriver {
 	 */
 	FIREBIRD("Firebird", "org.firebirdsql.jdbc.FBDriver", "org.firebirdsql.ds.FBXADataSource",
 			"SELECT 1 FROM RDB$DATABASE") {
-
 		@Override
 		protected Collection<String> getUrlPrefixes() {
 			return Collections.singleton("firebirdsql");
@@ -147,7 +145,6 @@ public enum DatabaseDriver {
 	 * DB2 Server.
 	 */
 	DB2("DB2", "com.ibm.db2.jcc.DB2Driver", "com.ibm.db2.jcc.DB2XADataSource", "SELECT 1 FROM SYSIBM.SYSDUMMY1") {
-
 		@Override
 		protected boolean matchProductName(String productName) {
 			return super.matchProductName(productName) || productName.toLowerCase(Locale.ENGLISH).startsWith("db2/");
@@ -159,7 +156,6 @@ public enum DatabaseDriver {
 	 */
 	DB2_AS400("DB2 UDB for AS/400", "com.ibm.as400.access.AS400JDBCDriver",
 			"com.ibm.as400.access.AS400JDBCXADataSource", "SELECT 1 FROM SYSIBM.SYSDUMMY1") {
-
 		@Override
 		public String getId() {
 			return "db2";
@@ -185,7 +181,6 @@ public enum DatabaseDriver {
 	 * Informix.
 	 */
 	INFORMIX("Informix Dynamic Server", "com.informix.jdbc.IfxDriver", null, "select count(*) from systables") {
-
 		@Override
 		protected Collection<String> getUrlPrefixes() {
 			return Arrays.asList("informix-sqli", "informix-direct");
@@ -217,47 +212,8 @@ public enum DatabaseDriver {
 	}
 
 	/**
-	 * Return the identifier of this driver.
-	 * @return the identifier
-	 */
-	public String getId() {
-		return name().toLowerCase(Locale.ENGLISH);
-	}
-
-	protected boolean matchProductName(String productName) {
-		return this.productName != null && this.productName.equalsIgnoreCase(productName);
-	}
-
-	protected Collection<String> getUrlPrefixes() {
-		return Collections.singleton(this.name().toLowerCase(Locale.ENGLISH));
-	}
-
-	/**
-	 * Return the driver class name.
-	 * @return the class name or {@code null}
-	 */
-	public String getDriverClassName() {
-		return this.driverClassName;
-	}
-
-	/**
-	 * Return the XA driver source class name.
-	 * @return the class name or {@code null}
-	 */
-	public String getXaDataSourceClassName() {
-		return this.xaDataSourceClassName;
-	}
-
-	/**
-	 * Return the validation query.
-	 * @return the validation query or {@code null}
-	 */
-	public String getValidationQuery() {
-		return this.validationQuery;
-	}
-
-	/**
 	 * Find a {@link DatabaseDriver} for the given URL.
+	 *
 	 * @param url the JDBC URL
 	 * @return the database driver or {@link #UNKNOWN} if not found
 	 */
@@ -279,6 +235,7 @@ public enum DatabaseDriver {
 
 	/**
 	 * Find a {@link DatabaseDriver} for the given product name.
+	 *
 	 * @param productName product name
 	 * @return the database driver or {@link #UNKNOWN} if not found
 	 */
@@ -291,6 +248,50 @@ public enum DatabaseDriver {
 			}
 		}
 		return UNKNOWN;
+	}
+
+	/**
+	 * Return the identifier of this driver.
+	 *
+	 * @return the identifier
+	 */
+	public String getId() {
+		return name().toLowerCase(Locale.ENGLISH);
+	}
+
+	protected boolean matchProductName(String productName) {
+		return this.productName != null && this.productName.equalsIgnoreCase(productName);
+	}
+
+	protected Collection<String> getUrlPrefixes() {
+		return Collections.singleton(this.name().toLowerCase(Locale.ENGLISH));
+	}
+
+	/**
+	 * Return the driver class name.
+	 *
+	 * @return the class name or {@code null}
+	 */
+	public String getDriverClassName() {
+		return this.driverClassName;
+	}
+
+	/**
+	 * Return the XA driver source class name.
+	 *
+	 * @return the class name or {@code null}
+	 */
+	public String getXaDataSourceClassName() {
+		return this.xaDataSourceClassName;
+	}
+
+	/**
+	 * Return the validation query.
+	 *
+	 * @return the validation query or {@code null}
+	 */
+	public String getValidationQuery() {
+		return this.validationQuery;
 	}
 
 }

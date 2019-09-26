@@ -16,29 +16,20 @@
 
 package org.springframework.boot.actuate.metrics;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.BiFunction;
-import java.util.stream.Collectors;
-
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Statistic;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
-
 import org.springframework.boot.actuate.endpoint.InvalidEndpointRequestException;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.lang.Nullable;
+
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 /**
  * An {@link Endpoint} for exposing the metrics held by a {@link MeterRegistry}.
@@ -66,8 +57,7 @@ public class MetricsEndpoint {
 	private void collectNames(Set<String> names, MeterRegistry registry) {
 		if (registry instanceof CompositeMeterRegistry) {
 			((CompositeMeterRegistry) registry).getRegistries().forEach((member) -> collectNames(names, member));
-		}
-		else {
+		} else {
 			registry.getMeters().stream().map(this::getName).forEach(names::add);
 		}
 	}
@@ -116,7 +106,7 @@ public class MetricsEndpoint {
 	}
 
 	private Collection<Meter> findFirstMatchingMeters(CompositeMeterRegistry composite, String name,
-			Iterable<Tag> tags) {
+													  Iterable<Tag> tags) {
 		return composite.getRegistries().stream().map((registry) -> findFirstMatchingMeters(registry, name, tags))
 				.filter((matching) -> !matching.isEmpty()).findFirst().orElse(Collections.emptyList());
 	}
@@ -194,7 +184,7 @@ public class MetricsEndpoint {
 		private final List<AvailableTag> availableTags;
 
 		MetricResponse(String name, String description, String baseUnit, List<Sample> measurements,
-				List<AvailableTag> availableTags) {
+					   List<AvailableTag> availableTags) {
 			this.name = name;
 			this.description = description;
 			this.baseUnit = baseUnit;

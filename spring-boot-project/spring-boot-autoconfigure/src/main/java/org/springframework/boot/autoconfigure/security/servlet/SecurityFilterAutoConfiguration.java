@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.EnumSet;
-import java.util.stream.Collectors;
-
-import javax.servlet.DispatcherType;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -36,6 +31,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Security's Filter.
  * Configured separately from {@link SpringBootWebSecurityConfiguration} to ensure that
@@ -50,7 +49,7 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 @Configuration
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(SecurityProperties.class)
-@ConditionalOnClass({ AbstractSecurityWebApplicationInitializer.class, SessionCreationPolicy.class })
+@ConditionalOnClass({AbstractSecurityWebApplicationInitializer.class, SessionCreationPolicy.class})
 @AutoConfigureAfter(SecurityAutoConfiguration.class)
 public class SecurityFilterAutoConfiguration {
 

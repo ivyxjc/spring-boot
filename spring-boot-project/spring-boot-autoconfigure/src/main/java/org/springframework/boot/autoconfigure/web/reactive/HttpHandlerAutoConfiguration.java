@@ -38,10 +38,10 @@ import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ DispatcherHandler.class, HttpHandler.class })
+@ConditionalOnClass({DispatcherHandler.class, HttpHandler.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
 @ConditionalOnMissingBean(HttpHandler.class)
-@AutoConfigureAfter({ WebFluxAutoConfiguration.class })
+@AutoConfigureAfter({WebFluxAutoConfiguration.class})
 @AutoConfigureOrder(Ordered.HIGHEST_PRECEDENCE + 10)
 public class HttpHandlerAutoConfiguration {
 

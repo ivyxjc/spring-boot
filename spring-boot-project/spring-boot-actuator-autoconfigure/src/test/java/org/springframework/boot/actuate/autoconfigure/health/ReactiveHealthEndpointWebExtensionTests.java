@@ -16,24 +16,17 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.security.Principal;
-import java.time.Duration;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.endpoint.SecurityContext;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthEndpoint;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.HealthWebEndpointResponseMapper;
-import org.springframework.boot.actuate.health.ReactiveHealthEndpointWebExtension;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicatorRegistry;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.util.ReflectionTestUtils;
+import reactor.core.publisher.Mono;
+
+import java.security.Principal;
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -82,16 +75,16 @@ public class ReactiveHealthEndpointWebExtensionTests {
 	public void regularAndReactiveHealthIndicatorsMatch() {
 		this.contextRunner.withPropertyValues("management.endpoint.health.show-details=always")
 				.withUserConfiguration(HealthIndicatorsConfiguration.class).run((context) -> {
-					HealthEndpoint endpoint = context.getBean(HealthEndpoint.class);
-					ReactiveHealthEndpointWebExtension extension = context
-							.getBean(ReactiveHealthEndpointWebExtension.class);
-					Health endpointHealth = endpoint.health();
-					SecurityContext securityContext = mock(SecurityContext.class);
-					given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
-					Health extensionHealth = extension.health(securityContext).block(Duration.ofSeconds(30)).getBody();
-					assertThat(endpointHealth.getDetails()).containsOnlyKeys("application", "first", "second");
-					assertThat(extensionHealth.getDetails()).containsOnlyKeys("application", "first", "second");
-				});
+			HealthEndpoint endpoint = context.getBean(HealthEndpoint.class);
+			ReactiveHealthEndpointWebExtension extension = context
+					.getBean(ReactiveHealthEndpointWebExtension.class);
+			Health endpointHealth = endpoint.health();
+			SecurityContext securityContext = mock(SecurityContext.class);
+			given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
+			Health extensionHealth = extension.health(securityContext).block(Duration.ofSeconds(30)).getBody();
+			assertThat(endpointHealth.getDetails()).containsOnlyKeys("application", "first", "second");
+			assertThat(extensionHealth.getDetails()).containsOnlyKeys("application", "first", "second");
+		});
 	}
 
 	@Test
@@ -100,7 +93,7 @@ public class ReactiveHealthEndpointWebExtensionTests {
 			ReactiveHealthEndpointWebExtension extension = context.getBean(ReactiveHealthEndpointWebExtension.class);
 			assertThat(
 					extension.health(mock(SecurityContext.class)).block(Duration.ofSeconds(30)).getBody().getDetails())
-							.isEmpty();
+					.isEmpty();
 		});
 	}
 
@@ -150,57 +143,57 @@ public class ReactiveHealthEndpointWebExtensionTests {
 	public void detailsCanBeHiddenFromUnauthorizedUsers() {
 		this.contextRunner.withPropertyValues("management.endpoint.health.show-details=when-authorized",
 				"management.endpoint.health.roles=ACTUATOR").run((context) -> {
-					ReactiveHealthEndpointWebExtension extension = context
-							.getBean(ReactiveHealthEndpointWebExtension.class);
-					SecurityContext securityContext = mock(SecurityContext.class);
-					given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
-					given(securityContext.isUserInRole("ACTUATOR")).willReturn(false);
-					assertThat(extension.health(securityContext).block(Duration.ofSeconds(30)).getBody().getDetails())
-							.isEmpty();
-				});
+			ReactiveHealthEndpointWebExtension extension = context
+					.getBean(ReactiveHealthEndpointWebExtension.class);
+			SecurityContext securityContext = mock(SecurityContext.class);
+			given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
+			given(securityContext.isUserInRole("ACTUATOR")).willReturn(false);
+			assertThat(extension.health(securityContext).block(Duration.ofSeconds(30)).getBody().getDetails())
+					.isEmpty();
+		});
 	}
 
 	@Test
 	public void detailsCanBeShownToAuthorizedUsers() {
 		this.contextRunner.withPropertyValues("management.endpoint.health.show-details=when-authorized",
 				"management.endpoint.health.roles=ACTUATOR").run((context) -> {
-					ReactiveHealthEndpointWebExtension extension = context
-							.getBean(ReactiveHealthEndpointWebExtension.class);
-					SecurityContext securityContext = mock(SecurityContext.class);
-					given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
-					given(securityContext.isUserInRole("ACTUATOR")).willReturn(true);
-					assertThat(extension.health(securityContext).block(Duration.ofSeconds(30)).getBody().getDetails())
-							.isNotEmpty();
-				});
+			ReactiveHealthEndpointWebExtension extension = context
+					.getBean(ReactiveHealthEndpointWebExtension.class);
+			SecurityContext securityContext = mock(SecurityContext.class);
+			given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
+			given(securityContext.isUserInRole("ACTUATOR")).willReturn(true);
+			assertThat(extension.health(securityContext).block(Duration.ofSeconds(30)).getBody().getDetails())
+					.isNotEmpty();
+		});
 	}
 
 	@Test
 	public void roleCanBeCustomized() {
 		this.contextRunner.withPropertyValues("management.endpoint.health.show-details=when-authorized",
 				"management.endpoint.health.roles=ADMIN").run((context) -> {
-					ReactiveHealthEndpointWebExtension extension = context
-							.getBean(ReactiveHealthEndpointWebExtension.class);
-					SecurityContext securityContext = mock(SecurityContext.class);
-					given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
-					given(securityContext.isUserInRole("ADMIN")).willReturn(true);
-					assertThat(extension.health(securityContext).block(Duration.ofSeconds(30)).getBody().getDetails())
-							.isNotEmpty();
-				});
+			ReactiveHealthEndpointWebExtension extension = context
+					.getBean(ReactiveHealthEndpointWebExtension.class);
+			SecurityContext securityContext = mock(SecurityContext.class);
+			given(securityContext.getPrincipal()).willReturn(mock(Principal.class));
+			given(securityContext.isUserInRole("ADMIN")).willReturn(true);
+			assertThat(extension.health(securityContext).block(Duration.ofSeconds(30)).getBody().getDetails())
+					.isNotEmpty();
+		});
 	}
 
 	@Test
 	public void registryCanBeAltered() {
 		this.contextRunner.withUserConfiguration(HealthIndicatorsConfiguration.class)
 				.withPropertyValues("management.endpoint.health.show-details=always").run((context) -> {
-					ReactiveHealthIndicatorRegistry registry = context.getBean(ReactiveHealthIndicatorRegistry.class);
-					ReactiveHealthEndpointWebExtension extension = context
-							.getBean(ReactiveHealthEndpointWebExtension.class);
-					assertThat(extension.health(null).block(Duration.ofSeconds(30)).getBody().getDetails())
-							.containsOnlyKeys("application", "first", "second");
-					assertThat(registry.unregister("second")).isNotNull();
-					assertThat(extension.health(null).block(Duration.ofSeconds(30)).getBody().getDetails())
-							.containsKeys("application", "first");
-				});
+			ReactiveHealthIndicatorRegistry registry = context.getBean(ReactiveHealthIndicatorRegistry.class);
+			ReactiveHealthEndpointWebExtension extension = context
+					.getBean(ReactiveHealthEndpointWebExtension.class);
+			assertThat(extension.health(null).block(Duration.ofSeconds(30)).getBody().getDetails())
+					.containsOnlyKeys("application", "first", "second");
+			assertThat(registry.unregister("second")).isNotNull();
+			assertThat(extension.health(null).block(Duration.ofSeconds(30)).getBody().getDetails())
+					.containsKeys("application", "first");
+		});
 	}
 
 	@Configuration

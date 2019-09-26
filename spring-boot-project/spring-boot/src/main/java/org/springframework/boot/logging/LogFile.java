@@ -16,12 +16,12 @@
 
 package org.springframework.boot.logging;
 
-import java.util.Properties;
-
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.Properties;
 
 /**
  * A reference to a log output file. Log output files are specified using
@@ -30,8 +30,8 @@ import org.springframework.util.StringUtils;
  * the {@code logging.path} directory.
  *
  * @author Phillip Webb
- * @since 1.2.1
  * @see #get(PropertyResolver)
+ * @since 1.2.1
  */
 public class LogFile {
 
@@ -53,6 +53,7 @@ public class LogFile {
 
 	/**
 	 * Create a new {@link LogFile} instance.
+	 *
 	 * @param file a reference to the file to write
 	 */
 	LogFile(String file) {
@@ -61,6 +62,7 @@ public class LogFile {
 
 	/**
 	 * Create a new {@link LogFile} instance.
+	 *
 	 * @param file a reference to the file to write
 	 * @param path a reference to the logging path to use if {@code file} is not specified
 	 */
@@ -68,6 +70,23 @@ public class LogFile {
 		Assert.isTrue(StringUtils.hasLength(file) || StringUtils.hasLength(path), "File or Path must not be empty");
 		this.file = file;
 		this.path = path;
+	}
+
+	/**
+	 * Get a {@link LogFile} from the given Spring {@link Environment}.
+	 *
+	 * @param propertyResolver the {@link PropertyResolver} used to obtain the logging
+	 *                         properties
+	 * @return a {@link LogFile} or {@code null} if the environment didn't contain any
+	 * suitable properties
+	 */
+	public static LogFile get(PropertyResolver propertyResolver) {
+		String file = propertyResolver.getProperty(FILE_PROPERTY);
+		String path = propertyResolver.getProperty(PATH_PROPERTY);
+		if (StringUtils.hasLength(file) || StringUtils.hasLength(path)) {
+			return new LogFile(file, path);
+		}
+		return null;
 	}
 
 	/**
@@ -79,6 +98,7 @@ public class LogFile {
 
 	/**
 	 * Apply log file details to {@code LOG_PATH} and {@code LOG_FILE} map entries.
+	 *
 	 * @param properties the properties to apply to
 	 */
 	public void applyTo(Properties properties) {
@@ -102,22 +122,6 @@ public class LogFile {
 			path = path + "/";
 		}
 		return StringUtils.applyRelativePath(path, "spring.log");
-	}
-
-	/**
-	 * Get a {@link LogFile} from the given Spring {@link Environment}.
-	 * @param propertyResolver the {@link PropertyResolver} used to obtain the logging
-	 * properties
-	 * @return a {@link LogFile} or {@code null} if the environment didn't contain any
-	 * suitable properties
-	 */
-	public static LogFile get(PropertyResolver propertyResolver) {
-		String file = propertyResolver.getProperty(FILE_PROPERTY);
-		String path = propertyResolver.getProperty(PATH_PROPERTY);
-		if (StringUtils.hasLength(file) || StringUtils.hasLength(path)) {
-			return new LogFile(file, path);
-		}
-		return null;
 	}
 
 }

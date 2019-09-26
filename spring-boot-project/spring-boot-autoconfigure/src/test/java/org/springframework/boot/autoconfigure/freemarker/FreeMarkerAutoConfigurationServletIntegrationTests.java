@@ -16,17 +16,8 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
-import java.io.StringWriter;
-import java.util.EnumSet;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.http.HttpServletRequest;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -46,6 +37,13 @@ import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.http.HttpServletRequest;
+import java.io.StringWriter;
+import java.util.EnumSet;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -215,7 +213,7 @@ public class FreeMarkerAutoConfigurationServletIntegrationTests {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ FreeMarkerAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class })
+	@ImportAutoConfiguration({FreeMarkerAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
 	static class BaseConfiguration {
 
 	}

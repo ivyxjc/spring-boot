@@ -16,15 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.prometheus;
 
-import java.time.Duration;
-import java.util.Map;
-
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.prometheus.PrometheusConfig;
 import io.micrometer.prometheus.PrometheusMeterRegistry;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.exporter.PushGateway;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
@@ -44,20 +40,23 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
+import java.time.Duration;
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for exporting metrics to Prometheus.
  *
- * @since 2.0.0
  * @author Jon Schneider
  * @author David J. M. Karlsen
+ * @since 2.0.0
  */
 @Configuration
-@AutoConfigureBefore({ CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class })
+@AutoConfigureBefore({CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class})
 @AutoConfigureAfter(MetricsAutoConfiguration.class)
 @ConditionalOnBean(Clock.class)
 @ConditionalOnClass(PrometheusMeterRegistry.class)
 @ConditionalOnProperty(prefix = "management.metrics.export.prometheus", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 @EnableConfigurationProperties(PrometheusProperties.class)
 public class PrometheusMetricsExportAutoConfiguration {
 
@@ -70,7 +69,7 @@ public class PrometheusMetricsExportAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public PrometheusMeterRegistry prometheusMeterRegistry(PrometheusConfig prometheusConfig,
-			CollectorRegistry collectorRegistry, Clock clock) {
+														   CollectorRegistry collectorRegistry, Clock clock) {
 		return new PrometheusMeterRegistry(prometheusConfig, collectorRegistry, clock);
 	}
 
@@ -111,7 +110,7 @@ public class PrometheusMetricsExportAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		public PrometheusPushGatewayManager prometheusPushGatewayManager(CollectorRegistry collectorRegistry,
-				PrometheusProperties prometheusProperties, Environment environment) {
+																		 PrometheusProperties prometheusProperties, Environment environment) {
 			PrometheusProperties.Pushgateway properties = prometheusProperties.getPushgateway();
 			PushGateway pushGateway = new PushGateway(properties.getBaseUrl());
 			Duration pushRate = properties.getPushRate();

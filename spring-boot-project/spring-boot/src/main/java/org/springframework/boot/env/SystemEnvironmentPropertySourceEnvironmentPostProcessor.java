@@ -16,8 +16,6 @@
 
 package org.springframework.boot.env;
 
-import java.util.Map;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginLookup;
@@ -27,6 +25,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
+
+import java.util.Map;
 
 /**
  * An {@link EnvironmentPostProcessor} that replaces the systemEnvironment
@@ -57,7 +57,7 @@ public class SystemEnvironmentPropertySourceEnvironmentPostProcessor implements 
 
 	@SuppressWarnings("unchecked")
 	private void replacePropertySource(ConfigurableEnvironment environment, String sourceName,
-			PropertySource<?> propertySource) {
+									   PropertySource<?> propertySource) {
 		Map<String, Object> originalSource = (Map<String, Object>) propertySource.getSource();
 		SystemEnvironmentPropertySource source = new OriginAwareSystemEnvironmentPropertySource(sourceName,
 				originalSource);

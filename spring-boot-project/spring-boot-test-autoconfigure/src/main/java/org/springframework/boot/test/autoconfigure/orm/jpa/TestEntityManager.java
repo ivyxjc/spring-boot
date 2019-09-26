@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.autoconfigure.orm.jpa;
 
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
+import org.springframework.util.Assert;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnitUtil;
-
-import org.springframework.orm.jpa.EntityManagerFactoryUtils;
-import org.springframework.util.Assert;
 
 /**
  * Alternative to {@link EntityManager} for use in JPA tests. Provides a subset of
@@ -38,6 +38,7 @@ public class TestEntityManager {
 	/**
 	 * Create a new {@link TestEntityManager} instance for the given
 	 * {@link EntityManagerFactory}.
+	 *
 	 * @param entityManagerFactory the source entity manager factory
 	 */
 	public TestEntityManager(EntityManagerFactory entityManagerFactory) {
@@ -52,6 +53,7 @@ public class TestEntityManager {
 	 * Helpful when setting up test data in a test: <pre class="code">
 	 * Object entityId = this.testEntityManager.persist(new MyEntity("Spring"));
 	 * </pre>
+	 *
 	 * @param entity the source entity
 	 * @return the ID of the newly persisted entity
 	 */
@@ -67,7 +69,8 @@ public class TestEntityManager {
 	 * Helpful when setting up test data in a test: <pre class="code">
 	 * Long entityId = this.testEntityManager.persist(new MyEntity("Spring"), Long.class);
 	 * </pre>
-	 * @param <T> the ID type
+	 *
+	 * @param <T>    the ID type
 	 * @param entity the source entity
 	 * @param idType the ID type
 	 * @return the ID of the newly persisted entity
@@ -85,7 +88,8 @@ public class TestEntityManager {
 	 * Helpful when setting up test data in a test: <pre class="code">
 	 * MyEntity entity = this.testEntityManager.persist(new MyEntity("Spring"));
 	 * </pre>
-	 * @param <E> the entity type
+	 *
+	 * @param <E>    the entity type
 	 * @param entity the entity to persist
 	 * @return the persisted entity
 	 */
@@ -102,7 +106,8 @@ public class TestEntityManager {
 	 * <p>
 	 * Helpful when ensuring that entity data is actually written and read from the
 	 * underlying database correctly.
-	 * @param <E> the entity type
+	 *
+	 * @param <E>    the entity type
 	 * @param entity the entity to persist
 	 * @return the entity found using the ID of the persisted entity
 	 */
@@ -123,7 +128,8 @@ public class TestEntityManager {
 	 * Helpful when setting up test data in a test: <pre class="code">
 	 * MyEntity entity = this.testEntityManager.persistAndFlush(new MyEntity("Spring"));
 	 * </pre>
-	 * @param <E> the entity type
+	 *
+	 * @param <E>    the entity type
 	 * @param entity the entity to persist
 	 * @return the persisted entity
 	 */
@@ -136,7 +142,8 @@ public class TestEntityManager {
 	/**
 	 * Merge the state of the given entity into the current persistence context. Delegates
 	 * to {@link EntityManager#merge(Object)}
-	 * @param <E> the entity type
+	 *
+	 * @param <E>    the entity type
 	 * @param entity the entity to merge
 	 * @return the merged entity
 	 */
@@ -146,6 +153,7 @@ public class TestEntityManager {
 
 	/**
 	 * Remove the entity instance. Delegates to {@link EntityManager#remove(Object)}
+	 *
 	 * @param entity the entity to remove
 	 */
 	public void remove(Object entity) {
@@ -154,9 +162,10 @@ public class TestEntityManager {
 
 	/**
 	 * Find by primary key. Delegates to {@link EntityManager#find(Class, Object)}.
-	 * @param <E> the entity type
+	 *
+	 * @param <E>         the entity type
 	 * @param entityClass the entity class
-	 * @param primaryKey the entity primary key
+	 * @param primaryKey  the entity primary key
 	 * @return the found entity or {@code null} if the entity does not exist
 	 * @see #getId(Object)
 	 */
@@ -175,7 +184,8 @@ public class TestEntityManager {
 	/**
 	 * Refresh the state of the instance from the database, overwriting changes made to
 	 * the entity, if any. Delegates to {@link EntityManager#refresh(Object)}.
-	 * @param <E> the entity type
+	 *
+	 * @param <E>    the entity type
 	 * @param entity the entity to refresh
 	 * @return the refreshed entity
 	 */
@@ -195,6 +205,7 @@ public class TestEntityManager {
 	/**
 	 * Remove the given entity from the persistence context, causing a managed entity to
 	 * become detached. Delegates to {@link EntityManager#detach(Object)}.
+	 *
 	 * @param entity the entity to detach.
 	 */
 	public void detach(Object entity) {
@@ -204,6 +215,7 @@ public class TestEntityManager {
 	/**
 	 * Return the ID of the given entity. Delegates to
 	 * {@link PersistenceUnitUtil#getIdentifier(Object)}.
+	 *
 	 * @param entity the source entity
 	 * @return the ID of the entity or {@code null}
 	 * @see #getId(Object, Class)
@@ -215,7 +227,8 @@ public class TestEntityManager {
 	/**
 	 * Return the ID of the given entity cast to a specific type. Delegates to
 	 * {@link PersistenceUnitUtil#getIdentifier(Object)}.
-	 * @param <T> the ID type
+	 *
+	 * @param <T>    the ID type
 	 * @param entity the source entity
 	 * @param idType the expected ID type
 	 * @return the ID of the entity or {@code null}
@@ -231,6 +244,7 @@ public class TestEntityManager {
 	/**
 	 * Return the underlying {@link EntityManager} that's actually used to perform all
 	 * operations.
+	 *
 	 * @return the entity manager
 	 */
 	public final EntityManager getEntityManager() {

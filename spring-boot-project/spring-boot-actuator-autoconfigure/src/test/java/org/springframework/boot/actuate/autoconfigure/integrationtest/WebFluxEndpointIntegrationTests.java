@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.beans.BeansEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
@@ -53,11 +52,11 @@ public class WebFluxEndpointIntegrationTests {
 						BeansEndpointAutoConfiguration.class))
 				.withUserConfiguration(EndpointsConfiguration.class)
 				.withPropertyValues("management.endpoints.web.exposure.include:*").run((context) -> {
-					WebTestClient client = createWebTestClient(context);
-					client.get().uri("/actuator").exchange().expectStatus().isOk().expectBody().jsonPath("_links.beans")
-							.isNotEmpty().jsonPath("_links.restcontroller").isNotEmpty().jsonPath("_links.controller")
-							.isNotEmpty();
-				});
+			WebTestClient client = createWebTestClient(context);
+			client.get().uri("/actuator").exchange().expectStatus().isOk().expectBody().jsonPath("_links.beans")
+					.isNotEmpty().jsonPath("_links.restcontroller").isNotEmpty().jsonPath("_links.controller")
+					.isNotEmpty();
+		});
 	}
 
 	private WebTestClient createWebTestClient(ApplicationContext context) {

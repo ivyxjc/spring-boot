@@ -1,7 +1,7 @@
-import org.springframework.boot.maven.*
+import org.springframework.boot.maven.Verify
 
-import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
 
 File repackaged = new File(basedir, "target/jar-classifier-main-0.0.1.BUILD-SNAPSHOT-test.jar")
 File main = new File(basedir, "target/jar-classifier-main-0.0.1.BUILD-SNAPSHOT.jar")
@@ -17,6 +17,6 @@ assertTrue 'repackaged artifact should have been attached',
 assertFalse 'repackaged artifact should have been created',
 		file.text.contains("Creating repackaged archive " + repackaged + " with classifier test")
 assertTrue 'main artifact should have been installed',
-		file.text.contains ("Installing " + main + " to")
+		file.text.contains("Installing " + main + " to")
 assertTrue 'repackaged artifact should have been installed',
-		file.text.contains ("Installing " + repackaged + " to")
+		file.text.contains("Installing " + repackaged + " to")

@@ -16,21 +16,6 @@
 
 package org.springframework.boot.testsupport.runner.classpath;
 
-import java.io.File;
-import java.lang.annotation.Annotation;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.jar.Attributes;
-import java.util.jar.JarFile;
-import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
@@ -51,10 +36,24 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.TestClass;
-
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.lang.annotation.Annotation;
+import java.lang.management.ManagementFactory;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * A custom {@link BlockJUnit4ClassRunner} that runs tests using a modified class path.
@@ -79,8 +78,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 		try {
 			ClassLoader classLoader = createTestClassLoader(testClass);
 			return new ModifiedClassPathTestClass(classLoader, testClass.getName());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -103,8 +101,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 		doExtractUrls(classLoader).forEach((URL url) -> {
 			if (isManifestOnlyJar(url)) {
 				extractedUrls.addAll(extractUrlsFromManifestClassPath(url));
-			}
-			else {
+			} else {
 				extractedUrls.add(url);
 			}
 		});
@@ -122,8 +119,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 	private URL toURL(String entry) {
 		try {
 			return new File(entry).toURI().toURL();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalArgumentException(ex);
 		}
 	}
@@ -144,8 +140,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 				Attributes attributes = getManifestMainAttributesFromUrl(url);
 				String createdBy = attributes.getValue("Created-By");
 				return createdBy != null && createdBy.contains("IntelliJ");
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 			}
 		}
 		return false;
@@ -157,8 +152,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 			for (String entry : getClassPath(booterJar)) {
 				urls.add(new URL(entry));
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 		return urls;
@@ -273,8 +267,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 		public List<FrameworkMethod> getAnnotatedMethods(Class<? extends Annotation> annotationClass) {
 			try {
 				return getAnnotatedMethods(annotationClass.getName());
-			}
-			catch (ClassNotFoundException ex) {
+			} catch (ClassNotFoundException ex) {
 				throw new RuntimeException(ex);
 			}
 		}
@@ -301,8 +294,7 @@ public class ModifiedClassPathRunner extends BlockJUnit4ClassRunner {
 			Thread.currentThread().setContextClassLoader(this.classLoader);
 			try {
 				return action.perform();
-			}
-			finally {
+			} finally {
 				Thread.currentThread().setContextClassLoader(originalClassLoader);
 			}
 		}

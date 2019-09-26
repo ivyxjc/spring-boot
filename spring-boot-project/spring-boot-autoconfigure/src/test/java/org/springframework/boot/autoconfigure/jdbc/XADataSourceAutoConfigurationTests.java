@@ -16,18 +16,17 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-import javax.sql.XADataSource;
-
 import org.hsqldb.jdbc.pool.JDBCXADataSource;
 import org.junit.Test;
-
 import org.springframework.boot.jdbc.XADataSourceWrapper;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+import javax.sql.XADataSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

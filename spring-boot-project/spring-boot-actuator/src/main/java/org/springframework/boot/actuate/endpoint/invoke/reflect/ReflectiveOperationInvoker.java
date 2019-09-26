@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.invoke.reflect;
 
-import java.lang.reflect.Method;
-import java.security.Principal;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.boot.actuate.endpoint.invoke.MissingParametersException;
@@ -30,6 +25,11 @@ import org.springframework.boot.actuate.endpoint.invoke.ParameterValueMapper;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
+import java.security.Principal;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * An {@code OperationInvoker} that invokes an operation using reflection.
@@ -52,12 +52,13 @@ public class ReflectiveOperationInvoker implements OperationInvoker {
 	 * {@code method} on the given {@code target}. The given {@code parameterMapper} will
 	 * be used to map parameters to the required types and the given
 	 * {@code parameterNameMapper} will be used map parameters by name.
-	 * @param target the target of the reflective call
-	 * @param operationMethod the method info
+	 *
+	 * @param target               the target of the reflective call
+	 * @param operationMethod      the method info
 	 * @param parameterValueMapper the parameter mapper
 	 */
 	public ReflectiveOperationInvoker(Object target, OperationMethod operationMethod,
-			ParameterValueMapper parameterValueMapper) {
+									  ParameterValueMapper parameterValueMapper) {
 		Assert.notNull(target, "Target must not be null");
 		Assert.notNull(operationMethod, "OperationMethod must not be null");
 		Assert.notNull(parameterValueMapper, "ParameterValueMapper must not be null");

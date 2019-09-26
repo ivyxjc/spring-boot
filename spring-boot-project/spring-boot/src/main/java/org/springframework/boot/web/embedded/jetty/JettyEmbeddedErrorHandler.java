@@ -16,16 +16,15 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
-import java.io.IOException;
+import org.eclipse.jetty.http.HttpMethod;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.ErrorHandler;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-
-import org.eclipse.jetty.http.HttpMethod;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.ErrorHandler;
+import java.io.IOException;
 
 /**
  * Variation of Jetty's {@link ErrorHandler} that supports all {@link HttpMethod

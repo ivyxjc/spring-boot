@@ -16,9 +16,6 @@
 
 package org.springframework.boot.test.autoconfigure.web.reactive;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -38,6 +35,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.WebHandler;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Auto-configuration for {@link WebTestClient}.
  *
@@ -46,8 +46,8 @@ import org.springframework.web.server.WebHandler;
  * @since 2.0.0
  */
 @Configuration
-@ConditionalOnClass({ WebClient.class, WebTestClient.class })
-@AutoConfigureAfter({ CodecsAutoConfiguration.class, WebFluxAutoConfiguration.class })
+@ConditionalOnClass({WebClient.class, WebTestClient.class})
+@AutoConfigureAfter({CodecsAutoConfiguration.class, WebFluxAutoConfiguration.class})
 @Import(WebTestClientSecurityConfiguration.class)
 @EnableConfigurationProperties
 public class WebTestClientAutoConfiguration {
@@ -56,7 +56,7 @@ public class WebTestClientAutoConfiguration {
 	@ConditionalOnMissingBean
 	@ConditionalOnBean(WebHandler.class)
 	public WebTestClient webTestClient(ApplicationContext applicationContext,
-			List<WebTestClientBuilderCustomizer> customizers, List<MockServerConfigurer> configurers) {
+									   List<WebTestClientBuilderCustomizer> customizers, List<MockServerConfigurer> configurers) {
 		WebTestClient.MockServerSpec<?> mockServerSpec = WebTestClient.bindToApplicationContext(applicationContext);
 		for (MockServerConfigurer configurer : configurers) {
 			mockServerSpec.apply(configurer);

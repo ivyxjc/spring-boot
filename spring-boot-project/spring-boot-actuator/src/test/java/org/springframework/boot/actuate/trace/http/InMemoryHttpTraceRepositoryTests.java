@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.trace.http;
 
-import java.util.List;
-
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

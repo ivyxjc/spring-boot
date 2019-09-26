@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.kafka;
 
-import java.time.Duration;
-
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Listener;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -28,6 +26,8 @@ import org.springframework.kafka.listener.ContainerProperties;
 import org.springframework.kafka.listener.ErrorHandler;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.transaction.KafkaAwareTransactionManager;
+
+import java.time.Duration;
 
 /**
  * Configure {@link ConcurrentKafkaListenerContainerFactory} with sensible defaults.
@@ -52,6 +52,7 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 
 	/**
 	 * Set the {@link KafkaProperties} to use.
+	 *
 	 * @param properties the properties
 	 */
 	void setKafkaProperties(KafkaProperties properties) {
@@ -60,6 +61,7 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 
 	/**
 	 * Set the {@link RecordMessageConverter} to use.
+	 *
 	 * @param messageConverter the message converter
 	 */
 	void setMessageConverter(RecordMessageConverter messageConverter) {
@@ -68,6 +70,7 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 
 	/**
 	 * Set the {@link KafkaTemplate} to use to send replies.
+	 *
 	 * @param replyTemplate the reply template
 	 */
 	void setReplyTemplate(KafkaTemplate<Object, Object> replyTemplate) {
@@ -76,6 +79,7 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 
 	/**
 	 * Set the {@link KafkaAwareTransactionManager} to use.
+	 *
 	 * @param transactionManager the transaction manager
 	 */
 	void setTransactionManager(KafkaAwareTransactionManager<Object, Object> transactionManager) {
@@ -84,6 +88,7 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 
 	/**
 	 * Set the {@link ErrorHandler} to use.
+	 *
 	 * @param errorHandler the error handler
 	 */
 	void setErrorHandler(ErrorHandler errorHandler) {
@@ -92,6 +97,7 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 
 	/**
 	 * Set the {@link AfterRollbackProcessor} to use.
+	 *
 	 * @param afterRollbackProcessor the after rollback processor
 	 */
 	void setAfterRollbackProcessor(AfterRollbackProcessor<Object, Object> afterRollbackProcessor) {
@@ -101,12 +107,13 @@ public class ConcurrentKafkaListenerContainerFactoryConfigurer {
 	/**
 	 * Configure the specified Kafka listener container factory. The factory can be
 	 * further tuned and default settings can be overridden.
+	 *
 	 * @param listenerFactory the {@link ConcurrentKafkaListenerContainerFactory} instance
-	 * to configure
+	 *                        to configure
 	 * @param consumerFactory the {@link ConsumerFactory} to use
 	 */
 	public void configure(ConcurrentKafkaListenerContainerFactory<Object, Object> listenerFactory,
-			ConsumerFactory<Object, Object> consumerFactory) {
+						  ConsumerFactory<Object, Object> consumerFactory) {
 		listenerFactory.setConsumerFactory(consumerFactory);
 		configureListenerFactory(listenerFactory);
 		configureContainer(listenerFactory.getContainerProperties());

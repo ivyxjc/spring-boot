@@ -16,15 +16,14 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-
-import javax.annotation.processing.ProcessingEnvironment;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import javax.annotation.processing.ProcessingEnvironment;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -54,7 +53,7 @@ public class MetadataStoreTests {
 		additionalMetadata.createNewFile();
 		assertThat(this.metadataStore.locateAdditionalMetadataFile(
 				new File(classesLocation, "META-INF/additional-spring-configuration-metadata.json")))
-						.isEqualTo(additionalMetadata);
+				.isEqualTo(additionalMetadata);
 	}
 
 	@Test
@@ -68,7 +67,7 @@ public class MetadataStoreTests {
 		additionalMetadata.createNewFile();
 		assertThat(this.metadataStore.locateAdditionalMetadataFile(
 				new File(classesLocation, "META-INF/additional-spring-configuration-metadata.json")))
-						.isEqualTo(additionalMetadata);
+				.isEqualTo(additionalMetadata);
 	}
 
 	@Test
@@ -82,7 +81,7 @@ public class MetadataStoreTests {
 		additionalMetadata.createNewFile();
 		assertThat(this.metadataStore.locateAdditionalMetadataFile(
 				new File(classesLocation, "META-INF/additional-spring-configuration-metadata.json")))
-						.isEqualTo(additionalMetadata);
+				.isEqualTo(additionalMetadata);
 	}
 
 	@Test

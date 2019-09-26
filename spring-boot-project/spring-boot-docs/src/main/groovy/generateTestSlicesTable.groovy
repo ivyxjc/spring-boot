@@ -1,7 +1,4 @@
 import groovy.io.FileType
-
-import java.util.Properties
-
 import org.springframework.core.io.InputStreamResource
 import org.springframework.core.type.AnnotationMetadata
 import org.springframework.core.type.ClassMetadata
@@ -20,7 +17,7 @@ class Project {
 	Project(File rootDirectory) {
 		this.springFactories = loadSpringFactories(rootDirectory)
 		this.classFiles = []
-		rootDirectory.eachFileRecurse (FileType.FILES) { file ->
+		rootDirectory.eachFileRecurse(FileType.FILES) { file ->
 			if (file.name.endsWith('.class')) {
 				classFiles << file
 			}
@@ -51,17 +48,17 @@ class TestSlice {
 List<TestSlice> createTestSlices(Project project) {
 	MetadataReaderFactory metadataReaderFactory = new SimpleMetadataReaderFactory()
 	project.classFiles
-		.findAll { classFile ->
-			classFile.name.endsWith('Test.class')
-		}.collect { classFile ->
-			createMetadataReader(metadataReaderFactory, classFile)
-		}.findAll { metadataReader ->
-			metadataReader.classMetadata.annotation
-		}.collect { metadataReader ->
-			createTestSlice(project.springFactories, metadataReader.classMetadata, metadataReader.annotationMetadata)
-		}.sort {
-			a, b -> a.name.compareTo b.name
-		}
+			.findAll { classFile ->
+				classFile.name.endsWith('Test.class')
+			}.collect { classFile ->
+		createMetadataReader(metadataReaderFactory, classFile)
+	}.findAll { metadataReader ->
+		metadataReader.classMetadata.annotation
+	}.collect { metadataReader ->
+		createTestSlice(project.springFactories, metadataReader.classMetadata, metadataReader.annotationMetadata)
+	}.sort {
+		a, b -> a.name.compareTo b.name
+	}
 }
 
 MetadataReader createMetadataReader(MetadataReaderFactory factory, File classFile) {
@@ -80,16 +77,16 @@ Set<String> getImportedAutoConfiguration(Properties springFactories, AnnotationM
 		importers.add(annotationMetadata.className)
 	}
 	importers
-		.collect { autoConfigurationImporter ->
-			StringUtils.commaDelimitedListToSet(springFactories.get(autoConfigurationImporter))
-		}.flatten()
+			.collect { autoConfigurationImporter ->
+				StringUtils.commaDelimitedListToSet(springFactories.get(autoConfigurationImporter))
+			}.flatten()
 }
 
 Set<String> findMetaImporters(AnnotationMetadata annotationMetadata) {
 	annotationMetadata.annotationTypes
-		.findAll { annotationType ->
-			isAutoConfigurationImporter(annotationType, annotationMetadata)
-		}
+			.findAll { annotationType ->
+				isAutoConfigurationImporter(annotationType, annotationMetadata)
+			}
 }
 
 boolean isAutoConfigurationImporter(String annotationType, AnnotationMetadata metadata) {

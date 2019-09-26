@@ -16,11 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.jersey;
 
-import java.util.Collections;
-
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.jersey.JerseySameManagementContextConfiguration;
 import org.springframework.boot.actuate.endpoint.web.WebEndpointsSupplier;
@@ -31,6 +28,8 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

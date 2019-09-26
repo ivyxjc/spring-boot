@@ -16,10 +16,9 @@
 
 package org.springframework.boot.configurationprocessor.fieldvalues.javac;
 
-import java.lang.reflect.Method;
-
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Element;
+import java.lang.reflect.Method;
 
 /**
  * Reflection based access to {@code com.sun.source.util.Trees}.
@@ -32,16 +31,16 @@ final class Trees extends ReflectionWrapper {
 		super("com.sun.source.util.Trees", instance);
 	}
 
-	public Tree getTree(Element element) throws Exception {
-		Object tree = findMethod("getTree", Element.class).invoke(getInstance(), element);
-		return (tree != null) ? new Tree(tree) : null;
-	}
-
 	public static Trees instance(ProcessingEnvironment env) throws Exception {
 		ClassLoader classLoader = env.getClass().getClassLoader();
 		Class<?> type = findClass(classLoader, "com.sun.source.util.Trees");
 		Method method = findMethod(type, "instance", ProcessingEnvironment.class);
 		return new Trees(method.invoke(null, env));
+	}
+
+	public Tree getTree(Element element) throws Exception {
+		Object tree = findMethod("getTree", Element.class).invoke(getInstance(), element);
+		return (tree != null) ? new Tree(tree) : null;
 	}
 
 }

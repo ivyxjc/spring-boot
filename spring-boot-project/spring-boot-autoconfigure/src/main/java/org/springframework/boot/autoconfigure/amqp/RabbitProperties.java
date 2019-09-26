@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.amqp;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory.CacheMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,6 +23,11 @@ import org.springframework.boot.context.properties.DeprecatedConfigurationProper
 import org.springframework.boot.convert.DurationUnit;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration properties for Rabbit.
@@ -45,83 +45,74 @@ import org.springframework.util.StringUtils;
 public class RabbitProperties {
 
 	/**
+	 * SSL configuration.
+	 */
+	private final Ssl ssl = new Ssl();
+	/**
+	 * Cache configuration.
+	 */
+	private final Cache cache = new Cache();
+	/**
+	 * Listener container configuration.
+	 */
+	private final Listener listener = new Listener();
+	private final Template template = new Template();
+	/**
 	 * RabbitMQ host.
 	 */
 	private String host = "localhost";
-
 	/**
 	 * RabbitMQ port.
 	 */
 	private int port = 5672;
-
 	/**
 	 * Login user to authenticate to the broker.
 	 */
 	private String username = "guest";
-
 	/**
 	 * Login to authenticate against the broker.
 	 */
 	private String password = "guest";
-
-	/**
-	 * SSL configuration.
-	 */
-	private final Ssl ssl = new Ssl();
-
 	/**
 	 * Virtual host to use when connecting to the broker.
 	 */
 	private String virtualHost;
-
 	/**
 	 * Comma-separated list of addresses to which the client should connect.
 	 */
 	private String addresses;
-
 	/**
 	 * Requested heartbeat timeout; zero for none. If a duration suffix is not specified,
 	 * seconds will be used.
 	 */
 	@DurationUnit(ChronoUnit.SECONDS)
 	private Duration requestedHeartbeat;
-
 	/**
 	 * Whether to enable publisher confirms.
 	 */
 	private boolean publisherConfirms;
-
 	/**
 	 * Whether to enable publisher returns.
 	 */
 	private boolean publisherReturns;
-
 	/**
 	 * Connection timeout. Set it to zero to wait forever.
 	 */
 	private Duration connectionTimeout;
-
-	/**
-	 * Cache configuration.
-	 */
-	private final Cache cache = new Cache();
-
-	/**
-	 * Listener container configuration.
-	 */
-	private final Listener listener = new Listener();
-
-	private final Template template = new Template();
-
 	private List<Address> parsedAddresses;
 
 	public String getHost() {
 		return this.host;
 	}
 
+	public void setHost(String host) {
+		this.host = host;
+	}
+
 	/**
 	 * Returns the host from the first address, or the configured host if no addresses
 	 * have been set.
+	 *
 	 * @return the host
 	 * @see #setAddresses(String)
 	 * @see #getHost()
@@ -133,17 +124,18 @@ public class RabbitProperties {
 		return this.parsedAddresses.get(0).host;
 	}
 
-	public void setHost(String host) {
-		this.host = host;
-	}
-
 	public int getPort() {
 		return this.port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 
 	/**
 	 * Returns the port from the first address, or the configured port if no addresses
 	 * have been set.
+	 *
 	 * @return the port
 	 * @see #setAddresses(String)
 	 * @see #getPort()
@@ -156,17 +148,19 @@ public class RabbitProperties {
 		return address.port;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
-	}
-
 	public String getAddresses() {
 		return this.addresses;
+	}
+
+	public void setAddresses(String addresses) {
+		this.addresses = addresses;
+		this.parsedAddresses = parseAddresses(addresses);
 	}
 
 	/**
 	 * Returns the comma-separated addresses or a single address ({@code host:port})
 	 * created from the configured host and port if no addresses have been set.
+	 *
 	 * @return the addresses
 	 */
 	public String determineAddresses() {
@@ -178,11 +172,6 @@ public class RabbitProperties {
 			addressStrings.add(parsedAddress.host + ":" + parsedAddress.port);
 		}
 		return StringUtils.collectionToCommaDelimitedString(addressStrings);
-	}
-
-	public void setAddresses(String addresses) {
-		this.addresses = addresses;
-		this.parsedAddresses = parseAddresses(addresses);
 	}
 
 	private List<Address> parseAddresses(String addresses) {
@@ -197,9 +186,14 @@ public class RabbitProperties {
 		return this.username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	/**
 	 * If addresses have been set and the first address has a username it is returned.
 	 * Otherwise returns the result of calling {@code getUsername()}.
+	 *
 	 * @return the username
 	 * @see #setAddresses(String)
 	 * @see #getUsername()
@@ -212,17 +206,18 @@ public class RabbitProperties {
 		return (address.username != null) ? address.username : this.username;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getPassword() {
 		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	/**
 	 * If addresses have been set and the first address has a password it is returned.
 	 * Otherwise returns the result of calling {@code getPassword()}.
+	 *
 	 * @return the password or {@code null}
 	 * @see #setAddresses(String)
 	 * @see #getPassword()
@@ -235,10 +230,6 @@ public class RabbitProperties {
 		return (address.password != null) ? address.password : getPassword();
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public Ssl getSsl() {
 		return this.ssl;
 	}
@@ -247,9 +238,14 @@ public class RabbitProperties {
 		return this.virtualHost;
 	}
 
+	public void setVirtualHost(String virtualHost) {
+		this.virtualHost = "".equals(virtualHost) ? "/" : virtualHost;
+	}
+
 	/**
 	 * If addresses have been set and the first address has a virtual host it is returned.
 	 * Otherwise returns the result of calling {@code getVirtualHost()}.
+	 *
 	 * @return the virtual host or {@code null}
 	 * @see #setAddresses(String)
 	 * @see #getVirtualHost()
@@ -260,10 +256,6 @@ public class RabbitProperties {
 		}
 		Address address = this.parsedAddresses.get(0);
 		return (address.virtualHost != null) ? address.virtualHost : getVirtualHost();
-	}
-
-	public void setVirtualHost(String virtualHost) {
-		this.virtualHost = "".equals(virtualHost) ? "/" : virtualHost;
 	}
 
 	public Duration getRequestedHeartbeat() {
@@ -308,6 +300,21 @@ public class RabbitProperties {
 
 	public Template getTemplate() {
 		return this.template;
+	}
+
+	public enum ContainerType {
+
+		/**
+		 * Container where the RabbitMQ consumer dispatches messages to an invoker thread.
+		 */
+		SIMPLE,
+
+		/**
+		 * Container where the listener is invoked directly on the RabbitMQ consumer
+		 * thread.
+		 */
+		DIRECT
+
 	}
 
 	public static class Ssl {
@@ -522,31 +529,14 @@ public class RabbitProperties {
 
 	}
 
-	public enum ContainerType {
-
-		/**
-		 * Container where the RabbitMQ consumer dispatches messages to an invoker thread.
-		 */
-		SIMPLE,
-
-		/**
-		 * Container where the listener is invoked directly on the RabbitMQ consumer
-		 * thread.
-		 */
-		DIRECT
-
-	}
-
 	public static class Listener {
 
+		private final SimpleContainer simple = new SimpleContainer();
+		private final DirectContainer direct = new DirectContainer();
 		/**
 		 * Listener container type.
 		 */
 		private ContainerType type = ContainerType.SIMPLE;
-
-		private final SimpleContainer simple = new SimpleContainer();
-
-		private final DirectContainer direct = new DirectContainer();
 
 		public ContainerType getType() {
 			return this.type;
@@ -569,35 +559,30 @@ public class RabbitProperties {
 	public abstract static class AmqpContainer {
 
 		/**
+		 * Optional properties for a retry interceptor.
+		 */
+		private final ListenerRetry retry = new ListenerRetry();
+		/**
 		 * Whether to start the container automatically on startup.
 		 */
 		private boolean autoStartup = true;
-
 		/**
 		 * Acknowledge mode of container.
 		 */
 		private AcknowledgeMode acknowledgeMode;
-
 		/**
 		 * Maximum number of unacknowledged messages that can be outstanding at each
 		 * consumer.
 		 */
 		private Integer prefetch;
-
 		/**
 		 * Whether rejected deliveries are re-queued by default.
 		 */
 		private Boolean defaultRequeueRejected;
-
 		/**
 		 * How often idle container events should be published.
 		 */
 		private Duration idleEventInterval;
-
-		/**
-		 * Optional properties for a retry interceptor.
-		 */
-		private final ListenerRetry retry = new ListenerRetry();
 
 		public boolean isAutoStartup() {
 			return this.autoStartup;
@@ -993,8 +978,7 @@ public class RabbitProperties {
 			if (portIndex == -1) {
 				this.host = input;
 				this.port = DEFAULT_PORT;
-			}
-			else {
+			} else {
 				this.host = input.substring(0, portIndex);
 				this.port = Integer.valueOf(input.substring(portIndex + 1));
 			}

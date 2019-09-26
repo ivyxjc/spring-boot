@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.data.jpa;
 
-import javax.persistence.EntityManagerFactory;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -43,6 +40,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -92,7 +91,7 @@ public class JpaRepositoriesAutoConfigurationTests {
 				.withPropertyValues("spring.data.jpa.repositories.bootstrap-mode=lazy")
 				.run((context) -> assertThat(
 						context.getBean(LocalContainerEntityManagerFactoryBean.class).getBootstrapExecutor())
-								.isEqualTo(context.getBean("applicationTaskExecutor")));
+						.isEqualTo(context.getBean("applicationTaskExecutor")));
 	}
 
 	@Test
@@ -101,7 +100,7 @@ public class JpaRepositoriesAutoConfigurationTests {
 				.withPropertyValues("spring.data.jpa.repositories.bootstrap-mode=lazy")
 				.run((context) -> assertThat(
 						context.getBean(LocalContainerEntityManagerFactoryBean.class).getBootstrapExecutor())
-								.isEqualTo(context.getBean("testAsyncTaskExecutor")));
+						.isEqualTo(context.getBean("testAsyncTaskExecutor")));
 	}
 
 	@Test
@@ -112,7 +111,7 @@ public class JpaRepositoriesAutoConfigurationTests {
 				.withPropertyValues("spring.data.jpa.repositories.bootstrap-mode=deferred")
 				.run((context) -> assertThat(
 						context.getBean(LocalContainerEntityManagerFactoryBean.class).getBootstrapExecutor())
-								.isEqualTo(context.getBean("applicationTaskExecutor")));
+						.isEqualTo(context.getBean("applicationTaskExecutor")));
 	}
 
 	@Test
@@ -121,7 +120,7 @@ public class JpaRepositoriesAutoConfigurationTests {
 				.withConfiguration(AutoConfigurations.of(TaskExecutionAutoConfiguration.class,
 						TaskSchedulingAutoConfiguration.class))
 				.withPropertyValues("spring.data.jpa.repositories.bootstrap-mode=default").run((context) -> assertThat(
-						context.getBean(LocalContainerEntityManagerFactoryBean.class).getBootstrapExecutor()).isNull());
+				context.getBean(LocalContainerEntityManagerFactoryBean.class).getBootstrapExecutor()).isNull());
 	}
 
 	@Configuration
@@ -151,8 +150,8 @@ public class JpaRepositoriesAutoConfigurationTests {
 	@Configuration
 	@EnableJpaRepositories(
 			basePackageClasses = org.springframework.boot.autoconfigure.data.alt.jpa.CityJpaRepository.class,
-			excludeFilters = { @Filter(type = FilterType.ASSIGNABLE_TYPE, value = CityMongoDbRepository.class),
-					@Filter(type = FilterType.ASSIGNABLE_TYPE, value = CitySolrRepository.class) })
+			excludeFilters = {@Filter(type = FilterType.ASSIGNABLE_TYPE, value = CityMongoDbRepository.class),
+					@Filter(type = FilterType.ASSIGNABLE_TYPE, value = CitySolrRepository.class)})
 	@TestAutoConfigurationPackage(City.class)
 	protected static class CustomConfiguration {
 

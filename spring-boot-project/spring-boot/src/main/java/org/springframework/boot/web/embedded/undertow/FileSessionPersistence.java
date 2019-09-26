@@ -16,21 +16,14 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import io.undertow.servlet.UndertowServletLogger;
+import io.undertow.servlet.api.SessionPersistenceManager;
+import org.springframework.core.ConfigurableObjectInputStream;
+
+import java.io.*;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import io.undertow.servlet.UndertowServletLogger;
-import io.undertow.servlet.api.SessionPersistenceManager;
-
-import org.springframework.core.ConfigurableObjectInputStream;
 
 /**
  * {@link SessionPersistenceManager} that stores session information in a file.
@@ -51,8 +44,7 @@ class FileSessionPersistence implements SessionPersistenceManager {
 	public void persistSessions(String deploymentName, Map<String, PersistentSession> sessionData) {
 		try {
 			save(sessionData, getSessionFile(deploymentName));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			UndertowServletLogger.ROOT_LOGGER.failedToPersistSessions(ex);
 		}
 	}
@@ -76,8 +68,7 @@ class FileSessionPersistence implements SessionPersistenceManager {
 			if (file.exists()) {
 				return load(file, classLoader);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			UndertowServletLogger.ROOT_LOGGER.failedtoLoadPersistentSessions(ex);
 		}
 		return null;

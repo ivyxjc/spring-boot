@@ -16,10 +16,6 @@
 
 package org.springframework.boot.test.json;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -27,10 +23,13 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.spi.json.JacksonJsonProvider;
 import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.core.ResolvableType;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 
 /**
  * AssertJ based JSON tester backed by Jackson. Usually instantiated via
@@ -53,7 +52,7 @@ import org.springframework.util.Assert;
  *
  * }
  * </pre>
- *
+ * <p>
  * See {@link AbstractJsonMarshalTester} for more details.
  *
  * @param <T> the type under test
@@ -70,6 +69,7 @@ public class JacksonTester<T> extends AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Create a new {@link JacksonTester} instance.
+	 *
 	 * @param objectMapper the Jackson object mapper
 	 */
 	protected JacksonTester(ObjectMapper objectMapper) {
@@ -79,9 +79,10 @@ public class JacksonTester<T> extends AbstractJsonMarshalTester<T> {
 
 	/**
 	 * Create a new {@link JacksonTester} instance.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param type the type under test
-	 * @param objectMapper the Jackson object mapper
+	 * @param type              the type under test
+	 * @param objectMapper      the Jackson object mapper
 	 */
 	public JacksonTester(Class<?> resourceLoadClass, ResolvableType type, ObjectMapper objectMapper) {
 		this(resourceLoadClass, type, objectMapper, null);
@@ -92,6 +93,30 @@ public class JacksonTester<T> extends AbstractJsonMarshalTester<T> {
 		Assert.notNull(objectMapper, "ObjectMapper must not be null");
 		this.objectMapper = objectMapper;
 		this.view = view;
+	}
+
+	/**
+	 * Utility method to initialize {@link JacksonTester} fields. See {@link JacksonTester
+	 * class-level documentation} for example usage.
+	 *
+	 * @param testInstance the test instance
+	 * @param objectMapper the object mapper
+	 * @see #initFields(Object, ObjectMapper)
+	 */
+	public static void initFields(Object testInstance, ObjectMapper objectMapper) {
+		new JacksonFieldInitializer().initFields(testInstance, objectMapper);
+	}
+
+	/**
+	 * Utility method to initialize {@link JacksonTester} fields. See {@link JacksonTester
+	 * class-level documentation} for example usage.
+	 *
+	 * @param testInstance        the test instance
+	 * @param objectMapperFactory a factory to create the object mapper
+	 * @see #initFields(Object, ObjectMapper)
+	 */
+	public static void initFields(Object testInstance, ObjectFactory<ObjectMapper> objectMapperFactory) {
+		new JacksonFieldInitializer().initFields(testInstance, objectMapperFactory);
 	}
 
 	@Override
@@ -137,30 +162,9 @@ public class JacksonTester<T> extends AbstractJsonMarshalTester<T> {
 	}
 
 	/**
-	 * Utility method to initialize {@link JacksonTester} fields. See {@link JacksonTester
-	 * class-level documentation} for example usage.
-	 * @param testInstance the test instance
-	 * @param objectMapper the object mapper
-	 * @see #initFields(Object, ObjectMapper)
-	 */
-	public static void initFields(Object testInstance, ObjectMapper objectMapper) {
-		new JacksonFieldInitializer().initFields(testInstance, objectMapper);
-	}
-
-	/**
-	 * Utility method to initialize {@link JacksonTester} fields. See {@link JacksonTester
-	 * class-level documentation} for example usage.
-	 * @param testInstance the test instance
-	 * @param objectMapperFactory a factory to create the object mapper
-	 * @see #initFields(Object, ObjectMapper)
-	 */
-	public static void initFields(Object testInstance, ObjectFactory<ObjectMapper> objectMapperFactory) {
-		new JacksonFieldInitializer().initFields(testInstance, objectMapperFactory);
-	}
-
-	/**
 	 * Returns a new instance of {@link JacksonTester} with the view that should be used
 	 * for json serialization/deserialization.
+	 *
 	 * @param view the view class
 	 * @return the new instance
 	 */
@@ -179,7 +183,7 @@ public class JacksonTester<T> extends AbstractJsonMarshalTester<T> {
 
 		@Override
 		protected AbstractJsonMarshalTester<Object> createTester(Class<?> resourceLoadClass, ResolvableType type,
-				ObjectMapper marshaller) {
+																 ObjectMapper marshaller) {
 			return new JacksonTester<>(resourceLoadClass, type, marshaller);
 		}
 

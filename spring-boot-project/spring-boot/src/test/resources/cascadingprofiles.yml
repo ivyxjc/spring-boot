@@ -1,27 +1,27 @@
 spring:
-  profiles:
-    active:
-      - A
-      - B
+    profiles:
+        active:
+            - A
+            - B
 
 ---
 spring.profiles: A
 
 spring:
-  profiles:
-    include:
-      - C
-      - E
+    profiles:
+        include:
+            - C
+            - E
 version: A
 
 ---
 spring.profiles: B
 
 spring:
-  profiles:
-    include:
-      - D
-      - E
+    profiles:
+        include:
+            - D
+            - E
 version: B
 
 ---

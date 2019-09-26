@@ -16,19 +16,8 @@
 
 package org.springframework.boot.autoconfigure.batch;
 
-import java.util.Collection;
-import java.util.Collections;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.Step;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.configuration.annotation.BatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -58,6 +47,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -136,11 +130,11 @@ public class BatchAutoConfigurationTests {
 				.withUserConfiguration(NamedJobConfigurationWithRegisteredJob.class,
 						EmbeddedDataSourceConfiguration.class)
 				.withPropertyValues("spring.batch.job.names:discreteRegisteredJob").run((context) -> {
-					assertThat(context).hasSingleBean(JobLauncher.class);
-					context.getBean(JobLauncherCommandLineRunner.class).run();
-					assertThat(context.getBean(JobRepository.class).getLastJobExecution("discreteRegisteredJob",
-							new JobParameters())).isNotNull();
-				});
+			assertThat(context).hasSingleBean(JobLauncher.class);
+			context.getBean(JobLauncherCommandLineRunner.class).run();
+			assertThat(context.getBean(JobRepository.class).getLastJobExecution("discreteRegisteredJob",
+					new JobParameters())).isNotNull();
+		});
 	}
 
 	@Test
@@ -148,20 +142,20 @@ public class BatchAutoConfigurationTests {
 		this.contextRunner
 				.withUserConfiguration(NamedJobConfigurationWithLocalJob.class, EmbeddedDataSourceConfiguration.class)
 				.withPropertyValues("spring.batch.job.names:discreteLocalJob").run((context) -> {
-					assertThat(context).hasSingleBean(JobLauncher.class);
-					context.getBean(JobLauncherCommandLineRunner.class).run();
-					assertThat(context.getBean(JobRepository.class).getLastJobExecution("discreteLocalJob",
-							new JobParameters())).isNotNull();
-				});
+			assertThat(context).hasSingleBean(JobLauncher.class);
+			context.getBean(JobLauncherCommandLineRunner.class).run();
+			assertThat(context.getBean(JobRepository.class).getLastJobExecution("discreteLocalJob",
+					new JobParameters())).isNotNull();
+		});
 	}
 
 	@Test
 	public void testDisableLaunchesJob() {
 		this.contextRunner.withUserConfiguration(JobConfiguration.class, EmbeddedDataSourceConfiguration.class)
 				.withPropertyValues("spring.batch.job.enabled:false").run((context) -> {
-					assertThat(context).hasSingleBean(JobLauncher.class);
-					assertThat(context).doesNotHaveBean(CommandLineRunner.class);
-				});
+			assertThat(context).hasSingleBean(JobLauncher.class);
+			assertThat(context).doesNotHaveBean(CommandLineRunner.class);
+		});
 	}
 
 	@Test
@@ -183,16 +177,16 @@ public class BatchAutoConfigurationTests {
 	public void testUsingJpa() {
 		this.contextRunner.withUserConfiguration(TestConfiguration.class, EmbeddedDataSourceConfiguration.class,
 				HibernateJpaAutoConfiguration.class).run((context) -> {
-					PlatformTransactionManager transactionManager = context.getBean(PlatformTransactionManager.class);
-					// It's a lazy proxy, but it does render its target if you ask for
-					// toString():
-					assertThat(transactionManager.toString().contains("JpaTransactionManager")).isTrue();
-					assertThat(context).hasSingleBean(EntityManagerFactory.class);
-					// Ensure the JobRepository can be used (no problem with isolation
-					// level)
-					assertThat(context.getBean(JobRepository.class).getLastJobExecution("job", new JobParameters()))
-							.isNull();
-				});
+			PlatformTransactionManager transactionManager = context.getBean(PlatformTransactionManager.class);
+			// It's a lazy proxy, but it does render its target if you ask for
+			// toString():
+			assertThat(transactionManager.toString().contains("JpaTransactionManager")).isTrue();
+			assertThat(context).hasSingleBean(EntityManagerFactory.class);
+			// Ensure the JobRepository can be used (no problem with isolation
+			// level)
+			assertThat(context.getBean(JobRepository.class).getLastJobExecution("job", new JobParameters()))
+					.isNull();
+		});
 	}
 
 	@Test

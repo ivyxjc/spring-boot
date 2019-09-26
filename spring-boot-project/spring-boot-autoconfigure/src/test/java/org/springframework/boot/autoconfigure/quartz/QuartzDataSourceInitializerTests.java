@@ -16,12 +16,7 @@
 
 package org.springframework.boot.autoconfigure.quartz;
 
-import java.util.UUID;
-
-import javax.sql.DataSource;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
@@ -31,6 +26,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -65,7 +63,7 @@ public class QuartzDataSourceInitializerTests {
 
 		@Bean
 		public QuartzDataSourceInitializer initializer(DataSource dataSource, ResourceLoader resourceLoader,
-				QuartzProperties properties) {
+													   QuartzProperties properties) {
 			return new QuartzDataSourceInitializer(dataSource, resourceLoader, properties);
 		}
 

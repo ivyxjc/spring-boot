@@ -16,11 +16,11 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import javax.validation.ValidationException;
-
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.FailureAnalyzer;
+
+import javax.validation.ValidationException;
 
 /**
  * A {@link FailureAnalyzer} that performs analysis of failures caused by a

@@ -16,17 +16,16 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
 import io.undertow.UndertowMessages;
 import io.undertow.server.handlers.resource.Resource;
 import io.undertow.server.handlers.resource.ResourceChangeListener;
 import io.undertow.server.handlers.resource.ResourceManager;
 import io.undertow.server.handlers.resource.URLResource;
-
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * {@link ResourceManager} for JAR resources.

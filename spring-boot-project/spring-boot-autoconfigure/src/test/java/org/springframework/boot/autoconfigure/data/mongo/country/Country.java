@@ -16,13 +16,12 @@
 
 package org.springframework.boot.autoconfigure.data.mongo.country;
 
-import java.io.Serializable;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.io.Serializable;
 
 @Document
 public class Country implements Serializable {

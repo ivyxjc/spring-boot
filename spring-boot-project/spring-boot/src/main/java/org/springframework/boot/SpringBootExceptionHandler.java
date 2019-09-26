@@ -18,11 +18,7 @@ package org.springframework.boot;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * {@link UncaughtExceptionHandler} to suppress handling already logged exceptions and
@@ -33,14 +29,13 @@ import java.util.Set;
 class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 
 	private static final Set<String> LOG_CONFIGURATION_MESSAGES;
+	private static LoggedExceptionHandlerThreadLocal handler = new LoggedExceptionHandlerThreadLocal();
 
 	static {
 		Set<String> messages = new HashSet<>();
 		messages.add("Logback configuration error detected");
 		LOG_CONFIGURATION_MESSAGES = Collections.unmodifiableSet(messages);
 	}
-
-	private static LoggedExceptionHandlerThreadLocal handler = new LoggedExceptionHandlerThreadLocal();
 
 	private final UncaughtExceptionHandler parent;
 
@@ -50,6 +45,10 @@ class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 
 	SpringBootExceptionHandler(UncaughtExceptionHandler parent) {
 		this.parent = parent;
+	}
+
+	static SpringBootExceptionHandler forCurrentThread() {
+		return handler.get();
 	}
 
 	public void registerLoggedException(Throwable exception) {
@@ -66,8 +65,7 @@ class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 			if (isPassedToParent(ex) && this.parent != null) {
 				this.parent.uncaughtException(thread, ex);
 			}
-		}
-		finally {
+		} finally {
 			this.loggedExceptions.clear();
 			if (this.exitCode != 0) {
 				System.exit(this.exitCode);
@@ -82,6 +80,7 @@ class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 	/**
 	 * Check if the exception is a log configuration message, i.e. the log call might not
 	 * have actually output anything.
+	 *
 	 * @param ex the source exception
 	 * @return {@code true} if the exception contains a log configuration message
 	 */
@@ -108,10 +107,6 @@ class SpringBootExceptionHandler implements UncaughtExceptionHandler {
 			return isRegistered(ex.getCause());
 		}
 		return false;
-	}
-
-	static SpringBootExceptionHandler forCurrentThread() {
-		return handler.get();
 	}
 
 	/**

@@ -16,14 +16,13 @@
 
 package org.springframework.boot.system;
 
-import java.io.File;
-import java.io.FileReader;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.util.FileCopyUtils;
+
+import java.io.File;
+import java.io.FileReader;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;

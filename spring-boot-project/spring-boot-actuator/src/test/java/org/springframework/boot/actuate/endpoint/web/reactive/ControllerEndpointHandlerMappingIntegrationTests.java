@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.endpoint.web.reactive;
 
-import java.net.URI;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointDiscoverer;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
@@ -52,6 +45,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.adapter.WebHttpHandlerBuilder;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import java.net.URI;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Consumer;
+
 /**
  * Integration tests for {@link ControllerEndpointHandlerMapping}.
  *
@@ -62,7 +61,7 @@ public class ControllerEndpointHandlerMappingIntegrationTests {
 
 	private final ReactiveWebApplicationContextRunner contextRunner = new ReactiveWebApplicationContextRunner(
 			AnnotationConfigReactiveWebServerApplicationContext::new).withUserConfiguration(EndpointConfiguration.class,
-					ExampleWebFluxEndpoint.class);
+			ExampleWebFluxEndpoint.class);
 
 	@Test
 	public void get() {
@@ -102,8 +101,8 @@ public class ControllerEndpointHandlerMappingIntegrationTests {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			WebFluxAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 WebFluxAutoConfiguration.class})
 	static class EndpointConfiguration {
 
 		@Bean

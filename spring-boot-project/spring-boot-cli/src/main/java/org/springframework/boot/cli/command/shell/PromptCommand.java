@@ -42,8 +42,7 @@ public class PromptCommand extends AbstractCommand {
 			for (String string : strings) {
 				this.prompts.pushPrompt(string + " ");
 			}
-		}
-		else {
+		} else {
 			this.prompts.popPrompt();
 		}
 		return ExitStatus.OK;

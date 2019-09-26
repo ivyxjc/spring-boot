@@ -16,14 +16,14 @@
 
 package org.springframework.boot.devtools.restart.server;
 
+import org.springframework.util.StringUtils;
+
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.springframework.util.StringUtils;
 
 /**
  * Default implementation of {@link SourceFolderUrlFilter} that attempts to match URLs
@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
  */
 public class DefaultSourceFolderUrlFilter implements SourceFolderUrlFilter {
 
-	private static final String[] COMMON_ENDINGS = { "/target/classes", "/bin" };
+	private static final String[] COMMON_ENDINGS = {"/target/classes", "/bin"};
 
 	private static final Pattern URL_MODULE_PATTERN = Pattern.compile(".*\\/(.+)\\.jar");
 

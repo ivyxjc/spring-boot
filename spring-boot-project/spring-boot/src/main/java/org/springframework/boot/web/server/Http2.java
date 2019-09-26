@@ -28,6 +28,7 @@ public class Http2 {
 
 	/**
 	 * Return whether to enable HTTP/2 support, if the current environment supports it.
+	 *
 	 * @return {@code true} to enable HTTP/2 support
 	 */
 	public boolean isEnabled() {

@@ -29,6 +29,7 @@ public interface SchemaManagementProvider {
 
 	/**
 	 * Return the {@link SchemaManagement} for the specified {@link DataSource}.
+	 *
 	 * @param dataSource the dataSource to handle
 	 * @return the {@link SchemaManagement} for the {@link DataSource}.
 	 */

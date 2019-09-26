@@ -16,14 +16,14 @@
 
 package org.springframework.boot.info;
 
+import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.env.PropertySource;
+import org.springframework.util.Assert;
+
 import java.time.Instant;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
-
-import org.springframework.core.env.PropertiesPropertySource;
-import org.springframework.core.env.PropertySource;
-import org.springframework.util.Assert;
 
 /**
  * Base class for components exposing unstructured data with dedicated methods for well
@@ -38,6 +38,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 
 	/**
 	 * Create an instance with the specified entries.
+	 *
 	 * @param entries the information to expose
 	 */
 	public InfoProperties(Properties entries) {
@@ -47,6 +48,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 
 	/**
 	 * Return the value of the specified property or {@code null}.
+	 *
 	 * @param key the key of the property
 	 * @return the property value
 	 */
@@ -57,6 +59,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 	/**
 	 * Return the value of the specified property as an {@link Instant} or {@code null} if
 	 * the value is not a valid {@link Long} representation of an epoch time.
+	 *
 	 * @param key the key of the property
 	 * @return the property value
 	 */
@@ -65,8 +68,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 		if (s != null) {
 			try {
 				return Instant.ofEpochMilli(Long.parseLong(s));
-			}
-			catch (NumberFormatException ex) {
+			} catch (NumberFormatException ex) {
 				// Not valid epoch time
 			}
 		}
@@ -80,6 +82,7 @@ public class InfoProperties implements Iterable<InfoProperties.Entry> {
 
 	/**
 	 * Return a {@link PropertySource} of this instance.
+	 *
 	 * @return a {@link PropertySource}
 	 */
 	public PropertySource<?> toPropertySource() {

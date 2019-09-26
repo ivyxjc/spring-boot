@@ -16,19 +16,10 @@
 
 package org.springframework.boot.devtools.integrationtest;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.devtools.integrationtest.HttpTunnelIntegrationTests.TunnelConfiguration.TestTunnelClient;
-import org.springframework.boot.devtools.remote.server.AccessManager;
-import org.springframework.boot.devtools.remote.server.Dispatcher;
-import org.springframework.boot.devtools.remote.server.DispatcherFilter;
-import org.springframework.boot.devtools.remote.server.HandlerMapper;
-import org.springframework.boot.devtools.remote.server.UrlHandlerMapper;
+import org.springframework.boot.devtools.remote.server.*;
 import org.springframework.boot.devtools.tunnel.client.HttpTunnelConnection;
 import org.springframework.boot.devtools.tunnel.client.TunnelClient;
 import org.springframework.boot.devtools.tunnel.client.TunnelConnection;
@@ -51,6 +42,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

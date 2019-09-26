@@ -16,15 +16,14 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.client;
 
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.http.client.reactive.ClientHttpRequest;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
  * Factory methods for creating {@link Tag Tags} related to a request-response exchange
@@ -51,6 +50,7 @@ public final class WebClientExchangeTags {
 	/**
 	 * Creates a {@code method} {@code Tag} for the {@link ClientHttpRequest#getMethod()
 	 * method} of the given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the method tag
 	 */
@@ -60,6 +60,7 @@ public final class WebClientExchangeTags {
 
 	/**
 	 * Creates a {@code uri} {@code Tag} for the URI path of the given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the uri tag
 	 */
@@ -76,6 +77,7 @@ public final class WebClientExchangeTags {
 	/**
 	 * Creates a {@code status} {@code Tag} derived from the
 	 * {@link ClientResponse#statusCode()} of the given {@code response}.
+	 *
 	 * @param response the response
 	 * @return the status tag
 	 */
@@ -86,6 +88,7 @@ public final class WebClientExchangeTags {
 	/**
 	 * Creates a {@code status} {@code Tag} derived from the exception thrown by the
 	 * client.
+	 *
 	 * @param throwable the exception
 	 * @return the status tag
 	 */
@@ -97,6 +100,7 @@ public final class WebClientExchangeTags {
 	 * Create a {@code clientName} {@code Tag} derived from the
 	 * {@link java.net.URI#getHost host} of the {@link ClientRequest#url() URL} of the
 	 * given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the clientName tag
 	 */

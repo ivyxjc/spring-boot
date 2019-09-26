@@ -16,11 +16,7 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.openqa.selenium.WebDriver;
-
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -29,6 +25,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A special scope used for {@link WebDriver} beans. Usually registered by a
@@ -45,10 +44,52 @@ class WebDriverScope implements Scope {
 
 	private static final String WEB_DRIVER_CLASS = "org.openqa.selenium.WebDriver";
 
-	private static final String[] BEAN_CLASSES = { WEB_DRIVER_CLASS,
-			"org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder" };
+	private static final String[] BEAN_CLASSES = {WEB_DRIVER_CLASS,
+			"org.springframework.test.web.servlet.htmlunit.webdriver.MockMvcHtmlUnitDriverBuilder"};
 
 	private final Map<String, Object> instances = new HashMap<>();
+
+	/**
+	 * Register this scope with the specified context and reassign appropriate bean
+	 * definitions to used it.
+	 *
+	 * @param context the application context
+	 */
+	public static void registerWith(ConfigurableApplicationContext context) {
+		if (!ClassUtils.isPresent(WEB_DRIVER_CLASS, null)) {
+			return;
+		}
+		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
+		if (beanFactory.getRegisteredScope(NAME) == null) {
+			beanFactory.registerScope(NAME, new WebDriverScope());
+		}
+		context.addBeanFactoryPostProcessor(WebDriverScope::postProcessBeanFactory);
+	}
+
+	private static void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+		for (String beanClass : BEAN_CLASSES) {
+			for (String beanName : beanFactory.getBeanNamesForType(ClassUtils.resolveClassName(beanClass, null))) {
+				BeanDefinition definition = beanFactory.getBeanDefinition(beanName);
+				if (!StringUtils.hasLength(definition.getScope())) {
+					definition.setScope(NAME);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Return the {@link WebDriverScope} being used by the specified context (if any).
+	 *
+	 * @param context the application context
+	 * @return the web driver scope or {@code null}
+	 */
+	public static WebDriverScope getFrom(ApplicationContext context) {
+		if (context instanceof ConfigurableApplicationContext) {
+			Scope scope = ((ConfigurableApplicationContext) context).getBeanFactory().getRegisteredScope(NAME);
+			return (scope instanceof WebDriverScope) ? (WebDriverScope) scope : null;
+		}
+		return null;
+	}
 
 	@Override
 	public Object get(String name, ObjectFactory<?> objectFactory) {
@@ -85,6 +126,7 @@ class WebDriverScope implements Scope {
 
 	/**
 	 * Reset all instances in the scope.
+	 *
 	 * @return {@code true} if items were reset
 	 */
 	public boolean reset() {
@@ -99,46 +141,6 @@ class WebDriverScope implements Scope {
 			this.instances.clear();
 		}
 		return reset;
-	}
-
-	/**
-	 * Register this scope with the specified context and reassign appropriate bean
-	 * definitions to used it.
-	 * @param context the application context
-	 */
-	public static void registerWith(ConfigurableApplicationContext context) {
-		if (!ClassUtils.isPresent(WEB_DRIVER_CLASS, null)) {
-			return;
-		}
-		ConfigurableListableBeanFactory beanFactory = context.getBeanFactory();
-		if (beanFactory.getRegisteredScope(NAME) == null) {
-			beanFactory.registerScope(NAME, new WebDriverScope());
-		}
-		context.addBeanFactoryPostProcessor(WebDriverScope::postProcessBeanFactory);
-	}
-
-	private static void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
-		for (String beanClass : BEAN_CLASSES) {
-			for (String beanName : beanFactory.getBeanNamesForType(ClassUtils.resolveClassName(beanClass, null))) {
-				BeanDefinition definition = beanFactory.getBeanDefinition(beanName);
-				if (!StringUtils.hasLength(definition.getScope())) {
-					definition.setScope(NAME);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Return the {@link WebDriverScope} being used by the specified context (if any).
-	 * @param context the application context
-	 * @return the web driver scope or {@code null}
-	 */
-	public static WebDriverScope getFrom(ApplicationContext context) {
-		if (context instanceof ConfigurableApplicationContext) {
-			Scope scope = ((ConfigurableApplicationContext) context).getBeanFactory().getRegisteredScope(NAME);
-			return (scope instanceof WebDriverScope) ? (WebDriverScope) scope : null;
-		}
-		return null;
 	}
 
 }

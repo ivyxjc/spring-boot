@@ -16,11 +16,7 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Container annotation that aggregates several {@link MockBean} annotations.
@@ -40,6 +36,7 @@ public @interface MockBeans {
 
 	/**
 	 * Return the contained {@link MockBean} annotations.
+	 *
 	 * @return the mock beans
 	 */
 	MockBean[] value();

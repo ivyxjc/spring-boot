@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
+
 import java.util.Map;
 import java.util.function.Function;
-
-import org.springframework.util.Assert;
 
 /**
  * Factory to create a {@link CompositeHealthIndicator}.
@@ -44,13 +44,14 @@ public class CompositeHealthIndicatorFactory {
 
 	/**
 	 * Create a {@link CompositeHealthIndicator} based on the specified health indicators.
+	 *
 	 * @param healthAggregator the {@link HealthAggregator}
 	 * @param healthIndicators the {@link HealthIndicator} instances mapped by name
 	 * @return a {@link HealthIndicator} that delegates to the specified
 	 * {@code healthIndicators}.
 	 */
 	public CompositeHealthIndicator createHealthIndicator(HealthAggregator healthAggregator,
-			Map<String, HealthIndicator> healthIndicators) {
+														  Map<String, HealthIndicator> healthIndicators) {
 		Assert.notNull(healthAggregator, "HealthAggregator must not be null");
 		Assert.notNull(healthIndicators, "HealthIndicators must not be null");
 		HealthIndicatorRegistryFactory factory = new HealthIndicatorRegistryFactory(this.healthIndicatorNameFactory);

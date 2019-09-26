@@ -16,20 +16,14 @@
 
 package org.springframework.boot.context.properties.source;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.ConcurrentModificationException;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Stream;
-
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.util.ObjectUtils;
+
+import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * {@link ConfigurationPropertySource} backed by an {@link EnumerablePropertySource}.
@@ -56,8 +50,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		if (getPropertySource() instanceof MapPropertySource) {
 			try {
 				((MapPropertySource) getPropertySource()).getSource().size();
-			}
-			catch (UnsupportedOperationException ex) {
+			} catch (UnsupportedOperationException ex) {
 				throw new IllegalArgumentException("PropertySource must be fully enumerable");
 			}
 		}
@@ -137,8 +130,7 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 			cache = new Cache(key.copy());
 			this.cache = cache;
 			return cache;
-		}
-		catch (ConcurrentModificationException ex) {
+		} catch (ConcurrentModificationException ex) {
 			// Not fatal at this point, we can continue without a cache
 			return null;
 		}
@@ -191,6 +183,13 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 			this.key = key;
 		}
 
+		public static CacheKey get(EnumerablePropertySource<?> source) {
+			if (source instanceof MapPropertySource) {
+				return new CacheKey(((MapPropertySource) source).getSource().keySet());
+			}
+			return new CacheKey(source.getPropertyNames());
+		}
+
 		public CacheKey copy() {
 			return new CacheKey(copyKey(this.key));
 		}
@@ -216,13 +215,6 @@ class SpringIterableConfigurationPropertySource extends SpringConfigurationPrope
 		@Override
 		public int hashCode() {
 			return this.key.hashCode();
-		}
-
-		public static CacheKey get(EnumerablePropertySource<?> source) {
-			if (source instanceof MapPropertySource) {
-				return new CacheKey(((MapPropertySource) source).getSource().keySet());
-			}
-			return new CacheKey(source.getPropertyNames());
 		}
 
 	}

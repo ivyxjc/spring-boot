@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.mongo;
 
-import java.util.Map;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -35,6 +33,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link MongoHealthIndicator}.
  *
@@ -46,8 +46,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 @ConditionalOnBean(MongoTemplate.class)
 @ConditionalOnEnabledHealthIndicator("mongo")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)
-@AutoConfigureAfter({ MongoAutoConfiguration.class, MongoDataAutoConfiguration.class,
-		MongoReactiveHealthIndicatorAutoConfiguration.class })
+@AutoConfigureAfter({MongoAutoConfiguration.class, MongoDataAutoConfiguration.class,
+							MongoReactiveHealthIndicatorAutoConfiguration.class})
 public class MongoHealthIndicatorAutoConfiguration
 		extends CompositeHealthIndicatorConfiguration<MongoHealthIndicator, MongoTemplate> {
 

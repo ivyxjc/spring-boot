@@ -17,7 +17,6 @@
 package org.springframework.boot.docs.actuate.metrics;
 
 import io.micrometer.core.instrument.config.MeterFilter;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

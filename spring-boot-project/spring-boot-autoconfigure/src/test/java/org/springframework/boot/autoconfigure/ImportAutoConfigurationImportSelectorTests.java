@@ -16,18 +16,10 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.io.IOException;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration;
@@ -38,6 +30,13 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 import org.springframework.util.ClassUtils;
+
+import java.io.IOException;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verifyZeroInteractions;
@@ -184,6 +183,47 @@ public class ImportAutoConfigurationImportSelectorTests {
 		return new SimpleMetadataReaderFactory().getMetadataReader(source.getName()).getAnnotationMetadata();
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@ImportAutoConfiguration(FreeMarkerAutoConfiguration.class)
+	@interface ImportOne {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@ImportAutoConfiguration(ThymeleafAutoConfiguration.class)
+	@interface ImportTwo {
+
+	}
+
+	@ImportAutoConfiguration
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface MetaImportAutoConfiguration {
+
+		@AliasFor(annotation = ImportAutoConfiguration.class)
+		Class<?>[] exclude() default {};
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface UnrelatedOne {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface UnrelatedTwo {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@ImportAutoConfiguration(ThymeleafAutoConfiguration.class)
+	@SelfAnnotating
+	@interface SelfAnnotating {
+
+		@AliasFor(annotation = ImportAutoConfiguration.class, attribute = "exclude")
+		Class<?>[] excludeAutoConfiguration() default {};
+
+	}
+
 	@ImportAutoConfiguration(FreeMarkerAutoConfiguration.class)
 	static class ImportFreeMarker {
 
@@ -220,18 +260,6 @@ public class ImportAutoConfigurationImportSelectorTests {
 
 	@SelfAnnotating(excludeAutoConfiguration = ThymeleafAutoConfiguration.class)
 	static class ImportWithSelfAnnotatingAnnotationExclude {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@ImportAutoConfiguration(FreeMarkerAutoConfiguration.class)
-	@interface ImportOne {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@ImportAutoConfiguration(ThymeleafAutoConfiguration.class)
-	@interface ImportTwo {
 
 	}
 
@@ -280,35 +308,6 @@ public class ImportAutoConfigurationImportSelectorTests {
 	@MetaImportAutoConfiguration(exclude = ThymeleafAutoConfiguration.class)
 	@UnrelatedTwo
 	static class ImportMetaAutoConfigurationExcludeWithUnrelatedTwo {
-
-	}
-
-	@ImportAutoConfiguration
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface MetaImportAutoConfiguration {
-
-		@AliasFor(annotation = ImportAutoConfiguration.class)
-		Class<?>[] exclude() default {};
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface UnrelatedOne {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface UnrelatedTwo {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@ImportAutoConfiguration(ThymeleafAutoConfiguration.class)
-	@SelfAnnotating
-	@interface SelfAnnotating {
-
-		@AliasFor(annotation = ImportAutoConfiguration.class, attribute = "exclude")
-		Class<?>[] excludeAutoConfiguration() default {};
 
 	}
 

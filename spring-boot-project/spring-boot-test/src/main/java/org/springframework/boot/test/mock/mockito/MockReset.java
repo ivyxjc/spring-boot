@@ -16,16 +16,15 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.util.List;
-
 import org.mockito.MockSettings;
 import org.mockito.MockingDetails;
 import org.mockito.Mockito;
 import org.mockito.listeners.InvocationListener;
 import org.mockito.listeners.MethodInvocationReport;
 import org.mockito.mock.MockCreationSettings;
-
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * Reset strategy used on a mock bean. Usually applied to a mock via the
@@ -33,8 +32,8 @@ import org.springframework.util.Assert;
  * the {@code ApplicationContext} using the static methods.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see ResetMocksTestExecutionListener
+ * @since 1.4.0
  */
 public enum MockReset {
 
@@ -56,6 +55,7 @@ public enum MockReset {
 	/**
 	 * Create {@link MockSettings settings} to be used with mocks where reset should occur
 	 * before each test method runs.
+	 *
 	 * @return mock settings
 	 */
 	public static MockSettings before() {
@@ -65,6 +65,7 @@ public enum MockReset {
 	/**
 	 * Create {@link MockSettings settings} to be used with mocks where reset should occur
 	 * after each test method runs.
+	 *
 	 * @return mock settings
 	 */
 	public static MockSettings after() {
@@ -74,6 +75,7 @@ public enum MockReset {
 	/**
 	 * Create {@link MockSettings settings} to be used with mocks where a specific reset
 	 * should occur.
+	 *
 	 * @param reset the reset type
 	 * @return mock settings
 	 */
@@ -83,7 +85,8 @@ public enum MockReset {
 
 	/**
 	 * Apply {@link MockReset} to existing {@link MockSettings settings}.
-	 * @param reset the reset type
+	 *
+	 * @param reset    the reset type
 	 * @param settings the settings
 	 * @return the configured settings
 	 */
@@ -97,6 +100,7 @@ public enum MockReset {
 
 	/**
 	 * Get the {@link MockReset} associated with the given mock.
+	 *
 	 * @param mock the source mock
 	 * @return the reset type (never {@code null})
 	 */

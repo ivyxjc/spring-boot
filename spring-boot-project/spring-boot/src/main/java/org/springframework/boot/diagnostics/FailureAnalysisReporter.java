@@ -27,6 +27,7 @@ public interface FailureAnalysisReporter {
 
 	/**
 	 * Reports the given {@code failureAnalysis} to the user.
+	 *
 	 * @param analysis the analysis
 	 */
 	void report(FailureAnalysis analysis);

@@ -16,18 +16,8 @@
 
 package org.springframework.boot.cli.command.encodepassword;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.HelpExample;
 import org.springframework.boot.cli.command.OptionParsingCommand;
@@ -39,6 +29,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * {@link Command} to encode passwords for use with Spring Security.

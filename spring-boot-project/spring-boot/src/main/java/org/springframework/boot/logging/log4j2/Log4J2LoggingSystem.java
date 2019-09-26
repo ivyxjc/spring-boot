@@ -16,14 +16,6 @@
 
 package org.springframework.boot.logging.log4j2;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Marker;
@@ -37,17 +29,19 @@ import org.apache.logging.log4j.core.config.ConfigurationSource;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.filter.AbstractFilter;
 import org.apache.logging.log4j.message.Message;
-
-import org.springframework.boot.logging.LogFile;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingInitializationContext;
-import org.springframework.boot.logging.LoggingSystem;
-import org.springframework.boot.logging.Slf4JLoggingSystem;
+import org.springframework.boot.logging.*;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * {@link LoggingSystem} for <a href="https://logging.apache.org/log4j/2.x/">Log4j 2</a>.
@@ -63,17 +57,6 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 	private static final String FILE_PROTOCOL = "file";
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
-
-	static {
-		LEVELS.map(LogLevel.TRACE, Level.TRACE);
-		LEVELS.map(LogLevel.DEBUG, Level.DEBUG);
-		LEVELS.map(LogLevel.INFO, Level.INFO);
-		LEVELS.map(LogLevel.WARN, Level.WARN);
-		LEVELS.map(LogLevel.ERROR, Level.ERROR);
-		LEVELS.map(LogLevel.FATAL, Level.FATAL);
-		LEVELS.map(LogLevel.OFF, Level.OFF);
-	}
-
 	private static final Filter FILTER = new AbstractFilter() {
 
 		@Override
@@ -97,6 +80,16 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		}
 
 	};
+
+	static {
+		LEVELS.map(LogLevel.TRACE, Level.TRACE);
+		LEVELS.map(LogLevel.DEBUG, Level.DEBUG);
+		LEVELS.map(LogLevel.INFO, Level.INFO);
+		LEVELS.map(LogLevel.WARN, Level.WARN);
+		LEVELS.map(LogLevel.ERROR, Level.ERROR);
+		LEVELS.map(LogLevel.FATAL, Level.FATAL);
+		LEVELS.map(LogLevel.OFF, Level.OFF);
+	}
 
 	public Log4J2LoggingSystem(ClassLoader classLoader) {
 		super(classLoader);
@@ -149,15 +142,14 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
 		if (logFile != null) {
 			loadConfiguration(getPackagedConfigFile("log4j2-file.xml"), logFile);
-		}
-		else {
+		} else {
 			loadConfiguration(getPackagedConfigFile("log4j2.xml"), logFile);
 		}
 	}
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+									 LogFile logFile) {
 		super.loadConfiguration(initializationContext, location, logFile);
 		loadConfiguration(location, logFile);
 	}
@@ -169,8 +161,7 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 			URL url = ResourceUtils.getURL(location);
 			ConfigurationSource source = getConfigurationSource(url);
 			ctx.start(ConfigurationFactory.getInstance().getConfiguration(ctx, source));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Could not initialize Log4J2 logging from " + location, ex);
 		}
 	}
@@ -200,8 +191,7 @@ public class Log4J2LoggingSystem extends Slf4JLoggingSystem {
 		if (loggerConfig == null) {
 			loggerConfig = new LoggerConfig(loggerName, level, true);
 			getLoggerContext().getConfiguration().addLogger(loggerName, loggerConfig);
-		}
-		else {
+		} else {
 			loggerConfig.setLevel(level);
 		}
 		getLoggerContext().updateLoggers();

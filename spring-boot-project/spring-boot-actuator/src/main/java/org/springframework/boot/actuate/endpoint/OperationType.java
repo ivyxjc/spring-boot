@@ -20,8 +20,8 @@ package org.springframework.boot.actuate.endpoint;
  * An enumeration of the different types of operation supported by an endpoint.
  *
  * @author Andy Wilkinson
- * @since 2.0.0
  * @see Operation
+ * @since 2.0.0
  */
 public enum OperationType {
 

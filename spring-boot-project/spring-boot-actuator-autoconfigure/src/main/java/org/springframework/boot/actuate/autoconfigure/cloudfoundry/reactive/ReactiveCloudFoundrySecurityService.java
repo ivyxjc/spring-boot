@@ -16,16 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.SslProvider;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
-import reactor.core.publisher.Mono;
-import reactor.netty.http.client.HttpClient;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.AccessLevel;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
@@ -36,6 +29,12 @@ import org.springframework.util.Assert;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClient.RequestHeadersSpec;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
+import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Reactive Cloud Foundry security service to handle REST calls to the cloud controller
@@ -55,7 +54,7 @@ class ReactiveCloudFoundrySecurityService {
 	private Mono<String> uaaUrl;
 
 	ReactiveCloudFoundrySecurityService(WebClient.Builder webClientBuilder, String cloudControllerUrl,
-			boolean skipSslValidation) {
+										boolean skipSslValidation) {
 		Assert.notNull(webClientBuilder, "Webclient must not be null");
 		Assert.notNull(cloudControllerUrl, "CloudControllerUrl must not be null");
 		if (skipSslValidation) {
@@ -78,7 +77,8 @@ class ReactiveCloudFoundrySecurityService {
 
 	/**
 	 * Return a Mono of the access level that should be granted to the given token.
-	 * @param token the token
+	 *
+	 * @param token         the token
 	 * @param applicationId the cloud foundry application ID
 	 * @return a Mono of the access level that should be granted
 	 * @throws CloudFoundryAuthorizationException if the token is not authorized
@@ -116,6 +116,7 @@ class ReactiveCloudFoundrySecurityService {
 
 	/**
 	 * Return a Mono of all token keys known by the UAA.
+	 *
 	 * @return a Mono of token keys
 	 */
 	public Mono<Map<String, String>> fetchTokenKeys() {
@@ -139,6 +140,7 @@ class ReactiveCloudFoundrySecurityService {
 
 	/**
 	 * Return a Mono of URL of the UAA.
+	 *
 	 * @return the UAA url Mono
 	 */
 	public Mono<String> getUaaUrl() {

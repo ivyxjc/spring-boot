@@ -29,6 +29,7 @@ public interface TaskSchedulerCustomizer {
 
 	/**
 	 * Callback to customize a {@link ThreadPoolTaskScheduler} instance.
+	 *
 	 * @param taskScheduler the task scheduler to customize
 	 */
 	void customize(ThreadPoolTaskScheduler taskScheduler);

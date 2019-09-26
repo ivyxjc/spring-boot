@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.couchbase;
 
-import java.util.function.Consumer;
-
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseBucket;
@@ -25,12 +23,13 @@ import com.couchbase.client.java.cluster.ClusterInfo;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -64,9 +63,9 @@ public class CouchbaseAutoConfigurationTests {
 	public void bootstrapHostsIgnoredIfCouchbaseConfigurerIsSet() {
 		this.contextRunner.withUserConfiguration(CouchbaseTestConfigurer.class)
 				.withPropertyValues("spring.couchbase.bootstrapHosts=localhost").run((context) -> {
-					assertThat(context).hasSingleBean(CouchbaseTestConfigurer.class);
-					assertNoCouchbaseBeans(context);
-				});
+			assertThat(context).hasSingleBean(CouchbaseTestConfigurer.class);
+			assertNoCouchbaseBeans(context);
+		});
 	}
 
 	private void assertNoCouchbaseBeans(AssertableApplicationContext context) {
@@ -78,13 +77,13 @@ public class CouchbaseAutoConfigurationTests {
 	@Test
 	public void customizeEnvEndpoints() {
 		testCouchbaseEnv((env) -> {
-			assertThat(env.kvServiceConfig().minEndpoints()).isEqualTo(2);
-			assertThat(env.kvServiceConfig().maxEndpoints()).isEqualTo(2);
-			assertThat(env.queryServiceConfig().minEndpoints()).isEqualTo(3);
-			assertThat(env.queryServiceConfig().maxEndpoints()).isEqualTo(5);
-			assertThat(env.viewServiceConfig().minEndpoints()).isEqualTo(4);
-			assertThat(env.viewServiceConfig().maxEndpoints()).isEqualTo(6);
-		}, "spring.couchbase.env.endpoints.key-value=2", "spring.couchbase.env.endpoints.queryservice.min-endpoints=3",
+					assertThat(env.kvServiceConfig().minEndpoints()).isEqualTo(2);
+					assertThat(env.kvServiceConfig().maxEndpoints()).isEqualTo(2);
+					assertThat(env.queryServiceConfig().minEndpoints()).isEqualTo(3);
+					assertThat(env.queryServiceConfig().maxEndpoints()).isEqualTo(5);
+					assertThat(env.viewServiceConfig().minEndpoints()).isEqualTo(4);
+					assertThat(env.viewServiceConfig().maxEndpoints()).isEqualTo(6);
+				}, "spring.couchbase.env.endpoints.key-value=2", "spring.couchbase.env.endpoints.queryservice.min-endpoints=3",
 				"spring.couchbase.env.endpoints.queryservice.max-endpoints=5",
 				"spring.couchbase.env.endpoints.viewservice.min-endpoints=4",
 				"spring.couchbase.env.endpoints.viewservice.max-endpoints=6");
@@ -93,11 +92,11 @@ public class CouchbaseAutoConfigurationTests {
 	@Test
 	public void customizeEnvEndpointsUsesNewInfrastructure() {
 		testCouchbaseEnv((env) -> {
-			assertThat(env.queryServiceConfig().minEndpoints()).isEqualTo(3);
-			assertThat(env.queryServiceConfig().maxEndpoints()).isEqualTo(5);
-			assertThat(env.viewServiceConfig().minEndpoints()).isEqualTo(4);
-			assertThat(env.viewServiceConfig().maxEndpoints()).isEqualTo(6);
-		}, "spring.couchbase.env.endpoints.queryservice.min-endpoints=3",
+					assertThat(env.queryServiceConfig().minEndpoints()).isEqualTo(3);
+					assertThat(env.queryServiceConfig().maxEndpoints()).isEqualTo(5);
+					assertThat(env.viewServiceConfig().minEndpoints()).isEqualTo(4);
+					assertThat(env.viewServiceConfig().maxEndpoints()).isEqualTo(6);
+				}, "spring.couchbase.env.endpoints.queryservice.min-endpoints=3",
 				"spring.couchbase.env.endpoints.queryservice.max-endpoints=5",
 				"spring.couchbase.env.endpoints.viewservice.min-endpoints=4",
 				"spring.couchbase.env.endpoints.viewservice.max-endpoints=6");
@@ -106,23 +105,23 @@ public class CouchbaseAutoConfigurationTests {
 	@Test
 	public void customizeEnvEndpointsUsesNewInfrastructureWithOnlyMax() {
 		testCouchbaseEnv((env) -> {
-			assertThat(env.queryServiceConfig().minEndpoints()).isEqualTo(1);
-			assertThat(env.queryServiceConfig().maxEndpoints()).isEqualTo(5);
-			assertThat(env.viewServiceConfig().minEndpoints()).isEqualTo(1);
-			assertThat(env.viewServiceConfig().maxEndpoints()).isEqualTo(6);
-		}, "spring.couchbase.env.endpoints.queryservice.max-endpoints=5",
+					assertThat(env.queryServiceConfig().minEndpoints()).isEqualTo(1);
+					assertThat(env.queryServiceConfig().maxEndpoints()).isEqualTo(5);
+					assertThat(env.viewServiceConfig().minEndpoints()).isEqualTo(1);
+					assertThat(env.viewServiceConfig().maxEndpoints()).isEqualTo(6);
+				}, "spring.couchbase.env.endpoints.queryservice.max-endpoints=5",
 				"spring.couchbase.env.endpoints.viewservice.max-endpoints=6");
 	}
 
 	@Test
 	public void customizeEnvTimeouts() {
 		testCouchbaseEnv((env) -> {
-			assertThat(env.connectTimeout()).isEqualTo(100);
-			assertThat(env.kvTimeout()).isEqualTo(200);
-			assertThat(env.queryTimeout()).isEqualTo(300);
-			assertThat(env.socketConnectTimeout()).isEqualTo(400);
-			assertThat(env.viewTimeout()).isEqualTo(500);
-		}, "spring.couchbase.env.timeouts.connect=100", "spring.couchbase.env.timeouts.keyValue=200",
+					assertThat(env.connectTimeout()).isEqualTo(100);
+					assertThat(env.kvTimeout()).isEqualTo(200);
+					assertThat(env.queryTimeout()).isEqualTo(300);
+					assertThat(env.socketConnectTimeout()).isEqualTo(400);
+					assertThat(env.viewTimeout()).isEqualTo(500);
+				}, "spring.couchbase.env.timeouts.connect=100", "spring.couchbase.env.timeouts.keyValue=200",
 				"spring.couchbase.env.timeouts.query=300", "spring.couchbase.env.timeouts.socket-connect=400",
 				"spring.couchbase.env.timeouts.view=500");
 	}
@@ -139,10 +138,10 @@ public class CouchbaseAutoConfigurationTests {
 	@Test
 	public void disableSslEvenWithKeyStore() {
 		testCouchbaseEnv((env) -> {
-			assertThat(env.sslEnabled()).isFalse();
-			assertThat(env.sslKeystoreFile()).isNull();
-			assertThat(env.sslKeystorePassword()).isNull();
-		}, "spring.couchbase.env.ssl.enabled=false", "spring.couchbase.env.ssl.keyStore=foo",
+					assertThat(env.sslEnabled()).isFalse();
+					assertThat(env.sslKeystoreFile()).isNull();
+					assertThat(env.sslKeystorePassword()).isNull();
+				}, "spring.couchbase.env.ssl.enabled=false", "spring.couchbase.env.ssl.keyStore=foo",
 				"spring.couchbase.env.ssl.keyStorePassword=secret");
 	}
 

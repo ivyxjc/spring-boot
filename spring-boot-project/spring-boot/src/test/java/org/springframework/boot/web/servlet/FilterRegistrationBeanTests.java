@@ -16,11 +16,10 @@
 
 package org.springframework.boot.web.servlet;
 
-import javax.servlet.Filter;
-
 import org.junit.Test;
-
 import org.springframework.boot.web.servlet.mock.MockFilter;
+
+import javax.servlet.Filter;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.eq;

@@ -16,14 +16,6 @@
 
 package org.springframework.boot.actuate.logging;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.NavigableSet;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
@@ -33,6 +25,8 @@ import org.springframework.boot.logging.LoggerConfiguration;
 import org.springframework.boot.logging.LoggingSystem;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import java.util.*;
 
 /**
  * {@link Endpoint} to expose a collection of {@link LoggerConfiguration}s.
@@ -48,6 +42,7 @@ public class LoggersEndpoint {
 
 	/**
 	 * Create a new {@link LoggersEndpoint} instance.
+	 *
 	 * @param loggingSystem the logging system to expose
 	 */
 	public LoggersEndpoint(LoggingSystem loggingSystem) {

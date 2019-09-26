@@ -16,12 +16,12 @@
 
 package org.springframework.boot.jta.bitronix;
 
-import javax.transaction.TransactionManager;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.Ordered;
+
+import javax.transaction.TransactionManager;
 
 /**
  * {@link BeanFactoryPostProcessor} to automatically register the recommended
@@ -48,7 +48,7 @@ public class BitronixDependentBeanFactoryPostProcessor implements BeanFactoryPos
 	}
 
 	private void addTransactionManagerDependencies(ConfigurableListableBeanFactory beanFactory,
-			String transactionManager) {
+												   String transactionManager) {
 		for (String dependentBeanName : getBeanNamesForType(beanFactory, "javax.jms.ConnectionFactory")) {
 			beanFactory.registerDependentBean(transactionManager, dependentBeanName);
 		}
@@ -60,8 +60,7 @@ public class BitronixDependentBeanFactoryPostProcessor implements BeanFactoryPos
 	private String[] getBeanNamesForType(ConfigurableListableBeanFactory beanFactory, String type) {
 		try {
 			return beanFactory.getBeanNamesForType(Class.forName(type), true, false);
-		}
-		catch (ClassNotFoundException | NoClassDefFoundError ex) {
+		} catch (ClassNotFoundException | NoClassDefFoundError ex) {
 			// Ignore
 		}
 		return NO_BEANS;

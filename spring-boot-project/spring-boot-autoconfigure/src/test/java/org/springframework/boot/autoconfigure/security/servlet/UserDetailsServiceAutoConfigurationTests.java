@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.Collections;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -29,11 +26,7 @@ import org.springframework.boot.test.rule.OutputCapture;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.TestingAuthenticationProvider;
-import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -42,6 +35,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -141,10 +136,10 @@ public class UserDetailsServiceAutoConfigurationTests {
 	private void testPasswordEncoding(Class<?> configClass, String providedPassword, String expectedPassword) {
 		this.contextRunner.withUserConfiguration(configClass)
 				.withPropertyValues("spring.security.user.password=" + providedPassword).run(((context) -> {
-					InMemoryUserDetailsManager userDetailsService = context.getBean(InMemoryUserDetailsManager.class);
-					String password = userDetailsService.loadUserByUsername("user").getPassword();
-					assertThat(password).isEqualTo(expectedPassword);
-				}));
+			InMemoryUserDetailsManager userDetailsService = context.getBean(InMemoryUserDetailsManager.class);
+			String password = userDetailsService.loadUserByUsername("user").getPassword();
+			assertThat(password).isEqualTo(expectedPassword);
+		}));
 	}
 
 	@Configuration

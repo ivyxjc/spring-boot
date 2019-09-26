@@ -16,15 +16,15 @@
 
 package org.springframework.boot.jdbc;
 
-import javax.annotation.PostConstruct;
-import javax.sql.DataSource;
-
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
 import org.springframework.util.Assert;
+
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 
 /**
  * Base class used for {@link DataSource} initialization.
@@ -78,6 +78,7 @@ public abstract class AbstractDataSourceInitializer {
 
 	/**
 	 * Customize the {@link ResourceDatabasePopulator}.
+	 *
 	 * @param populator the configured database populator
 	 */
 	protected void customize(ResourceDatabasePopulator populator) {
@@ -96,8 +97,7 @@ public abstract class AbstractDataSourceInitializer {
 				throw new IllegalStateException("Unable to detect database type");
 			}
 			return databaseDriver.getId();
-		}
-		catch (MetaDataAccessException ex) {
+		} catch (MetaDataAccessException ex) {
 			throw new IllegalStateException("Unable to detect database type", ex);
 		}
 	}

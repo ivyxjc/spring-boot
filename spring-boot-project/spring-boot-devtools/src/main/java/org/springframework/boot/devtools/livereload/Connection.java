@@ -16,6 +16,10 @@
 
 package org.springframework.boot.devtools.livereload;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Base64Utils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,11 +30,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.Base64Utils;
-
 /**
  * A {@link LiveReloadServer} connection.
  *
@@ -38,12 +37,9 @@ import org.springframework.util.Base64Utils;
  */
 class Connection {
 
-	private static final Log logger = LogFactory.getLog(Connection.class);
-
-	private static final Pattern WEBSOCKET_KEY_PATTERN = Pattern.compile("^Sec-WebSocket-Key:(.*)$", Pattern.MULTILINE);
-
 	public static final String WEBSOCKET_GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11";
-
+	private static final Log logger = LogFactory.getLog(Connection.class);
+	private static final Pattern WEBSOCKET_KEY_PATTERN = Pattern.compile("^Sec-WebSocket-Key:(.*)$", Pattern.MULTILINE);
 	private final Socket socket;
 
 	private final ConnectionInputStream inputStream;
@@ -58,8 +54,9 @@ class Connection {
 
 	/**
 	 * Create a new {@link Connection} instance.
-	 * @param socket the source socket
-	 * @param inputStream the socket input stream
+	 *
+	 * @param socket       the source socket
+	 * @param inputStream  the socket input stream
 	 * @param outputStream the socket output stream
 	 * @throws IOException in case of I/O errors
 	 */
@@ -73,6 +70,7 @@ class Connection {
 
 	/**
 	 * Run the connection.
+	 *
 	 * @throws Exception in case of errors
 	 */
 	public void run() throws Exception {
@@ -102,18 +100,14 @@ class Connection {
 			Frame frame = Frame.read(this.inputStream);
 			if (frame.getType() == Frame.Type.PING) {
 				writeWebSocketFrame(new Frame(Frame.Type.PONG));
-			}
-			else if (frame.getType() == Frame.Type.CLOSE) {
+			} else if (frame.getType() == Frame.Type.CLOSE) {
 				throw new ConnectionClosedException();
-			}
-			else if (frame.getType() == Frame.Type.TEXT) {
+			} else if (frame.getType() == Frame.Type.TEXT) {
 				logger.debug("Received LiveReload text frame " + frame);
-			}
-			else {
+			} else {
 				throw new IOException("Unexpected Frame Type " + frame.getType());
 			}
-		}
-		catch (SocketTimeoutException ex) {
+		} catch (SocketTimeoutException ex) {
 			writeWebSocketFrame(new Frame(Frame.Type.PING));
 			Frame frame = Frame.read(this.inputStream);
 			if (frame.getType() != Frame.Type.PONG) {
@@ -124,6 +118,7 @@ class Connection {
 
 	/**
 	 * Trigger livereload for the client using this connection.
+	 *
 	 * @throws IOException in case of I/O errors
 	 */
 	public void triggerReload() throws IOException {
@@ -150,6 +145,7 @@ class Connection {
 
 	/**
 	 * Close the connection.
+	 *
 	 * @throws IOException in case of I/O errors
 	 */
 	public void close() throws IOException {

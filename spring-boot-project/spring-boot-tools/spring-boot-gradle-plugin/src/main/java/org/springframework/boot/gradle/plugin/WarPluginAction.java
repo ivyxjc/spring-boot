@@ -23,7 +23,6 @@ import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.internal.artifacts.publish.ArchivePublishArtifact;
 import org.gradle.api.plugins.BasePlugin;
 import org.gradle.api.plugins.WarPlugin;
-
 import org.springframework.boot.gradle.tasks.bundling.BootWar;
 
 /**

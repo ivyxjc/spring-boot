@@ -16,17 +16,16 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.assertj.core.util.Throwables;
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
 import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
+
+import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -58,7 +57,7 @@ public class WebMvcPropertiesTests {
 	public void servletPathWhenHasWildcardThrowsException() {
 		assertThatExceptionOfType(BindException.class).isThrownBy(() -> bind("spring.mvc.servlet.path", "/*"))
 				.withRootCauseInstanceOf(IllegalArgumentException.class).satisfies(
-						(ex) -> assertThat(Throwables.getRootCause(ex)).hasMessage("Path must not contain wildcards"));
+				(ex) -> assertThat(Throwables.getRootCause(ex)).hasMessage("Path must not contain wildcards"));
 	}
 
 	private void bind(String name, String value) {

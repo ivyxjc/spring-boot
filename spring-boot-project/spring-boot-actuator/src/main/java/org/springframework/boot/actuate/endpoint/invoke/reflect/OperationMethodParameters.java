@@ -16,6 +16,11 @@
 
 package org.springframework.boot.actuate.endpoint.invoke.reflect;
 
+import org.springframework.boot.actuate.endpoint.invoke.OperationParameter;
+import org.springframework.boot.actuate.endpoint.invoke.OperationParameters;
+import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.util.Assert;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
@@ -23,11 +28,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.springframework.boot.actuate.endpoint.invoke.OperationParameter;
-import org.springframework.boot.actuate.endpoint.invoke.OperationParameters;
-import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.util.Assert;
 
 /**
  * {@link OperationParameters} created from an {@link OperationMethod}.
@@ -40,7 +40,8 @@ class OperationMethodParameters implements OperationParameters {
 
 	/**
 	 * Create a new {@link OperationMethodParameters} instance.
-	 * @param method the source method
+	 *
+	 * @param method                  the source method
 	 * @param parameterNameDiscoverer the parameter name discoverer
 	 */
 	OperationMethodParameters(Method method, ParameterNameDiscoverer parameterNameDiscoverer) {

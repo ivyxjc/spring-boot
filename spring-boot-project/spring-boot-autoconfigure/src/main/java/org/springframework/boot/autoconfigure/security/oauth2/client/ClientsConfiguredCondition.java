@@ -15,10 +15,6 @@
  */
 package org.springframework.boot.autoconfigure.security.oauth2.client;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
@@ -27,6 +23,10 @@ import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Condition that matches if any {@code spring.security.oauth2.client.registration}

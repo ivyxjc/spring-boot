@@ -16,16 +16,9 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -39,6 +32,8 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.support.SpringFactoriesLoader;
 import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -196,7 +191,7 @@ public class AutoConfigurationImportSelectorTests {
 
 	@Test
 	public void filterShouldSupportAware() {
-		TestAutoConfigurationImportFilter filter = new TestAutoConfigurationImportFilter(new String[] {});
+		TestAutoConfigurationImportFilter filter = new TestAutoConfigurationImportFilter(new String[]{});
 		this.filters.add(filter);
 		selectImports(BasicEnableAutoConfiguration.class);
 		assertThat(filter.getBeanFactory()).isEqualTo(this.beanFactory);
@@ -208,26 +203,6 @@ public class AutoConfigurationImportSelectorTests {
 
 	private List<String> getAutoConfigurationClassNames() {
 		return SpringFactoriesLoader.loadFactoryNames(EnableAutoConfiguration.class, getClass().getClassLoader());
-	}
-
-	private class TestAutoConfigurationImportSelector extends AutoConfigurationImportSelector {
-
-		private AutoConfigurationImportEvent lastEvent;
-
-		@Override
-		protected List<AutoConfigurationImportFilter> getAutoConfigurationImportFilters() {
-			return AutoConfigurationImportSelectorTests.this.filters;
-		}
-
-		@Override
-		protected List<AutoConfigurationImportListener> getAutoConfigurationImportListeners() {
-			return Collections.singletonList((event) -> this.lastEvent = event);
-		}
-
-		public AutoConfigurationImportEvent getLastEvent() {
-			return this.lastEvent;
-		}
-
 	}
 
 	private static class TestAutoConfigurationImportFilter implements AutoConfigurationImportFilter, BeanFactoryAware {
@@ -251,13 +226,33 @@ public class AutoConfigurationImportSelectorTests {
 			return result;
 		}
 
+		public BeanFactory getBeanFactory() {
+			return this.beanFactory;
+		}
+
 		@Override
 		public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 			this.beanFactory = beanFactory;
 		}
 
-		public BeanFactory getBeanFactory() {
-			return this.beanFactory;
+	}
+
+	private class TestAutoConfigurationImportSelector extends AutoConfigurationImportSelector {
+
+		private AutoConfigurationImportEvent lastEvent;
+
+		@Override
+		protected List<AutoConfigurationImportFilter> getAutoConfigurationImportFilters() {
+			return AutoConfigurationImportSelectorTests.this.filters;
+		}
+
+		@Override
+		protected List<AutoConfigurationImportListener> getAutoConfigurationImportListeners() {
+			return Collections.singletonList((event) -> this.lastEvent = event);
+		}
+
+		public AutoConfigurationImportEvent getLastEvent() {
+			return this.lastEvent;
 		}
 
 	}
@@ -288,7 +283,7 @@ public class AutoConfigurationImportSelectorTests {
 	}
 
 	@EnableAutoConfiguration(exclude = MustacheAutoConfiguration.class,
-			excludeName = "org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration")
+							 excludeName = "org.springframework.boot.autoconfigure.freemarker.FreeMarkerAutoConfiguration")
 	private class EnableAutoConfigurationWithClassAndClassNameExclusions {
 
 	}

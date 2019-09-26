@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.springframework.boot.WebApplicationType;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Mappings between {@link StoreType} and {@code @Configuration}.
@@ -77,10 +77,10 @@ final class SessionStoreMappings {
 
 		public String getConfiguration(WebApplicationType webApplicationType) {
 			switch (webApplicationType) {
-			case SERVLET:
-				return getName(this.servletConfiguration);
-			case REACTIVE:
-				return getName(this.reactiveConfiguration);
+				case SERVLET:
+					return getName(this.servletConfiguration);
+				case REACTIVE:
+					return getName(this.reactiveConfiguration);
 			}
 			return null;
 		}

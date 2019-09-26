@@ -16,15 +16,14 @@
 
 package org.springframework.boot.web.servlet.filter;
 
-import java.io.IOException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.filter.OncePerRequestFilter;
+import java.io.IOException;
 
 /**
  * {@link OncePerRequestFilter} to add an {@literal X-Application-Context} header that

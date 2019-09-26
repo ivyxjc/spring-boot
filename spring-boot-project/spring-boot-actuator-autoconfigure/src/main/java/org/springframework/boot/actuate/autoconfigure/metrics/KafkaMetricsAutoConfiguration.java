@@ -16,14 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
-import java.util.Collections;
-
-import javax.management.MBeanServer;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.kafka.KafkaConsumerMetrics;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,6 +27,9 @@ import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.management.MBeanServer;
+import java.util.Collections;
+
 /**
  * Auto-configuration for Kafka metrics.
  *
@@ -39,8 +37,8 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.1.0
  */
 @Configuration
-@AutoConfigureAfter({ MetricsAutoConfiguration.class, JmxAutoConfiguration.class })
-@ConditionalOnClass({ KafkaConsumerMetrics.class, KafkaConsumer.class })
+@AutoConfigureAfter({MetricsAutoConfiguration.class, JmxAutoConfiguration.class})
+@ConditionalOnClass({KafkaConsumerMetrics.class, KafkaConsumer.class})
 @ConditionalOnBean(MeterRegistry.class)
 public class KafkaMetricsAutoConfiguration {
 

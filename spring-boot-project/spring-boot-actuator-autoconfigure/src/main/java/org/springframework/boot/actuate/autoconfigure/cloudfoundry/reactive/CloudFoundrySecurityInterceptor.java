@@ -16,12 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive;
 
-import java.util.Locale;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.SecurityResponse;
@@ -31,6 +27,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.util.StringUtils;
 import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
+import java.util.Locale;
 
 /**
  * Security interceptor to validate the cloud foundry token.
@@ -40,17 +39,13 @@ import org.springframework.web.server.ServerWebExchange;
 class CloudFoundrySecurityInterceptor {
 
 	private static final Log logger = LogFactory.getLog(CloudFoundrySecurityInterceptor.class);
-
+	private static final Mono<SecurityResponse> SUCCESS = Mono.just(SecurityResponse.success());
 	private final ReactiveTokenValidator tokenValidator;
-
 	private final ReactiveCloudFoundrySecurityService cloudFoundrySecurityService;
-
 	private final String applicationId;
 
-	private static final Mono<SecurityResponse> SUCCESS = Mono.just(SecurityResponse.success());
-
 	CloudFoundrySecurityInterceptor(ReactiveTokenValidator tokenValidator,
-			ReactiveCloudFoundrySecurityService cloudFoundrySecurityService, String applicationId) {
+									ReactiveCloudFoundrySecurityService cloudFoundrySecurityService, String applicationId) {
 		this.tokenValidator = tokenValidator;
 		this.cloudFoundrySecurityService = cloudFoundrySecurityService;
 		this.applicationId = applicationId;
@@ -86,8 +81,7 @@ class CloudFoundrySecurityInterceptor {
 							Mono.error(new CloudFoundryAuthorizationException(Reason.ACCESS_DENIED, "Access denied")))
 					.doOnSuccess((accessLevel) -> exchange.getAttributes().put("cloudFoundryAccessLevel", accessLevel))
 					.then();
-		}
-		catch (CloudFoundryAuthorizationException ex) {
+		} catch (CloudFoundryAuthorizationException ex) {
 			return Mono.error(ex);
 		}
 	}

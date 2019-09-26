@@ -16,21 +16,8 @@
 
 package org.springframework.boot.configurationprocessor;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.junit.Assert;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.boot.configurationprocessor.metadata.ConfigurationMetadata;
 import org.springframework.boot.configurationsample.ConfigurationProperties;
 import org.springframework.boot.configurationsample.NestedConfigurationProperty;
@@ -38,6 +25,12 @@ import org.springframework.boot.testsupport.compiler.TestCompiler;
 import org.springframework.boot.testsupport.compiler.TestCompiler.TestCompilationTask;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A TestProject contains a copy of a subset of test sample code.
@@ -50,8 +43,8 @@ import org.springframework.util.FileSystemUtils;
  */
 public class TestProject {
 
-	private static final Class<?>[] ALWAYS_INCLUDE = { ConfigurationProperties.class,
-			NestedConfigurationProperty.class };
+	private static final Class<?>[] ALWAYS_INCLUDE = {ConfigurationProperties.class,
+			NestedConfigurationProperty.class};
 
 	/**
 	 * Contains copies of the original source so we can modify it safely to test
@@ -74,6 +67,14 @@ public class TestProject {
 		Set<Class<?>> contents = new HashSet<>(Arrays.asList(classes));
 		contents.addAll(Arrays.asList(ALWAYS_INCLUDE));
 		copySources(contents);
+	}
+
+	private static void putContents(File targetFile, String contents) throws IOException {
+		FileCopyUtils.copy(new StringReader(contents), new FileWriter(targetFile));
+	}
+
+	private static String getContents(File file) throws Exception {
+		return FileCopyUtils.copyToString(new FileReader(file));
 	}
 
 	private void copySources(Set<Class<?>> contents) throws IOException {
@@ -118,6 +119,7 @@ public class TestProject {
 
 	/**
 	 * Retrieve File relative to project's output folder.
+	 *
 	 * @param relativePath the relative path
 	 * @return the output file
 	 */
@@ -128,7 +130,8 @@ public class TestProject {
 
 	/**
 	 * Add source code at the end of file, just before last '}'
-	 * @param target the target
+	 *
+	 * @param target        the target
 	 * @param snippetStream the snippet stream
 	 * @throws Exception if the source cannot be added
 	 */
@@ -143,6 +146,7 @@ public class TestProject {
 
 	/**
 	 * Delete source file for given class from project.
+	 *
 	 * @param type the class to delete
 	 */
 	public void delete(Class<?> type) {
@@ -153,6 +157,7 @@ public class TestProject {
 
 	/**
 	 * Restore source code of given class to its original contents.
+	 *
 	 * @param type the class to revert
 	 * @throws IOException on IO error
 	 */
@@ -163,6 +168,7 @@ public class TestProject {
 
 	/**
 	 * Add source code of given class to this project.
+	 *
 	 * @param type the class to add
 	 * @throws IOException on IO error
 	 */
@@ -185,14 +191,6 @@ public class TestProject {
 	 */
 	private File getOriginalSourceFile(Class<?> type) {
 		return new File(TestCompiler.SOURCE_FOLDER, TestCompiler.sourcePathFor(type));
-	}
-
-	private static void putContents(File targetFile, String contents) throws IOException {
-		FileCopyUtils.copy(new StringReader(contents), new FileWriter(targetFile));
-	}
-
-	private static String getContents(File file) throws Exception {
-		return FileCopyUtils.copyToString(new FileReader(file));
 	}
 
 }

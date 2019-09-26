@@ -16,19 +16,17 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.jdbc.DatabaseDriver;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
 import org.springframework.orm.jpa.vendor.Database;
+
+import javax.sql.DataSource;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Utility to lookup well known {@link Database Databases} from a {@link DataSource}.
@@ -62,6 +60,7 @@ final class DatabaseLookup {
 
 	/**
 	 * Return the most suitable {@link Database} for the given {@link DataSource}.
+	 *
 	 * @param dataSource the source {@link DataSource}
 	 * @return the most suitable {@link Database}
 	 */
@@ -76,8 +75,7 @@ final class DatabaseLookup {
 			if (database != null) {
 				return database;
 			}
-		}
-		catch (MetaDataAccessException ex) {
+		} catch (MetaDataAccessException ex) {
 			logger.warn("Unable to determine jdbc url from datasource", ex);
 		}
 		return Database.DEFAULT;

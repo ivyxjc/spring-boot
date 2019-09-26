@@ -16,17 +16,17 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility class to find a class annotated with a particular annotation in a hierarchy.
@@ -46,6 +46,7 @@ public final class AnnotatedClassFinder {
 
 	/**
 	 * Create a new instance with the {@code annotationType} to find.
+	 *
 	 * @param annotationType the annotation to find
 	 */
 	public AnnotatedClassFinder(Class<? extends Annotation> annotationType) {
@@ -59,6 +60,7 @@ public final class AnnotatedClassFinder {
 	/**
 	 * Find the first {@link Class} that is annotated with the target annotation, starting
 	 * from the package defined by the given {@code source} up to the root.
+	 *
 	 * @param source the source class to use to initiate the search
 	 * @return the first {@link Class} annotated with the target annotation within the
 	 * hierarchy defined by the given {@code source} or {@code null} if none is found.
@@ -71,6 +73,7 @@ public final class AnnotatedClassFinder {
 	/**
 	 * Find the first {@link Class} that is annotated with the target annotation, starting
 	 * from the package defined by the given {@code source} up to the root.
+	 *
 	 * @param source the source package to use to initiate the search
 	 * @return the first {@link Class} annotated with the target annotation within the
 	 * hierarchy defined by the given {@code source} or {@code null} if none is found.

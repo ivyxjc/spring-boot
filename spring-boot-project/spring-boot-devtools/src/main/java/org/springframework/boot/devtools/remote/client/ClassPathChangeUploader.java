@@ -16,21 +16,8 @@
 
 package org.springframework.boot.devtools.remote.client;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.devtools.classpath.ClassPathChangedEvent;
 import org.springframework.boot.devtools.filewatch.ChangedFile;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
@@ -48,6 +35,14 @@ import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.*;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+
 /**
  * Listens and pushes any classpath updates to a remote endpoint.
  *
@@ -58,6 +53,7 @@ import org.springframework.util.FileCopyUtils;
 public class ClassPathChangeUploader implements ApplicationListener<ClassPathChangedEvent> {
 
 	private static final Map<ChangedFile.Type, ClassLoaderFile.Kind> TYPE_MAPPINGS;
+	private static final Log logger = LogFactory.getLog(ClassPathChangeUploader.class);
 
 	static {
 		Map<ChangedFile.Type, ClassLoaderFile.Kind> map = new EnumMap<>(ChangedFile.Type.class);
@@ -66,8 +62,6 @@ public class ClassPathChangeUploader implements ApplicationListener<ClassPathCha
 		map.put(ChangedFile.Type.MODIFY, ClassLoaderFile.Kind.MODIFIED);
 		TYPE_MAPPINGS = Collections.unmodifiableMap(map);
 	}
-
-	private static final Log logger = LogFactory.getLog(ClassPathChangeUploader.class);
 
 	private final URI uri;
 
@@ -78,8 +72,7 @@ public class ClassPathChangeUploader implements ApplicationListener<ClassPathCha
 		Assert.notNull(requestFactory, "RequestFactory must not be null");
 		try {
 			this.uri = new URL(url).toURI();
-		}
-		catch (URISyntaxException | MalformedURLException ex) {
+		} catch (URISyntaxException | MalformedURLException ex) {
 			throw new IllegalArgumentException("Malformed URL '" + url + "'");
 		}
 		this.requestFactory = requestFactory;
@@ -91,8 +84,7 @@ public class ClassPathChangeUploader implements ApplicationListener<ClassPathCha
 			ClassLoaderFiles classLoaderFiles = getClassLoaderFiles(event);
 			byte[] bytes = serialize(classLoaderFiles);
 			performUpload(classLoaderFiles, bytes);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 	}
@@ -112,16 +104,14 @@ public class ClassPathChangeUploader implements ApplicationListener<ClassPathCha
 							() -> "Unexpected " + statusCode + " response uploading class files");
 					logUpload(classLoaderFiles);
 					return;
-				}
-				catch (SocketException ex) {
+				} catch (SocketException ex) {
 					logger.warn("A failure occurred when uploading to " + this.uri
 							+ ". Upload will be retried in 2 seconds");
 					logger.debug("Upload failure", ex);
 					Thread.sleep(2000);
 				}
 			}
-		}
-		catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 			throw new IllegalStateException(ex);
 		}

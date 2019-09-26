@@ -16,25 +16,20 @@
 
 package org.springframework.boot.actuate.jms;
 
+import org.junit.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.Status;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.ConnectionMetaData;
 import javax.jms.JMSException;
 
-import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.Status;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willAnswer;
-import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.BDDMockito.*;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link JmsHealthIndicator}.
@@ -119,9 +114,8 @@ public class JmsHealthIndicatorTests {
 
 	private static final class UnresponsiveStartAnswer implements Answer<Void> {
 
-		private boolean connectionClosed = false;
-
 		private final Object monitor = new Object();
+		private boolean connectionClosed = false;
 
 		@Override
 		public Void answer(InvocationOnMock invocation) throws Throwable {

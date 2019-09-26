@@ -16,16 +16,15 @@
 
 package org.springframework.boot.actuate.metrics.web.client;
 
-import java.io.IOException;
-import java.net.URI;
-import java.util.regex.Pattern;
-
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.regex.Pattern;
 
 /**
  * Factory methods for creating {@link Tag Tags} related to a request-response exchange
@@ -45,6 +44,7 @@ public final class RestTemplateExchangeTags {
 	/**
 	 * Creates a {@code method} {@code Tag} for the {@link HttpRequest#getMethod() method}
 	 * of the given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the method tag
 	 */
@@ -54,6 +54,7 @@ public final class RestTemplateExchangeTags {
 
 	/**
 	 * Creates a {@code uri} {@code Tag} for the URI of the given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the uri tag
 	 */
@@ -63,6 +64,7 @@ public final class RestTemplateExchangeTags {
 
 	/**
 	 * Creates a {@code uri} {@code Tag} from the given {@code uriTemplate}.
+	 *
 	 * @param uriTemplate the template
 	 * @return the uri tag
 	 */
@@ -82,6 +84,7 @@ public final class RestTemplateExchangeTags {
 	/**
 	 * Creates a {@code status} {@code Tag} derived from the
 	 * {@link ClientHttpResponse#getRawStatusCode() status} of the given {@code response}.
+	 *
 	 * @param response the response
 	 * @return the status tag
 	 */
@@ -95,8 +98,7 @@ public final class RestTemplateExchangeTags {
 				return "CLIENT_ERROR";
 			}
 			return String.valueOf(response.getRawStatusCode());
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return "IO_ERROR";
 		}
 	}
@@ -104,6 +106,7 @@ public final class RestTemplateExchangeTags {
 	/**
 	 * Create a {@code clientName} {@code Tag} derived from the {@link URI#getHost host}
 	 * of the {@link HttpRequest#getURI() URI} of the given {@code request}.
+	 *
 	 * @param request the request
 	 * @return the clientName tag
 	 */

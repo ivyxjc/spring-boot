@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure;
 
-import java.lang.annotation.Annotation;
-
 import org.springframework.boot.autoconfigure.condition.ConditionMessage;
 import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
 import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
@@ -25,6 +23,8 @@ import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.env.Environment;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.lang.annotation.Annotation;
 
 /**
  * Base endpoint element condition. An element can be disabled globally via the

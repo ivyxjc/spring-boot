@@ -16,11 +16,8 @@
 
 package org.springframework.boot.test.context;
 
-import java.util.Map;
-
 import org.junit.Ignore;
 import org.junit.Test;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.MergedContextConfiguration;
@@ -28,6 +25,8 @@ import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -100,13 +99,13 @@ public class SpringBootContextLoaderTests {
 		assertThat(actual.get(key)).isEqualTo(value);
 	}
 
-	@SpringBootTest({ "key=myValue", "anotherKey:anotherValue" })
+	@SpringBootTest({"key=myValue", "anotherKey:anotherValue"})
 	@ContextConfiguration(classes = Config.class)
 	static class SimpleConfig {
 
 	}
 
-	@SpringBootTest(properties = { "key=myValue", "anotherKey:anotherValue" })
+	@SpringBootTest(properties = {"key=myValue", "anotherKey:anotherValue"})
 	@ContextConfiguration(classes = Config.class)
 	static class SimpleConfigNonAlias {
 
@@ -118,25 +117,25 @@ public class SpringBootContextLoaderTests {
 
 	}
 
-	@SpringBootTest({ "key=myValue", "otherKey=otherValue" })
+	@SpringBootTest({"key=myValue", "otherKey=otherValue"})
 	@ContextConfiguration(classes = Config.class)
 	static class AppendConfig {
 
 	}
 
-	@SpringBootTest({ "key=my=Value", "anotherKey:another:Value" })
+	@SpringBootTest({"key=my=Value", "anotherKey:another:Value"})
 	@ContextConfiguration(classes = Config.class)
 	static class SameSeparatorInValue {
 
 	}
 
-	@SpringBootTest({ "key=my:Value", "anotherKey:another=Value" })
+	@SpringBootTest({"key=my:Value", "anotherKey:another=Value"})
 	@ContextConfiguration(classes = Config.class)
 	static class AnotherSeparatorInValue {
 
 	}
 
-	@SpringBootTest({ "key=myValue", "variables=foo=FOO\n bar=BAR" })
+	@SpringBootTest({"key=myValue", "variables=foo=FOO\n bar=BAR"})
 	@ContextConfiguration(classes = Config.class)
 	static class NewLineInValue {
 

@@ -33,6 +33,7 @@ public interface ExposableControllerEndpoint extends ExposableEndpoint<Operation
 
 	/**
 	 * Return the source controller that contains {@link RequestMapping} methods.
+	 *
 	 * @return the source controller
 	 */
 	Object getController();

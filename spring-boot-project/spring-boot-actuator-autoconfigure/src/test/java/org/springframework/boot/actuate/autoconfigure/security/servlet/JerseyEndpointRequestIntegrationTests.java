@@ -17,7 +17,6 @@ package org.springframework.boot.actuate.autoconfigure.security.servlet;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jersey.JerseyAutoConfiguration;
@@ -70,14 +69,14 @@ public class JerseyEndpointRequestIntegrationTests extends AbstractEndpointReque
 	public void toAnyEndpointShouldMatchServletEndpoint() {
 		getContextRunner().withPropertyValues("spring.security.user.password=password",
 				"management.endpoints.web.exposure.include=se1").run((context) -> {
-					WebTestClient webTestClient = getWebTestClient(context);
-					webTestClient.get().uri("/actuator/se1").exchange().expectStatus().isUnauthorized();
-					webTestClient.get().uri("/actuator/se1").header("Authorization", getBasicAuth()).exchange()
-							.expectStatus().isOk();
-					webTestClient.get().uri("/actuator/se1/list").exchange().expectStatus().isUnauthorized();
-					webTestClient.get().uri("/actuator/se1/list").header("Authorization", getBasicAuth()).exchange()
-							.expectStatus().isOk();
-				});
+			WebTestClient webTestClient = getWebTestClient(context);
+			webTestClient.get().uri("/actuator/se1").exchange().expectStatus().isUnauthorized();
+			webTestClient.get().uri("/actuator/se1").header("Authorization", getBasicAuth()).exchange()
+					.expectStatus().isOk();
+			webTestClient.get().uri("/actuator/se1/list").exchange().expectStatus().isUnauthorized();
+			webTestClient.get().uri("/actuator/se1/list").header("Authorization", getBasicAuth()).exchange()
+					.expectStatus().isOk();
+		});
 	}
 
 	@Test

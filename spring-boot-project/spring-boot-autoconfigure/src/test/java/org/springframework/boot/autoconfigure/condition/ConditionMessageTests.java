@@ -16,12 +16,11 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
+import org.junit.Test;
+import org.springframework.boot.autoconfigure.condition.ConditionMessage.Style;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Test;
-
-import org.springframework.boot.autoconfigure.condition.ConditionMessage.Style;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,17 +16,8 @@
 
 package org.springframework.boot.context;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.boot.context.event.ApplicationPreparedEvent;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -37,6 +28,14 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * An {@link ApplicationListener} that saves application PID into file. This application
@@ -68,6 +67,8 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 	private static final String DEFAULT_FILE_NAME = "application.pid";
 
 	private static final List<Property> FILE_PROPERTIES;
+	private static final List<Property> FAIL_ON_WRITE_ERROR_PROPERTIES;
+	private static final AtomicBoolean created = new AtomicBoolean(false);
 
 	static {
 		List<Property> properties = new ArrayList<>();
@@ -77,8 +78,6 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		FILE_PROPERTIES = Collections.unmodifiableList(properties);
 	}
 
-	private static final List<Property> FAIL_ON_WRITE_ERROR_PROPERTIES;
-
 	static {
 		List<Property> properties = new ArrayList<>();
 		properties.add(new SpringProperty("spring.pid.", "fail-on-write-error"));
@@ -86,12 +85,8 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		FAIL_ON_WRITE_ERROR_PROPERTIES = Collections.unmodifiableList(properties);
 	}
 
-	private static final AtomicBoolean created = new AtomicBoolean(false);
-
-	private int order = Ordered.HIGHEST_PRECEDENCE + 13;
-
 	private final File file;
-
+	private int order = Ordered.HIGHEST_PRECEDENCE + 13;
 	private Class<? extends SpringApplicationEvent> triggerEventType = ApplicationPreparedEvent.class;
 
 	/**
@@ -104,6 +99,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 
 	/**
 	 * Create a new {@link ApplicationPidFileWriter} instance with a specified filename.
+	 *
 	 * @param filename the name of file containing pid
 	 */
 	public ApplicationPidFileWriter(String filename) {
@@ -112,6 +108,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 
 	/**
 	 * Create a new {@link ApplicationPidFileWriter} instance with a specified file.
+	 *
 	 * @param file the file containing pid
 	 */
 	public ApplicationPidFileWriter(File file) {
@@ -120,11 +117,19 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 	}
 
 	/**
+	 * Reset the created flag for testing purposes.
+	 */
+	protected static void reset() {
+		created.set(false);
+	}
+
+	/**
 	 * Sets the type of application event that will trigger writing of the PID file.
 	 * Defaults to {@link ApplicationPreparedEvent}. NOTE: If you use the
 	 * {@link org.springframework.boot.context.event.ApplicationStartingEvent} to trigger
 	 * the write, you will not be able to specify the PID filename in the Spring
 	 * {@link Environment}.
+	 *
 	 * @param triggerEventType the trigger event type
 	 */
 	public void setTriggerEventType(Class<? extends SpringApplicationEvent> triggerEventType) {
@@ -137,8 +142,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		if (this.triggerEventType.isInstance(event) && created.compareAndSet(false, true)) {
 			try {
 				writePidFile(event);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				String message = String.format("Cannot create pid file %s", this.file);
 				if (failOnWriteError(event)) {
 					throw new IllegalStateException(message, ex);
@@ -173,20 +177,13 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		return null;
 	}
 
-	public void setOrder(int order) {
-		this.order = order;
-	}
-
 	@Override
 	public int getOrder() {
 		return this.order;
 	}
 
-	/**
-	 * Reset the created flag for testing purposes.
-	 */
-	protected static void reset() {
-		created.set(false);
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	/**
@@ -244,7 +241,7 @@ public class ApplicationPidFileWriter implements ApplicationListener<SpringAppli
 		private final String[] properties;
 
 		SystemProperty(String name) {
-			this.properties = new String[] { name.toUpperCase(Locale.ENGLISH), name.toLowerCase(Locale.ENGLISH) };
+			this.properties = new String[]{name.toUpperCase(Locale.ENGLISH), name.toLowerCase(Locale.ENGLISH)};
 		}
 
 		@Override

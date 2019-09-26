@@ -16,28 +16,18 @@
 
 package org.springframework.boot.logging.java;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
-import org.springframework.boot.logging.AbstractLoggingSystem;
-import org.springframework.boot.logging.LogFile;
-import org.springframework.boot.logging.LogLevel;
-import org.springframework.boot.logging.LoggerConfiguration;
-import org.springframework.boot.logging.LoggingInitializationContext;
-import org.springframework.boot.logging.LoggingSystem;
+import org.springframework.boot.logging.*;
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 /**
  * {@link LoggingSystem} for {@link Logger java.util.logging}.
@@ -52,8 +42,6 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 
 	private static final LogLevels<Level> LEVELS = new LogLevels<>();
 
-	private final Set<Logger> configuredLoggers = Collections.synchronizedSet(new HashSet<>());
-
 	static {
 		LEVELS.map(LogLevel.TRACE, Level.FINEST);
 		LEVELS.map(LogLevel.DEBUG, Level.FINE);
@@ -64,13 +52,15 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 		LEVELS.map(LogLevel.OFF, Level.OFF);
 	}
 
+	private final Set<Logger> configuredLoggers = Collections.synchronizedSet(new HashSet<>());
+
 	public JavaLoggingSystem(ClassLoader classLoader) {
 		super(classLoader);
 	}
 
 	@Override
 	protected String[] getStandardConfigLocations() {
-		return new String[] { "logging.properties" };
+		return new String[]{"logging.properties"};
 	}
 
 	@Override
@@ -83,15 +73,14 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 	protected void loadDefaults(LoggingInitializationContext initializationContext, LogFile logFile) {
 		if (logFile != null) {
 			loadConfiguration(getPackagedConfigFile("logging-file.properties"), logFile);
-		}
-		else {
+		} else {
 			loadConfiguration(getPackagedConfigFile("logging.properties"), logFile);
 		}
 	}
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+									 LogFile logFile) {
 		loadConfiguration(location, logFile);
 	}
 
@@ -104,8 +93,7 @@ public class JavaLoggingSystem extends AbstractLoggingSystem {
 				configuration = configuration.replace("${LOG_FILE}", StringUtils.cleanPath(logFile.toString()));
 			}
 			LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(configuration.getBytes()));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Could not initialize Java logging from " + location, ex);
 		}
 	}

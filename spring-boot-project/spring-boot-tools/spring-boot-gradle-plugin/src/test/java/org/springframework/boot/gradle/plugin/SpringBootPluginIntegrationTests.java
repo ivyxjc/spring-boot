@@ -16,16 +16,13 @@
 
 package org.springframework.boot.gradle.plugin;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.gradle.testkit.runner.BuildResult;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.gradle.testkit.GradleBuild;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Integration tests for {@link SpringBootPlugin}.

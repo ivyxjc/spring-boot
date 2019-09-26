@@ -16,15 +16,7 @@
 
 package org.springframework.boot.actuate.endpoint.jmx.annotation;
 
-import java.lang.reflect.Method;
-import java.time.Instant;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.OperationType;
 import org.springframework.boot.actuate.endpoint.annotation.DiscoveredOperationMethod;
@@ -36,6 +28,13 @@ import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 import org.springframework.jmx.export.annotation.ManagedOperationParameters;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
+import java.time.Instant;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -150,13 +149,13 @@ public class DiscoveredJmxOperationTests {
 		ApplicationContext getApplicationContext();
 
 		Object params(OperationType enumParam, Date dateParam, Instant instantParam, Integer integerParam,
-				ApplicationContext applicationContextParam);
+					  ApplicationContext applicationContextParam);
 
 		@ManagedOperation(description = "fromannotation")
 		Object withManagedOperationDescription();
 
-		@ManagedOperationParameters({ @ManagedOperationParameter(name = "a1", description = "d1"),
-				@ManagedOperationParameter(name = "a2", description = "d2") })
+		@ManagedOperationParameters({@ManagedOperationParameter(name = "a1", description = "d1"),
+											@ManagedOperationParameter(name = "a2", description = "d2")})
 		Object withManagedOperationParameters(Object one, Object two);
 
 	}

@@ -16,21 +16,6 @@
 
 package org.springframework.boot.launchscript;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.DockerCmd;
 import com.github.dockerjava.api.exception.DockerClientException;
@@ -50,13 +35,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.boot.ansi.AnsiColor;
 
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assume.assumeThat;
 
 /**
@@ -68,28 +59,26 @@ import static org.junit.Assume.assumeThat;
 @RunWith(Parameterized.class)
 public class SysVinitLaunchScriptIT {
 
-	private final SpringBootDockerCmdExecFactory commandExecFactory = new SpringBootDockerCmdExecFactory();
-
 	private static final char ESC = 27;
-
+	private final SpringBootDockerCmdExecFactory commandExecFactory = new SpringBootDockerCmdExecFactory();
 	private final String os;
 
 	private final String version;
+
+	public SysVinitLaunchScriptIT(String os, String version) {
+		this.os = os;
+		this.version = version;
+	}
 
 	@Parameters(name = "{0} {1}")
 	public static List<Object[]> parameters() {
 		List<Object[]> parameters = new ArrayList<>();
 		for (File os : new File("src/test/resources/conf").listFiles()) {
 			for (File version : os.listFiles()) {
-				parameters.add(new Object[] { os.getName(), version.getName() });
+				parameters.add(new Object[]{os.getName(), version.getName()});
 			}
 		}
 		return parameters;
-	}
-
-	public SysVinitLaunchScriptIT(String os, String version) {
-		this.os = os;
-		this.version = version;
 	}
 
 	@Test
@@ -292,12 +281,10 @@ public class SysVinitLaunchScriptIT {
 			docker.waitContainerCmd(container).exec(waitContainerCallback);
 			waitContainerCallback.awaitCompletion(60, TimeUnit.SECONDS);
 			return output.toString();
-		}
-		finally {
+		} finally {
 			try {
 				docker.removeContainerCmd(container).exec();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Continue
 			}
 		}
@@ -326,8 +313,7 @@ public class SysVinitLaunchScriptIT {
 			public String awaitImageId() {
 				try {
 					awaitCompletion();
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					throw new DockerClientException("Interrupted while waiting for image id", ex);
 				}
 				return getImageId();
@@ -433,8 +419,7 @@ public class SysVinitLaunchScriptIT {
 				webResource.queryParam("path", ".").queryParam("noOverwriteDirNonDir", false).request()
 						.put(Entity.entity(streamToUpload, "application/x-tar")).close();
 				return null;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new RuntimeException(ex);
 			}
 		}

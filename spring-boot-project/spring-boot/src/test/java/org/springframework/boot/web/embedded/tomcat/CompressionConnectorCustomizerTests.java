@@ -21,7 +21,6 @@ import org.apache.coyote.http11.AbstractHttp11Protocol;
 import org.apache.coyote.http2.Http2Protocol;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.web.server.Compression;
 import org.springframework.util.unit.DataSize;
 
@@ -36,9 +35,9 @@ public class CompressionConnectorCustomizerTests {
 
 	private static final int MIN_SIZE = 100;
 
-	private final String[] mimeTypes = { "text/html", "text/xml", "text/xhtml" };
+	private final String[] mimeTypes = {"text/html", "text/xml", "text/xhtml"};
 
-	private final String[] excludedUserAgents = { "SomeUserAgent", "AnotherUserAgent" };
+	private final String[] excludedUserAgents = {"SomeUserAgent", "AnotherUserAgent"};
 
 	private Compression compression;
 

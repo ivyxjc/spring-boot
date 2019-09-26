@@ -16,10 +16,10 @@
 
 package org.springframework.boot.cli;
 
-import java.util.concurrent.ExecutionException;
-
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

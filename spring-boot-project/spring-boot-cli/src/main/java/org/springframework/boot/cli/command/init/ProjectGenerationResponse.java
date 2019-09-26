@@ -37,6 +37,7 @@ class ProjectGenerationResponse {
 
 	/**
 	 * Return the {@link ContentType} of this instance.
+	 *
 	 * @return the content type
 	 */
 	public ContentType getContentType() {
@@ -45,6 +46,7 @@ class ProjectGenerationResponse {
 
 	/**
 	 * The generated project archive or file.
+	 *
 	 * @return the content
 	 */
 	public byte[] getContent() {
@@ -58,6 +60,7 @@ class ProjectGenerationResponse {
 	/**
 	 * The preferred file name to use to store the entity on disk or {@code null} if no
 	 * preferred value has been set.
+	 *
 	 * @return the file name, or {@code null}
 	 */
 	public String getFileName() {

@@ -32,6 +32,7 @@ public class RegistrationMappingDescription<T extends Registration> {
 	/**
 	 * Creates a new {@link RegistrationMappingDescription} derived from the given
 	 * {@code registration} and with the given {@code predicate}.
+	 *
 	 * @param registration the registration
 	 */
 	public RegistrationMappingDescription(T registration) {
@@ -40,6 +41,7 @@ public class RegistrationMappingDescription<T extends Registration> {
 
 	/**
 	 * Returns the name of the registered Filter or Servlet.
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -48,6 +50,7 @@ public class RegistrationMappingDescription<T extends Registration> {
 
 	/**
 	 * Returns the class name of the registered Filter or Servlet.
+	 *
 	 * @return the class name
 	 */
 	public String getClassName() {
@@ -56,6 +59,7 @@ public class RegistrationMappingDescription<T extends Registration> {
 
 	/**
 	 * Returns the registration that is being described.
+	 *
 	 * @return the registration
 	 */
 	protected final T getRegistration() {

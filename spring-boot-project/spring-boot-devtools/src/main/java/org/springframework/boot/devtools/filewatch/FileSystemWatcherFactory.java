@@ -27,6 +27,7 @@ public interface FileSystemWatcherFactory {
 
 	/**
 	 * Create a new {@link FileSystemWatcher}.
+	 *
 	 * @return a new {@link FileSystemWatcher}
 	 */
 	FileSystemWatcher getFileSystemWatcher();

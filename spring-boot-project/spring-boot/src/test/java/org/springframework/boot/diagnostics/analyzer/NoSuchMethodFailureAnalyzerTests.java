@@ -16,16 +16,15 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.diagnostics.analyzer.NoSuchMethodFailureAnalyzer.NoSuchMethodDescriptor;
 import org.springframework.boot.testsupport.runner.classpath.ClassPathOverrides;
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -99,8 +98,7 @@ public class NoSuchMethodFailureAnalyzerTests {
 			servletContext.addServlet("example", new HttpServlet() {
 			});
 			return null;
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return ex;
 		}
 	}

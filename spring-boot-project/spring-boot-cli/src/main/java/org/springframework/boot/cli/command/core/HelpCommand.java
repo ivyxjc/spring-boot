@@ -16,21 +16,12 @@
 
 package org.springframework.boot.cli.command.core;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.boot.cli.command.AbstractCommand;
-import org.springframework.boot.cli.command.Command;
-import org.springframework.boot.cli.command.CommandRunner;
-import org.springframework.boot.cli.command.HelpExample;
-import org.springframework.boot.cli.command.NoHelpCommandArgumentsException;
-import org.springframework.boot.cli.command.NoSuchCommandException;
+import org.springframework.boot.cli.command.*;
 import org.springframework.boot.cli.command.options.OptionHelp;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.Log;
+
+import java.util.*;
 
 /**
  * Internal {@link Command} used for 'help' requests.

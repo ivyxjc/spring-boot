@@ -16,17 +16,16 @@
 
 package org.springframework.boot.actuate.logging;
 
-import java.io.File;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.web.annotation.WebEndpoint;
 import org.springframework.boot.logging.LogFile;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+
+import java.io.File;
 
 /**
  * Web {@link Endpoint} that provides access to an application's log file.
@@ -40,10 +39,8 @@ import org.springframework.core.io.Resource;
 public class LogFileWebEndpoint {
 
 	private static final Log logger = LogFactory.getLog(LogFileWebEndpoint.class);
-
-	private File externalFile;
-
 	private final LogFile logFile;
+	private File externalFile;
 
 	public LogFileWebEndpoint(LogFile logFile, File externalFile) {
 		this.externalFile = externalFile;

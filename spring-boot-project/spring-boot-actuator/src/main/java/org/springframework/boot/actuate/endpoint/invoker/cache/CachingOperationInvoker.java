@@ -16,13 +16,13 @@
 
 package org.springframework.boot.actuate.endpoint.invoker.cache;
 
-import java.util.Map;
-import java.util.Objects;
-
 import org.springframework.boot.actuate.endpoint.InvocationContext;
 import org.springframework.boot.actuate.endpoint.invoke.OperationInvoker;
 import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
+
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * An {@link OperationInvoker} that caches the response of an operation with a
@@ -42,7 +42,8 @@ public class CachingOperationInvoker implements OperationInvoker {
 	/**
 	 * Create a new instance with the target {@link OperationInvoker} to use to compute
 	 * the response and the time to live for the cache.
-	 * @param invoker the {@link OperationInvoker} this instance wraps
+	 *
+	 * @param invoker    the {@link OperationInvoker} this instance wraps
 	 * @param timeToLive the maximum time in milliseconds that a response can be cached
 	 */
 	CachingOperationInvoker(OperationInvoker invoker, long timeToLive) {
@@ -52,7 +53,23 @@ public class CachingOperationInvoker implements OperationInvoker {
 	}
 
 	/**
+	 * Apply caching configuration when appropriate to the given invoker.
+	 *
+	 * @param invoker    the invoker to wrap
+	 * @param timeToLive the maximum time in milliseconds that a response can be cached
+	 * @return a caching version of the invoker or the original instance if caching is not
+	 * required
+	 */
+	public static OperationInvoker apply(OperationInvoker invoker, long timeToLive) {
+		if (timeToLive > 0) {
+			return new CachingOperationInvoker(invoker, timeToLive);
+		}
+		return invoker;
+	}
+
+	/**
 	 * Return the maximum time in milliseconds that a response can be cached.
+	 *
 	 * @return the time to live of a response
 	 */
 	public long getTimeToLive() {
@@ -83,20 +100,6 @@ public class CachingOperationInvoker implements OperationInvoker {
 			return arguments.values().stream().anyMatch(Objects::nonNull);
 		}
 		return false;
-	}
-
-	/**
-	 * Apply caching configuration when appropriate to the given invoker.
-	 * @param invoker the invoker to wrap
-	 * @param timeToLive the maximum time in milliseconds that a response can be cached
-	 * @return a caching version of the invoker or the original instance if caching is not
-	 * required
-	 */
-	public static OperationInvoker apply(OperationInvoker invoker, long timeToLive) {
-		if (timeToLive > 0) {
-			return new CachingOperationInvoker(invoker, timeToLive);
-		}
-		return invoker;
 	}
 
 	/**

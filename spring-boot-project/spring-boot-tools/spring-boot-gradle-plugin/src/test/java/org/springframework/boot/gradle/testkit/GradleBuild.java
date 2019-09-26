@@ -16,21 +16,6 @@
 
 package org.springframework.boot.gradle.testkit;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathFactory;
-
 import io.spring.gradle.dependencymanagement.DependencyManagementPlugin;
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.gradle.testkit.runner.BuildResult;
@@ -43,14 +28,27 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
+import org.springframework.asm.ClassVisitor;
+import org.springframework.boot.loader.tools.LaunchScript;
+import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import org.springframework.asm.ClassVisitor;
-import org.springframework.boot.loader.tools.LaunchScript;
-import org.springframework.util.FileCopyUtils;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * A {@link TestRule} for running a Gradle build using {@link GradleRunner}.
@@ -79,6 +77,40 @@ public class GradleBuild implements TestRule {
 		this.dsl = dsl;
 	}
 
+	private static String getBootVersion() {
+		return evaluateExpression(
+				"/*[local-name()='project']/*[local-name()='parent']/*[local-name()='version']" + "/text()");
+	}
+
+	private static String getDependencyManagementPluginVersion() {
+		try (FileReader pomReader = new FileReader(".flattened-pom.xml")) {
+			Document pom = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(pomReader));
+			NodeList dependencyElements = pom.getElementsByTagName("dependency");
+			for (int i = 0; i < dependencyElements.getLength(); i++) {
+				Element dependency = (Element) dependencyElements.item(i);
+				if (dependency.getElementsByTagName("artifactId").item(0).getTextContent()
+						.equals("dependency-management-plugin")) {
+					return dependency.getElementsByTagName("version").item(0).getTextContent();
+				}
+			}
+			throw new IllegalStateException("dependency management plugin version not found");
+		} catch (Exception ex) {
+			throw new IllegalStateException("Failed to find dependency management plugin version", ex);
+		}
+	}
+
+	private static String evaluateExpression(String expression) {
+		try (FileReader pomReader = new FileReader(".flattened-pom.xml")) {
+			XPathFactory xPathFactory = XPathFactory.newInstance();
+			XPath xpath = xPathFactory.newXPath();
+			XPathExpression expr = xpath.compile(expression);
+			String version = expr.evaluate(new InputSource(pomReader));
+			return version;
+		} catch (Exception ex) {
+			throw new IllegalStateException("Failed to evaluate expression", ex);
+		}
+	}
+
 	public Dsl getDsl() {
 		return this.dsl;
 	}
@@ -96,8 +128,7 @@ public class GradleBuild implements TestRule {
 				before();
 				try {
 					base.evaluate();
-				}
-				finally {
+				} finally {
 					after();
 				}
 			}
@@ -158,8 +189,7 @@ public class GradleBuild implements TestRule {
 	public BuildResult build(String... arguments) {
 		try {
 			return prepareRunner(arguments).build();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -167,8 +197,7 @@ public class GradleBuild implements TestRule {
 	public BuildResult buildAndFail(String... arguments) {
 		try {
 			return prepareRunner(arguments).buildAndFail();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
 	}
@@ -186,8 +215,7 @@ public class GradleBuild implements TestRule {
 		}
 		if (this.gradleVersion != null) {
 			gradleRunner.withGradleVersion(this.gradleVersion);
-		}
-		else if (this.dsl == Dsl.KOTLIN) {
+		} else if (this.dsl == Dsl.KOTLIN) {
 			gradleRunner.withGradleVersion("4.10.3");
 		}
 		List<String> allArguments = new ArrayList<>();
@@ -212,42 +240,6 @@ public class GradleBuild implements TestRule {
 
 	public String getGradleVersion() {
 		return this.gradleVersion;
-	}
-
-	private static String getBootVersion() {
-		return evaluateExpression(
-				"/*[local-name()='project']/*[local-name()='parent']/*[local-name()='version']" + "/text()");
-	}
-
-	private static String getDependencyManagementPluginVersion() {
-		try (FileReader pomReader = new FileReader(".flattened-pom.xml")) {
-			Document pom = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(pomReader));
-			NodeList dependencyElements = pom.getElementsByTagName("dependency");
-			for (int i = 0; i < dependencyElements.getLength(); i++) {
-				Element dependency = (Element) dependencyElements.item(i);
-				if (dependency.getElementsByTagName("artifactId").item(0).getTextContent()
-						.equals("dependency-management-plugin")) {
-					return dependency.getElementsByTagName("version").item(0).getTextContent();
-				}
-			}
-			throw new IllegalStateException("dependency management plugin version not found");
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException("Failed to find dependency management plugin version", ex);
-		}
-	}
-
-	private static String evaluateExpression(String expression) {
-		try (FileReader pomReader = new FileReader(".flattened-pom.xml")) {
-			XPathFactory xPathFactory = XPathFactory.newInstance();
-			XPath xpath = xPathFactory.newXPath();
-			XPathExpression expr = xpath.compile(expression);
-			String version = expr.evaluate(new InputSource(pomReader));
-			return version;
-		}
-		catch (Exception ex) {
-			throw new IllegalStateException("Failed to evaluate expression", ex);
-		}
 	}
 
 }

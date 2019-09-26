@@ -16,11 +16,11 @@
 
 package org.springframework.boot.web.servlet.server;
 
-import java.io.File;
-
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.system.ApplicationTemp;
 import org.springframework.util.Assert;
+
+import java.io.File;
 
 /**
  * Manages a session store directory.

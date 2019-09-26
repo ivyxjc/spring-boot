@@ -16,11 +16,7 @@
 
 package org.springframework.boot.configurationprocessor.metadata;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Provide hints on an {@link ItemMetadata}. Defines the list of possible values for a
@@ -48,6 +44,10 @@ public class ItemHint implements Comparable<ItemHint> {
 		this.providers = (providers != null) ? new ArrayList<>(providers) : new ArrayList<>();
 	}
 
+	public static ItemHint newHint(String name, ValueHint... values) {
+		return new ItemHint(name, Arrays.asList(values), Collections.emptyList());
+	}
+
 	private String toCanonicalName(String name) {
 		int dot = name.lastIndexOf('.');
 		if (dot != -1) {
@@ -73,10 +73,6 @@ public class ItemHint implements Comparable<ItemHint> {
 	@Override
 	public int compareTo(ItemHint other) {
 		return getName().compareTo(other.getName());
-	}
-
-	public static ItemHint newHint(String name, ValueHint... values) {
-		return new ItemHint(name, Arrays.asList(values), Collections.emptyList());
 	}
 
 	@Override

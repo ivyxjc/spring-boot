@@ -16,9 +16,9 @@
 
 package org.springframework.boot.devtools.restart;
 
-import java.util.concurrent.CountDownLatch;
-
 import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
@@ -62,14 +62,12 @@ public class SilentExitExceptionHandlerTests {
 	public void preventsNonZeroExitCodeWhenAllOtherThreadsAreDaemonThreads() {
 		try {
 			SilentExitExceptionHandler.exitCurrentThread();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			TestSilentExitExceptionHandler silentExitExceptionHandler = new TestSilentExitExceptionHandler();
 			silentExitExceptionHandler.uncaughtException(Thread.currentThread(), ex);
 			try {
 				assertThat(silentExitExceptionHandler.nonZeroExitCodePrevented).isTrue();
-			}
-			finally {
+			} finally {
 				silentExitExceptionHandler.cleanUp();
 			}
 		}
@@ -97,9 +95,8 @@ public class SilentExitExceptionHandlerTests {
 
 	private static class TestSilentExitExceptionHandler extends SilentExitExceptionHandler {
 
-		private boolean nonZeroExitCodePrevented;
-
 		private final Object monitor = new Object();
+		private boolean nonZeroExitCodePrevented;
 
 		TestSilentExitExceptionHandler() {
 			super(null);
@@ -118,8 +115,7 @@ public class SilentExitExceptionHandlerTests {
 					threadRunning.countDown();
 					try {
 						TestSilentExitExceptionHandler.this.monitor.wait();
-					}
-					catch (InterruptedException ex) {
+					} catch (InterruptedException ex) {
 						Thread.currentThread().interrupt();
 					}
 				}
@@ -128,11 +124,10 @@ public class SilentExitExceptionHandlerTests {
 			daemonThread.start();
 			try {
 				threadRunning.await();
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
-			return new Thread[] { Thread.currentThread(), daemonThread };
+			return new Thread[]{Thread.currentThread(), daemonThread};
 		}
 
 		private void cleanUp() {

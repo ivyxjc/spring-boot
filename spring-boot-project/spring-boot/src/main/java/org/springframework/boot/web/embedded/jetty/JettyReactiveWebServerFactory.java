@@ -16,26 +16,13 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
-import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.eclipse.jetty.server.AbstractConnector;
-import org.eclipse.jetty.server.ConnectionFactory;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerWrapper;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.thread.ThreadPool;
-
 import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactory;
 import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
@@ -44,6 +31,12 @@ import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.JettyHttpHandlerAdapter;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link JettyWebServer}s.
@@ -83,6 +76,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	/**
 	 * Create a new {@link JettyServletWebServerFactory} that listens for requests using
 	 * the specified port.
+	 *
 	 * @param port the port to listen on
 	 */
 	public JettyReactiveWebServerFactory(int port) {
@@ -113,8 +107,19 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	}
 
 	/**
+	 * Returns a mutable collection of Jetty {@link JettyServerCustomizer}s that will be
+	 * applied to the {@link Server} before it is created.
+	 *
+	 * @return the Jetty customizers
+	 */
+	public Collection<JettyServerCustomizer> getServerCustomizers() {
+		return this.jettyServerCustomizers;
+	}
+
+	/**
 	 * Sets {@link JettyServerCustomizer}s that will be applied to the {@link Server}
 	 * before it is started. Calling this method will replace any existing customizers.
+	 *
 	 * @param customizers the Jetty customizers to apply
 	 */
 	public void setServerCustomizers(Collection<? extends JettyServerCustomizer> customizers) {
@@ -123,16 +128,8 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	}
 
 	/**
-	 * Returns a mutable collection of Jetty {@link JettyServerCustomizer}s that will be
-	 * applied to the {@link Server} before it is created.
-	 * @return the Jetty customizers
-	 */
-	public Collection<JettyServerCustomizer> getServerCustomizers() {
-		return this.jettyServerCustomizers;
-	}
-
-	/**
 	 * Returns a Jetty {@link ThreadPool} that should be used by the {@link Server}.
+	 *
 	 * @return a Jetty {@link ThreadPool} or {@code null}
 	 */
 	public ThreadPool getThreadPool() {
@@ -142,6 +139,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	/**
 	 * Set a Jetty {@link ThreadPool} that should be used by the {@link Server}. If set to
 	 * {@code null} (default), the {@link Server} creates a {@link ThreadPool} implicitly.
+	 *
 	 * @param threadPool a Jetty ThreadPool to be used
 	 */
 	public void setThreadPool(ThreadPool threadPool) {
@@ -153,17 +151,18 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 		this.selectors = selectors;
 	}
 
+	protected JettyResourceFactory getResourceFactory() {
+		return this.resourceFactory;
+	}
+
 	/**
 	 * Set the {@link JettyResourceFactory} to get the shared resources from.
+	 *
 	 * @param resourceFactory the server resources
 	 * @since 2.1.0
 	 */
 	public void setResourceFactory(JettyResourceFactory resourceFactory) {
 		this.resourceFactory = resourceFactory;
-	}
-
-	protected JettyResourceFactory getResourceFactory() {
-		return this.resourceFactory;
 	}
 
 	protected Server createJettyServer(JettyHttpHandlerAdapter servlet) {
@@ -195,8 +194,7 @@ public class JettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 		if (resourceFactory != null) {
 			connector = new ServerConnector(server, resourceFactory.getExecutor(), resourceFactory.getScheduler(),
 					resourceFactory.getByteBufferPool(), this.acceptors, this.selectors, new HttpConnectionFactory());
-		}
-		else {
+		} else {
 			connector = new ServerConnector(server, this.acceptors, this.selectors);
 		}
 		connector.setHost(address.getHostString());

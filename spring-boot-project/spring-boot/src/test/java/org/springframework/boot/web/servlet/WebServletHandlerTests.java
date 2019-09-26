@@ -16,20 +16,18 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.io.IOException;
-import java.util.Map;
-
-import javax.servlet.annotation.WebInitParam;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-
 import org.junit.Test;
-
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
+
+import javax.servlet.annotation.WebInitParam;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import java.io.IOException;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -125,22 +123,22 @@ public class WebServletHandlerTests {
 
 	}
 
-	@WebServlet(initParams = { @WebInitParam(name = "a", value = "alpha"), @WebInitParam(name = "b", value = "bravo") })
+	@WebServlet(initParams = {@WebInitParam(name = "a", value = "alpha"), @WebInitParam(name = "b", value = "bravo")})
 	class InitParametersServlet extends HttpServlet {
 
 	}
 
-	@WebServlet(urlPatterns = { "alpha", "bravo" })
+	@WebServlet(urlPatterns = {"alpha", "bravo"})
 	class UrlPatternsServlet extends HttpServlet {
 
 	}
 
-	@WebServlet({ "alpha", "bravo" })
+	@WebServlet({"alpha", "bravo"})
 	class UrlPatternsFromValueServlet extends HttpServlet {
 
 	}
 
-	@WebServlet(value = { "alpha", "bravo" }, urlPatterns = { "alpha", "bravo" })
+	@WebServlet(value = {"alpha", "bravo"}, urlPatterns = {"alpha", "bravo"})
 	class UrlPatternsDeclaredTwiceServlet extends HttpServlet {
 
 	}

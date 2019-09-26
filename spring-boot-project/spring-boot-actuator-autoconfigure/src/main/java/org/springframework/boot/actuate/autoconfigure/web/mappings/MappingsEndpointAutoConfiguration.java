@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.mappings;
 
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
 import org.springframework.boot.actuate.web.mappings.MappingDescriptionProvider;
@@ -37,6 +35,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.DispatcherHandler;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link MappingsEndpoint}.
  *
@@ -49,7 +49,7 @@ public class MappingsEndpointAutoConfiguration {
 	@Bean
 	@ConditionalOnEnabledEndpoint
 	public MappingsEndpoint mappingsEndpoint(ApplicationContext applicationContext,
-			ObjectProvider<MappingDescriptionProvider> descriptionProviders) {
+											 ObjectProvider<MappingDescriptionProvider> descriptionProviders) {
 		return new MappingsEndpoint(descriptionProviders.orderedStream().collect(Collectors.toList()),
 				applicationContext);
 	}

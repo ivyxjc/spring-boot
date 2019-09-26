@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.mongo;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
 import com.mongodb.MongoClientSettings;
 import com.mongodb.ReadPreference;
 import com.mongodb.connection.AsynchronousSocketChannelStreamFactoryFactory;
@@ -28,13 +25,15 @@ import com.mongodb.connection.netty.NettyStreamFactoryFactory;
 import com.mongodb.reactivestreams.client.MongoClient;
 import io.netty.channel.EventLoopGroup;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -77,11 +76,11 @@ public class MongoReactiveAutoConfigurationTests {
 	public void optionsSslConfig() {
 		this.contextRunner.withPropertyValues("spring.data.mongodb.uri:mongodb://localhost/test")
 				.withUserConfiguration(SslOptionsConfig.class).run((context) -> {
-					assertThat(context).hasSingleBean(MongoClient.class);
-					MongoClientSettings settings = getSettings(context);
-					assertThat(settings.getApplicationName()).isEqualTo("test-config");
-					assertThat(settings.getStreamFactoryFactory()).isSameAs(context.getBean("myStreamFactoryFactory"));
-				});
+			assertThat(context).hasSingleBean(MongoClient.class);
+			MongoClientSettings settings = getSettings(context);
+			assertThat(settings.getApplicationName()).isEqualTo("test-config");
+			assertThat(settings.getStreamFactoryFactory()).isSameAs(context.getBean("myStreamFactoryFactory"));
+		});
 	}
 
 	@Test
@@ -102,12 +101,12 @@ public class MongoReactiveAutoConfigurationTests {
 	public void customizerOverridesAutoConfig() {
 		this.contextRunner.withPropertyValues("spring.data.mongodb.uri:mongodb://localhost/test?appname=auto-config")
 				.withUserConfiguration(SimpleCustomizerConfig.class).run((context) -> {
-					assertThat(context).hasSingleBean(MongoClient.class);
-					MongoClientSettings settings = getSettings(context);
-					assertThat(settings.getApplicationName()).isEqualTo("overridden-name");
-					assertThat(settings.getStreamFactoryFactory())
-							.isEqualTo(SimpleCustomizerConfig.streamFactoryFactory);
-				});
+			assertThat(context).hasSingleBean(MongoClient.class);
+			MongoClientSettings settings = getSettings(context);
+			assertThat(settings.getApplicationName()).isEqualTo("overridden-name");
+			assertThat(settings.getStreamFactoryFactory())
+					.isEqualTo(SimpleCustomizerConfig.streamFactoryFactory);
+		});
 	}
 
 	@SuppressWarnings("deprecation")

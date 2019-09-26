@@ -18,7 +18,6 @@ package org.springframework.boot.web.server;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;

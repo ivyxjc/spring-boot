@@ -29,7 +29,7 @@ class FilteredIterableConfigurationPropertiesSource extends FilteredConfiguratio
 		implements IterableConfigurationPropertySource {
 
 	FilteredIterableConfigurationPropertiesSource(IterableConfigurationPropertySource source,
-			Predicate<ConfigurationPropertyName> filter) {
+												  Predicate<ConfigurationPropertyName> filter) {
 		super(source, filter);
 	}
 

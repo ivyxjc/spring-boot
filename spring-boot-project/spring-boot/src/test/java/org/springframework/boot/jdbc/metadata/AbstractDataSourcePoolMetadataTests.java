@@ -17,7 +17,6 @@
 package org.springframework.boot.jdbc.metadata;
 
 import org.junit.Test;
-
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -34,6 +33,7 @@ public abstract class AbstractDataSourcePoolMetadataTests<D extends AbstractData
 
 	/**
 	 * Return a data source metadata instance with a min size of 0 and max size of 2.
+	 *
 	 * @return the data source metadata
 	 */
 	protected abstract D getDataSourceMetadata();

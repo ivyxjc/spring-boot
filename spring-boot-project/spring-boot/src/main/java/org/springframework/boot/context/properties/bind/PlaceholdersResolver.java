@@ -23,8 +23,8 @@ import org.springframework.core.env.PropertyResolver;
  *
  * @author Phillip Webb
  * @author Madhura Bhave
- * @since 2.0.0
  * @see PropertySourcesPlaceholdersResolver
+ * @since 2.0.0
  */
 @FunctionalInterface
 public interface PlaceholdersResolver {
@@ -36,6 +36,7 @@ public interface PlaceholdersResolver {
 
 	/**
 	 * Called to resolve any placeholders in the given value.
+	 *
 	 * @param value the source value
 	 * @return a value with placeholders resolved
 	 */

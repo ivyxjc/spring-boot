@@ -17,15 +17,10 @@
 package org.springframework.boot.autoconfigure.condition;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ContextConsumer;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Condition;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -64,8 +59,7 @@ public class AnyNestedConditionTests {
 		return (context) -> {
 			if (expected) {
 				assertThat(context).hasBean("myBean");
-			}
-			else {
+			} else {
 				assertThat(context).doesNotHaveBean("myBean");
 			}
 		};

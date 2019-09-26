@@ -17,8 +17,6 @@
 package org.springframework.boot.autoconfigure.web.reactive;
 
 import io.undertow.Undertow;
-import reactor.netty.http.server.HttpServer;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.embedded.jetty.JettyReactiveWebServerFactory;
@@ -30,6 +28,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.JettyResourceFactory;
 import org.springframework.http.client.reactive.ReactorResourceFactory;
+import reactor.netty.http.server.HttpServer;
 
 /**
  * Configuration classes for reactive web servers
@@ -43,7 +42,7 @@ abstract class ReactiveWebServerFactoryConfiguration {
 
 	@Configuration
 	@ConditionalOnMissingBean(ReactiveWebServerFactory.class)
-	@ConditionalOnClass({ HttpServer.class })
+	@ConditionalOnClass({HttpServer.class})
 	static class EmbeddedNetty {
 
 		@Bean
@@ -63,7 +62,7 @@ abstract class ReactiveWebServerFactoryConfiguration {
 
 	@Configuration
 	@ConditionalOnMissingBean(ReactiveWebServerFactory.class)
-	@ConditionalOnClass({ org.apache.catalina.startup.Tomcat.class })
+	@ConditionalOnClass({org.apache.catalina.startup.Tomcat.class})
 	static class EmbeddedTomcat {
 
 		@Bean
@@ -75,7 +74,7 @@ abstract class ReactiveWebServerFactoryConfiguration {
 
 	@Configuration
 	@ConditionalOnMissingBean(ReactiveWebServerFactory.class)
-	@ConditionalOnClass({ org.eclipse.jetty.server.Server.class })
+	@ConditionalOnClass({org.eclipse.jetty.server.Server.class})
 	static class EmbeddedJetty {
 
 		@Bean
@@ -95,7 +94,7 @@ abstract class ReactiveWebServerFactoryConfiguration {
 
 	@Configuration
 	@ConditionalOnMissingBean(ReactiveWebServerFactory.class)
-	@ConditionalOnClass({ Undertow.class })
+	@ConditionalOnClass({Undertow.class})
 	static class EmbeddedUndertow {
 
 		@Bean

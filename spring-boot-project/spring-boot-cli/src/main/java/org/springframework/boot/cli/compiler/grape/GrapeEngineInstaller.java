@@ -16,10 +16,10 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.lang.reflect.Field;
-
 import groovy.grape.Grape;
 import groovy.grape.GrapeEngine;
+
+import java.lang.reflect.Field;
 
 /**
  * Utility to install a specific {@link Grape} engine with Groovy.
@@ -35,8 +35,7 @@ public abstract class GrapeEngineInstaller {
 				Field field = Grape.class.getDeclaredField("instance");
 				field.setAccessible(true);
 				field.set(null, engine);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Failed to install GrapeEngine", ex);
 			}
 		}

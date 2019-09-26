@@ -16,14 +16,9 @@
 
 package org.springframework.boot.autoconfigure.data.mongo;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Set;
-
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -53,6 +48,10 @@ import org.springframework.data.mongodb.core.mapping.MongoPersistentProperty;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -67,6 +66,12 @@ public class MongoDataAutoConfigurationTests {
 			.withConfiguration(AutoConfigurations.of(PropertyPlaceholderAutoConfiguration.class,
 					MongoAutoConfiguration.class, MongoDataAutoConfiguration.class))
 			.withInitializer(new ConditionEvaluationReportLoggingListener(LogLevel.INFO));
+
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	private static void assertDomainTypesDiscovered(MongoMappingContext mappingContext, Class<?>... types) {
+		Set<Class> initialEntitySet = (Set<Class>) ReflectionTestUtils.getField(mappingContext, "initialEntitySet");
+		assertThat(initialEntitySet).containsOnly(types);
+	}
 
 	@Test
 	public void templateExists() {
@@ -97,8 +102,7 @@ public class MongoDataAutoConfigurationTests {
 		try {
 			context.refresh();
 			assertDomainTypesDiscovered(context.getBean(MongoMappingContext.class), City.class);
-		}
-		finally {
+		} finally {
 			context.close();
 		}
 	}
@@ -183,12 +187,6 @@ public class MongoDataAutoConfigurationTests {
 	public void autoConfiguresIfUserProvidesMongoDbFactoryButNoClient() {
 		this.contextRunner.withUserConfiguration(MongoDbFactoryConfiguration.class)
 				.run((context) -> assertThat(context).hasSingleBean(MongoTemplate.class));
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static void assertDomainTypesDiscovered(MongoMappingContext mappingContext, Class<?>... types) {
-		Set<Class> initialEntitySet = (Set<Class>) ReflectionTestUtils.getField(mappingContext, "initialEntitySet");
-		assertThat(initialEntitySet).containsOnly(types);
 	}
 
 	@Configuration

@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.logging.LogFileWebEndpoint;
 import org.springframework.boot.logging.LogFile;
 import org.springframework.context.annotation.Bean;

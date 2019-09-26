@@ -16,18 +16,13 @@
 
 package org.springframework.boot.actuate.endpoint.jmx;
 
-import java.util.List;
+import org.springframework.boot.actuate.endpoint.OperationType;
 
 import javax.management.MBeanInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanParameterInfo;
-import javax.management.modelmbean.ModelMBeanAttributeInfo;
-import javax.management.modelmbean.ModelMBeanConstructorInfo;
-import javax.management.modelmbean.ModelMBeanInfoSupport;
-import javax.management.modelmbean.ModelMBeanNotificationInfo;
-import javax.management.modelmbean.ModelMBeanOperationInfo;
-
-import org.springframework.boot.actuate.endpoint.OperationType;
+import javax.management.modelmbean.*;
+import java.util.List;
 
 /**
  * Factory to create {@link MBeanInfo} from an {@link ExposableJmxEndpoint}.

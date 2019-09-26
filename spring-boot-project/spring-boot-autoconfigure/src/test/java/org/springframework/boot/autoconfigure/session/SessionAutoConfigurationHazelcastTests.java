@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.session;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
@@ -34,9 +33,7 @@ import org.springframework.session.jdbc.JdbcOperationsSessionRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Hazelcast specific tests for {@link SessionAutoConfiguration}.
@@ -72,21 +69,21 @@ public class SessionAutoConfigurationHazelcastTests extends AbstractSessionAutoC
 	public void customMapName() {
 		this.contextRunner.withPropertyValues("spring.session.store-type=hazelcast",
 				"spring.session.hazelcast.map-name=foo:bar:biz").run((context) -> {
-					validateSessionRepository(context, HazelcastSessionRepository.class);
-					HazelcastInstance hazelcastInstance = context.getBean(HazelcastInstance.class);
-					verify(hazelcastInstance, times(1)).getMap("foo:bar:biz");
-				});
+			validateSessionRepository(context, HazelcastSessionRepository.class);
+			HazelcastInstance hazelcastInstance = context.getBean(HazelcastInstance.class);
+			verify(hazelcastInstance, times(1)).getMap("foo:bar:biz");
+		});
 	}
 
 	@Test
 	public void customFlushMode() {
 		this.contextRunner.withPropertyValues("spring.session.store-type=hazelcast",
 				"spring.session.hazelcast.flush-mode=immediate").run((context) -> {
-					HazelcastSessionRepository repository = validateSessionRepository(context,
-							HazelcastSessionRepository.class);
-					assertThat(repository).hasFieldOrPropertyWithValue("hazelcastFlushMode",
-							HazelcastFlushMode.IMMEDIATE);
-				});
+			HazelcastSessionRepository repository = validateSessionRepository(context,
+					HazelcastSessionRepository.class);
+			assertThat(repository).hasFieldOrPropertyWithValue("hazelcastFlushMode",
+					HazelcastFlushMode.IMMEDIATE);
+		});
 	}
 
 	@Configuration

@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.json;
 
+import org.springframework.core.io.Resource;
+import org.springframework.util.Assert;
+
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.Charset;
-
-import org.springframework.core.io.Resource;
-import org.springframework.util.Assert;
 
 /**
  * AssertJ based JSON tester that works with basic JSON strings. Allows testing of JSON
@@ -33,12 +33,12 @@ import org.springframework.util.Assert;
  *     &#064;Test
  *     public void testWriteJson() throws IOException {
  *         assertThat(json.from("example.json")).extractingJsonPathStringValue("@.name")
-				.isEqualTo("Spring");
+ * .isEqualTo("Spring");
  *     }
  *
  * }
  * </pre>
- *
+ * <p>
  * See {@link AbstractJsonMarshalTester} for more details.
  *
  * @author Phillip Webb
@@ -57,6 +57,7 @@ public class BasicJsonTester {
 
 	/**
 	 * Create a new {@link BasicJsonTester} instance that will load resources as UTF-8.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
 	 */
 	public BasicJsonTester(Class<?> resourceLoadClass) {
@@ -65,8 +66,9 @@ public class BasicJsonTester {
 
 	/**
 	 * Create a new {@link BasicJsonTester} instance.
+	 *
 	 * @param resourceLoadClass the source class used to load resources
-	 * @param charset the charset used to load resources
+	 * @param charset           the charset used to load resources
 	 * @since 1.4.1
 	 */
 	public BasicJsonTester(Class<?> resourceLoadClass, Charset charset) {
@@ -77,8 +79,9 @@ public class BasicJsonTester {
 	/**
 	 * Initialize the marshal tester for use, configuring it to load JSON resources as
 	 * UTF-8.
+	 *
 	 * @param resourceLoadClass the source class used when loading relative classpath
-	 * resources
+	 *                          resources
 	 */
 	protected final void initialize(Class<?> resourceLoadClass) {
 		this.initialize(resourceLoadClass, null);
@@ -86,9 +89,10 @@ public class BasicJsonTester {
 
 	/**
 	 * Initialize the marshal tester for use.
+	 *
 	 * @param resourceLoadClass the source class used when loading relative classpath
-	 * resources
-	 * @param charset the charset used when loading relative classpath resources
+	 *                          resources
+	 * @param charset           the charset used when loading relative classpath resources
 	 * @since 1.4.1
 	 */
 	protected final void initialize(Class<?> resourceLoadClass, Charset charset) {
@@ -101,6 +105,7 @@ public class BasicJsonTester {
 	 * Create JSON content from the specified String source. The source can contain the
 	 * JSON itself or, if it ends with {@code .json}, the name of a resource to be loaded
 	 * using {@code resourceLoadClass}.
+	 *
 	 * @param source the JSON content or a {@code .json} resource name
 	 * @return the JSON content
 	 */
@@ -111,7 +116,8 @@ public class BasicJsonTester {
 
 	/**
 	 * Create JSON content from the specified resource path.
-	 * @param path the path of the resource to load
+	 *
+	 * @param path              the path of the resource to load
 	 * @param resourceLoadClass the source class used to load the resource
 	 * @return the JSON content
 	 */
@@ -122,6 +128,7 @@ public class BasicJsonTester {
 
 	/**
 	 * Create JSON content from the specified JSON bytes.
+	 *
 	 * @param source the bytes of JSON
 	 * @return the JSON content
 	 */
@@ -132,6 +139,7 @@ public class BasicJsonTester {
 
 	/**
 	 * Create JSON content from the specified JSON file.
+	 *
 	 * @param source the file containing JSON
 	 * @return the JSON content
 	 */
@@ -142,6 +150,7 @@ public class BasicJsonTester {
 
 	/**
 	 * Create JSON content from the specified JSON input stream.
+	 *
 	 * @param source the input stream containing JSON
 	 * @return the JSON content
 	 */
@@ -152,6 +161,7 @@ public class BasicJsonTester {
 
 	/**
 	 * Create JSON content from the specified JSON resource.
+	 *
 	 * @param source the resource containing JSON
 	 * @return the JSON content
 	 */

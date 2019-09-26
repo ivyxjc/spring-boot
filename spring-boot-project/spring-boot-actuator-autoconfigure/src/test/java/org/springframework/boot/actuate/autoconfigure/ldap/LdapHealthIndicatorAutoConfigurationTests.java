@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.ldap;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.health.ApplicationHealthIndicator;
 import org.springframework.boot.actuate.ldap.LdapHealthIndicator;

@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import javax.naming.NamingException;
-
 import org.springframework.context.annotation.Condition;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.core.Ordered;
@@ -27,6 +25,8 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.jndi.JndiLocatorDelegate;
 import org.springframework.jndi.JndiLocatorSupport;
 import org.springframework.util.StringUtils;
+
+import javax.naming.NamingException;
 
 /**
  * {@link Condition} that checks for JNDI locations.
@@ -44,8 +44,7 @@ class OnJndiCondition extends SpringBootCondition {
 		String[] locations = annotationAttributes.getStringArray("value");
 		try {
 			return getMatchOutcome(locations);
-		}
-		catch (NoClassDefFoundError ex) {
+		} catch (NoClassDefFoundError ex) {
 			return ConditionOutcome
 					.noMatch(ConditionMessage.forCondition(ConditionalOnJndi.class).because("JNDI class not found"));
 		}
@@ -92,8 +91,7 @@ class OnJndiCondition extends SpringBootCondition {
 				try {
 					lookup(location);
 					return location;
-				}
-				catch (NamingException ex) {
+				} catch (NamingException ex) {
 					// Swallow and continue
 				}
 			}

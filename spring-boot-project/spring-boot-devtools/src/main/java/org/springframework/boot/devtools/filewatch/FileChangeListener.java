@@ -30,6 +30,7 @@ public interface FileChangeListener {
 
 	/**
 	 * Called when files have been changed.
+	 *
 	 * @param changeSet a set of the {@link ChangedFiles}
 	 */
 	void onChange(Set<ChangedFiles> changeSet);

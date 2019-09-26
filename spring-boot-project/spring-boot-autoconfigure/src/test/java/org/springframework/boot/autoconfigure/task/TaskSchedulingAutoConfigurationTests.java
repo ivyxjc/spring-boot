@@ -16,15 +16,7 @@
 
 package org.springframework.boot.autoconfigure.task;
 
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.task.TaskSchedulerCustomizer;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -37,6 +29,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
+
+import java.util.Set;
+import java.util.concurrent.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -60,11 +55,11 @@ public class TaskSchedulingAutoConfigurationTests {
 	public void enableSchedulingWithNoTaskExecutorAutoConfiguresOne() {
 		this.contextRunner.withPropertyValues("spring.task.scheduling.thread-name-prefix=scheduling-test-")
 				.withUserConfiguration(SchedulingConfiguration.class).run((context) -> {
-					assertThat(context).hasSingleBean(TaskExecutor.class);
-					TestBean bean = context.getBean(TestBean.class);
-					assertThat(bean.latch.await(30, TimeUnit.SECONDS)).isTrue();
-					assertThat(bean.threadNames).allMatch((name) -> name.contains("scheduling-test-"));
-				});
+			assertThat(context).hasSingleBean(TaskExecutor.class);
+			TestBean bean = context.getBean(TestBean.class);
+			assertThat(bean.latch.await(30, TimeUnit.SECONDS)).isTrue();
+			assertThat(bean.threadNames).allMatch((name) -> name.contains("scheduling-test-"));
+		});
 	}
 
 	@Test

@@ -16,26 +16,21 @@
 
 package org.springframework.boot.devtools.restart.classloader;
 
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
+import org.springframework.util.Assert;
 
 import javax.management.loading.ClassLoaderRepository;
-
-import org.springframework.util.Assert;
+import java.io.Serializable;
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * {@link ClassLoaderFileRepository} that maintains a collection of
  * {@link ClassLoaderFile} items grouped by source folders.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see ClassLoaderFile
  * @see ClassLoaderRepository
+ * @since 1.3.0
  */
 public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable {
 
@@ -52,6 +47,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 
 	/**
 	 * Create a new {@link ClassLoaderFiles} instance.
+	 *
 	 * @param classLoaderFiles the source classloader files.
 	 */
 	public ClassLoaderFiles(ClassLoaderFiles classLoaderFiles) {
@@ -62,6 +58,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 	/**
 	 * Add all elements items from the specified {@link ClassLoaderFiles} to this
 	 * instance.
+	 *
 	 * @param files the files to add
 	 */
 	public void addAll(ClassLoaderFiles files) {
@@ -75,6 +72,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 
 	/**
 	 * Add a single {@link ClassLoaderFile} to the collection.
+	 *
 	 * @param name the name of the file
 	 * @param file the file to add
 	 */
@@ -84,9 +82,10 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 
 	/**
 	 * Add a single {@link ClassLoaderFile} to the collection.
+	 *
 	 * @param sourceFolder the source folder of the file
-	 * @param name the name of the file
-	 * @param file the file to add
+	 * @param name         the name of the file
+	 * @param file         the file to add
 	 */
 	public void addFile(String sourceFolder, String name, ClassLoaderFile file) {
 		Assert.notNull(sourceFolder, "SourceFolder must not be null");
@@ -104,6 +103,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 
 	/**
 	 * Get or create a {@link SourceFolder} with the given name.
+	 *
 	 * @param name the name of the folder
 	 * @return an existing or newly added {@link SourceFolder}
 	 */
@@ -119,6 +119,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 	/**
 	 * Return all {@link SourceFolder SourceFolders} that have been added to the
 	 * collection.
+	 *
 	 * @return a collection of {@link SourceFolder} items
 	 */
 	public Collection<SourceFolder> getSourceFolders() {
@@ -127,6 +128,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 
 	/**
 	 * Return the size of the collection.
+	 *
 	 * @return the size of the collection
 	 */
 	public int size() {
@@ -181,6 +183,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 
 		/**
 		 * Return the name of the source folder.
+		 *
 		 * @return the name of the source folder
 		 */
 		public String getName() {
@@ -190,6 +193,7 @@ public class ClassLoaderFiles implements ClassLoaderFileRepository, Serializable
 		/**
 		 * Return all {@link ClassLoaderFile ClassLoaderFiles} in the collection that are
 		 * contained in this source folder.
+		 *
 		 * @return the files contained in the source folder
 		 */
 		public Collection<ClassLoaderFile> getFiles() {

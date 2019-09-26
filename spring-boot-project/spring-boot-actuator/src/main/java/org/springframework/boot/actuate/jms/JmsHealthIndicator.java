@@ -16,19 +16,17 @@
 
 package org.springframework.boot.actuate.jms;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthIndicator;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.actuate.health.AbstractHealthIndicator;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 /**
  * {@link HealthIndicator} for a JMS {@link ConnectionFactory}.
@@ -73,8 +71,7 @@ public class JmsHealthIndicator extends AbstractHealthIndicator {
 								.warn("Connection failed to start within 5 seconds and will be closed.");
 						closeConnection();
 					}
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 			}, "jms-health-indicator").start();
@@ -85,8 +82,7 @@ public class JmsHealthIndicator extends AbstractHealthIndicator {
 		private void closeConnection() {
 			try {
 				this.connection.close();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Continue
 			}
 		}

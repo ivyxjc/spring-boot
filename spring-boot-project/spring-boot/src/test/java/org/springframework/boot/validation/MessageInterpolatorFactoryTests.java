@@ -16,10 +16,10 @@
 
 package org.springframework.boot.validation;
 
-import javax.validation.MessageInterpolator;
-
 import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.junit.Test;
+
+import javax.validation.MessageInterpolator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

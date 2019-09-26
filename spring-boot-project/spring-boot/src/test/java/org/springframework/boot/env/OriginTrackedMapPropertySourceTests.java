@@ -16,13 +16,12 @@
 
 package org.springframework.boot.env;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.OriginTrackedValue;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

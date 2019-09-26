@@ -1,14 +1,14 @@
 ---
 my:
-  property: fromyamlfile
+    property: fromyamlfile
 ---
 spring:
-  profiles: dev & other
+    profiles: dev & other
 my:
-  property: devandother
+    property: devandother
 ---
 spring:
-  profiles: (dev | other) & another
+    profiles: (dev | other) & another
 my:
-  property: devorotherandanother
+    property: devorotherandanother
 ---

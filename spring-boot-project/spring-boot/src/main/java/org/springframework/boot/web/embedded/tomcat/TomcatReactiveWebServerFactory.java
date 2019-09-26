@@ -16,19 +16,7 @@
 
 package org.springframework.boot.web.embedded.tomcat;
 
-import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.apache.catalina.Context;
-import org.apache.catalina.Engine;
-import org.apache.catalina.Host;
-import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.Valve;
+import org.apache.catalina.*;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.AprLifecycleListener;
 import org.apache.catalina.loader.WebappLoader;
@@ -36,7 +24,6 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.coyote.AbstractProtocol;
 import org.apache.coyote.http2.Http2Protocol;
 import org.apache.tomcat.util.scan.StandardJarScanFilter;
-
 import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactory;
 import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
@@ -45,6 +32,14 @@ import org.springframework.http.server.reactive.TomcatHttpHandlerAdapter;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create a {@link TomcatWebServer}.
@@ -55,13 +50,11 @@ import org.springframework.util.StringUtils;
 public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFactory
 		implements ConfigurableTomcatWebServerFactory {
 
-	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
-
 	/**
 	 * The class name of default protocol used.
 	 */
 	public static final String DEFAULT_PROTOCOL = "org.apache.coyote.http11.Http11NioProtocol";
-
+	private static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 	private File baseDirectory;
 
 	private List<Valve> engineValves = new ArrayList<>();
@@ -87,6 +80,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	/**
 	 * Create a new {@link TomcatServletWebServerFactory} that listens for requests using
 	 * the specified port.
+	 *
 	 * @param port the port to listen on
 	 */
 	public TomcatReactiveWebServerFactory(int port) {
@@ -148,6 +142,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 
 	/**
 	 * Configure the Tomcat {@link Context}.
+	 *
 	 * @param context the Tomcat context
 	 */
 	protected void configureContext(Context context) {
@@ -204,8 +199,19 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	}
 
 	/**
+	 * Returns a mutable collection of the {@link TomcatContextCustomizer}s that will be
+	 * applied to the Tomcat {@link Context}.
+	 *
+	 * @return the listeners that will be applied
+	 */
+	public Collection<TomcatContextCustomizer> getTomcatContextCustomizers() {
+		return this.tomcatContextCustomizers;
+	}
+
+	/**
 	 * Set {@link TomcatContextCustomizer}s that should be applied to the Tomcat
 	 * {@link Context}. Calling this method will replace any existing customizers.
+	 *
 	 * @param tomcatContextCustomizers the customizers to set
 	 */
 	public void setTomcatContextCustomizers(Collection<? extends TomcatContextCustomizer> tomcatContextCustomizers) {
@@ -214,17 +220,9 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	}
 
 	/**
-	 * Returns a mutable collection of the {@link TomcatContextCustomizer}s that will be
-	 * applied to the Tomcat {@link Context}.
-	 * @return the listeners that will be applied
-	 */
-	public Collection<TomcatContextCustomizer> getTomcatContextCustomizers() {
-		return this.tomcatContextCustomizers;
-	}
-
-	/**
 	 * Add {@link TomcatContextCustomizer}s that should be added to the Tomcat
 	 * {@link Context}.
+	 *
 	 * @param tomcatContextCustomizers the customizers to add
 	 */
 	@Override
@@ -234,19 +232,9 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	}
 
 	/**
-	 * Set {@link TomcatConnectorCustomizer}s that should be applied to the Tomcat
-	 * {@link Connector}. Calling this method will replace any existing customizers.
-	 * @param tomcatConnectorCustomizers the customizers to set
-	 */
-	public void setTomcatConnectorCustomizers(
-			Collection<? extends TomcatConnectorCustomizer> tomcatConnectorCustomizers) {
-		Assert.notNull(tomcatConnectorCustomizers, "TomcatConnectorCustomizers must not be null");
-		this.tomcatConnectorCustomizers = new ArrayList<>(tomcatConnectorCustomizers);
-	}
-
-	/**
 	 * Add {@link TomcatConnectorCustomizer}s that should be added to the Tomcat
 	 * {@link Connector}.
+	 *
 	 * @param tomcatConnectorCustomizers the customizers to add
 	 */
 	@Override
@@ -258,10 +246,23 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	/**
 	 * Returns a mutable collection of the {@link TomcatConnectorCustomizer}s that will be
 	 * applied to the Tomcat {@link Connector}.
+	 *
 	 * @return the customizers that will be applied
 	 */
 	public Collection<TomcatConnectorCustomizer> getTomcatConnectorCustomizers() {
 		return this.tomcatConnectorCustomizers;
+	}
+
+	/**
+	 * Set {@link TomcatConnectorCustomizer}s that should be applied to the Tomcat
+	 * {@link Connector}. Calling this method will replace any existing customizers.
+	 *
+	 * @param tomcatConnectorCustomizers the customizers to set
+	 */
+	public void setTomcatConnectorCustomizers(
+			Collection<? extends TomcatConnectorCustomizer> tomcatConnectorCustomizers) {
+		Assert.notNull(tomcatConnectorCustomizers, "TomcatConnectorCustomizers must not be null");
+		this.tomcatConnectorCustomizers = new ArrayList<>(tomcatConnectorCustomizers);
 	}
 
 	@Override
@@ -273,6 +274,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	/**
 	 * Returns a mutable collection of the {@link Valve}s that will be applied to the
 	 * Tomcat {@link Engine}.
+	 *
 	 * @return the engine valves that will be applied
 	 */
 	public List<Valve> getEngineValves() {
@@ -280,8 +282,18 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	}
 
 	/**
+	 * Returns the character encoding to use for URL decoding.
+	 *
+	 * @return the URI encoding
+	 */
+	public Charset getUriEncoding() {
+		return this.uriEncoding;
+	}
+
+	/**
 	 * Set the character encoding to use for URL decoding. If not specified 'UTF-8' will
 	 * be used.
+	 *
 	 * @param uriEncoding the uri encoding to set
 	 */
 	@Override
@@ -290,16 +302,19 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	}
 
 	/**
-	 * Returns the character encoding to use for URL decoding.
-	 * @return the URI encoding
+	 * Returns a mutable collection of the {@link LifecycleListener}s that will be applied
+	 * to the Tomcat {@link Context}.
+	 *
+	 * @return the context lifecycle listeners that will be applied
 	 */
-	public Charset getUriEncoding() {
-		return this.uriEncoding;
+	public Collection<LifecycleListener> getContextLifecycleListeners() {
+		return this.contextLifecycleListeners;
 	}
 
 	/**
 	 * Set {@link LifecycleListener}s that should be applied to the Tomcat
 	 * {@link Context}. Calling this method will replace any existing listeners.
+	 *
 	 * @param contextLifecycleListeners the listeners to set
 	 */
 	public void setContextLifecycleListeners(Collection<? extends LifecycleListener> contextLifecycleListeners) {
@@ -308,16 +323,8 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	}
 
 	/**
-	 * Returns a mutable collection of the {@link LifecycleListener}s that will be applied
-	 * to the Tomcat {@link Context}.
-	 * @return the context lifecycle listeners that will be applied
-	 */
-	public Collection<LifecycleListener> getContextLifecycleListeners() {
-		return this.contextLifecycleListeners;
-	}
-
-	/**
 	 * Add {@link LifecycleListener}s that should be added to the Tomcat {@link Context}.
+	 *
 	 * @param contextLifecycleListeners the listeners to add
 	 */
 	public void addContextLifecycleListeners(LifecycleListener... contextLifecycleListeners) {
@@ -329,6 +336,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 	 * Factory method called to create the {@link TomcatWebServer}. Subclasses can
 	 * override this method to return a different {@link TomcatWebServer} or apply
 	 * additional processing to the Tomcat server.
+	 *
 	 * @param tomcat the Tomcat server.
 	 * @return a new {@link TomcatWebServer} instance
 	 */
@@ -338,6 +346,7 @@ public class TomcatReactiveWebServerFactory extends AbstractReactiveWebServerFac
 
 	/**
 	 * The Tomcat protocol to use when create the {@link Connector}.
+	 *
 	 * @param protocol the protocol
 	 * @see Connector#Connector(String)
 	 */

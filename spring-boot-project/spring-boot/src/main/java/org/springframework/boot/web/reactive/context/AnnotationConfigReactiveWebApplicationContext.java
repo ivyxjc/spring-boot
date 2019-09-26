@@ -16,17 +16,9 @@
 
 package org.springframework.boot.web.reactive.context;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.context.annotation.AnnotatedBeanDefinitionReader;
-import org.springframework.context.annotation.AnnotationConfigRegistry;
-import org.springframework.context.annotation.AnnotationConfigUtils;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.context.annotation.ScopeMetadataResolver;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.AbstractRefreshableConfigApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.Resource;
@@ -34,6 +26,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ConfigurableReactiveWebApplicationContext} that accepts annotated classes as
@@ -49,24 +45,32 @@ import org.springframework.util.StringUtils;
  * to deliberately override certain bean definitions via an extra Configuration class.
  *
  * @author Phillip Webb
- * @since 2.0.0
  * @see #register(Class...)
  * @see #scan(String...)
+ * @since 2.0.0
  */
 public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefreshableConfigApplicationContext
 		implements ConfigurableReactiveWebApplicationContext, AnnotationConfigRegistry {
 
-	private BeanNameGenerator beanNameGenerator;
-
-	private ScopeMetadataResolver scopeMetadataResolver;
-
 	private final Set<Class<?>> annotatedClasses = new LinkedHashSet<>();
-
 	private final Set<String> basePackages = new LinkedHashSet<>();
+	private BeanNameGenerator beanNameGenerator;
+	private ScopeMetadataResolver scopeMetadataResolver;
 
 	@Override
 	protected ConfigurableEnvironment createEnvironment() {
 		return new StandardReactiveWebEnvironment();
+	}
+
+	/**
+	 * Return the custom {@link BeanNameGenerator} for use with
+	 * {@link AnnotatedBeanDefinitionReader} and/or
+	 * {@link ClassPathBeanDefinitionScanner}, if any.
+	 *
+	 * @return the bean name generator
+	 */
+	protected BeanNameGenerator getBeanNameGenerator() {
+		return this.beanNameGenerator;
 	}
 
 	/**
@@ -76,6 +80,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	 * <p>
 	 * Default is
 	 * {@link org.springframework.context.annotation.AnnotationBeanNameGenerator}.
+	 *
 	 * @param beanNameGenerator the bean name generator
 	 * @see AnnotatedBeanDefinitionReader#setBeanNameGenerator
 	 * @see ClassPathBeanDefinitionScanner#setBeanNameGenerator
@@ -85,13 +90,14 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	}
 
 	/**
-	 * Return the custom {@link BeanNameGenerator} for use with
+	 * Return the custom {@link ScopeMetadataResolver} for use with
 	 * {@link AnnotatedBeanDefinitionReader} and/or
 	 * {@link ClassPathBeanDefinitionScanner}, if any.
-	 * @return the bean name generator
+	 *
+	 * @return the scope metadata resolver
 	 */
-	protected BeanNameGenerator getBeanNameGenerator() {
-		return this.beanNameGenerator;
+	protected ScopeMetadataResolver getScopeMetadataResolver() {
+		return this.scopeMetadataResolver;
 	}
 
 	/**
@@ -101,6 +107,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	 * <p>
 	 * Default is an
 	 * {@link org.springframework.context.annotation.AnnotationScopeMetadataResolver}.
+	 *
 	 * @param scopeMetadataResolver the scope metadata resolver
 	 * @see AnnotatedBeanDefinitionReader#setScopeMetadataResolver
 	 * @see ClassPathBeanDefinitionScanner#setScopeMetadataResolver
@@ -110,22 +117,13 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	}
 
 	/**
-	 * Return the custom {@link ScopeMetadataResolver} for use with
-	 * {@link AnnotatedBeanDefinitionReader} and/or
-	 * {@link ClassPathBeanDefinitionScanner}, if any.
-	 * @return the scope metadata resolver
-	 */
-	protected ScopeMetadataResolver getScopeMetadataResolver() {
-		return this.scopeMetadataResolver;
-	}
-
-	/**
 	 * Register one or more annotated classes to be processed.
 	 * <p>
 	 * Note that {@link #refresh()} must be called in order for the context to fully
 	 * process the new classes.
+	 *
 	 * @param annotatedClasses one or more annotated classes, e.g.
-	 * {@link org.springframework.context.annotation.Configuration @Configuration} classes
+	 *                         {@link org.springframework.context.annotation.Configuration @Configuration} classes
 	 * @see #scan(String...)
 	 * @see #loadBeanDefinitions(DefaultListableBeanFactory)
 	 * @see #setConfigLocation(String)
@@ -142,6 +140,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	 * <p>
 	 * Note that {@link #refresh()} must be called in order for the context to fully
 	 * process the new classes.
+	 *
 	 * @param basePackages the packages to check for annotated classes
 	 * @see #loadBeanDefinitions(DefaultListableBeanFactory)
 	 * @see #register(Class...)
@@ -170,6 +169,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	 * <p>
 	 * Configuration class bean definitions are registered with generated bean definition
 	 * names unless the {@code value} attribute is provided to the stereotype annotation.
+	 *
 	 * @param beanFactory the bean factory to load bean definitions into
 	 * @see #register(Class...)
 	 * @see #scan(String...)
@@ -188,7 +188,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	}
 
 	private void applyBeanNameGenerator(DefaultListableBeanFactory beanFactory, AnnotatedBeanDefinitionReader reader,
-			ClassPathBeanDefinitionScanner scanner) {
+										ClassPathBeanDefinitionScanner scanner) {
 		BeanNameGenerator beanNameGenerator = getBeanNameGenerator();
 		if (beanNameGenerator != null) {
 			reader.setBeanNameGenerator(beanNameGenerator);
@@ -198,7 +198,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	}
 
 	private void applyScopeMetadataResolver(AnnotatedBeanDefinitionReader reader,
-			ClassPathBeanDefinitionScanner scanner) {
+											ClassPathBeanDefinitionScanner scanner) {
 		ScopeMetadataResolver scopeMetadataResolver = getScopeMetadataResolver();
 		if (scopeMetadataResolver != null) {
 			reader.setScopeMetadataResolver(scopeMetadataResolver);
@@ -237,12 +237,11 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	}
 
 	private void registerConfigLocations(AnnotatedBeanDefinitionReader reader, ClassPathBeanDefinitionScanner scanner,
-			String[] configLocations) throws LinkageError {
+										 String[] configLocations) throws LinkageError {
 		for (String configLocation : configLocations) {
 			try {
 				register(reader, configLocation);
-			}
-			catch (ClassNotFoundException ex) {
+			} catch (ClassNotFoundException ex) {
 				if (this.logger.isDebugEnabled()) {
 					this.logger.debug("Could not load class for config location [" + configLocation
 							+ "] - trying package scan. " + ex);
@@ -267,8 +266,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	private void logScanResult(String configLocation, int count) {
 		if (count == 0) {
 			this.logger.info("No annotated classes found for specified class/package [" + configLocation + "]");
-		}
-		else {
+		} else {
 			this.logger.info("Found " + count + " annotated classes in package [" + configLocation + "]");
 		}
 	}
@@ -278,6 +276,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	 * <p>
 	 * This should be pre-configured with the {@code Environment} (if desired) but not
 	 * with a {@code BeanNameGenerator} or {@code ScopeMetadataResolver} yet.
+	 *
 	 * @param beanFactory the bean factory to load bean definitions into
 	 * @return the annotated bean definition reader
 	 * @see #getEnvironment()
@@ -293,6 +292,7 @@ public class AnnotationConfigReactiveWebApplicationContext extends AbstractRefre
 	 * <p>
 	 * This should be pre-configured with the {@code Environment} (if desired) but not
 	 * with a {@code BeanNameGenerator} or {@code ScopeMetadataResolver} yet.
+	 *
 	 * @param beanFactory the bean factory to load bean definitions into
 	 * @return the class path bean definition scanner
 	 * @see #getEnvironment()

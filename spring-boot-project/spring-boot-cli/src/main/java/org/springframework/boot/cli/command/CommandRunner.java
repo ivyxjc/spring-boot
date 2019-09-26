@@ -16,26 +16,20 @@
 
 package org.springframework.boot.cli.command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.Log;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.util.*;
+
 /**
  * Main class used to run {@link Command}s.
  *
  * @author Phillip Webb
- * @since 1.0.0
  * @see #addCommand(Command)
  * @see CommandRunner#runAndHandleErrors(String[])
+ * @since 1.0.0
  */
 public class CommandRunner implements Iterable<Command> {
 
@@ -52,6 +46,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Create a new {@link CommandRunner} instance.
+	 *
 	 * @param name the name of the runner or {@code null}
 	 */
 	public CommandRunner(String name) {
@@ -61,6 +56,7 @@ public class CommandRunner implements Iterable<Command> {
 	/**
 	 * Return the name of the runner or an empty string. Non-empty names will include a
 	 * trailing space character so that they can be used as a prefix.
+	 *
 	 * @return the name of the runner
 	 */
 	public String getName() {
@@ -69,6 +65,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Add the specified commands.
+	 *
 	 * @param commands the commands to add
 	 */
 	public void addCommands(Iterable<Command> commands) {
@@ -80,6 +77,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Add the specified command.
+	 *
 	 * @param command the command to add.
 	 */
 	public void addCommand(Command command) {
@@ -91,6 +89,7 @@ public class CommandRunner implements Iterable<Command> {
 	 * Set the command classes which should be considered option commands. An option
 	 * command is a special type of command that usually makes more sense to present as if
 	 * it is an option. For example '--version'.
+	 *
 	 * @param commandClasses the classes of option commands.
 	 * @see #isOptionCommand(Command)
 	 */
@@ -102,6 +101,7 @@ public class CommandRunner implements Iterable<Command> {
 	/**
 	 * Set the command classes which should be hidden (i.e. executed but not displayed in
 	 * the available commands list).
+	 *
 	 * @param commandClasses the classes of hidden commands
 	 */
 	public void setHiddenCommands(Class<?>... commandClasses) {
@@ -111,6 +111,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Returns if the specified command is an option command.
+	 *
 	 * @param command the command to test
 	 * @return {@code true} if the command is an option command
 	 * @see #setOptionCommands(Class...)
@@ -143,6 +144,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Find a command by name.
+	 *
 	 * @param name the name of the command
 	 * @return the command or {@code null} if not found
 	 */
@@ -158,6 +160,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Run the appropriate and handle and errors.
+	 *
 	 * @param args the input arguments
 	 * @return a return status code (non boot is used to indicate an error)
 	 */
@@ -174,12 +177,10 @@ public class CommandRunner implements Iterable<Command> {
 				return (result.getCode() > 0) ? result.getCode() : 0;
 			}
 			return 0;
-		}
-		catch (NoArgumentsException ex) {
+		} catch (NoArgumentsException ex) {
 			showUsage();
 			return 1;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return handleError(debug, ex);
 		}
 	}
@@ -200,6 +201,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Parse the arguments and run a suitable command.
+	 *
 	 * @param args the arguments
 	 * @return the outcome of the command
 	 * @throws Exception if the command fails
@@ -217,14 +219,14 @@ public class CommandRunner implements Iterable<Command> {
 		beforeRun(command);
 		try {
 			return command.run(commandArguments);
-		}
-		finally {
+		} finally {
 			afterRun(command);
 		}
 	}
 
 	/**
 	 * Subclass hook called before a command is run.
+	 *
 	 * @param command the command about to run
 	 */
 	protected void beforeRun(Command command) {
@@ -232,6 +234,7 @@ public class CommandRunner implements Iterable<Command> {
 
 	/**
 	 * Subclass hook called after a command has run.
+	 *
 	 * @param command the command that has run
 	 */
 	protected void afterRun(Command command) {

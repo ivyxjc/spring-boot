@@ -16,19 +16,15 @@
 
 package org.springframework.boot.autoconfigure.http;
 
-import javax.json.bind.Jsonb;
-
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.JsonbHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+
+import javax.json.bind.Jsonb;
 
 /**
  * Configuration for HTTP Message converters that use JSON-B.
@@ -61,12 +57,12 @@ class JsonbHttpMessageConvertersConfiguration {
 		}
 
 		@ConditionalOnProperty(name = HttpMessageConvertersAutoConfiguration.PREFERRED_MAPPER_PROPERTY,
-				havingValue = "jsonb")
+							   havingValue = "jsonb")
 		static class JsonbPreferred {
 
 		}
 
-		@ConditionalOnMissingBean({ MappingJackson2HttpMessageConverter.class, GsonHttpMessageConverter.class })
+		@ConditionalOnMissingBean({MappingJackson2HttpMessageConverter.class, GsonHttpMessageConverter.class})
 		static class JacksonAndGsonMissing {
 
 		}

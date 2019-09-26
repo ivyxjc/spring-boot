@@ -32,8 +32,9 @@ public interface ParameterValueMapper {
 
 	/**
 	 * Map the specified {@code input} parameter to the given {@code parameterType}.
+	 *
 	 * @param parameter the parameter to map
-	 * @param value a parameter value
+	 * @param value     a parameter value
 	 * @return a value suitable for that parameter
 	 * @throws ParameterMappingException when a mapping failure occurs
 	 */

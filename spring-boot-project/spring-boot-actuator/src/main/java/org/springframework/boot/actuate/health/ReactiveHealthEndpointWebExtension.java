@@ -16,13 +16,12 @@
 
 package org.springframework.boot.actuate.health;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.endpoint.SecurityContext;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.boot.actuate.endpoint.annotation.Selector;
 import org.springframework.boot.actuate.endpoint.web.WebEndpointResponse;
 import org.springframework.boot.actuate.endpoint.web.annotation.EndpointWebExtension;
+import reactor.core.publisher.Mono;
 
 /**
  * Reactive {@link EndpointWebExtension} for the {@link HealthEndpoint}.
@@ -38,7 +37,7 @@ public class ReactiveHealthEndpointWebExtension {
 	private final HealthWebEndpointResponseMapper responseMapper;
 
 	public ReactiveHealthEndpointWebExtension(ReactiveHealthIndicator delegate,
-			HealthWebEndpointResponseMapper responseMapper) {
+											  HealthWebEndpointResponseMapper responseMapper) {
 		this.delegate = delegate;
 		this.responseMapper = responseMapper;
 	}
@@ -50,13 +49,14 @@ public class ReactiveHealthEndpointWebExtension {
 
 	@ReadOperation
 	public Mono<WebEndpointResponse<Health>> healthForComponent(SecurityContext securityContext,
-			@Selector String component) {
+																@Selector String component) {
 		return responseFromIndicator(getNestedHealthIndicator(this.delegate, component), securityContext);
 	}
 
 	@ReadOperation
 	public Mono<WebEndpointResponse<Health>> healthForComponentInstance(SecurityContext securityContext,
-			@Selector String component, @Selector String instance) {
+																		@Selector String component,
+																		@Selector String instance) {
 		ReactiveHealthIndicator indicator = getNestedHealthIndicator(this.delegate, component);
 		if (indicator != null) {
 			indicator = getNestedHealthIndicator(indicator, instance);
@@ -69,7 +69,7 @@ public class ReactiveHealthEndpointWebExtension {
 	}
 
 	private Mono<WebEndpointResponse<Health>> responseFromIndicator(ReactiveHealthIndicator indicator,
-			SecurityContext securityContext) {
+																	SecurityContext securityContext) {
 		return (indicator != null)
 				? indicator.health().map((health) -> this.responseMapper.map(health, securityContext)) : Mono.empty();
 	}

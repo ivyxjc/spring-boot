@@ -16,10 +16,6 @@
 
 package org.springframework.boot.test.web.client;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.client.RestTemplateCustomizer;
@@ -28,6 +24,10 @@ import org.springframework.test.web.client.RequestExpectationManager;
 import org.springframework.test.web.client.SimpleRequestExpectationManager;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link RestTemplateCustomizer} that can be applied to a {@link RestTemplateBuilder}
@@ -47,18 +47,15 @@ import org.springframework.web.client.RestTemplate;
  * the related server.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see #getServer()
  * @see #getServer(RestTemplate)
+ * @since 1.4.0
  */
 public class MockServerRestTemplateCustomizer implements RestTemplateCustomizer {
 
-	private Map<RestTemplate, RequestExpectationManager> expectationManagers = new ConcurrentHashMap<>();
-
-	private Map<RestTemplate, MockRestServiceServer> servers = new ConcurrentHashMap<>();
-
 	private final Class<? extends RequestExpectationManager> expectationManager;
-
+	private Map<RestTemplate, RequestExpectationManager> expectationManagers = new ConcurrentHashMap<>();
+	private Map<RestTemplate, MockRestServiceServer> servers = new ConcurrentHashMap<>();
 	private boolean detectRootUri = true;
 
 	public MockServerRestTemplateCustomizer() {
@@ -73,6 +70,7 @@ public class MockServerRestTemplateCustomizer implements RestTemplateCustomizer 
 	/**
 	 * Set if root URIs from {@link RootUriRequestExpectationManager} should be detected
 	 * and applied to the {@link MockRestServiceServer}.
+	 *
 	 * @param detectRootUri if root URIs should be detected
 	 */
 	public void setDetectRootUri(boolean detectRootUri) {

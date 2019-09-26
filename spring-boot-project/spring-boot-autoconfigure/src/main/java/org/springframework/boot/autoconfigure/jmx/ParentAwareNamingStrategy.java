@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jmx;
 
-import java.util.Hashtable;
-
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectName;
-
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -28,6 +23,10 @@ import org.springframework.jmx.export.metadata.JmxAttributeSource;
 import org.springframework.jmx.export.naming.MetadataNamingStrategy;
 import org.springframework.jmx.support.ObjectNameManager;
 import org.springframework.util.ObjectUtils;
+
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+import java.util.Hashtable;
 
 /**
  * Extension of {@link MetadataNamingStrategy} that supports a parent
@@ -48,6 +47,7 @@ public class ParentAwareNamingStrategy extends MetadataNamingStrategy implements
 
 	/**
 	 * Set if unique runtime object names should be ensured.
+	 *
 	 * @param ensureUniqueRuntimeObjectNames {@code true} if unique names should ensured.
 	 */
 	public void setEnsureUniqueRuntimeObjectNames(boolean ensureUniqueRuntimeObjectNames) {
@@ -61,8 +61,7 @@ public class ParentAwareNamingStrategy extends MetadataNamingStrategy implements
 		properties.putAll(name.getKeyPropertyList());
 		if (this.ensureUniqueRuntimeObjectNames) {
 			properties.put("identity", ObjectUtils.getIdentityHexString(managedBean));
-		}
-		else if (parentContextContainsSameBean(this.applicationContext, beanKey)) {
+		} else if (parentContextContainsSameBean(this.applicationContext, beanKey)) {
 			properties.put("context", ObjectUtils.getIdentityHexString(this.applicationContext));
 		}
 		return ObjectNameManager.getInstance(name.getDomain(), properties);
@@ -80,8 +79,7 @@ public class ParentAwareNamingStrategy extends MetadataNamingStrategy implements
 		try {
 			this.applicationContext.getParent().getBean(beanKey);
 			return true;
-		}
-		catch (BeansException ex) {
+		} catch (BeansException ex) {
 			return parentContextContainsSameBean(context.getParent(), beanKey);
 		}
 	}

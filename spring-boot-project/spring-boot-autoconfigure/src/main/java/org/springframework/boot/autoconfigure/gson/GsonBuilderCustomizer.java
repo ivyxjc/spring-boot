@@ -31,6 +31,7 @@ public interface GsonBuilderCustomizer {
 
 	/**
 	 * Customize the GsonBuilder.
+	 *
 	 * @param gsonBuilder the GsonBuilder to customize
 	 */
 	void customize(GsonBuilder gsonBuilder);

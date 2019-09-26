@@ -16,16 +16,15 @@
 
 package org.springframework.boot.autoconfigure.validation;
 
-import javax.validation.Validator;
-
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.testsupport.runner.classpath.ClassPathExclusions;
 import org.springframework.boot.testsupport.runner.classpath.ModifiedClassPathRunner;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
+
+import javax.validation.Validator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

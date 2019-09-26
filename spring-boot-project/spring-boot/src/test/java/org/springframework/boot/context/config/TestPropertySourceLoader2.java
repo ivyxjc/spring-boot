@@ -15,15 +15,15 @@
  */
 package org.springframework.boot.context.config;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.boot.env.PropertySourceLoader;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.Resource;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@link PropertySourceLoader} for tests.
@@ -34,7 +34,7 @@ class TestPropertySourceLoader2 implements PropertySourceLoader {
 
 	@Override
 	public String[] getFileExtensions() {
-		return new String[] { "custom" };
+		return new String[]{"custom"};
 	}
 
 	@Override

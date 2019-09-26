@@ -16,18 +16,17 @@
 
 package org.springframework.boot.actuate.elasticsearch;
 
-import java.util.List;
-
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthRequest;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.Requests;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * {@link HealthIndicator} for an Elasticsearch cluster.
@@ -38,7 +37,7 @@ import org.springframework.util.StringUtils;
  */
 public class ElasticsearchHealthIndicator extends AbstractHealthIndicator {
 
-	private static final String[] ALL_INDICES = { "_all" };
+	private static final String[] ALL_INDICES = {"_all"};
 
 	private final Client client;
 
@@ -48,9 +47,10 @@ public class ElasticsearchHealthIndicator extends AbstractHealthIndicator {
 
 	/**
 	 * Create a new {@link ElasticsearchHealthIndicator} instance.
-	 * @param client the Elasticsearch client
+	 *
+	 * @param client          the Elasticsearch client
 	 * @param responseTimeout the request timeout in milliseconds
-	 * @param indices the indices to check
+	 * @param indices         the indices to check
 	 */
 	public ElasticsearchHealthIndicator(Client client, long responseTimeout, List<String> indices) {
 		this(client, responseTimeout, (indices != null) ? StringUtils.toStringArray(indices) : null);
@@ -58,9 +58,10 @@ public class ElasticsearchHealthIndicator extends AbstractHealthIndicator {
 
 	/**
 	 * Create a new {@link ElasticsearchHealthIndicator} instance.
-	 * @param client the Elasticsearch client
+	 *
+	 * @param client          the Elasticsearch client
 	 * @param responseTimeout the request timeout in milliseconds
-	 * @param indices the indices to check
+	 * @param indices         the indices to check
 	 */
 	public ElasticsearchHealthIndicator(Client client, long responseTimeout, String... indices) {
 		super("Elasticsearch health check failed");
@@ -75,14 +76,14 @@ public class ElasticsearchHealthIndicator extends AbstractHealthIndicator {
 				.clusterHealthRequest(ObjectUtils.isEmpty(this.indices) ? ALL_INDICES : this.indices);
 		ClusterHealthResponse response = this.client.admin().cluster().health(request).actionGet(this.responseTimeout);
 		switch (response.getStatus()) {
-		case GREEN:
-		case YELLOW:
-			builder.up();
-			break;
-		case RED:
-		default:
-			builder.down();
-			break;
+			case GREEN:
+			case YELLOW:
+				builder.up();
+				break;
+			case RED:
+			default:
+				builder.down();
+				break;
 		}
 		builder.withDetail("clusterName", response.getClusterName());
 		builder.withDetail("numberOfNodes", response.getNumberOfNodes());

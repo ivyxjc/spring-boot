@@ -22,8 +22,8 @@ import java.io.File;
  * Encapsulates information about a single library that may be packed into the archive.
  *
  * @author Phillip Webb
- * @since 1.1.2
  * @see Libraries
+ * @since 1.1.2
  */
 public class Library {
 
@@ -37,7 +37,8 @@ public class Library {
 
 	/**
 	 * Create a new {@link Library}.
-	 * @param file the source file
+	 *
+	 * @param file  the source file
 	 * @param scope the scope of the library
 	 */
 	public Library(File file, LibraryScope scope) {
@@ -46,8 +47,9 @@ public class Library {
 
 	/**
 	 * Create a new {@link Library}.
-	 * @param file the source file
-	 * @param scope the scope of the library
+	 *
+	 * @param file           the source file
+	 * @param scope          the scope of the library
 	 * @param unpackRequired if the library needs to be unpacked before it can be used
 	 */
 	public Library(File file, LibraryScope scope, boolean unpackRequired) {
@@ -56,10 +58,11 @@ public class Library {
 
 	/**
 	 * Create a new {@link Library}.
-	 * @param name the name of the library as it should be written or {@code null} to use
-	 * the file name
-	 * @param file the source file
-	 * @param scope the scope of the library
+	 *
+	 * @param name           the name of the library as it should be written or {@code null} to use
+	 *                       the file name
+	 * @param file           the source file
+	 * @param scope          the scope of the library
 	 * @param unpackRequired if the library needs to be unpacked before it can be used
 	 */
 	public Library(String name, File file, LibraryScope scope, boolean unpackRequired) {
@@ -71,6 +74,7 @@ public class Library {
 
 	/**
 	 * Return the name of file as it should be written.
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -79,6 +83,7 @@ public class Library {
 
 	/**
 	 * Return the library file.
+	 *
 	 * @return the file
 	 */
 	public File getFile() {
@@ -87,6 +92,7 @@ public class Library {
 
 	/**
 	 * Return the scope of the library.
+	 *
 	 * @return the scope
 	 */
 	public LibraryScope getScope() {
@@ -96,6 +102,7 @@ public class Library {
 	/**
 	 * Return if the file cannot be used directly as a nested jar and needs to be
 	 * unpacked.
+	 *
 	 * @return if unpack is required
 	 */
 	public boolean isUnpackRequired() {

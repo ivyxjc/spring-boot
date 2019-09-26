@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -41,13 +40,13 @@ class JacksonHttpMessageConvertersConfiguration {
 	@ConditionalOnClass(ObjectMapper.class)
 	@ConditionalOnBean(ObjectMapper.class)
 	@ConditionalOnProperty(name = HttpMessageConvertersAutoConfiguration.PREFERRED_MAPPER_PROPERTY,
-			havingValue = "jackson", matchIfMissing = true)
+						   havingValue = "jackson", matchIfMissing = true)
 	protected static class MappingJackson2HttpMessageConverterConfiguration {
 
 		@Bean
 		@ConditionalOnMissingBean(value = MappingJackson2HttpMessageConverter.class,
-				ignoredType = { "org.springframework.hateoas.mvc.TypeConstrainedMappingJackson2HttpMessageConverter",
-						"org.springframework.data.rest.webmvc.alps.AlpsJsonHttpMessageConverter" })
+								  ignoredType = {"org.springframework.hateoas.mvc.TypeConstrainedMappingJackson2HttpMessageConverter",
+										  "org.springframework.data.rest.webmvc.alps.AlpsJsonHttpMessageConverter"})
 		public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(ObjectMapper objectMapper) {
 			return new MappingJackson2HttpMessageConverter(objectMapper);
 		}

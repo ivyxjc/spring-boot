@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.endpoint.web;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.actuate.endpoint.ExposableEndpoint;
 
 /**
  * A resolver for {@link Link links} to web endpoints.
@@ -40,6 +39,7 @@ public class EndpointLinksResolver {
 	/**
 	 * Creates a new {@code EndpointLinksResolver} that will resolve links to the given
 	 * {@code endpoints}.
+	 *
 	 * @param endpoints the endpoints
 	 */
 	public EndpointLinksResolver(Collection<? extends ExposableEndpoint<?>> endpoints) {
@@ -49,8 +49,9 @@ public class EndpointLinksResolver {
 	/**
 	 * Creates a new {@code EndpointLinksResolver} that will resolve links to the given
 	 * {@code endpoints} that are exposed beneath the given {@code basePath}.
+	 *
 	 * @param endpoints the endpoints
-	 * @param basePath the basePath
+	 * @param basePath  the basePath
 	 */
 	public EndpointLinksResolver(Collection<? extends ExposableEndpoint<?>> endpoints, String basePath) {
 		this.endpoints = endpoints;
@@ -62,6 +63,7 @@ public class EndpointLinksResolver {
 	/**
 	 * Resolves links to the known endpoints based on a request with the given
 	 * {@code requestUrl}.
+	 *
 	 * @param requestUrl the url of the request for the endpoint links
 	 * @return the links
 	 */
@@ -72,8 +74,7 @@ public class EndpointLinksResolver {
 		for (ExposableEndpoint<?> endpoint : this.endpoints) {
 			if (endpoint instanceof ExposableWebEndpoint) {
 				collectLinks(links, (ExposableWebEndpoint) endpoint, normalizedUrl);
-			}
-			else if (endpoint instanceof PathMappedEndpoint) {
+			} else if (endpoint instanceof PathMappedEndpoint) {
 				String rootPath = ((PathMappedEndpoint) endpoint).getRootPath();
 				Link link = createLink(normalizedUrl, rootPath);
 				links.put(endpoint.getEndpointId().toLowerCaseString(), link);

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.configurationmetadata;
 
+import org.junit.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

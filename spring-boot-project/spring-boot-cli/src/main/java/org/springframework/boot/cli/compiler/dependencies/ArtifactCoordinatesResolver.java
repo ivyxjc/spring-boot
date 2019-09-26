@@ -32,6 +32,7 @@ public interface ArtifactCoordinatesResolver {
 	/**
 	 * Gets the group id of the artifact identified by the given {@code module}. Returns
 	 * {@code null} if the artifact is unknown to the resolver.
+	 *
 	 * @param module the id of the module
 	 * @return the group id of the module
 	 */
@@ -40,6 +41,7 @@ public interface ArtifactCoordinatesResolver {
 	/**
 	 * Gets the artifact id of the artifact identified by the given {@code module}.
 	 * Returns {@code null} if the artifact is unknown to the resolver.
+	 *
 	 * @param module the id of the module
 	 * @return the artifact id of the module
 	 */
@@ -48,6 +50,7 @@ public interface ArtifactCoordinatesResolver {
 	/**
 	 * Gets the version of the artifact identified by the given {@code module}. Returns
 	 * {@code null} if the artifact is unknown to the resolver.
+	 *
 	 * @param module the id of the module
 	 * @return the version of the module
 	 */

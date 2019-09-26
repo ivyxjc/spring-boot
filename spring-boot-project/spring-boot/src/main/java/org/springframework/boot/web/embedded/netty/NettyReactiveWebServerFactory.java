@@ -16,17 +16,6 @@
 
 package org.springframework.boot.web.embedded.netty;
 
-import java.net.InetSocketAddress;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import reactor.netty.http.HttpProtocol;
-import reactor.netty.http.server.HttpServer;
-import reactor.netty.resources.LoopResources;
-
 import org.springframework.boot.web.reactive.server.AbstractReactiveWebServerFactory;
 import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
 import org.springframework.boot.web.server.WebServer;
@@ -34,6 +23,16 @@ import org.springframework.http.client.reactive.ReactorResourceFactory;
 import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import reactor.netty.http.HttpProtocol;
+import reactor.netty.http.server.HttpServer;
+import reactor.netty.resources.LoopResources;
+
+import java.net.InetSocketAddress;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * {@link ReactiveWebServerFactory} that can be used to create {@link NettyWebServer}s.
@@ -68,6 +67,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	/**
 	 * Returns a mutable collection of the {@link NettyServerCustomizer}s that will be
 	 * applied to the Netty server builder.
+	 *
 	 * @return the customizers that will be applied
 	 */
 	public Collection<NettyServerCustomizer> getServerCustomizers() {
@@ -77,6 +77,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	/**
 	 * Set {@link NettyServerCustomizer}s that should be applied to the Netty server
 	 * builder. Calling this method will replace any existing customizers.
+	 *
 	 * @param serverCustomizers the customizers to set
 	 */
 	public void setServerCustomizers(Collection<? extends NettyServerCustomizer> serverCustomizers) {
@@ -86,6 +87,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	/**
 	 * Add {@link NettyServerCustomizer}s that should applied while building the server.
+	 *
 	 * @param serverCustomizers the customizers to add
 	 */
 	public void addServerCustomizers(NettyServerCustomizer... serverCustomizers) {
@@ -96,6 +98,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	/**
 	 * Set the maximum amount of time that should be waited when starting or stopping the
 	 * server.
+	 *
 	 * @param lifecycleTimeout the lifecycle timeout
 	 */
 	public void setLifecycleTimeout(Duration lifecycleTimeout) {
@@ -104,6 +107,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	/**
 	 * Set if x-forward-* headers should be processed.
+	 *
 	 * @param useForwardHeaders if x-forward headers should be used
 	 * @since 2.1.0
 	 */
@@ -113,6 +117,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 
 	/**
 	 * Set the {@link ReactorResourceFactory} to get the shared resources from.
+	 *
 	 * @param resourceFactory the server resources
 	 * @since 2.1.0
 	 */
@@ -127,8 +132,7 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 			Assert.notNull(resources, "No LoopResources: is ReactorResourceFactory not initialized yet?");
 			server = server.tcpConfiguration(
 					(tcpServer) -> tcpServer.runOn(resources).addressSupplier(this::getListenAddress));
-		}
-		else {
+		} else {
 			server = server.tcpConfiguration((tcpServer) -> tcpServer.addressSupplier(this::getListenAddress));
 		}
 		if (getSsl() != null && getSsl().isEnabled()) {
@@ -147,13 +151,12 @@ public class NettyReactiveWebServerFactory extends AbstractReactiveWebServerFact
 	private HttpProtocol[] listProtocols() {
 		if (getHttp2() != null && getHttp2().isEnabled()) {
 			if (getSsl() != null && getSsl().isEnabled()) {
-				return new HttpProtocol[] { HttpProtocol.H2, HttpProtocol.HTTP11 };
-			}
-			else {
-				return new HttpProtocol[] { HttpProtocol.H2C, HttpProtocol.HTTP11 };
+				return new HttpProtocol[]{HttpProtocol.H2, HttpProtocol.HTTP11};
+			} else {
+				return new HttpProtocol[]{HttpProtocol.H2C, HttpProtocol.HTTP11};
 			}
 		}
-		return new HttpProtocol[] { HttpProtocol.HTTP11 };
+		return new HttpProtocol[]{HttpProtocol.HTTP11};
 	}
 
 	private InetSocketAddress getListenAddress() {

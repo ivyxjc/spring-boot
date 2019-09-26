@@ -21,7 +21,6 @@ import io.micrometer.core.instrument.Tags;
 import io.micrometer.graphite.GraphiteConfig;
 import io.micrometer.graphite.GraphiteMeterRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -50,11 +49,11 @@ public class GraphiteMetricsExportAutoConfigurationTests {
 	public void autoConfiguresUseTagsAsPrefix() {
 		this.contextRunner.withUserConfiguration(BaseConfiguration.class)
 				.withPropertyValues("management.metrics.export.graphite.tags-as-prefix=app").run((context) -> {
-					assertThat(context).hasSingleBean(GraphiteMeterRegistry.class);
-					GraphiteMeterRegistry registry = context.getBean(GraphiteMeterRegistry.class);
-					registry.counter("test.count", Tags.of("app", "myapp"));
-					assertThat(registry.getDropwizardRegistry().getMeters()).containsOnlyKeys("myapp.testCount");
-				});
+			assertThat(context).hasSingleBean(GraphiteMeterRegistry.class);
+			GraphiteMeterRegistry registry = context.getBean(GraphiteMeterRegistry.class);
+			registry.counter("test.count", Tags.of("app", "myapp"));
+			assertThat(registry.getDropwizardRegistry().getMeters()).containsOnlyKeys("myapp.testCount");
+		});
 	}
 
 	@Test

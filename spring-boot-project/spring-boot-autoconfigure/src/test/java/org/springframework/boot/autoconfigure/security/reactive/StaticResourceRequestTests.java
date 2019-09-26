@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.security.reactive;
 
-import java.time.Duration;
-
 import org.assertj.core.api.AssertDelegateTarget;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.support.StaticApplicationContext;
@@ -33,6 +30,8 @@ import org.springframework.web.context.support.StaticWebApplicationContext;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebHandler;
 import org.springframework.web.server.adapter.HttpWebHandlerAdapter;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

@@ -16,13 +16,7 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import org.hibernate.cfg.AvailableSettings;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
@@ -30,12 +24,17 @@ import org.springframework.util.Assert;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 /**
  * Configuration properties for Hibernate.
  *
  * @author Stephane Nicoll
- * @since 2.1.0
  * @see JpaProperties
+ * @since 2.1.0
  */
 @ConfigurationProperties("spring.jpa.hibernate")
 public class HibernateProperties {
@@ -80,12 +79,13 @@ public class HibernateProperties {
 	 * Determine the configuration properties for the initialization of the main Hibernate
 	 * EntityManagerFactory based on standard JPA properties and
 	 * {@link HibernateSettings}.
+	 *
 	 * @param jpaProperties standard JPA properties
-	 * @param settings the settings to apply when determining the configuration properties
+	 * @param settings      the settings to apply when determining the configuration properties
 	 * @return the Hibernate properties to use
 	 */
 	public Map<String, Object> determineHibernateProperties(Map<String, String> jpaProperties,
-			HibernateSettings settings) {
+															HibernateSettings settings) {
 		Assert.notNull(jpaProperties, "JpaProperties must not be null");
 		Assert.notNull(settings, "Settings must not be null");
 		return getAdditionalProperties(jpaProperties, settings);
@@ -98,8 +98,7 @@ public class HibernateProperties {
 		String ddlAuto = determineDdlAuto(existing, settings::getDdlAuto);
 		if (StringUtils.hasText(ddlAuto) && !"none".equals(ddlAuto)) {
 			result.put(AvailableSettings.HBM2DDL_AUTO, ddlAuto);
-		}
-		else {
+		} else {
 			result.remove(AvailableSettings.HBM2DDL_AUTO);
 		}
 		Collection<HibernatePropertiesCustomizer> customizers = settings.getHibernatePropertiesCustomizers();
@@ -112,8 +111,7 @@ public class HibernateProperties {
 	private void applyNewIdGeneratorMappings(Map<String, Object> result) {
 		if (this.useNewIdGeneratorMappings != null) {
 			result.put(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, this.useNewIdGeneratorMappings.toString());
-		}
-		else if (!result.containsKey(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS)) {
+		} else if (!result.containsKey(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS)) {
 			result.put(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, "true");
 		}
 	}
@@ -162,11 +160,10 @@ public class HibernateProperties {
 		}
 
 		private void applyNamingStrategy(Map<String, Object> properties, String key, Object strategy,
-				Object defaultStrategy) {
+										 Object defaultStrategy) {
 			if (strategy != null) {
 				properties.put(key, strategy);
-			}
-			else if (defaultStrategy != null && !properties.containsKey(key)) {
+			} else if (defaultStrategy != null && !properties.containsKey(key)) {
 				properties.put(key, defaultStrategy);
 			}
 		}

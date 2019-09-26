@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.couchbase;
 
-import java.util.List;
-
 import com.couchbase.client.core.env.KeyValueServiceConfig;
 import com.couchbase.client.core.env.QueryServiceConfig;
 import com.couchbase.client.core.env.ViewServiceConfig;
@@ -26,12 +24,13 @@ import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
 import com.couchbase.client.java.cluster.ClusterInfo;
 import com.couchbase.client.java.env.DefaultCouchbaseEnvironment;
-
 import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties.Endpoints;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Primary;
+
+import java.util.List;
 
 /**
  * Support class to configure Couchbase based on {@link CouchbaseProperties}.
@@ -62,6 +61,7 @@ public class CouchbaseConfiguration {
 
 	/**
 	 * Determine the Couchbase nodes to bootstrap from.
+	 *
 	 * @return the Couchbase nodes to bootstrap from
 	 */
 	protected List<String> determineBootstrapHosts() {
@@ -86,6 +86,7 @@ public class CouchbaseConfiguration {
 
 	/**
 	 * Initialize an environment builder based on the specified settings.
+	 *
 	 * @param properties the couchbase properties to use
 	 * @return the {@link DefaultCouchbaseEnvironment} builder.
 	 */

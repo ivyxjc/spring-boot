@@ -16,17 +16,6 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.boot.context.annotation.DeterminableImports;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
@@ -37,6 +26,9 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.ObjectUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
  * Variant of {@link AutoConfigurationImportSelector} for {@link ImportAutoConfiguration}.
@@ -78,7 +70,7 @@ class ImportAutoConfigurationImportSelector extends AutoConfigurationImportSelec
 	}
 
 	private void collectCandidateConfigurations(Class<?> source, List<Annotation> annotations,
-			List<String> candidates) {
+												List<String> candidates) {
 		for (Annotation annotation : annotations) {
 			candidates.addAll(getConfigurationsForAnnotation(source, annotation));
 		}
@@ -128,7 +120,7 @@ class ImportAutoConfigurationImportSelector extends AutoConfigurationImportSelec
 	}
 
 	private void collectAnnotations(Class<?> source, MultiValueMap<Class<?>, Annotation> annotations,
-			HashSet<Class<?>> seen) {
+									HashSet<Class<?>> seen) {
 		if (source != null && seen.add(source)) {
 			for (Annotation annotation : source.getDeclaredAnnotations()) {
 				if (!AnnotationUtils.isInJavaLangAnnotationPackage(annotation)) {

@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import javax.jms.ConnectionFactory;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJndi;
@@ -32,6 +30,8 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.JndiDestinationResolver;
 import org.springframework.transaction.jta.JtaTransactionManager;
+
+import javax.jms.ConnectionFactory;
 
 /**
  * Configuration for Spring 4.1 annotation driven JMS.
@@ -52,8 +52,8 @@ class JmsAnnotationDrivenConfiguration {
 	private final JmsProperties properties;
 
 	JmsAnnotationDrivenConfiguration(ObjectProvider<DestinationResolver> destinationResolver,
-			ObjectProvider<JtaTransactionManager> transactionManager, ObjectProvider<MessageConverter> messageConverter,
-			JmsProperties properties) {
+									 ObjectProvider<JtaTransactionManager> transactionManager, ObjectProvider<MessageConverter> messageConverter,
+									 JmsProperties properties) {
 		this.destinationResolver = destinationResolver;
 		this.transactionManager = transactionManager;
 		this.messageConverter = messageConverter;

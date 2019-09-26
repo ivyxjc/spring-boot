@@ -19,7 +19,6 @@ package org.springframework.boot.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.Test;
-
 import org.springframework.boot.jackson.NameAndAgeJsonComponent.Serializer;
 
 import static org.assertj.core.api.Assertions.assertThat;

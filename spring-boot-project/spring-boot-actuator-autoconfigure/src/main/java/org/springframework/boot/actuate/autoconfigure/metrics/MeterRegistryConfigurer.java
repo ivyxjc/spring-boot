@@ -16,17 +16,16 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Metrics;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.util.LambdaSafe;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Configurer to apply {@link MeterRegistryCustomizer customizers}, {@link MeterFilter
@@ -49,7 +48,7 @@ class MeterRegistryConfigurer {
 	private final boolean hasCompositeMeterRegistry;
 
 	MeterRegistryConfigurer(ObjectProvider<MeterRegistryCustomizer<?>> customizers, ObjectProvider<MeterFilter> filters,
-			ObjectProvider<MeterBinder> binders, boolean addToGlobalRegistry, boolean hasCompositeMeterRegistry) {
+							ObjectProvider<MeterBinder> binders, boolean addToGlobalRegistry, boolean hasCompositeMeterRegistry) {
 		this.customizers = customizers;
 		this.filters = filters;
 		this.binders = binders;

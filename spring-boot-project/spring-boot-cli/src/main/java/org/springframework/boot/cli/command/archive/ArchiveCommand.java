@@ -16,32 +16,13 @@
 
 package org.springframework.boot.cli.command.archive;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.jar.Manifest;
-
 import groovy.lang.Grab;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.AnnotatedNode;
-import org.codehaus.groovy.ast.AnnotationNode;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.ModuleNode;
+import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.transform.ASTTransformation;
-
 import org.springframework.boot.cli.app.SpringApplicationLauncher;
 import org.springframework.boot.cli.archive.PackagedSpringApplicationLauncher;
 import org.springframework.boot.cli.command.Command;
@@ -56,14 +37,20 @@ import org.springframework.boot.cli.compiler.GroovyCompiler;
 import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
 import org.springframework.boot.cli.compiler.RepositoryConfigurationFactory;
 import org.springframework.boot.cli.compiler.grape.RepositoryConfiguration;
-import org.springframework.boot.loader.tools.JarWriter;
-import org.springframework.boot.loader.tools.Layout;
-import org.springframework.boot.loader.tools.Library;
-import org.springframework.boot.loader.tools.LibraryScope;
-import org.springframework.boot.loader.tools.Repackager;
+import org.springframework.boot.loader.tools.*;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.Assert;
+
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.jar.Manifest;
 
 /**
  * Abstract {@link Command} to create a self-contained executable archive file from a CLI
@@ -111,10 +98,10 @@ abstract class ArchiveCommand extends OptionParsingCommand {
 		protected void doOptions() {
 			this.includeOption = option("include",
 					"Pattern applied to directories on the classpath to find files to " + "include in the resulting ")
-							.withRequiredArg().withValuesSeparatedBy(",").defaultsTo("");
+					.withRequiredArg().withValuesSeparatedBy(",").defaultsTo("");
 			this.excludeOption = option("exclude", "Pattern applied to directories on the classpath to find files to "
 					+ "exclude from the resulting " + this.type).withRequiredArg().withValuesSeparatedBy(",")
-							.defaultsTo("");
+					.defaultsTo("");
 		}
 
 		@Override
@@ -175,7 +162,7 @@ abstract class ArchiveCommand extends OptionParsingCommand {
 		}
 
 		private void writeJar(File file, Class<?>[] compiledClasses, List<MatchedResource> classpathEntries,
-				List<URL> dependencies) throws FileNotFoundException, IOException, URISyntaxException {
+							  List<URL> dependencies) throws FileNotFoundException, IOException, URISyntaxException {
 			final List<Library> libraries;
 			try (JarWriter writer = new JarWriter(file)) {
 				addManifest(writer, compiledClasses);
@@ -258,8 +245,7 @@ abstract class ArchiveCommand extends OptionParsingCommand {
 			for (MatchedResource entry : entries) {
 				if (entry.isRoot()) {
 					libraries.add(new Library(entry.getFile(), LibraryScope.COMPILE));
-				}
-				else {
+				} else {
 					writeClasspathEntry(writer, entry);
 				}
 			}

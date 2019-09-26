@@ -16,22 +16,21 @@
 
 package org.springframework.boot.actuate.metrics.export.prometheus;
 
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.exporter.PushGateway;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
+
 import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
-
-import io.prometheus.client.CollectorRegistry;
-import io.prometheus.client.exporter.PushGateway;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * Class that can be used to manage the pushing of metrics to a {@link PushGateway
@@ -63,32 +62,34 @@ public class PrometheusPushGatewayManager {
 	/**
 	 * Create a new {@link PrometheusPushGatewayManager} instance using a single threaded
 	 * {@link TaskScheduler}.
-	 * @param pushGateway the source push gateway
-	 * @param registry the collector registry to push
-	 * @param pushRate the rate at which push operations occur
-	 * @param job the job ID for the operation
-	 * @param groupingKeys an optional set of grouping keys for the operation
+	 *
+	 * @param pushGateway       the source push gateway
+	 * @param registry          the collector registry to push
+	 * @param pushRate          the rate at which push operations occur
+	 * @param job               the job ID for the operation
+	 * @param groupingKeys      an optional set of grouping keys for the operation
 	 * @param shutdownOperation the shutdown operation that should be performed when
-	 * context is closed.
+	 *                          context is closed.
 	 */
 	public PrometheusPushGatewayManager(PushGateway pushGateway, CollectorRegistry registry, Duration pushRate,
-			String job, Map<String, String> groupingKeys, ShutdownOperation shutdownOperation) {
+										String job, Map<String, String> groupingKeys, ShutdownOperation shutdownOperation) {
 		this(pushGateway, registry, new PushGatewayTaskScheduler(), pushRate, job, groupingKeys, shutdownOperation);
 	}
 
 	/**
 	 * Create a new {@link PrometheusPushGatewayManager} instance.
-	 * @param pushGateway the source push gateway
-	 * @param registry the collector registry to push
-	 * @param scheduler the scheduler used for operations
-	 * @param pushRate the rate at which push operations occur
-	 * @param job the job ID for the operation
-	 * @param groupingKey an optional set of grouping keys for the operation
+	 *
+	 * @param pushGateway       the source push gateway
+	 * @param registry          the collector registry to push
+	 * @param scheduler         the scheduler used for operations
+	 * @param pushRate          the rate at which push operations occur
+	 * @param job               the job ID for the operation
+	 * @param groupingKey       an optional set of grouping keys for the operation
 	 * @param shutdownOperation the shutdown operation that should be performed when
-	 * context is closed.
+	 *                          context is closed.
 	 */
 	public PrometheusPushGatewayManager(PushGateway pushGateway, CollectorRegistry registry, TaskScheduler scheduler,
-			Duration pushRate, String job, Map<String, String> groupingKey, ShutdownOperation shutdownOperation) {
+										Duration pushRate, String job, Map<String, String> groupingKey, ShutdownOperation shutdownOperation) {
 		Assert.notNull(pushGateway, "PushGateway must not be null");
 		Assert.notNull(registry, "Registry must not be null");
 		Assert.notNull(scheduler, "Scheduler must not be null");
@@ -106,16 +107,14 @@ public class PrometheusPushGatewayManager {
 	private void push() {
 		try {
 			this.pushGateway.pushAdd(this.registry, this.job, this.groupingKey);
-		}
-		catch (UnknownHostException ex) {
+		} catch (UnknownHostException ex) {
 			String host = ex.getMessage();
 			String message = "Unable to locate prometheus push gateway host"
 					+ (StringUtils.hasLength(host) ? " '" + host + "'" : "")
 					+ ". No longer attempting metrics publication to this host";
 			logger.error(message, ex);
 			shutdown(ShutdownOperation.NONE);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			logger.error("Unable to push metrics to Prometheus Pushgateway", ex);
 		}
 	}
@@ -123,8 +122,7 @@ public class PrometheusPushGatewayManager {
 	private void delete() {
 		try {
 			this.pushGateway.delete(this.job, this.groupingKey);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			logger.error("Unable to delete metrics from Prometheus Pushgateway", ex);
 		}
 	}
@@ -142,12 +140,12 @@ public class PrometheusPushGatewayManager {
 		}
 		this.scheduled.cancel(false);
 		switch (shutdownOperation) {
-		case PUSH:
-			push();
-			break;
-		case DELETE:
-			delete();
-			break;
+			case PUSH:
+				push();
+				break;
+			case DELETE:
+				delete();
+				break;
 		}
 	}
 

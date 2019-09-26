@@ -16,13 +16,7 @@
 
 package org.springframework.boot.testsupport.context;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.Test;
-
 import org.springframework.asm.Opcodes;
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +28,11 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -16,15 +16,14 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+
+import javax.sql.DataSource;
 
 /**
  * Bean to handle {@link DataSource} initialization by running {@literal schema-*.sql} on
@@ -49,7 +48,7 @@ class DataSourceInitializerInvoker implements ApplicationListener<DataSourceSche
 	private boolean initialized;
 
 	DataSourceInitializerInvoker(ObjectProvider<DataSource> dataSource, DataSourceProperties properties,
-			ApplicationContext applicationContext) {
+								 ApplicationContext applicationContext) {
 		this.dataSource = dataSource;
 		this.properties = properties;
 		this.applicationContext = applicationContext;
@@ -74,8 +73,7 @@ class DataSourceInitializerInvoker implements ApplicationListener<DataSourceSche
 				this.dataSourceInitializer.initSchema();
 				this.initialized = true;
 			}
-		}
-		catch (IllegalStateException ex) {
+		} catch (IllegalStateException ex) {
 			logger.warn("Could not send event to complete DataSource initialization (" + ex.getMessage() + ")");
 		}
 	}

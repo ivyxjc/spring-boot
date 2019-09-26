@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.webservices;
 
-import java.util.Collection;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -28,6 +25,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
+
+import java.util.Collection;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

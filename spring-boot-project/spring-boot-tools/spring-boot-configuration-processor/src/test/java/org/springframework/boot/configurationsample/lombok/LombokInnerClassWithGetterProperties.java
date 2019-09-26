@@ -17,7 +17,6 @@
 package org.springframework.boot.configurationsample.lombok;
 
 import lombok.Data;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
 
 @Data

@@ -18,7 +18,6 @@ package org.springframework.boot.test.autoconfigure.data.ldap;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.ldap.query.LdapQuery;
@@ -36,8 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @DataLdapTest(includeFilters = @Filter(Service.class))
-@TestPropertySource(properties = { "spring.ldap.embedded.base-dn=dc=spring,dc=org",
-		"spring.ldap.embedded.ldif=classpath:org/springframework/boot/test/autoconfigure/data/ldap/schema.ldif" })
+@TestPropertySource(properties = {"spring.ldap.embedded.base-dn=dc=spring,dc=org",
+		"spring.ldap.embedded.ldif=classpath:org/springframework/boot/test/autoconfigure/data/ldap/schema.ldif"})
 public class DataLdapTestWithIncludeFilterIntegrationTests {
 
 	@Autowired

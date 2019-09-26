@@ -42,6 +42,7 @@ public abstract class AbstractHealthAggregator implements HealthAggregator {
 	/**
 	 * Return the single 'aggregate' status that should be used from the specified
 	 * candidates.
+	 *
 	 * @param candidates the candidates
 	 * @return a single status
 	 */
@@ -50,6 +51,7 @@ public abstract class AbstractHealthAggregator implements HealthAggregator {
 	/**
 	 * Return the map of 'aggregate' details that should be used from the specified
 	 * healths.
+	 *
 	 * @param healths the health instances to aggregate
 	 * @return a map of details
 	 * @since 1.3.1

@@ -22,7 +22,6 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.MockLog;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

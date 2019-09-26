@@ -1,7 +1,7 @@
-import org.springframework.boot.maven.*
+import org.springframework.boot.maven.Verify
 
-import static org.junit.Assert.assertTrue
 import static org.junit.Assert.assertFalse
+import static org.junit.Assert.assertTrue
 
 File main = new File(basedir, "target/jar-attach-disabled-0.0.1.BUILD-SNAPSHOT.jar")
 File backup = new File(basedir, "target/jar-attach-disabled-0.0.1.BUILD-SNAPSHOT.jar.original")
@@ -12,7 +12,7 @@ def file = new File(basedir, "build.log")
 assertTrue 'main artifact should have been updated',
 		file.text.contains("Updating main artifact " + main + " to " + backup)
 assertTrue 'main artifact should have been installed',
-		file.text.contains ("Installing " + backup + " to")
+		file.text.contains("Installing " + backup + " to")
 assertFalse 'repackaged artifact should not have been installed',
-		file.text.contains ("Installing " + main + "to")
+		file.text.contains("Installing " + main + "to")
 

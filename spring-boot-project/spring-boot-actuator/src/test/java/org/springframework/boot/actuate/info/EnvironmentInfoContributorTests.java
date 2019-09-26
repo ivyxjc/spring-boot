@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.boot.test.util.TestPropertyValues.Type;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,6 +34,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class EnvironmentInfoContributorTests {
 
 	private final StandardEnvironment environment = new StandardEnvironment();
+
+	private static Info contributeFrom(ConfigurableEnvironment environment) {
+		EnvironmentInfoContributor contributor = new EnvironmentInfoContributor(environment);
+		Info.Builder builder = new Info.Builder();
+		contributor.contribute(builder);
+		return builder.build();
+	}
 
 	@Test
 	public void extractOnlyInfoProperty() {
@@ -58,13 +64,6 @@ public class EnvironmentInfoContributorTests {
 		TestPropertyValues.of("INFO_ENVIRONMENT_FOO=green").applyTo(this.environment, Type.SYSTEM_ENVIRONMENT);
 		Info actual = contributeFrom(this.environment);
 		assertThat(actual.get("environment", Map.class)).containsEntry("foo", "green");
-	}
-
-	private static Info contributeFrom(ConfigurableEnvironment environment) {
-		EnvironmentInfoContributor contributor = new EnvironmentInfoContributor(environment);
-		Info.Builder builder = new Info.Builder();
-		contributor.contribute(builder);
-		return builder.build();
 	}
 
 }

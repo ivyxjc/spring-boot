@@ -16,11 +16,11 @@
 
 package org.springframework.boot.autoconfigure.elasticsearch.rest;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Configuration properties for Elasticsearch REST clients.

@@ -16,10 +16,10 @@
 
 package org.springframework.boot.context.properties.source;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.springframework.util.CollectionUtils;
 
 /**
  * A {@link IterableConfigurationPropertySource} supporting name aliases.
@@ -31,7 +31,7 @@ class AliasedIterableConfigurationPropertySource extends AliasedConfigurationPro
 		implements IterableConfigurationPropertySource {
 
 	AliasedIterableConfigurationPropertySource(IterableConfigurationPropertySource source,
-			ConfigurationPropertyNameAliases aliases) {
+											   ConfigurationPropertyNameAliases aliases) {
 		super(source, aliases);
 	}
 

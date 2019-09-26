@@ -16,37 +16,26 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
-import javax.cache.CacheManager;
-import javax.cache.Caching;
-import javax.cache.configuration.MutableConfiguration;
-import javax.cache.spi.CachingProvider;
-
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.cache.jcache.JCacheCacheManager;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+
+import javax.cache.CacheManager;
+import javax.cache.Caching;
+import javax.cache.configuration.MutableConfiguration;
+import javax.cache.spi.CachingProvider;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Cache configuration for JSR-107 compliant providers.
@@ -55,9 +44,9 @@ import org.springframework.util.StringUtils;
  * @author Madhura Bhave
  */
 @Configuration
-@ConditionalOnClass({ Caching.class, JCacheCacheManager.class })
+@ConditionalOnClass({Caching.class, JCacheCacheManager.class})
 @ConditionalOnMissingBean(org.springframework.cache.CacheManager.class)
-@Conditional({ CacheCondition.class, JCacheCacheConfiguration.JCacheAvailableCondition.class })
+@Conditional({CacheCondition.class, JCacheCacheConfiguration.JCacheAvailableCondition.class})
 @Import(HazelcastJCacheCustomizationConfiguration.class)
 class JCacheCacheConfiguration implements BeanClassLoaderAware {
 
@@ -74,9 +63,9 @@ class JCacheCacheConfiguration implements BeanClassLoaderAware {
 	private ClassLoader beanClassLoader;
 
 	JCacheCacheConfiguration(CacheProperties cacheProperties, CacheManagerCustomizers customizers,
-			ObjectProvider<javax.cache.configuration.Configuration<?, ?>> defaultCacheConfiguration,
-			ObjectProvider<JCacheManagerCustomizer> cacheManagerCustomizers,
-			ObjectProvider<JCachePropertiesCustomizer> cachePropertiesCustomizers) {
+							 ObjectProvider<javax.cache.configuration.Configuration<?, ?>> defaultCacheConfiguration,
+							 ObjectProvider<JCacheManagerCustomizer> cacheManagerCustomizers,
+							 ObjectProvider<JCachePropertiesCustomizer> cachePropertiesCustomizers) {
 		this.cacheProperties = cacheProperties;
 		this.customizers = customizers;
 		this.defaultCacheConfiguration = defaultCacheConfiguration.getIfAvailable();

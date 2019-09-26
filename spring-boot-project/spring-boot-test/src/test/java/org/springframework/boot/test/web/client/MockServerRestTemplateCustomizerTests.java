@@ -18,16 +18,13 @@ package org.springframework.boot.test.web.client;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.test.web.client.RequestExpectationManager;
 import org.springframework.test.web.client.SimpleRequestExpectationManager;
 import org.springframework.test.web.client.UnorderedRequestExpectationManager;
 import org.springframework.web.client.RestTemplate;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 

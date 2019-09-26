@@ -16,12 +16,11 @@
 
 package org.springframework.boot.web.servlet.context;
 
-import javax.servlet.Servlet;
-
 import org.junit.Test;
-
 import org.springframework.boot.web.servlet.server.MockServletWebServerFactory;
 import org.springframework.core.io.ClassPathResource;
+
+import javax.servlet.Servlet;
 
 import static org.mockito.Mockito.verify;
 

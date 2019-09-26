@@ -16,6 +16,13 @@
 
 package org.springframework.boot.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.core.ResolvableType;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.ReflectionUtils;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Optional;
@@ -24,14 +31,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.core.ResolvableType;
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.ReflectionUtils;
 
 /**
  * Utility that can be used to invoke lambdas in a safe way. Primarily designed to help
@@ -59,17 +58,18 @@ public final class LambdaSafe {
 	/**
 	 * Start a call to a single callback instance, dealing with common generic type
 	 * concerns and exceptions.
-	 * @param callbackType the callback type (a {@link FunctionalInterface functional
-	 * interface})
-	 * @param callbackInstance the callback instance (may be a lambda)
-	 * @param argument the primary argument passed to the callback
+	 *
+	 * @param callbackType        the callback type (a {@link FunctionalInterface functional
+	 *                            interface})
+	 * @param callbackInstance    the callback instance (may be a lambda)
+	 * @param argument            the primary argument passed to the callback
 	 * @param additionalArguments any additional arguments passed to the callback
-	 * @param <C> the callback type
-	 * @param <A> the primary argument type
+	 * @param <C>                 the callback type
+	 * @param <A>                 the primary argument type
 	 * @return a {@link Callback} instance that can be invoked.
 	 */
 	public static <C, A> Callback<C, A> callback(Class<C> callbackType, C callbackInstance, A argument,
-			Object... additionalArguments) {
+												 Object... additionalArguments) {
 		Assert.notNull(callbackType, "CallbackType must not be null");
 		Assert.notNull(callbackInstance, "CallbackInstance must not be null");
 		return new Callback<>(callbackType, callbackInstance, argument, additionalArguments);
@@ -78,20 +78,54 @@ public final class LambdaSafe {
 	/**
 	 * Start a call to callback instances, dealing with common generic type concerns and
 	 * exceptions.
-	 * @param callbackType the callback type (a {@link FunctionalInterface functional
-	 * interface})
-	 * @param callbackInstances the callback instances (elements may be lambdas)
-	 * @param argument the primary argument passed to the callbacks
+	 *
+	 * @param callbackType        the callback type (a {@link FunctionalInterface functional
+	 *                            interface})
+	 * @param callbackInstances   the callback instances (elements may be lambdas)
+	 * @param argument            the primary argument passed to the callbacks
 	 * @param additionalArguments any additional arguments passed to the callbacks
-	 * @param <C> the callback type
-	 * @param <A> the primary argument type
+	 * @param <C>                 the callback type
+	 * @param <A>                 the primary argument type
 	 * @return a {@link Callbacks} instance that can be invoked.
 	 */
 	public static <C, A> Callbacks<C, A> callbacks(Class<C> callbackType, Collection<? extends C> callbackInstances,
-			A argument, Object... additionalArguments) {
+												   A argument, Object... additionalArguments) {
 		Assert.notNull(callbackType, "CallbackType must not be null");
 		Assert.notNull(callbackInstances, "CallbackInstances must not be null");
 		return new Callbacks<>(callbackType, callbackInstances, argument, additionalArguments);
+	}
+
+	/**
+	 * A filter that can be used to restrict when a callback is used.
+	 *
+	 * @param <C> the callback type
+	 * @param <A> the primary argument type
+	 */
+	@FunctionalInterface
+	interface Filter<C, A> {
+
+		/**
+		 * Return a {@link Filter} that allows all callbacks to be invoked.
+		 *
+		 * @param <C> the callback type
+		 * @param <A> the primary argument type
+		 * @return an "allow all" filter
+		 */
+		static <C, A> Filter<C, A> allowAll() {
+			return (callbackType, callbackInstance, argument, additionalArguments) -> true;
+		}
+
+		/**
+		 * Determine if the given callback matches and should be invoked.
+		 *
+		 * @param callbackType        the callback type (the functional interface)
+		 * @param callbackInstance    the callback instance (the implementation)
+		 * @param argument            the primary argument
+		 * @param additionalArguments any additional arguments
+		 * @return if the callback matches and should be invoked
+		 */
+		boolean match(Class<C> callbackType, C callbackInstance, A argument, Object[] additionalArguments);
+
 	}
 
 	/**
@@ -118,6 +152,7 @@ public final class LambdaSafe {
 
 		/**
 		 * Use the specified logger source to report any lambda failures.
+		 *
 		 * @param loggerSource the logger source to use
 		 * @return this instance
 		 */
@@ -127,6 +162,7 @@ public final class LambdaSafe {
 
 		/**
 		 * Use the specified logger to report any lambda failures.
+		 *
 		 * @param logger the logger to use
 		 * @return this instance
 		 */
@@ -140,6 +176,7 @@ public final class LambdaSafe {
 		 * Use a specific filter to determine when a callback should apply. If no explicit
 		 * filter is set filter will be attempted using the generic type on the callback
 		 * type.
+		 *
 		 * @param filter the filter to use
 		 * @return this instance
 		 */
@@ -153,8 +190,7 @@ public final class LambdaSafe {
 			if (this.filter.match(this.callbackType, callbackInstance, this.argument, this.additionalArguments)) {
 				try {
 					return InvocationResult.of(supplier.get());
-				}
-				catch (ClassCastException ex) {
+				} catch (ClassCastException ex) {
 					if (!isLambdaGenericProblem(ex)) {
 						throw ex;
 					}
@@ -236,6 +272,7 @@ public final class LambdaSafe {
 
 		/**
 		 * Invoke the callback instance where the callback method returns void.
+		 *
 		 * @param invoker the invoker used to invoke the callback
 		 */
 		public void invoke(Consumer<C> invoker) {
@@ -247,8 +284,9 @@ public final class LambdaSafe {
 
 		/**
 		 * Invoke the callback instance where the callback method returns a result.
+		 *
 		 * @param invoker the invoker used to invoke the callback
-		 * @param <R> the result type
+		 * @param <R>     the result type
 		 * @return the result of the invocation (may be {@link InvocationResult#noResult}
 		 * if the callback was not invoked)
 		 */
@@ -269,13 +307,14 @@ public final class LambdaSafe {
 		private final Collection<? extends C> callbackInstances;
 
 		private Callbacks(Class<C> callbackType, Collection<? extends C> callbackInstances, A argument,
-				Object[] additionalArguments) {
+						  Object[] additionalArguments) {
 			super(callbackType, argument, additionalArguments);
 			this.callbackInstances = callbackInstances;
 		}
 
 		/**
 		 * Invoke the callback instances where the callback method returns void.
+		 *
 		 * @param invoker the invoker used to invoke the callback
 		 */
 		public void invoke(Consumer<C> invoker) {
@@ -289,8 +328,9 @@ public final class LambdaSafe {
 
 		/**
 		 * Invoke the callback instances where the callback method returns a result.
+		 *
 		 * @param invoker the invoker used to invoke the callback
-		 * @param <R> the result type
+		 * @param <R>     the result type
 		 * @return the results of the invocation (may be an empty stream if no callbacks
 		 * could be called)
 		 */
@@ -299,37 +339,6 @@ public final class LambdaSafe {
 					() -> invoker.apply(callbackInstance));
 			return this.callbackInstances.stream().map(mapper).filter(InvocationResult::hasResult)
 					.map(InvocationResult::get);
-		}
-
-	}
-
-	/**
-	 * A filter that can be used to restrict when a callback is used.
-	 *
-	 * @param <C> the callback type
-	 * @param <A> the primary argument type
-	 */
-	@FunctionalInterface
-	interface Filter<C, A> {
-
-		/**
-		 * Determine if the given callback matches and should be invoked.
-		 * @param callbackType the callback type (the functional interface)
-		 * @param callbackInstance the callback instance (the implementation)
-		 * @param argument the primary argument
-		 * @param additionalArguments any additional arguments
-		 * @return if the callback matches and should be invoked
-		 */
-		boolean match(Class<C> callbackType, C callbackInstance, A argument, Object[] additionalArguments);
-
-		/**
-		 * Return a {@link Filter} that allows all callbacks to be invoked.
-		 * @param <C> the callback type
-		 * @param <A> the primary argument type
-		 * @return an "allow all" filter
-		 */
-		static <C, A> Filter<C, A> allowAll() {
-			return (callbackType, callbackInstance, argument, additionalArguments) -> true;
 		}
 
 	}
@@ -370,7 +379,30 @@ public final class LambdaSafe {
 		}
 
 		/**
+		 * Create a new {@link InvocationResult} instance with the specified value.
+		 *
+		 * @param value the value (may be {@code null})
+		 * @param <R>   the result type
+		 * @return an {@link InvocationResult}
+		 */
+		public static <R> InvocationResult<R> of(R value) {
+			return new InvocationResult<>(value);
+		}
+
+		/**
+		 * Return an {@link InvocationResult} instance representing no result.
+		 *
+		 * @param <R> the result type
+		 * @return an {@link InvocationResult}
+		 */
+		@SuppressWarnings("unchecked")
+		public static <R> InvocationResult<R> noResult() {
+			return (InvocationResult<R>) NONE;
+		}
+
+		/**
 		 * Return true if a result in present.
+		 *
 		 * @return if a result is present
 		 */
 		public boolean hasResult() {
@@ -380,6 +412,7 @@ public final class LambdaSafe {
 		/**
 		 * Return the result of the invocation or {@code null} if the callback wasn't
 		 * suitable.
+		 *
 		 * @return the result of the invocation or {@code null}
 		 */
 		public R get() {
@@ -389,31 +422,12 @@ public final class LambdaSafe {
 		/**
 		 * Return the result of the invocation or the given fallback if the callback
 		 * wasn't suitable.
+		 *
 		 * @param fallback the fallback to use when there is no result
 		 * @return the result of the invocation or the fallback
 		 */
 		public R get(R fallback) {
 			return (this != NONE) ? this.value : fallback;
-		}
-
-		/**
-		 * Create a new {@link InvocationResult} instance with the specified value.
-		 * @param value the value (may be {@code null})
-		 * @param <R> the result type
-		 * @return an {@link InvocationResult}
-		 */
-		public static <R> InvocationResult<R> of(R value) {
-			return new InvocationResult<>(value);
-		}
-
-		/**
-		 * Return an {@link InvocationResult} instance representing no result.
-		 * @param <R> the result type
-		 * @return an {@link InvocationResult}
-		 */
-		@SuppressWarnings("unchecked")
-		public static <R> InvocationResult<R> noResult() {
-			return (InvocationResult<R>) NONE;
 		}
 
 	}

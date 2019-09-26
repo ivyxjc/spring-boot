@@ -16,11 +16,7 @@
 
 package org.springframework.boot.autoconfigure.web.format;
 
-import java.time.format.DateTimeFormatter;
-import java.time.format.ResolverStyle;
-
 import org.joda.time.format.DateTimeFormatterBuilder;
-
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.format.datetime.DateFormatterRegistrar;
 import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
@@ -32,6 +28,9 @@ import org.springframework.format.number.money.MonetaryAmountFormatter;
 import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.time.format.DateTimeFormatter;
+import java.time.format.ResolverStyle;
 
 /**
  * {@link org.springframework.format.support.FormattingConversionService} dedicated to web
@@ -57,6 +56,7 @@ public class WebConversionService extends DefaultFormattingConversionService {
 	/**
 	 * Create a new WebConversionService that configures formatters with the provided date
 	 * format, or register the default ones if no custom format is provided.
+	 *
 	 * @param dateFormat the custom date format to use for date conversions
 	 */
 	public WebConversionService(String dateFormat) {
@@ -64,8 +64,7 @@ public class WebConversionService extends DefaultFormattingConversionService {
 		this.dateFormat = StringUtils.hasText(dateFormat) ? dateFormat : null;
 		if (this.dateFormat != null) {
 			addFormatters();
-		}
-		else {
+		} else {
 			addDefaultFormatters(this);
 		}
 	}

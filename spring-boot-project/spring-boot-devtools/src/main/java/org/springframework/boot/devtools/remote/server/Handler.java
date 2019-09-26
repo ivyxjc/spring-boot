@@ -16,10 +16,10 @@
 
 package org.springframework.boot.devtools.remote.server;
 
-import java.io.IOException;
-
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+
+import java.io.IOException;
 
 /**
  * A single handler that is able to process an incoming remote server request.
@@ -32,7 +32,8 @@ public interface Handler {
 
 	/**
 	 * Handle the request.
-	 * @param request the request
+	 *
+	 * @param request  the request
 	 * @param response the response
 	 * @throws IOException in case of I/O errors
 	 */

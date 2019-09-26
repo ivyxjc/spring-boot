@@ -16,18 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.util.Map;
-
-import reactor.core.publisher.Flux;
-
-import org.springframework.boot.actuate.health.ApplicationHealthIndicator;
-import org.springframework.boot.actuate.health.HealthAggregator;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
-import org.springframework.boot.actuate.health.OrderedHealthAggregator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicator;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicatorRegistry;
-import org.springframework.boot.actuate.health.ReactiveHealthIndicatorRegistryFactory;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +24,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reactor.core.publisher.Flux;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link HealthIndicator}s.
@@ -46,7 +38,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.0.0
  */
 @Configuration
-@EnableConfigurationProperties({ HealthIndicatorProperties.class })
+@EnableConfigurationProperties({HealthIndicatorProperties.class})
 public class HealthIndicatorAutoConfiguration {
 
 	private final HealthIndicatorProperties properties;
@@ -56,7 +48,7 @@ public class HealthIndicatorAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean({ HealthIndicator.class, ReactiveHealthIndicator.class })
+	@ConditionalOnMissingBean({HealthIndicator.class, ReactiveHealthIndicator.class})
 	public ApplicationHealthIndicator applicationHealthIndicator() {
 		return new ApplicationHealthIndicator();
 	}

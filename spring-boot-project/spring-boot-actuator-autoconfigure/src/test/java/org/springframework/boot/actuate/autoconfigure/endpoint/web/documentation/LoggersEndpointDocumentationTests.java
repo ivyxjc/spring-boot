@@ -16,12 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.logging.LoggersEndpoint;
 import org.springframework.boot.logging.LogLevel;
 import org.springframework.boot.logging.LoggerConfiguration;
@@ -34,11 +29,13 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.FieldDescriptor;
 
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -67,7 +64,7 @@ public class LoggersEndpointDocumentationTests extends MockMvcEndpointDocumentat
 				.andDo(MockMvcRestDocumentation.document("loggers/all",
 						responseFields(fieldWithPath("levels").description("Levels support by the logging system."),
 								fieldWithPath("loggers").description("Loggers keyed by name."))
-										.andWithPrefix("loggers.*.", levelFields)));
+								.andWithPrefix("loggers.*.", levelFields)));
 	}
 
 	@Test

@@ -16,13 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.servlet.error;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider;
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProviders;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
@@ -36,6 +29,12 @@ import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Default {@link ErrorViewResolver} implementation that attempts to resolve error views
@@ -66,16 +65,14 @@ public class DefaultErrorViewResolver implements ErrorViewResolver, Ordered {
 		SERIES_VIEWS = Collections.unmodifiableMap(views);
 	}
 
-	private ApplicationContext applicationContext;
-
 	private final ResourceProperties resourceProperties;
-
 	private final TemplateAvailabilityProviders templateAvailabilityProviders;
-
+	private ApplicationContext applicationContext;
 	private int order = Ordered.LOWEST_PRECEDENCE;
 
 	/**
 	 * Create a new {@link DefaultErrorViewResolver} instance.
+	 *
 	 * @param applicationContext the source application context
 	 * @param resourceProperties resource properties
 	 */
@@ -88,7 +85,7 @@ public class DefaultErrorViewResolver implements ErrorViewResolver, Ordered {
 	}
 
 	DefaultErrorViewResolver(ApplicationContext applicationContext, ResourceProperties resourceProperties,
-			TemplateAvailabilityProviders templateAvailabilityProviders) {
+							 TemplateAvailabilityProviders templateAvailabilityProviders) {
 		Assert.notNull(applicationContext, "ApplicationContext must not be null");
 		Assert.notNull(resourceProperties, "ResourceProperties must not be null");
 		this.applicationContext = applicationContext;
@@ -123,8 +120,7 @@ public class DefaultErrorViewResolver implements ErrorViewResolver, Ordered {
 				if (resource.exists()) {
 					return new ModelAndView(new HtmlResourceView(resource), model);
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 			}
 		}
 		return null;

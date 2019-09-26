@@ -16,12 +16,6 @@
 
 package org.springframework.boot.jdbc;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Locale;
-
-import javax.sql.DataSource;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,14 +23,19 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Locale;
+
 /**
  * Connection details for {@link EmbeddedDatabaseType embedded databases}.
  *
  * @author Phillip Webb
  * @author Dave Syer
  * @author Stephane Nicoll
- * @since 1.0.0
  * @see #get(ClassLoader)
+ * @since 1.0.0
  */
 public enum EmbeddedDatabaseConnection {
 
@@ -73,34 +72,9 @@ public enum EmbeddedDatabaseConnection {
 	}
 
 	/**
-	 * Returns the driver class name.
-	 * @return the driver class name
-	 */
-	public String getDriverClassName() {
-		return this.driverClass;
-	}
-
-	/**
-	 * Returns the {@link EmbeddedDatabaseType} for the connection.
-	 * @return the database type
-	 */
-	public EmbeddedDatabaseType getType() {
-		return this.type;
-	}
-
-	/**
-	 * Returns the URL for the connection using the specified {@code databaseName}.
-	 * @param databaseName the name of the database
-	 * @return the connection URL
-	 */
-	public String getUrl(String databaseName) {
-		Assert.hasText(databaseName, "DatabaseName must not be empty");
-		return (this.url != null) ? String.format(this.url, databaseName) : null;
-	}
-
-	/**
 	 * Convenience method to determine if a given driver class name represents an embedded
 	 * database type.
+	 *
 	 * @param driverClass the driver class
 	 * @return true if the driver class is one of the embedded types
 	 */
@@ -112,14 +86,14 @@ public enum EmbeddedDatabaseConnection {
 	/**
 	 * Convenience method to determine if a given data source represents an embedded
 	 * database type.
+	 *
 	 * @param dataSource the data source to interrogate
 	 * @return true if the data source is one of the embedded types
 	 */
 	public static boolean isEmbedded(DataSource dataSource) {
 		try {
 			return new JdbcTemplate(dataSource).execute(new IsEmbedded());
-		}
-		catch (DataAccessException ex) {
+		} catch (DataAccessException ex) {
 			// Could not connect, which means it's not embedded
 			return false;
 		}
@@ -128,6 +102,7 @@ public enum EmbeddedDatabaseConnection {
 	/**
 	 * Returns the most suitable {@link EmbeddedDatabaseConnection} for the given class
 	 * loader.
+	 *
 	 * @param classLoader the class loader used to check for classes
 	 * @return an {@link EmbeddedDatabaseConnection} or {@link #NONE}.
 	 */
@@ -138,6 +113,35 @@ public enum EmbeddedDatabaseConnection {
 			}
 		}
 		return NONE;
+	}
+
+	/**
+	 * Returns the driver class name.
+	 *
+	 * @return the driver class name
+	 */
+	public String getDriverClassName() {
+		return this.driverClass;
+	}
+
+	/**
+	 * Returns the {@link EmbeddedDatabaseType} for the connection.
+	 *
+	 * @return the database type
+	 */
+	public EmbeddedDatabaseType getType() {
+		return this.type;
+	}
+
+	/**
+	 * Returns the URL for the connection using the specified {@code databaseName}.
+	 *
+	 * @param databaseName the name of the database
+	 * @return the connection URL
+	 */
+	public String getUrl(String databaseName) {
+		Assert.hasText(databaseName, "DatabaseName must not be empty");
+		return (this.url != null) ? String.format(this.url, databaseName) : null;
 	}
 
 	/**

@@ -16,12 +16,11 @@
 
 package org.springframework.boot.env;
 
-import java.util.List;
-
 import org.junit.Test;
-
 import org.springframework.core.env.PropertySource;
 import org.springframework.core.io.ClassPathResource;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -37,7 +36,7 @@ public class PropertiesPropertySourceLoaderTests {
 
 	@Test
 	public void getFileExtensions() {
-		assertThat(this.loader.getFileExtensions()).isEqualTo(new String[] { "properties", "xml" });
+		assertThat(this.loader.getFileExtensions()).isEqualTo(new String[]{"properties", "xml"});
 	}
 
 	@Test

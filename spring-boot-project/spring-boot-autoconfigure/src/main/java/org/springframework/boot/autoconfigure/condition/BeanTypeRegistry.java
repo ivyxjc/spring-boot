@@ -16,24 +16,9 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.springframework.beans.factory.BeanDefinitionStoreException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.CannotLoadBeanClassException;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.ListableBeanFactory;
-import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -49,6 +34,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A registry of the bean types that are contained in a
@@ -66,10 +56,8 @@ import org.springframework.util.StringUtils;
  */
 final class BeanTypeRegistry implements SmartInitializingSingleton {
 
-	private static final Log logger = LogFactory.getLog(BeanTypeRegistry.class);
-
 	static final String FACTORY_BEAN_OBJECT_TYPE = "factoryBeanObjectType";
-
+	private static final Log logger = LogFactory.getLog(BeanTypeRegistry.class);
 	private static final String BEAN_NAME = BeanTypeRegistry.class.getName();
 
 	private final DefaultListableBeanFactory beanFactory;
@@ -83,11 +71,30 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 	}
 
 	/**
+	 * Factory method to get the {@link BeanTypeRegistry} for a given {@link BeanFactory}.
+	 *
+	 * @param beanFactory the source bean factory
+	 * @return the {@link BeanTypeRegistry} for the given bean factory
+	 */
+	static BeanTypeRegistry get(ListableBeanFactory beanFactory) {
+		Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory);
+		DefaultListableBeanFactory listableBeanFactory = (DefaultListableBeanFactory) beanFactory;
+		Assert.isTrue(listableBeanFactory.isAllowEagerClassLoading(), "Bean factory must allow eager class loading");
+		if (!listableBeanFactory.containsLocalBean(BEAN_NAME)) {
+			BeanDefinition definition = BeanDefinitionBuilder.genericBeanDefinition(BeanTypeRegistry.class,
+					() -> new BeanTypeRegistry((DefaultListableBeanFactory) beanFactory)).getBeanDefinition();
+			listableBeanFactory.registerBeanDefinition(BEAN_NAME, definition);
+		}
+		return listableBeanFactory.getBean(BEAN_NAME, BeanTypeRegistry.class);
+	}
+
+	/**
 	 * Return the names of beans matching the given type (including subclasses), judging
 	 * from either bean definitions or the value of {@link FactoryBean#getObjectType()} in
 	 * the case of {@link FactoryBean FactoryBeans}. Will include singletons but will not
 	 * cause early bean initialization.
-	 * @param type the class or interface to match (must not be {@code null})
+	 *
+	 * @param type          the class or interface to match (must not be {@code null})
 	 * @param typeExtractor function used to extract the actual type
 	 * @return the names of beans (or objects created by FactoryBeans) matching the given
 	 * object type (including subclasses), or an empty set if none
@@ -109,6 +116,7 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 	 * from either bean definitions or the value of {@link FactoryBean#getObjectType()} in
 	 * the case of {@link FactoryBean FactoryBeans}. Will include singletons but will not
 	 * cause early bean initialization.
+	 *
 	 * @param annotation the annotation to match (must not be {@code null})
 	 * @return the names of beans (or objects created by FactoryBeans) annotated with the
 	 * given annotation, or an empty set if none
@@ -135,8 +143,7 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 	private void updateTypesIfNecessary(String name) {
 		if (!this.beanTypes.containsKey(name)) {
 			addBeanType(name);
-		}
-		else {
+		} else {
 			updateBeanType(name);
 		}
 	}
@@ -144,8 +151,7 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 	private void addBeanType(String name) {
 		if (this.beanFactory.containsSingleton(name)) {
 			this.beanTypes.put(name, getType(name, null));
-		}
-		else if (!this.beanFactory.isAlias(name)) {
+		} else if (!this.beanFactory.isAlias(name)) {
 			addBeanTypeForNonAliasDefinition(name);
 		}
 	}
@@ -174,8 +180,7 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 	private RootBeanDefinition getBeanDefinition(String name) {
 		try {
 			return (RootBeanDefinition) this.beanFactory.getMergedBeanDefinition(name);
-		}
-		catch (BeanDefinitionStoreException ex) {
+		} catch (BeanDefinitionStoreException ex) {
 			logIgnoredError("unresolvable metadata in bean definition", name, ex);
 			return null;
 		}
@@ -191,14 +196,12 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 							factoryMethodReturnType);
 					this.beanTypes.put(name, factoryBeanGeneric);
 					this.beanTypes.put(factoryBeanName, getType(factoryBeanName, factoryMethodReturnType));
-				}
-				else {
+				} else {
 					this.beanTypes.put(name, getType(name, factoryMethodReturnType));
 				}
 			}
 			this.beanDefinitions.put(name, definition);
-		}
-		catch (CannotLoadBeanClassException ex) {
+		} catch (CannotLoadBeanClassException ex) {
 			// Probably contains a placeholder
 			logIgnoredError("bean class loading failure for bean", name, ex);
 		}
@@ -217,8 +220,7 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 				ResolvableType type = (method != null) ? ResolvableType.forMethodReturnType(method) : null;
 				return type;
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 		}
 		return null;
 	}
@@ -243,8 +245,7 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 			if (candidate.getName().equals(definition.getFactoryMethodName())) {
 				if (uniqueMethod == null) {
 					uniqueMethod = candidate;
-				}
-				else if (!hasMatchingParameterTypes(candidate, uniqueMethod)) {
+				} else if (!hasMatchingParameterTypes(candidate, uniqueMethod)) {
 					return null;
 				}
 			}
@@ -275,13 +276,14 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 	/**
 	 * Attempt to guess the type that a {@link FactoryBean} will return based on the
 	 * generics in its method signature.
-	 * @param beanFactory the source bean factory
-	 * @param definition the bean definition
+	 *
+	 * @param beanFactory             the source bean factory
+	 * @param definition              the bean definition
 	 * @param factoryMethodReturnType the factory method return type
 	 * @return the generic type of the {@link FactoryBean} or {@code null}
 	 */
 	private ResolvableType getFactoryBeanGeneric(ConfigurableListableBeanFactory beanFactory, BeanDefinition definition,
-			ResolvableType factoryMethodReturnType) {
+												 ResolvableType factoryMethodReturnType) {
 		try {
 			if (factoryMethodReturnType != null) {
 				return getFactoryBeanType(definition, factoryMethodReturnType);
@@ -289,14 +291,13 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 			if (StringUtils.hasLength(definition.getBeanClassName())) {
 				return getDirectFactoryBeanGeneric(beanFactory, definition);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 		}
 		return null;
 	}
 
 	private ResolvableType getDirectFactoryBeanGeneric(ConfigurableListableBeanFactory beanFactory,
-			BeanDefinition definition) throws ClassNotFoundException, LinkageError {
+													   BeanDefinition definition) throws ClassNotFoundException, LinkageError {
 		Class<?> factoryBeanClass = ClassUtils.forName(definition.getBeanClassName(), beanFactory.getBeanClassLoader());
 		return getFactoryBeanType(definition, ResolvableType.forClass(factoryBeanClass));
 	}
@@ -327,23 +328,6 @@ final class BeanTypeRegistry implements SmartInitializingSingleton {
 		}
 		Class<?> type = this.beanFactory.getType(name);
 		return (type != null) ? ResolvableType.forClass(type) : null;
-	}
-
-	/**
-	 * Factory method to get the {@link BeanTypeRegistry} for a given {@link BeanFactory}.
-	 * @param beanFactory the source bean factory
-	 * @return the {@link BeanTypeRegistry} for the given bean factory
-	 */
-	static BeanTypeRegistry get(ListableBeanFactory beanFactory) {
-		Assert.isInstanceOf(DefaultListableBeanFactory.class, beanFactory);
-		DefaultListableBeanFactory listableBeanFactory = (DefaultListableBeanFactory) beanFactory;
-		Assert.isTrue(listableBeanFactory.isAllowEagerClassLoading(), "Bean factory must allow eager class loading");
-		if (!listableBeanFactory.containsLocalBean(BEAN_NAME)) {
-			BeanDefinition definition = BeanDefinitionBuilder.genericBeanDefinition(BeanTypeRegistry.class,
-					() -> new BeanTypeRegistry((DefaultListableBeanFactory) beanFactory)).getBeanDefinition();
-			listableBeanFactory.registerBeanDefinition(BEAN_NAME, definition);
-		}
-		return listableBeanFactory.getBean(BEAN_NAME, BeanTypeRegistry.class);
 	}
 
 	/**

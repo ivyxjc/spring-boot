@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.integration;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.integration.IntegrationGraphEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration;

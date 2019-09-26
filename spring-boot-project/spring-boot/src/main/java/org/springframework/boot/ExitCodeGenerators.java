@@ -16,12 +16,12 @@
 
 package org.springframework.boot;
 
+import org.springframework.util.Assert;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-
-import org.springframework.util.Assert;
 
 /**
  * Maintains a collection of {@link ExitCodeGenerator} instances and allows the final exit
@@ -80,6 +80,7 @@ class ExitCodeGenerators implements Iterable<ExitCodeGenerator> {
 
 	/**
 	 * Get the final exit code that should be returned based on all contained generators.
+	 *
 	 * @return the final exit code.
 	 */
 	public int getExitCode() {
@@ -90,8 +91,7 @@ class ExitCodeGenerators implements Iterable<ExitCodeGenerator> {
 				if (value > 0 && value > exitCode || value < 0 && value < exitCode) {
 					exitCode = value;
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				exitCode = (exitCode != 0) ? exitCode : 1;
 				ex.printStackTrace();
 			}

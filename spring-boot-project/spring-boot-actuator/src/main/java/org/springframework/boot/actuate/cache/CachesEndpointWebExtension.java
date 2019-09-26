@@ -45,8 +45,7 @@ public class CachesEndpointWebExtension {
 			CacheEntry entry = this.delegate.cache(cache, cacheManager);
 			int status = (entry != null) ? WebEndpointResponse.STATUS_OK : WebEndpointResponse.STATUS_NOT_FOUND;
 			return new WebEndpointResponse<>(entry, status);
-		}
-		catch (NonUniqueCacheException ex) {
+		} catch (NonUniqueCacheException ex) {
 			return new WebEndpointResponse<>(WebEndpointResponse.STATUS_BAD_REQUEST);
 		}
 	}
@@ -57,8 +56,7 @@ public class CachesEndpointWebExtension {
 			boolean cleared = this.delegate.clearCache(cache, cacheManager);
 			int status = (cleared ? WebEndpointResponse.STATUS_NO_CONTENT : WebEndpointResponse.STATUS_NOT_FOUND);
 			return new WebEndpointResponse<>(status);
-		}
-		catch (NonUniqueCacheException ex) {
+		} catch (NonUniqueCacheException ex) {
 			return new WebEndpointResponse<>(WebEndpointResponse.STATUS_BAD_REQUEST);
 		}
 	}

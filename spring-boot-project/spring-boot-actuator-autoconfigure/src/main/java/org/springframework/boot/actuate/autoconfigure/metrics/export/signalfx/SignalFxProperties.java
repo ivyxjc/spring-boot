@@ -16,10 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.signalfx;
 
-import java.time.Duration;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * {@link ConfigurationProperties} for configuring metrics export to SignalFX.

@@ -16,13 +16,12 @@
 
 package org.springframework.boot.autoconfigure.web;
 
-import java.time.Duration;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.ResourceProperties.Cache;
 import org.springframework.boot.testsupport.assertj.Matched;
 import org.springframework.http.CacheControl;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.endsWith;
@@ -67,7 +66,7 @@ public class ResourcePropertiesTests {
 
 	@Test
 	public void customStaticLocationsAreNormalizedToEndWithTrailingSlash() {
-		this.properties.setStaticLocations(new String[] { "/foo", "/bar", "/baz/" });
+		this.properties.setStaticLocations(new String[]{"/foo", "/bar", "/baz/"});
 		String[] actual = this.properties.getStaticLocations();
 		assertThat(actual).containsExactly("/foo/", "/bar/", "/baz/");
 	}

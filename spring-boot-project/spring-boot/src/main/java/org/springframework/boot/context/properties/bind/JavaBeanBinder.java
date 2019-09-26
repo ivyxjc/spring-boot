@@ -16,6 +16,14 @@
 
 package org.springframework.boot.context.properties.bind;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.boot.context.properties.bind.Binder.Context;
+import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
+import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+import org.springframework.boot.context.properties.source.ConfigurationPropertyState;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.ResolvableType;
+
 import java.beans.Introspector;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -25,14 +33,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.boot.context.properties.bind.Binder.Context;
-import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
-import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
-import org.springframework.boot.context.properties.source.ConfigurationPropertyState;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.ResolvableType;
 
 /**
  * {@link BeanBinder} for mutable Java Beans.
@@ -44,7 +44,7 @@ class JavaBeanBinder implements BeanBinder {
 
 	@Override
 	public <T> T bind(ConfigurationPropertyName name, Bindable<T> target, Context context,
-			BeanPropertyBinder propertyBinder) {
+					  BeanPropertyBinder propertyBinder) {
 		boolean hasKnownBindableProperties = hasKnownBindableProperties(name, context);
 		Bean<T> bean = Bean.get(target, hasKnownBindableProperties);
 		if (bean == null) {
@@ -84,8 +84,7 @@ class JavaBeanBinder implements BeanBinder {
 		}
 		if (property.isSettable()) {
 			property.setValue(beanSupplier, bound);
-		}
-		else if (value == null || !bound.equals(value.get())) {
+		} else if (value == null || !bound.equals(value.get())) {
 			throw new IllegalStateException("No setter found for property: " + property.getName());
 		}
 		return true;
@@ -110,6 +109,39 @@ class JavaBeanBinder implements BeanBinder {
 			this.type = type;
 			this.resolvedType = resolvedType;
 			addProperties(resolvedType);
+		}
+
+		@SuppressWarnings("unchecked")
+		public static <T> Bean<T> get(Bindable<T> bindable, boolean canCallGetValue) {
+			ResolvableType type = bindable.getType();
+			Class<?> resolvedType = type.resolve(Object.class);
+			Supplier<T> value = bindable.getValue();
+			T instance = null;
+			if (canCallGetValue && value != null) {
+				instance = value.get();
+				resolvedType = (instance != null) ? instance.getClass() : resolvedType;
+			}
+			if (instance == null && !isInstantiable(resolvedType)) {
+				return null;
+			}
+			Bean<?> bean = Bean.cached;
+			if (bean == null || !bean.isOfType(type, resolvedType)) {
+				bean = new Bean<>(type, resolvedType);
+				cached = bean;
+			}
+			return (Bean<T>) bean;
+		}
+
+		private static boolean isInstantiable(Class<?> type) {
+			if (type.isInterface()) {
+				return false;
+			}
+			try {
+				type.getDeclaredConstructor();
+				return true;
+			} catch (Exception ex) {
+				return false;
+			}
 		}
 
 		private void addProperties(Class<?> type) {
@@ -147,7 +179,7 @@ class JavaBeanBinder implements BeanBinder {
 		}
 
 		private void addMethodIfPossible(Method method, String prefix, int parameterCount,
-				BiConsumer<BeanProperty, Method> consumer) {
+										 BiConsumer<BeanProperty, Method> consumer) {
 			if (method != null && method.getParameterCount() == parameterCount && method.getName().startsWith(prefix)
 					&& method.getName().length() > prefix.length()) {
 				String propertyName = Introspector.decapitalize(method.getName().substring(prefix.length()));
@@ -182,40 +214,6 @@ class JavaBeanBinder implements BeanBinder {
 				}
 				return instance;
 			});
-		}
-
-		@SuppressWarnings("unchecked")
-		public static <T> Bean<T> get(Bindable<T> bindable, boolean canCallGetValue) {
-			ResolvableType type = bindable.getType();
-			Class<?> resolvedType = type.resolve(Object.class);
-			Supplier<T> value = bindable.getValue();
-			T instance = null;
-			if (canCallGetValue && value != null) {
-				instance = value.get();
-				resolvedType = (instance != null) ? instance.getClass() : resolvedType;
-			}
-			if (instance == null && !isInstantiable(resolvedType)) {
-				return null;
-			}
-			Bean<?> bean = Bean.cached;
-			if (bean == null || !bean.isOfType(type, resolvedType)) {
-				bean = new Bean<>(type, resolvedType);
-				cached = bean;
-			}
-			return (Bean<T>) bean;
-		}
-
-		private static boolean isInstantiable(Class<?> type) {
-			if (type.isInterface()) {
-				return false;
-			}
-			try {
-				type.getDeclaredConstructor();
-				return true;
-			}
-			catch (Exception ex) {
-				return false;
-			}
 		}
 
 		private boolean isOfType(ResolvableType type, Class<?> resolvedType) {
@@ -305,8 +303,7 @@ class JavaBeanBinder implements BeanBinder {
 		public Annotation[] getAnnotations() {
 			try {
 				return (this.field != null) ? this.field.getDeclaredAnnotations() : null;
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				return null;
 			}
 		}
@@ -319,8 +316,7 @@ class JavaBeanBinder implements BeanBinder {
 				try {
 					this.getter.setAccessible(true);
 					return this.getter.invoke(instance.get());
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new IllegalStateException("Unable to get value for property " + this.name, ex);
 				}
 			};
@@ -334,8 +330,7 @@ class JavaBeanBinder implements BeanBinder {
 			try {
 				this.setter.setAccessible(true);
 				this.setter.invoke(instance.get(), value);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Unable to set value for property " + this.name, ex);
 			}
 		}

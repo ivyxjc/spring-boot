@@ -15,8 +15,6 @@
  */
 package org.springframework.boot.test.autoconfigure.web.reactive.webclient;
 
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.annotation.Order;
@@ -24,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebExceptionHandler;
+import reactor.core.publisher.Mono;
 
 /**
  * Example {@link WebExceptionHandler} used with {@link WebFluxTest} tests.

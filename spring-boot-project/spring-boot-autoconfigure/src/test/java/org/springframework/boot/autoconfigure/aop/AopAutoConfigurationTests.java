@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.aop;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -97,6 +96,12 @@ public class AopAutoConfigurationTests {
 		};
 	}
 
+	public interface TestInterface {
+
+		void foo();
+
+	}
+
 	@EnableAspectJAutoProxy
 	@Configuration
 	@Import(TestConfiguration.class)
@@ -140,12 +145,6 @@ public class AopAutoConfigurationTests {
 		public void before() {
 			this.called = true;
 		}
-
-	}
-
-	public interface TestInterface {
-
-		void foo();
 
 	}
 

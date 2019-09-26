@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.jolokia;
 
 import org.jolokia.http.AgentServlet;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

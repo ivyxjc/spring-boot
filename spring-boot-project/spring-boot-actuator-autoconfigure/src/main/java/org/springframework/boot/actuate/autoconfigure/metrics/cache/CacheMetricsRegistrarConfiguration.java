@@ -16,14 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.cache;
 
-import java.util.Collection;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.boot.actuate.metrics.cache.CacheMeterBinderProvider;
 import org.springframework.boot.actuate.metrics.cache.CacheMetricsRegistrar;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -33,6 +27,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * Configure a {@link CacheMetricsRegistrar} and register all available {@link Cache
  * caches}.
@@ -40,7 +38,7 @@ import org.springframework.util.StringUtils;
  * @author Stephane Nicoll
  */
 @Configuration
-@ConditionalOnBean({ CacheMeterBinderProvider.class, MeterRegistry.class })
+@ConditionalOnBean({CacheMeterBinderProvider.class, MeterRegistry.class})
 class CacheMetricsRegistrarConfiguration {
 
 	private static final String CACHE_MANAGER_SUFFIX = "cacheManager";
@@ -52,7 +50,7 @@ class CacheMetricsRegistrarConfiguration {
 	private final Map<String, CacheManager> cacheManagers;
 
 	CacheMetricsRegistrarConfiguration(MeterRegistry registry, Collection<CacheMeterBinderProvider<?>> binderProviders,
-			Map<String, CacheManager> cacheManagers) {
+									   Map<String, CacheManager> cacheManagers) {
 		this.registry = registry;
 		this.binderProviders = binderProviders;
 		this.cacheManagers = cacheManagers;
@@ -80,6 +78,7 @@ class CacheMetricsRegistrarConfiguration {
 
 	/**
 	 * Get the name of a {@link CacheManager} based on its {@code beanName}.
+	 *
 	 * @param beanName the name of the {@link CacheManager} bean
 	 * @return a name for the given cache manager
 	 */

@@ -16,16 +16,10 @@
 
 package org.springframework.boot.jackson;
 
-import java.lang.reflect.Modifier;
-import java.util.Map;
-
-import javax.annotation.PostConstruct;
-
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -33,13 +27,17 @@ import org.springframework.beans.factory.HierarchicalBeanFactory;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.core.ResolvableType;
 
+import javax.annotation.PostConstruct;
+import java.lang.reflect.Modifier;
+import java.util.Map;
+
 /**
  * Spring Bean and Jackson {@link Module} to register {@link JsonComponent} annotated
  * beans.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see JsonComponent
+ * @since 1.4.0
  */
 public class JsonComponentModule extends SimpleModule implements BeanFactoryAware {
 
@@ -81,21 +79,20 @@ public class JsonComponentModule extends SimpleModule implements BeanFactoryAwar
 					|| JsonDeserializer.class.isAssignableFrom(innerClass))) {
 				try {
 					addJsonBean(innerClass.newInstance());
-				}
-				catch (Exception ex) {
+				} catch (Exception ex) {
 					throw new IllegalStateException(ex);
 				}
 			}
 		}
 	}
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	private <T> void addSerializerWithDeducedType(JsonSerializer<T> serializer) {
 		ResolvableType type = ResolvableType.forClass(JsonSerializer.class, serializer.getClass());
 		addSerializer((Class<T>) type.resolveGeneric(), serializer);
 	}
 
-	@SuppressWarnings({ "unchecked" })
+	@SuppressWarnings({"unchecked"})
 	private <T> void addDeserializerWithDeducedType(JsonDeserializer<T> deserializer) {
 		ResolvableType type = ResolvableType.forClass(JsonDeserializer.class, deserializer.getClass());
 		addDeserializer((Class<T>) type.resolveGeneric(), deserializer);

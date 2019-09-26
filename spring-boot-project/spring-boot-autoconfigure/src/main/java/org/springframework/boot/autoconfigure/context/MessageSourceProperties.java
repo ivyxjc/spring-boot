@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.context;
 
+import org.springframework.boot.convert.DurationUnit;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-
-import org.springframework.boot.convert.DurationUnit;
 
 /**
  * Configuration properties for Message Source.

@@ -16,18 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.reactive;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.net.ssl.SSLException;
-
 import org.junit.After;
 import org.junit.Test;
-import reactor.netty.http.HttpResources;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
@@ -63,6 +53,14 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.HttpResources;
+
+import javax.net.ssl.SSLException;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -94,53 +92,53 @@ public class ReactiveCloudFoundryActuatorAutoConfigurationTests {
 	public void cloudFoundryPlatformActive() {
 		this.contextRunner.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id",
 				"vcap.application.cf_api:https://my-cloud-controller.com").run((context) -> {
-					CloudFoundryWebFluxEndpointHandlerMapping handlerMapping = getHandlerMapping(context);
-					EndpointMapping endpointMapping = (EndpointMapping) ReflectionTestUtils.getField(handlerMapping,
-							"endpointMapping");
-					assertThat(endpointMapping.getPath()).isEqualTo("/cloudfoundryapplication");
-					CorsConfiguration corsConfiguration = (CorsConfiguration) ReflectionTestUtils
-							.getField(handlerMapping, "corsConfiguration");
-					assertThat(corsConfiguration.getAllowedOrigins()).contains("*");
-					assertThat(corsConfiguration.getAllowedMethods())
-							.containsAll(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name()));
-					assertThat(corsConfiguration.getAllowedHeaders())
-							.containsAll(Arrays.asList("Authorization", "X-Cf-App-Instance", "Content-Type"));
-				});
+			CloudFoundryWebFluxEndpointHandlerMapping handlerMapping = getHandlerMapping(context);
+			EndpointMapping endpointMapping = (EndpointMapping) ReflectionTestUtils.getField(handlerMapping,
+					"endpointMapping");
+			assertThat(endpointMapping.getPath()).isEqualTo("/cloudfoundryapplication");
+			CorsConfiguration corsConfiguration = (CorsConfiguration) ReflectionTestUtils
+					.getField(handlerMapping, "corsConfiguration");
+			assertThat(corsConfiguration.getAllowedOrigins()).contains("*");
+			assertThat(corsConfiguration.getAllowedMethods())
+					.containsAll(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name()));
+			assertThat(corsConfiguration.getAllowedHeaders())
+					.containsAll(Arrays.asList("Authorization", "X-Cf-App-Instance", "Content-Type"));
+		});
 	}
 
 	@Test
 	public void cloudfoundryapplicationProducesActuatorMediaType() {
 		this.contextRunner.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id",
 				"vcap.application.cf_api:https://my-cloud-controller.com").run((context) -> {
-					WebTestClient webTestClient = WebTestClient.bindToApplicationContext(context).build();
-					webTestClient.get().uri("/cloudfoundryapplication").header("Content-Type",
-							ActuatorMediaType.V2_JSON + ";charset=UTF-8");
-				});
+			WebTestClient webTestClient = WebTestClient.bindToApplicationContext(context).build();
+			webTestClient.get().uri("/cloudfoundryapplication").header("Content-Type",
+					ActuatorMediaType.V2_JSON + ";charset=UTF-8");
+		});
 	}
 
 	@Test
 	public void cloudFoundryPlatformActiveSetsApplicationId() {
 		this.contextRunner.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id",
 				"vcap.application.cf_api:https://my-cloud-controller.com").run((context) -> {
-					CloudFoundryWebFluxEndpointHandlerMapping handlerMapping = getHandlerMapping(context);
-					Object interceptor = ReflectionTestUtils.getField(handlerMapping, "securityInterceptor");
-					String applicationId = (String) ReflectionTestUtils.getField(interceptor, "applicationId");
-					assertThat(applicationId).isEqualTo("my-app-id");
-				});
+			CloudFoundryWebFluxEndpointHandlerMapping handlerMapping = getHandlerMapping(context);
+			Object interceptor = ReflectionTestUtils.getField(handlerMapping, "securityInterceptor");
+			String applicationId = (String) ReflectionTestUtils.getField(interceptor, "applicationId");
+			assertThat(applicationId).isEqualTo("my-app-id");
+		});
 	}
 
 	@Test
 	public void cloudFoundryPlatformActiveSetsCloudControllerUrl() {
 		this.contextRunner.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id",
 				"vcap.application.cf_api:https://my-cloud-controller.com").run((context) -> {
-					CloudFoundryWebFluxEndpointHandlerMapping handlerMapping = getHandlerMapping(context);
-					Object interceptor = ReflectionTestUtils.getField(handlerMapping, "securityInterceptor");
-					Object interceptorSecurityService = ReflectionTestUtils.getField(interceptor,
-							"cloudFoundrySecurityService");
-					String cloudControllerUrl = (String) ReflectionTestUtils.getField(interceptorSecurityService,
-							"cloudControllerUrl");
-					assertThat(cloudControllerUrl).isEqualTo("https://my-cloud-controller.com");
-				});
+			CloudFoundryWebFluxEndpointHandlerMapping handlerMapping = getHandlerMapping(context);
+			Object interceptor = ReflectionTestUtils.getField(handlerMapping, "securityInterceptor");
+			Object interceptorSecurityService = ReflectionTestUtils.getField(interceptor,
+					"cloudFoundrySecurityService");
+			String cloudControllerUrl = (String) ReflectionTestUtils.getField(interceptorSecurityService,
+					"cloudControllerUrl");
+			assertThat(cloudControllerUrl).isEqualTo("https://my-cloud-controller.com");
+		});
 	}
 
 	@Test
@@ -162,23 +160,23 @@ public class ReactiveCloudFoundryActuatorAutoConfigurationTests {
 	public void cloudFoundryPathsIgnoredBySpringSecurity() {
 		this.contextRunner.withPropertyValues("VCAP_APPLICATION:---", "vcap.application.application_id:my-app-id",
 				"vcap.application.cf_api:https://my-cloud-controller.com").run((context) -> {
-					WebFilterChainProxy chainProxy = context.getBean(WebFilterChainProxy.class);
-					List<SecurityWebFilterChain> filters = (List<SecurityWebFilterChain>) ReflectionTestUtils
-							.getField(chainProxy, "filters");
-					Boolean cfRequestMatches = filters.get(0)
-							.matches(MockServerWebExchange
-									.from(MockServerHttpRequest.get("/cloudfoundryapplication/my-path").build()))
-							.block(Duration.ofSeconds(30));
-					Boolean otherRequestMatches = filters.get(0)
-							.matches(MockServerWebExchange.from(MockServerHttpRequest.get("/some-other-path").build()))
-							.block(Duration.ofSeconds(30));
-					assertThat(cfRequestMatches).isTrue();
-					assertThat(otherRequestMatches).isFalse();
-					otherRequestMatches = filters.get(1)
-							.matches(MockServerWebExchange.from(MockServerHttpRequest.get("/some-other-path").build()))
-							.block(Duration.ofSeconds(30));
-					assertThat(otherRequestMatches).isTrue();
-				});
+			WebFilterChainProxy chainProxy = context.getBean(WebFilterChainProxy.class);
+			List<SecurityWebFilterChain> filters = (List<SecurityWebFilterChain>) ReflectionTestUtils
+					.getField(chainProxy, "filters");
+			Boolean cfRequestMatches = filters.get(0)
+					.matches(MockServerWebExchange
+							.from(MockServerHttpRequest.get("/cloudfoundryapplication/my-path").build()))
+					.block(Duration.ofSeconds(30));
+			Boolean otherRequestMatches = filters.get(0)
+					.matches(MockServerWebExchange.from(MockServerHttpRequest.get("/some-other-path").build()))
+					.block(Duration.ofSeconds(30));
+			assertThat(cfRequestMatches).isTrue();
+			assertThat(otherRequestMatches).isFalse();
+			otherRequestMatches = filters.get(1)
+					.matches(MockServerWebExchange.from(MockServerHttpRequest.get("/some-other-path").build()))
+					.block(Duration.ofSeconds(30));
+			assertThat(otherRequestMatches).isTrue();
+		});
 
 	}
 

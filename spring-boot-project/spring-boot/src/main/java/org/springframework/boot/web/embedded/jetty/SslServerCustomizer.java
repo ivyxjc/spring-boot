@@ -16,24 +16,13 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.URL;
-
 import org.eclipse.jetty.alpn.server.ALPNServerConnectionFactory;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.http2.HTTP2Cipher;
 import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.HttpConfiguration;
-import org.eclipse.jetty.server.HttpConnectionFactory;
-import org.eclipse.jetty.server.SecureRequestCustomizer;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-
 import org.springframework.boot.web.server.Http2;
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.SslStoreProvider;
@@ -42,6 +31,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
+
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.URL;
 
 /**
  * {@link JettyServerCustomizer} that configures SSL on the given Jetty server instance.
@@ -72,11 +65,11 @@ class SslServerCustomizer implements JettyServerCustomizer {
 		sslContextFactory.setEndpointIdentificationAlgorithm(null);
 		configureSsl(sslContextFactory, this.ssl, this.sslStoreProvider);
 		ServerConnector connector = createConnector(server, sslContextFactory, this.address);
-		server.setConnectors(new Connector[] { connector });
+		server.setConnectors(new Connector[]{connector});
 	}
 
 	private ServerConnector createConnector(Server server, SslContextFactory sslContextFactory,
-			InetSocketAddress address) {
+											InetSocketAddress address) {
 		HttpConfiguration config = new HttpConfiguration();
 		config.setSendServerVersion(false);
 		config.setSecureScheme("https");
@@ -89,7 +82,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 	}
 
 	private ServerConnector createServerConnector(Server server, SslContextFactory sslContextFactory,
-			HttpConfiguration config) {
+												  HttpConfiguration config) {
 		if (this.http2 == null || !this.http2.isEnabled()) {
 			return createHttp11ServerConnector(server, config, sslContextFactory);
 		}
@@ -101,7 +94,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 	}
 
 	private ServerConnector createHttp11ServerConnector(Server server, HttpConfiguration config,
-			SslContextFactory sslContextFactory) {
+														SslContextFactory sslContextFactory) {
 		HttpConnectionFactory connectionFactory = new HttpConnectionFactory(config);
 		SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory,
 				HttpVersion.HTTP_1_1.asString());
@@ -117,7 +110,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 	}
 
 	private ServerConnector createHttp2ServerConnector(Server server, HttpConfiguration config,
-			SslContextFactory sslContextFactory) {
+													   SslContextFactory sslContextFactory) {
 		HTTP2ServerConnectionFactory h2 = new HTTP2ServerConnectionFactory(config);
 		ALPNServerConnectionFactory alpn = new ALPNServerConnectionFactory();
 		sslContextFactory.setCipherComparator(HTTP2Cipher.COMPARATOR);
@@ -128,8 +121,9 @@ class SslServerCustomizer implements JettyServerCustomizer {
 
 	/**
 	 * Configure the SSL connection.
-	 * @param factory the Jetty {@link SslContextFactory}.
-	 * @param ssl the ssl details.
+	 *
+	 * @param factory          the Jetty {@link SslContextFactory}.
+	 * @param ssl              the ssl details.
 	 * @param sslStoreProvider the ssl store provider
 	 */
 	protected void configureSsl(SslContextFactory.Server factory, Ssl ssl, SslStoreProvider sslStoreProvider) {
@@ -148,12 +142,10 @@ class SslServerCustomizer implements JettyServerCustomizer {
 			try {
 				factory.setKeyStore(sslStoreProvider.getKeyStore());
 				factory.setTrustStore(sslStoreProvider.getTrustStore());
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Unable to set SSL store", ex);
 			}
-		}
-		else {
+		} else {
 			configureSslKeyStore(factory, ssl);
 			configureSslTrustStore(factory, ssl);
 		}
@@ -163,8 +155,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 		if (ssl.getClientAuth() == Ssl.ClientAuth.NEED) {
 			factory.setNeedClientAuth(true);
 			factory.setWantClientAuth(true);
-		}
-		else if (ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
+		} else if (ssl.getClientAuth() == Ssl.ClientAuth.WANT) {
 			factory.setWantClientAuth(true);
 		}
 	}
@@ -182,8 +173,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 		try {
 			URL url = ResourceUtils.getURL(ssl.getKeyStore());
 			factory.setKeyStoreResource(Resource.newResource(url));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new WebServerException("Could not load key store '" + ssl.getKeyStore() + "'", ex);
 		}
 		if (ssl.getKeyStoreType() != null) {
@@ -202,8 +192,7 @@ class SslServerCustomizer implements JettyServerCustomizer {
 			try {
 				URL url = ResourceUtils.getURL(ssl.getTrustStore());
 				factory.setTrustStoreResource(Resource.newResource(url));
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new WebServerException("Could not find trust store '" + ssl.getTrustStore() + "'", ex);
 			}
 		}

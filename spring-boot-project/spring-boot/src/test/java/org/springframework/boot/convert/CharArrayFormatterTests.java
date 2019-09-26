@@ -20,7 +20,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,9 +38,14 @@ public class CharArrayFormatterTests {
 		this.conversionService = conversionService;
 	}
 
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new CharArrayFormatter());
+	}
+
 	@Test
 	public void convertFromCharArrayToStringShouldConvert() {
-		char[] source = { 'b', 'o', 'o', 't' };
+		char[] source = {'b', 'o', 'o', 't'};
 		String converted = this.conversionService.convert(source, String.class);
 		assertThat(converted).isEqualTo("boot");
 	}
@@ -51,11 +55,6 @@ public class CharArrayFormatterTests {
 		String source = "boot";
 		char[] converted = this.conversionService.convert(source, char[].class);
 		assertThat(converted).containsExactly('b', 'o', 'o', 't');
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new CharArrayFormatter());
 	}
 
 }

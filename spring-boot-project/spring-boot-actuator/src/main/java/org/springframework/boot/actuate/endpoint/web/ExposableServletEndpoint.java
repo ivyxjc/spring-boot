@@ -29,6 +29,7 @@ public interface ExposableServletEndpoint extends ExposableEndpoint<Operation>, 
 
 	/**
 	 * Return details of the servlet that should registered.
+	 *
 	 * @return the endpoint servlet
 	 */
 	EndpointServlet getEndpointServlet();

@@ -16,12 +16,9 @@
 
 package org.springframework.boot.autoconfigure.websocket.servlet;
 
-import javax.websocket.server.ServerContainer;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizerBeanPostProcessor;
@@ -29,6 +26,8 @@ import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebSe
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.websocket.server.ServerContainer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

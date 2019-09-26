@@ -16,7 +16,6 @@
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.test.web.servlet.MockMvc;

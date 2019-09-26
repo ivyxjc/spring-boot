@@ -16,21 +16,11 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import java.lang.management.ManagementFactory;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.ObjectInstance;
-import javax.management.ObjectName;
-
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.DataSourceProxy;
 import org.apache.tomcat.jdbc.pool.jmx.ConnectionPool;
 import org.junit.Test;
-
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -39,6 +29,14 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DelegatingDataSource;
+
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectInstance;
+import javax.management.ObjectName;
+import java.lang.management.ManagementFactory;
+import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -75,14 +73,14 @@ public class DataSourceJmxConfigurationTests {
 				null);
 		this.contextRunner.withPropertyValues("spring.datasource.type=" + HikariDataSource.class.getName(),
 				"spring.datasource.hikari.register-mbeans=true").run((context) -> {
-					assertThat(context).hasSingleBean(HikariDataSource.class);
-					assertThat(context.getBean(HikariDataSource.class).isRegisterMbeans()).isTrue();
-					// We can't rely on the number of MBeans so we're checking that the
-					// pool and pool
-					// config MBeans were registered
-					assertThat(mBeanServer.queryMBeans(new ObjectName("com.zaxxer.hikari:type=*"), null).size())
-							.isEqualTo(existingInstances.size() + 2);
-				});
+			assertThat(context).hasSingleBean(HikariDataSource.class);
+			assertThat(context.getBean(HikariDataSource.class).isRegisterMbeans()).isTrue();
+			// We can't rely on the number of MBeans so we're checking that the
+			// pool and pool
+			// config MBeans were registered
+			assertThat(mBeanServer.queryMBeans(new ObjectName("com.zaxxer.hikari:type=*"), null).size())
+					.isEqualTo(existingInstances.size() + 2);
+		});
 	}
 
 	@Test
@@ -91,11 +89,11 @@ public class DataSourceJmxConfigurationTests {
 		this.contextRunner.withPropertyValues("spring.datasource.type=" + HikariDataSource.class.getName(),
 				"spring.jmx.enabled=false", "spring.datasource.name=" + poolName,
 				"spring.datasource.hikari.register-mbeans=true").run((context) -> {
-					assertThat(context).hasSingleBean(HikariDataSource.class);
-					assertThat(context.getBean(HikariDataSource.class).isRegisterMbeans()).isTrue();
-					// Hikari can still register mBeans
-					validateHikariMBeansRegistration(ManagementFactory.getPlatformMBeanServer(), poolName, true);
-				});
+			assertThat(context).hasSingleBean(HikariDataSource.class);
+			assertThat(context.getBean(HikariDataSource.class).isRegisterMbeans()).isTrue();
+			// Hikari can still register mBeans
+			validateHikariMBeansRegistration(ManagementFactory.getPlatformMBeanServer(), poolName, true);
+		});
 	}
 
 	@Test
@@ -132,11 +130,11 @@ public class DataSourceJmxConfigurationTests {
 	public void tomcatAutoConfiguredCanExposeMBeanPool() {
 		this.contextRunner.withPropertyValues("spring.datasource.type=" + DataSource.class.getName(),
 				"spring.datasource.jmx-enabled=true").run((context) -> {
-					assertThat(context).hasBean("dataSourceMBean");
-					assertThat(context).hasSingleBean(ConnectionPool.class);
-					assertThat(context.getBean(DataSourceProxy.class).createPool().getJmxPool())
-							.isSameAs(context.getBean(ConnectionPool.class));
-				});
+			assertThat(context).hasBean("dataSourceMBean");
+			assertThat(context).hasSingleBean(ConnectionPool.class);
+			assertThat(context.getBean(DataSourceProxy.class).createPool().getJmxPool())
+					.isSameAs(context.getBean(ConnectionPool.class));
+		});
 	}
 
 	@Test

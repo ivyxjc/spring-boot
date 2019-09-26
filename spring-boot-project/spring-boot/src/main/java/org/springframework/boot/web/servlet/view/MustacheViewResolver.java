@@ -18,7 +18,6 @@ package org.springframework.boot.web.servlet.view;
 
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Compiler;
-
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.AbstractTemplateViewResolver;
 import org.springframework.web.servlet.view.AbstractUrlBasedView;
@@ -47,6 +46,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 	/**
 	 * Create a {@code MustacheViewResolver} backed by a custom instance of a
 	 * {@link Compiler}.
+	 *
 	 * @param compiler the Mustache compiler used to compile templates
 	 */
 	public MustacheViewResolver(Compiler compiler) {
@@ -61,6 +61,7 @@ public class MustacheViewResolver extends AbstractTemplateViewResolver {
 
 	/**
 	 * Set the charset.
+	 *
 	 * @param charset the charset
 	 */
 	public void setCharset(String charset) {

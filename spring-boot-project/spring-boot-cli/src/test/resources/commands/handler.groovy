@@ -18,10 +18,11 @@ package org.test.command
 
 @Grab("org.eclipse.jgit:org.eclipse.jgit:2.3.1.201302201838-r")
 import org.eclipse.jgit.api.Git
-
+@Grab("org.eclipse.jgit:org.eclipse.jgit:2.3.1.201302201838-r")
+import org.eclipse.jgit.api.Git
 
 class TestCommand extends OptionHandler {
-	
+
 	String name = "foo"
 
 	void options() {

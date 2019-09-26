@@ -16,15 +16,15 @@
 
 package org.springframework.boot.test.mock.web;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.web.MockServletContext;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * {@link MockServletContext} implementation for Spring Boot. Respects well-known Spring
@@ -36,8 +36,8 @@ import org.springframework.mock.web.MockServletContext;
  */
 public class SpringBootMockServletContext extends MockServletContext {
 
-	private static final String[] SPRING_BOOT_RESOURCE_LOCATIONS = new String[] { "classpath:META-INF/resources",
-			"classpath:resources", "classpath:static", "classpath:public" };
+	private static final String[] SPRING_BOOT_RESOURCE_LOCATIONS = new String[]{"classpath:META-INF/resources",
+			"classpath:resources", "classpath:static", "classpath:public"};
 
 	private final ResourceLoader resourceLoader;
 
@@ -78,8 +78,7 @@ public class SpringBootMockServletContext extends MockServletContext {
 		try {
 			Resource resource = this.resourceLoader.getResource(resourceLocation);
 			return resource.exists();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return false;
 		}
 	}
@@ -101,8 +100,7 @@ public class SpringBootMockServletContext extends MockServletContext {
 					}
 				}
 				return this.emptyRootFolder.toURI().toURL();
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				// Ignore
 			}
 		}

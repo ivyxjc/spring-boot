@@ -16,6 +16,18 @@
 
 package org.springframework.boot.maven;
 
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.springframework.boot.loader.tools.JavaExecutable;
+import org.springframework.boot.loader.tools.RunProcess;
+
+import javax.management.MBeanServerConnection;
+import javax.management.ReflectionException;
+import javax.management.remote.JMXConnector;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -26,20 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import javax.management.MBeanServerConnection;
-import javax.management.ReflectionException;
-import javax.management.remote.JMXConnector;
-
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-
-import org.springframework.boot.loader.tools.JavaExecutable;
-import org.springframework.boot.loader.tools.RunProcess;
-
 /**
  * Start a spring application. Contrary to the {@code run} goal, this does not block and
  * allows other goal to operate on the application. This goal is typically used in
@@ -47,38 +45,35 @@ import org.springframework.boot.loader.tools.RunProcess;
  * stopped after.
  *
  * @author Stephane Nicoll
- * @since 1.3.0
  * @see StopMojo
+ * @since 1.3.0
  */
 @Mojo(name = "start", requiresProject = true, defaultPhase = LifecyclePhase.PRE_INTEGRATION_TEST,
-		requiresDependencyResolution = ResolutionScope.TEST)
+	  requiresDependencyResolution = ResolutionScope.TEST)
 public class StartMojo extends AbstractRunMojo {
 
 	private static final String ENABLE_MBEAN_PROPERTY = "--spring.application.admin.enabled=true";
 
 	private static final String JMX_NAME_PROPERTY_PREFIX = "--spring.application.admin.jmx-name=";
-
+	private final Object lock = new Object();
 	/**
 	 * The JMX name of the automatically deployed MBean managing the lifecycle of the
 	 * spring application.
 	 */
 	@Parameter
 	private String jmxName = SpringApplicationAdminClient.DEFAULT_OBJECT_NAME;
-
 	/**
 	 * The port to use to expose the platform MBeanServer if the application needs to be
 	 * forked.
 	 */
 	@Parameter
 	private int jmxPort = 9001;
-
 	/**
 	 * The number of milli-seconds to wait between each attempt to check if the spring
 	 * application is ready.
 	 */
 	@Parameter
 	private long wait = 500;
-
 	/**
 	 * The maximum number of attempts to check if the spring application is ready.
 	 * Combined with the "wait" argument, this gives a global timeout value (30 sec by
@@ -87,16 +82,13 @@ public class StartMojo extends AbstractRunMojo {
 	@Parameter
 	private int maxAttempts = 60;
 
-	private final Object lock = new Object();
-
 	@Override
 	protected void runWithForkedJvm(File workingDirectory, List<String> args, Map<String, String> environmentVariables)
 			throws MojoExecutionException, MojoFailureException {
 		RunProcess runProcess = runProcess(workingDirectory, args, environmentVariables);
 		try {
 			waitForSpringApplication();
-		}
-		catch (MojoExecutionException | MojoFailureException ex) {
+		} catch (MojoExecutionException | MojoFailureException ex) {
 			runProcess.kill();
 			throw ex;
 		}
@@ -108,8 +100,7 @@ public class StartMojo extends AbstractRunMojo {
 			RunProcess runProcess = new RunProcess(workingDirectory, new JavaExecutable().toString());
 			runProcess.run(false, args, environmentVariables);
 			return runProcess;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MojoExecutionException("Could not exec java", ex);
 		}
 	}
@@ -162,8 +153,7 @@ public class StartMojo extends AbstractRunMojo {
 			synchronized (this.lock) {
 				try {
 					this.lock.wait(wait);
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 					throw new IllegalStateException("Interrupted while waiting for Spring Boot app to start.");
 				}
@@ -177,15 +167,12 @@ public class StartMojo extends AbstractRunMojo {
 		try {
 			if (isFork()) {
 				waitForForkedSpringApplication();
-			}
-			else {
+			} else {
 				doWaitForSpringApplication(ManagementFactory.getPlatformMBeanServer());
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new MojoFailureException("Could not contact Spring Boot application", ex);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MojoExecutionException("Could not figure out if the application has started", ex);
 		}
 	}
@@ -202,11 +189,9 @@ public class StartMojo extends AbstractRunMojo {
 				MBeanServerConnection connection = connector.getMBeanServerConnection();
 				doWaitForSpringApplication(connection);
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw ex;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MojoExecutionException("Failed to connect to MBean server at port " + this.jmxPort, ex);
 		}
 	}
@@ -216,22 +201,21 @@ public class StartMojo extends AbstractRunMojo {
 		final SpringApplicationAdminClient client = new SpringApplicationAdminClient(connection, this.jmxName);
 		try {
 			execute(this.wait, this.maxAttempts, () -> (client.isReady() ? true : null));
-		}
-		catch (ReflectionException ex) {
+		} catch (ReflectionException ex) {
 			throw new MojoExecutionException("Unable to retrieve 'ready' attribute", ex.getCause());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new MojoFailureException("Could not invoke shutdown operation", ex);
 		}
 	}
 
 	/**
 	 * Execute a task, retrying it on failure.
-	 * @param <T> the result type
-	 * @param wait the wait time
+	 *
+	 * @param <T>         the result type
+	 * @param wait        the wait time
 	 * @param maxAttempts the maximum number of attempts
-	 * @param callback the task to execute (possibly multiple times). The callback should
-	 * return {@code null} to indicate that another attempt should be made
+	 * @param callback    the task to execute (possibly multiple times). The callback should
+	 *                    return {@code null} to indicate that another attempt should be made
 	 * @return the result
 	 * @throws Exception in case of execution errors
 	 */
@@ -247,8 +231,7 @@ public class StartMojo extends AbstractRunMojo {
 			synchronized (this.lock) {
 				try {
 					this.lock.wait(wait);
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 					throw new IllegalStateException("Interrupted while waiting for Spring Boot app to start.");
 				}
@@ -270,8 +253,7 @@ public class StartMojo extends AbstractRunMojo {
 		public JMXConnector call() throws Exception {
 			try {
 				return SpringApplicationAdminClient.connect(this.port);
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				if (hasCauseWithType(ex, ConnectException.class)) {
 					String message = "MBean server at port " + this.port + " is not up yet...";
 					getLog().debug(message);

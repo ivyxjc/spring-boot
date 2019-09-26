@@ -16,10 +16,6 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
-
 import groovy.lang.GroovyClassLoader;
 import org.apache.maven.repository.internal.MavenRepositorySystemUtils;
 import org.eclipse.aether.DefaultRepositorySystemSession;
@@ -35,6 +31,10 @@ import org.eclipse.aether.spi.locator.ServiceLocator;
 import org.eclipse.aether.transport.file.FileTransporterFactory;
 import org.eclipse.aether.transport.http.HttpTransporterFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
+
 /**
  * Utility class to create a pre-configured {@link AetherGrapeEngine}.
  *
@@ -44,8 +44,8 @@ import org.eclipse.aether.transport.http.HttpTransporterFactory;
 public abstract class AetherGrapeEngineFactory {
 
 	public static AetherGrapeEngine create(GroovyClassLoader classLoader,
-			List<RepositoryConfiguration> repositoryConfigurations,
-			DependencyResolutionContext dependencyResolutionContext, boolean quiet) {
+										   List<RepositoryConfiguration> repositoryConfigurations,
+										   DependencyResolutionContext dependencyResolutionContext, boolean quiet) {
 		RepositorySystem repositorySystem = createServiceLocator().getService(RepositorySystem.class);
 		DefaultRepositorySystemSession repositorySystemSession = MavenRepositorySystemUtils.newSession();
 		ServiceLoader<RepositorySystemSessionAutoConfiguration> autoConfigurations = ServiceLoader

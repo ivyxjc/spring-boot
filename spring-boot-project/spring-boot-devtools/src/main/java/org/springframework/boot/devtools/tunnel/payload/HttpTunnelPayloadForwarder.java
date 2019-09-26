@@ -16,12 +16,12 @@
 
 package org.springframework.boot.devtools.tunnel.payload;
 
+import org.springframework.util.Assert;
+
 import java.io.IOException;
 import java.nio.channels.WritableByteChannel;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.util.Assert;
 
 /**
  * Utility class that forwards {@link HttpTunnelPayload} instances to a destination
@@ -44,6 +44,7 @@ public class HttpTunnelPayloadForwarder {
 
 	/**
 	 * Create a new {@link HttpTunnelPayloadForwarder} instance.
+	 *
 	 * @param targetChannel the target channel
 	 */
 	public HttpTunnelPayloadForwarder(WritableByteChannel targetChannel) {

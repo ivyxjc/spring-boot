@@ -35,9 +35,9 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
  */
 @Configuration
 @AutoConfigureBefore(SecurityAutoConfiguration.class)
-@ConditionalOnClass({ EnableWebSecurity.class, ClientRegistration.class })
+@ConditionalOnClass({EnableWebSecurity.class, ClientRegistration.class})
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-@Import({ OAuth2ClientRegistrationRepositoryConfiguration.class, OAuth2WebSecurityConfiguration.class })
+@Import({OAuth2ClientRegistrationRepositoryConfiguration.class, OAuth2WebSecurityConfiguration.class})
 public class OAuth2ClientAutoConfiguration {
 
 }

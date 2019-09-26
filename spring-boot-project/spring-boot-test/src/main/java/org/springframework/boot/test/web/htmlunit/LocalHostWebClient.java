@@ -16,15 +16,14 @@
 
 package org.springframework.boot.test.web.htmlunit;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
-
 import org.springframework.core.env.Environment;
 import org.springframework.util.Assert;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 /**
  * {@link WebClient} will automatically prefix relative URLs with

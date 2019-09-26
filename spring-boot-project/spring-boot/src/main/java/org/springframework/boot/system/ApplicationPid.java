@@ -16,6 +16,9 @@
 
 package org.springframework.boot.system;
 
+import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -25,9 +28,6 @@ import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Set;
 
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
-
 /**
  * An application process ID.
  *
@@ -36,8 +36,8 @@ import org.springframework.util.ObjectUtils;
  */
 public class ApplicationPid {
 
-	private static final PosixFilePermission[] WRITE_PERMISSIONS = { PosixFilePermission.OWNER_WRITE,
-			PosixFilePermission.GROUP_WRITE, PosixFilePermission.OTHERS_WRITE };
+	private static final PosixFilePermission[] WRITE_PERMISSIONS = {PosixFilePermission.OWNER_WRITE,
+			PosixFilePermission.GROUP_WRITE, PosixFilePermission.OTHERS_WRITE};
 
 	private final String pid;
 
@@ -53,8 +53,7 @@ public class ApplicationPid {
 		try {
 			String jvmName = ManagementFactory.getRuntimeMXBean().getName();
 			return jvmName.split("@")[0];
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return null;
 		}
 	}
@@ -82,9 +81,10 @@ public class ApplicationPid {
 
 	/**
 	 * Write the PID to the specified file.
+	 *
 	 * @param file the PID file
 	 * @throws IllegalStateException if no PID is available.
-	 * @throws IOException if the file cannot be written
+	 * @throws IOException           if the file cannot be written
 	 */
 	public void write(File file) throws IOException {
 		Assert.state(this.pid != null, "No PID available");
@@ -119,8 +119,7 @@ public class ApplicationPid {
 				}
 			}
 			return false;
-		}
-		catch (UnsupportedOperationException ex) {
+		} catch (UnsupportedOperationException ex) {
 			// Assume that we can
 			return true;
 		}

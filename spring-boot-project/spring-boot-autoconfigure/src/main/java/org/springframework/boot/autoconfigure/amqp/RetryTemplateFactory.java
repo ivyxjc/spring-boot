@@ -16,13 +16,13 @@
 
 package org.springframework.boot.autoconfigure.amqp;
 
-import java.time.Duration;
-import java.util.List;
-
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.retry.backoff.ExponentialBackOffPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.RetryTemplate;
+
+import java.time.Duration;
+import java.util.List;
 
 /**
  * Factory to create {@link RetryTemplate} instance from properties defined in
@@ -39,7 +39,7 @@ class RetryTemplateFactory {
 	}
 
 	public RetryTemplate createRetryTemplate(RabbitProperties.Retry properties,
-			RabbitRetryTemplateCustomizer.Target target) {
+											 RabbitRetryTemplateCustomizer.Target target) {
 		PropertyMapper map = PropertyMapper.get();
 		RetryTemplate template = new RetryTemplate();
 		SimpleRetryPolicy policy = new SimpleRetryPolicy();

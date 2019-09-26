@@ -16,14 +16,11 @@
 
 package org.springframework.boot.autoconfigure.elasticsearch.jest;
 
-import java.time.Duration;
-
 import com.google.gson.Gson;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
 import org.apache.http.HttpHost;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -36,6 +33,8 @@ import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
+
+import java.time.Duration;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Jest.
@@ -56,7 +55,7 @@ public class JestAutoConfiguration {
 	private final ObjectProvider<HttpClientConfigBuilderCustomizer> builderCustomizers;
 
 	public JestAutoConfiguration(JestProperties properties, ObjectProvider<Gson> gson,
-			ObjectProvider<HttpClientConfigBuilderCustomizer> builderCustomizers) {
+								 ObjectProvider<HttpClientConfigBuilderCustomizer> builderCustomizers) {
 		this.properties = properties;
 		this.gsonProvider = gson;
 		this.builderCustomizers = builderCustomizers;

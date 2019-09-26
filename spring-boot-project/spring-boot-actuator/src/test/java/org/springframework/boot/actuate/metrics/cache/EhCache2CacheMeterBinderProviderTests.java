@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.metrics.cache;
 
-import java.util.Collections;
-
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.cache.EhCache2Metrics;
 import net.sf.ehcache.Cache;
@@ -25,8 +23,9 @@ import net.sf.ehcache.CacheManager;
 import net.sf.ehcache.config.CacheConfiguration;
 import net.sf.ehcache.config.Configuration;
 import org.junit.Test;
-
 import org.springframework.cache.ehcache.EhCacheCache;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,8 +47,7 @@ public class EhCache2CacheMeterBinderProviderTests {
 			MeterBinder meterBinder = new EhCache2CacheMeterBinderProvider().getMeterBinder(cache,
 					Collections.emptyList());
 			assertThat(meterBinder).isInstanceOf(EhCache2Metrics.class);
-		}
-		finally {
+		} finally {
 			cacheManager.shutdown();
 		}
 	}

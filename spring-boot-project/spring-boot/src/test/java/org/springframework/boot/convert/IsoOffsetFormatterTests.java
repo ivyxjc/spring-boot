@@ -16,15 +16,14 @@
 
 package org.springframework.boot.convert;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
+
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -42,6 +41,11 @@ public class IsoOffsetFormatterTests {
 		this.conversionService = conversionService;
 	}
 
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(new IsoOffsetFormatter());
+	}
+
 	@Test
 	public void convertShouldConvertStringToIsoDate() {
 		OffsetDateTime now = OffsetDateTime.now();
@@ -55,11 +59,6 @@ public class IsoOffsetFormatterTests {
 		OffsetDateTime now = OffsetDateTime.now();
 		String converted = this.conversionService.convert(now, String.class);
 		assertThat(converted).isNotNull().startsWith(now.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(new IsoOffsetFormatter());
 	}
 
 }

@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.metrics;
 
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
 import org.springframework.boot.actuate.metrics.MetricsEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -38,7 +37,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass(Timed.class)
 @ConditionalOnEnabledEndpoint(endpoint = MetricsEndpoint.class)
-@AutoConfigureAfter({ MetricsAutoConfiguration.class, CompositeMeterRegistryAutoConfiguration.class })
+@AutoConfigureAfter({MetricsAutoConfiguration.class, CompositeMeterRegistryAutoConfiguration.class})
 public class MetricsEndpointAutoConfiguration {
 
 	@Bean

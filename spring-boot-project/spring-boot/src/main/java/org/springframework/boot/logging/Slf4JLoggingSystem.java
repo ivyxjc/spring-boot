@@ -16,15 +16,14 @@
 
 package org.springframework.boot.logging;
 
+import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
+
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
-import org.slf4j.bridge.SLF4JBridgeHandler;
-
-import org.springframework.util.Assert;
-import org.springframework.util.ClassUtils;
 
 /**
  * Abstract base class for {@link LoggingSystem} implementations that utilize SLF4J.
@@ -55,7 +54,7 @@ public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 
 	@Override
 	protected void loadConfiguration(LoggingInitializationContext initializationContext, String location,
-			LogFile logFile) {
+									 LogFile logFile) {
 		Assert.notNull(location, "Location must not be null");
 		if (initializationContext != null) {
 			applySystemProperties(initializationContext.getEnvironment(), logFile);
@@ -68,14 +67,14 @@ public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 				removeJdkLoggingBridgeHandler();
 				SLF4JBridgeHandler.install();
 			}
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			// Ignore. No java.util.logging bridge is installed.
 		}
 	}
 
 	/**
 	 * Return whether bridging JUL into SLF4J or not.
+	 *
 	 * @return whether bridging JUL into SLF4J or not
 	 * @since 2.0.4
 	 */
@@ -97,8 +96,7 @@ public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 		try {
 			removeDefaultRootHandler();
 			SLF4JBridgeHandler.uninstall();
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			// Ignore and continue
 		}
 	}
@@ -110,8 +108,7 @@ public abstract class Slf4JLoggingSystem extends AbstractLoggingSystem {
 			if (handlers.length == 1 && handlers[0] instanceof ConsoleHandler) {
 				rootLogger.removeHandler(handlers[0]);
 			}
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			// Ignore and continue
 		}
 	}

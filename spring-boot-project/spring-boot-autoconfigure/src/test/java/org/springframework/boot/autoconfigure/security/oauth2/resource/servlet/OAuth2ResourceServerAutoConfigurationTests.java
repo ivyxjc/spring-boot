@@ -15,21 +15,12 @@
  */
 package org.springframework.boot.autoconfigure.security.oauth2.resource.servlet;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.Filter;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
@@ -52,6 +43,9 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.web.FilterChainProxy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import javax.servlet.Filter;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -97,9 +91,9 @@ public class OAuth2ResourceServerAutoConfigurationTests {
 		setupMockResponse(cleanIssuerPath);
 		this.contextRunner.withPropertyValues("spring.security.oauth2.resourceserver.jwt.issuer-uri=http://"
 				+ this.server.getHostName() + ":" + this.server.getPort()).run((context) -> {
-					assertThat(context.getBean(JwtDecoder.class)).isInstanceOf(NimbusJwtDecoderJwkSupport.class);
-					assertThat(getBearerTokenFilter(context)).isNotNull();
-				});
+			assertThat(context.getBean(JwtDecoder.class)).isInstanceOf(NimbusJwtDecoderJwkSupport.class);
+			assertThat(getBearerTokenFilter(context)).isNotNull();
+		});
 	}
 
 	@Test

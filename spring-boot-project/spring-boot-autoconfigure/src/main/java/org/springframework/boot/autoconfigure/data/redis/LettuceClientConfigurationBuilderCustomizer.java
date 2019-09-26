@@ -33,6 +33,7 @@ public interface LettuceClientConfigurationBuilderCustomizer {
 
 	/**
 	 * Customize the {@link LettuceClientConfigurationBuilder}.
+	 *
 	 * @param clientConfigurationBuilder the builder to customize
 	 */
 	void customize(LettuceClientConfigurationBuilder clientConfigurationBuilder);

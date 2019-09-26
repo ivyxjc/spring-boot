@@ -16,16 +16,15 @@
 
 package org.springframework.boot.loader.jar;
 
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.loader.TestJarCreator;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.loader.TestJarCreator;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,10 +35,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class HandlerTests {
 
+	private final Handler handler = new Handler();
 	@Rule
 	public TemporaryFolder temporaryFolder = new TemporaryFolder();
-
-	private final Handler handler = new Handler();
 
 	@Test
 	public void parseUrlWithJarRootContextAndAbsoluteSpecThatUsesContext() throws MalformedURLException {
@@ -175,8 +173,7 @@ public class HandlerTests {
 		JarURLConnection connection = (JarURLConnection) url.openConnection();
 		try {
 			assertThat(connection.getJarFile().getRootJarFile().getFile()).isEqualTo(testJar);
-		}
-		finally {
+		} finally {
 			connection.getJarFile().close();
 		}
 	}
@@ -189,8 +186,7 @@ public class HandlerTests {
 		JarURLConnection connection = (JarURLConnection) url.openConnection();
 		try {
 			assertThat(connection.getJarFile().getRootJarFile().getFile()).isEqualTo(testJar);
-		}
-		finally {
+		} finally {
 			connection.getJarFile().close();
 		}
 	}

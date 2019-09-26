@@ -17,7 +17,6 @@ package org.springframework.boot.actuate.web.trace.servlet;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.mock.web.MockHttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;

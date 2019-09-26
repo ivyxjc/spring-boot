@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.metrics.web.servlet;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.atomic.AtomicReference;
-
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -30,7 +25,6 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,9 +44,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.NestedServletException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.fail;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
@@ -101,8 +98,7 @@ public class LongTaskTimingHandlerInterceptorTests {
 			try {
 				result.set(
 						this.mvc.perform(get("/api/c1/callable/10")).andExpect(request().asyncStarted()).andReturn());
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				fail("Failed to execute async request", ex);
 			}
 		});
@@ -160,15 +156,14 @@ public class LongTaskTimingHandlerInterceptorTests {
 		private CyclicBarrier callableBarrier;
 
 		@Timed
-		@Timed(value = "my.long.request", extraTags = { "region", "test" }, longTask = true)
+		@Timed(value = "my.long.request", extraTags = {"region", "test"}, longTask = true)
 		@GetMapping("/callable/{id}")
 		public Callable<String> asyncCallable(@PathVariable Long id) throws Exception {
 			this.callableBarrier.await();
 			return () -> {
 				try {
 					this.callableBarrier.await();
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					throw new RuntimeException(ex);
 				}
 				return id.toString();

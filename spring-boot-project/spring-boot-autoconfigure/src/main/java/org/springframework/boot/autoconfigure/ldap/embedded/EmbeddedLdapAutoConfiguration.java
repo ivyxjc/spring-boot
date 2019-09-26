@@ -16,29 +16,16 @@
 
 package org.springframework.boot.autoconfigure.ldap.embedded;
 
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.PreDestroy;
-
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
 import com.unboundid.ldap.listener.InMemoryDirectoryServerConfig;
 import com.unboundid.ldap.listener.InMemoryListenerConfig;
 import com.unboundid.ldap.sdk.LDAPException;
 import com.unboundid.ldap.sdk.schema.Schema;
 import com.unboundid.ldif.LDIFReader;
-
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.condition.ConditionMessage.Builder;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration;
 import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.autoconfigure.ldap.embedded.EmbeddedLdapProperties.Credential;
@@ -47,11 +34,7 @@ import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ConditionContext;
-import org.springframework.context.annotation.Conditional;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.MapPropertySource;
 import org.springframework.core.env.MutablePropertySources;
@@ -60,6 +43,13 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotatedTypeMetadata;
 import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.util.StringUtils;
+
+import javax.annotation.PreDestroy;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Embedded LDAP.
@@ -70,7 +60,7 @@ import org.springframework.util.StringUtils;
  * @since 1.5.0
  */
 @Configuration
-@EnableConfigurationProperties({ LdapProperties.class, EmbeddedLdapProperties.class })
+@EnableConfigurationProperties({LdapProperties.class, EmbeddedLdapProperties.class})
 @AutoConfigureBefore(LdapAutoConfiguration.class)
 @ConditionalOnClass(InMemoryDirectoryServer.class)
 @Conditional(EmbeddedLdapAutoConfiguration.EmbeddedLdapCondition.class)
@@ -89,7 +79,7 @@ public class EmbeddedLdapAutoConfiguration {
 	private InMemoryDirectoryServer server;
 
 	public EmbeddedLdapAutoConfiguration(EmbeddedLdapProperties embeddedProperties, LdapProperties properties,
-			ConfigurableApplicationContext applicationContext, Environment environment) {
+										 ConfigurableApplicationContext applicationContext, Environment environment) {
 		this.embeddedProperties = embeddedProperties;
 		this.properties = properties;
 		this.applicationContext = applicationContext;
@@ -144,8 +134,7 @@ public class EmbeddedLdapAutoConfiguration {
 			Schema defaultSchema = Schema.getDefaultStandardSchema();
 			Schema schema = Schema.getSchema(resource.getInputStream());
 			config.setSchema(Schema.mergeSchemas(defaultSchema, schema));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to load schema " + resource.getDescription(), ex);
 		}
 	}
@@ -164,8 +153,7 @@ public class EmbeddedLdapAutoConfiguration {
 						this.server.importFromLDIF(true, new LDIFReader(inputStream));
 					}
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Unable to load LDIF " + location, ex);
 			}
 		}

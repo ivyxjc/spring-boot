@@ -16,25 +16,20 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
-import java.util.Collections;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.logging.Log4j2Metrics;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.Log4J2MetricsAutoConfiguration.Log4JCoreLoggerContextCondition;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ConditionContext;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.AnnotatedTypeMetadata;
+
+import java.util.Collections;
 
 /**
  * Auto-configuration for Log4J2 metrics.
@@ -44,7 +39,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
  */
 @Configuration
 @AutoConfigureAfter(MetricsAutoConfiguration.class)
-@ConditionalOnClass({ Log4j2Metrics.class, LoggerContext.class, LogManager.class })
+@ConditionalOnClass({Log4j2Metrics.class, LoggerContext.class, LogManager.class})
 @ConditionalOnBean(MeterRegistry.class)
 @Conditional(Log4JCoreLoggerContextCondition.class)
 public class Log4J2MetricsAutoConfiguration {

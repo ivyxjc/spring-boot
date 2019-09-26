@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
-import java.time.Duration;
-import java.util.Collections;
-
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.Meter.Type;
@@ -26,11 +23,13 @@ import io.micrometer.core.instrument.config.MeterFilterReply;
 import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.mock.env.MockEnvironment;
+
+import java.time.Duration;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -209,7 +208,7 @@ public class PropertiesMeterFilterTests {
 				createProperties("distribution.sla.spring.boot=1,2,3"));
 		assertThat(
 				filter.configure(createMeterId("spring.boot"), DistributionStatisticConfig.DEFAULT).getSlaBoundaries())
-						.containsExactly(1000000, 2000000, 3000000);
+				.containsExactly(1000000, 2000000, 3000000);
 	}
 
 	@Test
@@ -217,7 +216,7 @@ public class PropertiesMeterFilterTests {
 		PropertiesMeterFilter filter = new PropertiesMeterFilter(createProperties("distribution.sla.spring=1,2,3"));
 		assertThat(
 				filter.configure(createMeterId("spring.boot"), DistributionStatisticConfig.DEFAULT).getSlaBoundaries())
-						.containsExactly(1000000, 2000000, 3000000);
+				.containsExactly(1000000, 2000000, 3000000);
 	}
 
 	@Test
@@ -226,7 +225,7 @@ public class PropertiesMeterFilterTests {
 				createProperties("distribution.sla.spring=1,2,3", "distribution.sla.spring.boot=4,5,6"));
 		assertThat(
 				filter.configure(createMeterId("spring.boot"), DistributionStatisticConfig.DEFAULT).getSlaBoundaries())
-						.containsExactly(4000000, 5000000, 6000000);
+				.containsExactly(4000000, 5000000, 6000000);
 	}
 
 	@Test

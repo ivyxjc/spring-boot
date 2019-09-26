@@ -16,14 +16,7 @@
 
 package org.springframework.boot.web.servlet.context;
 
-import javax.servlet.GenericServlet;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.context.config.ExampleServletWebServerApplicationConfiguration;
 import org.springframework.boot.web.servlet.mock.MockServlet;
@@ -36,6 +29,8 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -169,13 +164,13 @@ public class AnnotationConfigServletWebServerApplicationContextTests {
 			return new MockServlet();
 		}
 
+		public ServletContext getServletContext() {
+			return this.servletContext;
+		}
+
 		@Override
 		public void setServletContext(ServletContext servletContext) {
 			this.servletContext = servletContext;
-		}
-
-		public ServletContext getServletContext() {
-			return this.servletContext;
 		}
 
 	}
@@ -201,13 +196,13 @@ public class AnnotationConfigServletWebServerApplicationContextTests {
 			return new MockServlet();
 		}
 
+		public ServletContext getServletContext() {
+			return this.servletContext;
+		}
+
 		@Override
 		public void setServletContext(ServletContext servletContext) {
 			this.servletContext = servletContext;
-		}
-
-		public ServletContext getServletContext() {
-			return this.servletContext;
 		}
 
 	}

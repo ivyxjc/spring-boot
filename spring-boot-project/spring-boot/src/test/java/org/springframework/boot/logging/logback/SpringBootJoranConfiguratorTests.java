@@ -27,7 +27,6 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.impl.StaticLoggerBinder;
-
 import org.springframework.boot.context.properties.source.ConfigurationPropertySources;
 import org.springframework.boot.logging.LoggingInitializationContext;
 import org.springframework.boot.testsupport.rule.OutputCapture;
@@ -196,8 +195,7 @@ public class SpringBootJoranConfiguratorTests {
 		this.logger.trace("Hello");
 		if (expected) {
 			this.out.expect(containsString("Hello"));
-		}
-		else {
+		} else {
 			this.out.expect(not(containsString("Hello")));
 		}
 

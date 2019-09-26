@@ -38,6 +38,7 @@ public class HealthEndpoint {
 	/**
 	 * Create a new {@link HealthEndpoint} instance that will use the given
 	 * {@code healthIndicator} to generate its response.
+	 *
 	 * @param healthIndicator the health indicator
 	 */
 	public HealthEndpoint(HealthIndicator healthIndicator) {
@@ -53,6 +54,7 @@ public class HealthEndpoint {
 	/**
 	 * Return the {@link Health} of a particular component or {@code null} if such
 	 * component does not exist.
+	 *
 	 * @param component the name of a particular {@link HealthIndicator}
 	 * @return the {@link Health} for the component or {@code null}
 	 */
@@ -66,8 +68,9 @@ public class HealthEndpoint {
 	 * Return the {@link Health} of a particular {@code instance} managed by the specified
 	 * {@code component} or {@code null} if that particular component is not a
 	 * {@link CompositeHealthIndicator} or if such instance does not exist.
+	 *
 	 * @param component the name of a particular {@link CompositeHealthIndicator}
-	 * @param instance the name of an instance managed by that component
+	 * @param instance  the name of an instance managed by that component
 	 * @return the {@link Health} for the component instance of {@code null}
 	 */
 	@ReadOperation

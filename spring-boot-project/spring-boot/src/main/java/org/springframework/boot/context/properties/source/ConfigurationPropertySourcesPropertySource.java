@@ -51,8 +51,7 @@ class ConfigurationPropertySourcesPropertySource extends PropertySource<Iterable
 	private ConfigurationProperty findConfigurationProperty(String name) {
 		try {
 			return findConfigurationProperty(ConfigurationPropertyName.of(name, true));
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}

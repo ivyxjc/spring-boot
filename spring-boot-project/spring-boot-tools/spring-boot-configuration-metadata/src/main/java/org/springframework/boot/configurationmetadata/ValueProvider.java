@@ -33,12 +33,12 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class ValueProvider implements Serializable {
 
-	private String name;
-
 	private final Map<String, Object> parameters = new LinkedHashMap<>();
+	private String name;
 
 	/**
 	 * Return the name of the provider.
+	 *
 	 * @return the name
 	 */
 	public String getName() {
@@ -51,6 +51,7 @@ public class ValueProvider implements Serializable {
 
 	/**
 	 * Return the parameters.
+	 *
 	 * @return the parameters
 	 */
 	public Map<String, Object> getParameters() {

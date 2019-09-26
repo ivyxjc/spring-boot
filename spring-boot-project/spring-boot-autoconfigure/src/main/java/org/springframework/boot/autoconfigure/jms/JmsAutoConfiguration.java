@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import java.time.Duration;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.Message;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -39,6 +34,10 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.destination.DestinationResolver;
 
+import javax.jms.ConnectionFactory;
+import javax.jms.Message;
+import java.time.Duration;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring JMS.
  *
@@ -47,7 +46,7 @@ import org.springframework.jms.support.destination.DestinationResolver;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ Message.class, JmsTemplate.class })
+@ConditionalOnClass({Message.class, JmsTemplate.class})
 @ConditionalOnBean(ConnectionFactory.class)
 @EnableConfigurationProperties(JmsProperties.class)
 @Import(JmsAnnotationDrivenConfiguration.class)
@@ -63,8 +62,8 @@ public class JmsAutoConfiguration {
 		private final ObjectProvider<MessageConverter> messageConverter;
 
 		public JmsTemplateConfiguration(JmsProperties properties,
-				ObjectProvider<DestinationResolver> destinationResolver,
-				ObjectProvider<MessageConverter> messageConverter) {
+										ObjectProvider<DestinationResolver> destinationResolver,
+										ObjectProvider<MessageConverter> messageConverter) {
 			this.properties = properties;
 			this.destinationResolver = destinationResolver;
 			this.messageConverter = messageConverter;

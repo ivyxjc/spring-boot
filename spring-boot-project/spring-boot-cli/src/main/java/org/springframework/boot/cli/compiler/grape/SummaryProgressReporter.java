@@ -16,14 +16,14 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.io.PrintStream;
-import java.util.concurrent.TimeUnit;
-
 import org.eclipse.aether.AbstractRepositoryListener;
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositoryEvent;
 import org.eclipse.aether.transfer.AbstractTransferListener;
 import org.eclipse.aether.transfer.TransferEvent;
+
+import java.io.PrintStream;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provide high-level progress feedback for long running resolves.
@@ -78,8 +78,7 @@ final class SummaryProgressReporter implements ProgressReporter {
 				this.started = true;
 				this.out.print("Resolving dependencies..");
 				this.lastProgressTime = System.currentTimeMillis();
-			}
-			else if (System.currentTimeMillis() - this.lastProgressTime > PROGRESS_DELAY) {
+			} else if (System.currentTimeMillis() - this.lastProgressTime > PROGRESS_DELAY) {
 				this.out.print(".");
 				this.lastProgressTime = System.currentTimeMillis();
 			}

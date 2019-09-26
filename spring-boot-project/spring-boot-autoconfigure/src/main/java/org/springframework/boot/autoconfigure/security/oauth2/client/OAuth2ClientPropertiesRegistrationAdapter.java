@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.security.oauth2.client;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties.Provider;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.boot.convert.ApplicationConversionService;
@@ -31,6 +28,9 @@ import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Adapter class to convert {@link OAuth2ClientProperties} to a
@@ -55,7 +55,7 @@ public final class OAuth2ClientPropertiesRegistrationAdapter {
 	}
 
 	private static ClientRegistration getClientRegistration(String registrationId,
-			OAuth2ClientProperties.Registration properties, Map<String, Provider> providers) {
+															OAuth2ClientProperties.Registration properties, Map<String, Provider> providers) {
 		String provider = StringUtils.trimWhitespace(properties.getProvider());
 		Builder builder = getBuilderFromIssuerIfPossible(registrationId, provider, providers);
 		if (builder == null) {
@@ -75,7 +75,7 @@ public final class OAuth2ClientPropertiesRegistrationAdapter {
 	}
 
 	private static Builder getBuilderFromIssuerIfPossible(String registrationId, String configuredProviderId,
-			Map<String, Provider> providers) {
+														  Map<String, Provider> providers) {
 		String providerId = (configuredProviderId != null) ? configuredProviderId : registrationId;
 		if (providers.containsKey(providerId)) {
 			Provider provider = providers.get(providerId);
@@ -89,7 +89,7 @@ public final class OAuth2ClientPropertiesRegistrationAdapter {
 	}
 
 	private static Builder getBuilder(String registrationId, String configuredProviderId,
-			Map<String, Provider> providers) {
+									  Map<String, Provider> providers) {
 		String providerId = (configuredProviderId != null) ? configuredProviderId : registrationId;
 		CommonOAuth2Provider provider = getCommonProvider(providerId);
 		if (provider == null && !providers.containsKey(providerId)) {
@@ -123,8 +123,7 @@ public final class OAuth2ClientPropertiesRegistrationAdapter {
 	private static CommonOAuth2Provider getCommonProvider(String providerId) {
 		try {
 			return ApplicationConversionService.getSharedInstance().convert(providerId, CommonOAuth2Provider.class);
-		}
-		catch (ConversionException ex) {
+		} catch (ConversionException ex) {
 			return null;
 		}
 	}

@@ -16,25 +16,24 @@
 
 package org.springframework.boot.devtools.restart.server;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.devtools.restart.classloader.ClassLoaderFiles;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.util.Assert;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 /**
  * A HTTP server that can be used to upload updated {@link ClassLoaderFiles} and trigger
  * restarts.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see RestartServer
+ * @since 1.3.0
  */
 public class HttpRestartServer {
 
@@ -44,8 +43,9 @@ public class HttpRestartServer {
 
 	/**
 	 * Create a new {@link HttpRestartServer} instance.
+	 *
 	 * @param sourceFolderUrlFilter the source filter used to link remote folder to the
-	 * local classpath
+	 *                              local classpath
 	 */
 	public HttpRestartServer(SourceFolderUrlFilter sourceFolderUrlFilter) {
 		Assert.notNull(sourceFolderUrlFilter, "SourceFolderUrlFilter must not be null");
@@ -54,6 +54,7 @@ public class HttpRestartServer {
 
 	/**
 	 * Create a new {@link HttpRestartServer} instance.
+	 *
 	 * @param restartServer the underlying restart server
 	 */
 	public HttpRestartServer(RestartServer restartServer) {
@@ -63,7 +64,8 @@ public class HttpRestartServer {
 
 	/**
 	 * Handle a server request.
-	 * @param request the request
+	 *
+	 * @param request  the request
 	 * @param response the response
 	 * @throws IOException in case of I/O errors
 	 */
@@ -75,8 +77,7 @@ public class HttpRestartServer {
 			objectInputStream.close();
 			this.server.updateAndRestart(files);
 			response.setStatusCode(HttpStatus.OK);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.warn("Unable to handler restart server HTTP request", ex);
 			response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
 		}

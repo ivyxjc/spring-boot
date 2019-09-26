@@ -16,18 +16,18 @@
 
 package org.springframework.boot.json;
 
+import org.yaml.snakeyaml.Yaml;
+
 import java.util.List;
 import java.util.Map;
-
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Thin wrapper to adapt Snake {@link Yaml} to {@link JsonParser}.
  *
  * @author Dave Syer
  * @author Jean de Klerk
- * @since 1.0.0
  * @see JsonParserFactory
+ * @since 1.0.0
  */
 public class YamlJsonParser extends AbstractJsonParser {
 

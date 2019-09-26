@@ -16,6 +16,14 @@
 
 package org.springframework.boot.autoconfigure.security.reactive;
 
+import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
+import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
+import org.springframework.util.Assert;
+import org.springframework.web.server.ServerWebExchange;
+import reactor.core.publisher.Mono;
+
 import java.util.EnumSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -23,22 +31,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import reactor.core.publisher.Mono;
-
-import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
-import org.springframework.security.web.server.util.matcher.OrServerWebExchangeMatcher;
-import org.springframework.security.web.server.util.matcher.PathPatternParserServerWebExchangeMatcher;
-import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatcher;
-import org.springframework.util.Assert;
-import org.springframework.web.server.ServerWebExchange;
-
 /**
  * Used to create a {@link ServerWebExchangeMatcher} for static resources in commonly used
  * locations. Returned by {@link PathRequest#toStaticResources()}.
  *
  * @author Madhura Bhave
- * @since 2.0.0
  * @see PathRequest
+ * @since 2.0.0
  */
 public final class StaticResourceRequest {
 
@@ -55,6 +54,7 @@ public final class StaticResourceRequest {
 	 * example: <pre class="code">
 	 * PathRequest.toStaticResources().atCommonLocations().excluding(StaticResourceLocation.CSS)
 	 * </pre>
+	 *
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
 	public StaticResourceServerWebExchange atCommonLocations() {
@@ -66,8 +66,9 @@ public final class StaticResourceRequest {
 	 * Locations}. For example: <pre class="code">
 	 * PathRequest.toStaticResources().at(StaticResourceLocation.CSS, StaticResourceLocation.JAVA_SCRIPT)
 	 * </pre>
+	 *
 	 * @param first the first location to include
-	 * @param rest additional locations to include
+	 * @param rest  additional locations to include
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
 	public StaticResourceServerWebExchange at(StaticResourceLocation first, StaticResourceLocation... rest) {
@@ -79,6 +80,7 @@ public final class StaticResourceRequest {
 	 * Locations}. For example: <pre class="code">
 	 * PathRequest.toStaticResources().at(locations)
 	 * </pre>
+	 *
 	 * @param locations the locations to include
 	 * @return the configured {@link ServerWebExchangeMatcher}
 	 */
@@ -102,8 +104,9 @@ public final class StaticResourceRequest {
 		/**
 		 * Return a new {@link StaticResourceServerWebExchange} based on this one but
 		 * excluding the specified locations.
+		 *
 		 * @param first the first location to exclude
-		 * @param rest additional locations to exclude
+		 * @param rest  additional locations to exclude
 		 * @return a new {@link StaticResourceServerWebExchange}
 		 */
 		public StaticResourceServerWebExchange excluding(StaticResourceLocation first, StaticResourceLocation... rest) {
@@ -113,6 +116,7 @@ public final class StaticResourceRequest {
 		/**
 		 * Return a new {@link StaticResourceServerWebExchange} based on this one but
 		 * excluding the specified locations.
+		 *
 		 * @param locations the locations to exclude
 		 * @return a new {@link StaticResourceServerWebExchange}
 		 */

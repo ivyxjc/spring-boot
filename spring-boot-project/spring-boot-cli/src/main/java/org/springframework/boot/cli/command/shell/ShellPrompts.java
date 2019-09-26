@@ -33,6 +33,7 @@ public class ShellPrompts {
 
 	/**
 	 * Push a new prompt to be used by the shell.
+	 *
 	 * @param prompt the prompt
 	 * @see #popPrompt()
 	 */
@@ -42,6 +43,7 @@ public class ShellPrompts {
 
 	/**
 	 * Pop a previously pushed prompt, returning to the previous value.
+	 *
 	 * @see #pushPrompt(String)
 	 */
 	public void popPrompt() {
@@ -52,6 +54,7 @@ public class ShellPrompts {
 
 	/**
 	 * Returns the current prompt.
+	 *
 	 * @return the current prompt
 	 */
 	public String getPrompt() {

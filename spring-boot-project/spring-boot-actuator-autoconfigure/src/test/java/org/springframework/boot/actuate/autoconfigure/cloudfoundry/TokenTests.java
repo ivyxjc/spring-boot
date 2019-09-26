@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry;
 
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
 import org.springframework.util.Base64Utils;
+
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

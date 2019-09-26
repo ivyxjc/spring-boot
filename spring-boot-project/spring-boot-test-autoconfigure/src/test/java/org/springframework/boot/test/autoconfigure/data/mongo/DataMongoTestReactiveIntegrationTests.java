@@ -16,14 +16,13 @@
 
 package org.springframework.boot.test.autoconfigure.data.mongo;
 
-import java.time.Duration;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

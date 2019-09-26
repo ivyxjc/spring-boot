@@ -18,7 +18,6 @@ package org.springframework.boot.web.servlet.view;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.servlet.View;

@@ -16,18 +16,17 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.client;
 
-import java.io.IOException;
-import java.net.URI;
-
 import io.micrometer.core.instrument.Tag;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.io.IOException;
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

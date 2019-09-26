@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.data.jpa;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.jpa.city.City;

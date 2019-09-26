@@ -18,7 +18,6 @@ package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -47,7 +46,7 @@ public class MockBeanForBeanFactoryIntegrationTests {
 	private ApplicationContext applicationContext;
 
 	@Test
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public void testName() {
 		TestBean testBean = mock(TestBean.class);
 		given(testBean.hello()).willReturn("amock");
@@ -55,6 +54,12 @@ public class MockBeanForBeanFactoryIntegrationTests {
 		given(this.testFactoryBean.getObject()).willReturn(testBean);
 		TestBean bean = this.applicationContext.getBean(TestBean.class);
 		assertThat(bean.hello()).isEqualTo("amock");
+	}
+
+	interface TestBean {
+
+		String hello();
+
 	}
 
 	@Configuration
@@ -83,12 +88,6 @@ public class MockBeanForBeanFactoryIntegrationTests {
 		public boolean isSingleton() {
 			return false;
 		}
-
-	}
-
-	interface TestBean {
-
-		String hello();
 
 	}
 

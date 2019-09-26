@@ -16,10 +16,10 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
+import org.springframework.util.Assert;
+
 import java.io.File;
 import java.io.FileFilter;
-
-import org.springframework.util.Assert;
 
 /**
  * {@link FileFilter} that accepts only a specific "trigger" file.

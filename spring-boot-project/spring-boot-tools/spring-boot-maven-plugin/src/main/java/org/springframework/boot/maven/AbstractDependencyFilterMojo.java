@@ -16,11 +16,6 @@
 
 package org.springframework.boot.maven;
 
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -28,6 +23,11 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactFilterException;
 import org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter;
 import org.apache.maven.shared.artifact.filter.collection.FilterArtifacts;
+
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * A base mojo filtering the dependencies of the project.
@@ -42,6 +42,7 @@ public abstract class AbstractDependencyFilterMojo extends AbstractMojo {
 	 * Collection of artifact definitions to include. The {@link Include} element defines
 	 * a {@code groupId} and {@code artifactId} mandatory properties and an optional
 	 * {@code classifier} property.
+	 *
 	 * @since 1.2.0
 	 */
 	@Parameter(property = "spring-boot.includes")
@@ -51,6 +52,7 @@ public abstract class AbstractDependencyFilterMojo extends AbstractMojo {
 	 * Collection of artifact definitions to exclude. The {@link Exclude} element defines
 	 * a {@code groupId} and {@code artifactId} mandatory properties and an optional
 	 * {@code classifier} property.
+	 *
 	 * @since 1.1.0
 	 */
 	@Parameter(property = "spring-boot.excludes")
@@ -58,6 +60,7 @@ public abstract class AbstractDependencyFilterMojo extends AbstractMojo {
 
 	/**
 	 * Comma separated list of groupId names to exclude (exact match).
+	 *
 	 * @since 1.1.0
 	 */
 	@Parameter(property = "spring-boot.excludeGroupIds", defaultValue = "")
@@ -81,14 +84,14 @@ public abstract class AbstractDependencyFilterMojo extends AbstractMojo {
 			Set<Artifact> filtered = new LinkedHashSet<>(dependencies);
 			filtered.retainAll(filters.filter(dependencies));
 			return filtered;
-		}
-		catch (ArtifactFilterException ex) {
+		} catch (ArtifactFilterException ex) {
 			throw new MojoExecutionException(ex.getMessage(), ex);
 		}
 	}
 
 	/**
 	 * Return artifact filters configured for this MOJO.
+	 *
 	 * @param additionalFilters optional additional filters to apply
 	 * @return the filters
 	 */

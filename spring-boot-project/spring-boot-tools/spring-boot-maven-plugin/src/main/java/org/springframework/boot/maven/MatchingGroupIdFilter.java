@@ -22,7 +22,7 @@ import org.apache.maven.shared.artifact.filter.collection.AbstractArtifactFeatur
 /**
  * An {@link org.apache.maven.shared.artifact.filter.collection.ArtifactsFilter
  * ArtifactsFilter} that filters by matching groupId.
- *
+ * <p>
  * Preferred over the
  * {@link org.apache.maven.shared.artifact.filter.collection.GroupIdFilter} due to that
  * classes use of {@link String#startsWith} to match on prefix.
@@ -34,6 +34,7 @@ public class MatchingGroupIdFilter extends AbstractArtifactFeatureFilter {
 
 	/**
 	 * Create a new instance with the CSV groupId values that should be excluded.
+	 *
 	 * @param exclude the group values to exclude
 	 */
 	public MatchingGroupIdFilter(String exclude) {

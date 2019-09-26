@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jdbc;
 
-import javax.sql.DataSource;
-import javax.sql.XADataSource;
-import javax.transaction.TransactionManager;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.ObjectProvider;
@@ -44,6 +40,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
+import javax.sql.DataSource;
+import javax.sql.XADataSource;
+import javax.transaction.TransactionManager;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link DataSource} with XA.
  *
@@ -55,7 +55,7 @@ import org.springframework.util.StringUtils;
 @Configuration
 @AutoConfigureBefore(DataSourceAutoConfiguration.class)
 @EnableConfigurationProperties(DataSourceProperties.class)
-@ConditionalOnClass({ DataSource.class, TransactionManager.class, EmbeddedDatabaseType.class })
+@ConditionalOnClass({DataSource.class, TransactionManager.class, EmbeddedDatabaseType.class})
 @ConditionalOnBean(XADataSourceWrapper.class)
 @ConditionalOnMissingBean(DataSource.class)
 public class XADataSourceAutoConfiguration implements BeanClassLoaderAware {
@@ -69,7 +69,7 @@ public class XADataSourceAutoConfiguration implements BeanClassLoaderAware {
 	private ClassLoader classLoader;
 
 	public XADataSourceAutoConfiguration(XADataSourceWrapper wrapper, DataSourceProperties properties,
-			ObjectProvider<XADataSource> xaDataSource) {
+										 ObjectProvider<XADataSource> xaDataSource) {
 		this.wrapper = wrapper;
 		this.properties = properties;
 		this.xaDataSource = xaDataSource.getIfAvailable();
@@ -106,8 +106,7 @@ public class XADataSourceAutoConfiguration implements BeanClassLoaderAware {
 			Object instance = BeanUtils.instantiateClass(dataSourceClass);
 			Assert.isInstanceOf(XADataSource.class, instance);
 			return (XADataSource) instance;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException("Unable to create XADataSource instance from '" + className + "'");
 		}
 	}

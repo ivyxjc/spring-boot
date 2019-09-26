@@ -16,12 +16,7 @@
 
 package org.springframework.boot;
 
-import java.lang.management.ManagementFactory;
-import java.net.InetAddress;
-import java.util.concurrent.Callable;
-
 import org.apache.commons.logging.Log;
-
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.system.ApplicationPid;
 import org.springframework.context.ApplicationContext;
@@ -29,6 +24,10 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
+
+import java.lang.management.ManagementFactory;
+import java.net.InetAddress;
+import java.util.concurrent.Callable;
 
 /**
  * Logs application information on startup.
@@ -89,8 +88,7 @@ class StartupInfoLogger {
 		try {
 			double uptime = ManagementFactory.getRuntimeMXBean().getUptime() / 1000.0;
 			message.append(" seconds (JVM running for " + uptime + ")");
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			// No JVM time available
 		}
 		return message;
@@ -139,8 +137,7 @@ class StartupInfoLogger {
 			if (value != null && StringUtils.hasLength(value.toString())) {
 				return prefix + value;
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Swallow and continue
 		}
 		return defaultValue;

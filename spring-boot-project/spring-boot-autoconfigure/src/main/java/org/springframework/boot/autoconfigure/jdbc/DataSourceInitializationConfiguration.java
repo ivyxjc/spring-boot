@@ -30,7 +30,7 @@ import org.springframework.core.type.AnnotationMetadata;
  * @author Stephane Nicoll
  */
 @Configuration
-@Import({ DataSourceInitializerInvoker.class, DataSourceInitializationConfiguration.Registrar.class })
+@Import({DataSourceInitializerInvoker.class, DataSourceInitializationConfiguration.Registrar.class})
 class DataSourceInitializationConfiguration {
 
 	/**
@@ -44,7 +44,7 @@ class DataSourceInitializationConfiguration {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-				BeanDefinitionRegistry registry) {
+											BeanDefinitionRegistry registry) {
 			if (!registry.containsBeanDefinition(BEAN_NAME)) {
 				GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
 				beanDefinition.setBeanClass(DataSourceInitializerPostProcessor.class);

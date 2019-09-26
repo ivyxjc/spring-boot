@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://maven.apache.org/POM/4.0.0"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -16,7 +16,9 @@
 		<main.basedir>${basedir}/../..</main.basedir>
 		<start-class>org.springframework.boot.cli.SpringCli</start-class>
 		<spring.profiles.active>default</spring.profiles.active>
-		<generated.pom.dir>${project.build.directory}/generated-resources/org/springframework/boot/cli/compiler/dependencies</generated.pom.dir>
+		<generated.pom.dir>
+			${project.build.directory}/generated-resources/org/springframework/boot/cli/compiler/dependencies
+		</generated.pom.dir>
 	</properties>
 	<dependencies>
 		<!-- Compile -->
@@ -170,7 +172,8 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
 					<additionalClasspathElements>
-						<additionalClasspathElement>${project.build.directory}/generated-resources</additionalClasspathElement>
+						<additionalClasspathElement>${project.build.directory}/generated-resources
+						</additionalClasspathElement>
 					</additionalClasspathElements>
 					<systemPropertyVariables>
 						<spring.profiles.active>${spring.profiles.active}</spring.profiles.active>
@@ -310,40 +313,40 @@
 						<configuration>
 							<target>
 								<taskdef
-									resource="net/sf/antcontrib/antcontrib.properties" />
+										resource="net/sf/antcontrib/antcontrib.properties"/>
 								<taskdef name="stringutil"
-									classname="ise.antelope.tasks.StringUtilTask" />
-								<var name="version-type" value="${project.version}" />
+										 classname="ise.antelope.tasks.StringUtilTask"/>
+								<var name="version-type" value="${project.version}"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp=".*\.(.*)"
-									replace="\1" />
+											   override="true" input="${version-type}" regexp=".*\.(.*)"
+											   replace="\1"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp="(M)\d+"
-									replace="MILESTONE" />
+											   override="true" input="${version-type}" regexp="(M)\d+"
+											   replace="MILESTONE"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp="(RC)\d+"
-									replace="MILESTONE" />
+											   override="true" input="${version-type}" regexp="(RC)\d+"
+											   replace="MILESTONE"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp="BUILD-(.*)"
-									replace="SNAPSHOT" />
+											   override="true" input="${version-type}" regexp="BUILD-(.*)"
+											   replace="SNAPSHOT"/>
 								<stringutil string="${version-type}" property="repo">
-									<lowercase />
+									<lowercase/>
 								</stringutil>
 								<checksum algorithm="sha-256"
-									file="${project.build.directory}/spring-boot-cli-${project.version}-bin.tar.gz"
-									property="checksum" />
+										  file="${project.build.directory}/spring-boot-cli-${project.version}-bin.tar.gz"
+										  property="checksum"/>
 								<echo
-									message="Customizing homebrew for ${project.version} with checksum ${checksum} in ${repo} repo" />
+										message="Customizing homebrew for ${project.version} with checksum ${checksum} in ${repo} repo"/>
 								<copy file="${basedir}/src/main/homebrew/springboot.rb"
-									tofile="${project.build.directory}/homebrew/springboot.rb"
-									overwrite="true">
+									  tofile="${project.build.directory}/homebrew/springboot.rb"
+									  overwrite="true">
 									<filterchain>
-										<expandproperties />
+										<expandproperties/>
 									</filterchain>
 								</copy>
 								<attachartifact
-									file="${project.build.directory}/homebrew/springboot.rb"
-									classifier="homebrew" type="rb" />
+										file="${project.build.directory}/homebrew/springboot.rb"
+										classifier="homebrew" type="rb"/>
 							</target>
 						</configuration>
 					</execution>
@@ -357,51 +360,51 @@
 						<configuration>
 							<target>
 								<taskdef
-									resource="net/sf/antcontrib/antcontrib.properties" />
+										resource="net/sf/antcontrib/antcontrib.properties"/>
 								<taskdef name="stringutil"
-									classname="ise.antelope.tasks.StringUtilTask" />
-								<var name="scoop-version" value="${project.version}" />
+										 classname="ise.antelope.tasks.StringUtilTask"/>
+								<var name="scoop-version" value="${project.version}"/>
 								<propertyregex property="scoop-version"
-									override="true" input="${scoop-version}" regexp="(.*)\..*"
-									replace="\1" />
-								<var name="version-type" value="${project.version}" />
+											   override="true" input="${scoop-version}" regexp="(.*)\..*"
+											   replace="\1"/>
+								<var name="version-type" value="${project.version}"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp=".*\.(.*)"
-									replace="\1" />
+											   override="true" input="${version-type}" regexp=".*\.(.*)"
+											   replace="\1"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp="(M)\d+"
-									replace="MILESTONE" />
+											   override="true" input="${version-type}" regexp="(M)\d+"
+											   replace="MILESTONE"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp="(RC)\d+"
-									replace="MILESTONE" />
+											   override="true" input="${version-type}" regexp="(RC)\d+"
+											   replace="MILESTONE"/>
 								<propertyregex property="version-type"
-									override="true" input="${version-type}" regexp="BUILD-(.*)"
-									replace="SNAPSHOT" />
+											   override="true" input="${version-type}" regexp="BUILD-(.*)"
+											   replace="SNAPSHOT"/>
 								<stringutil string="${version-type}" property="repo">
-									<lowercase />
+									<lowercase/>
 								</stringutil>
 								<checksum algorithm="sha-256"
-									file="${project.build.directory}/spring-boot-cli-${project.version}-bin.zip"
-									property="hash" />
+										  file="${project.build.directory}/spring-boot-cli-${project.version}-bin.zip"
+										  property="hash"/>
 								<echo
-									message="Customizing scoop for ${project.version} with hash ${hash} in ${repo} repo" />
+										message="Customizing scoop for ${project.version} with hash ${hash} in ${repo} repo"/>
 								<copy file="${basedir}/src/main/scoop/springboot.json"
-									tofile="${project.build.directory}/scoop/springboot.json"
-									overwrite="true">
+									  tofile="${project.build.directory}/scoop/springboot.json"
+									  overwrite="true">
 									<filterchain>
 										<expandproperties>
 											<propertyset>
-												<propertyref name="scoop-version" />
-												<propertyref name="hash" />
-												<propertyref name="repo" />
-												<propertyref name="project.version" />
+												<propertyref name="scoop-version"/>
+												<propertyref name="hash"/>
+												<propertyref name="repo"/>
+												<propertyref name="project.version"/>
 											</propertyset>
 										</expandproperties>
 									</filterchain>
 								</copy>
 								<attachartifact
-									file="${project.build.directory}/scoop/springboot.json"
-									classifier="scoop" type="json" />
+										file="${project.build.directory}/scoop/springboot.json"
+										classifier="scoop" type="json"/>
 							</target>
 						</configuration>
 					</execution>
@@ -452,7 +455,7 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore />
+										<ignore/>
 									</action>
 								</pluginExecution>
 							</pluginExecutions>

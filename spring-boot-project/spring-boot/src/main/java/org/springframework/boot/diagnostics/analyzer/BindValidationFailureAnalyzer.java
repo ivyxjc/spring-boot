@@ -16,8 +16,6 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.List;
-
 import org.springframework.boot.context.properties.bind.BindException;
 import org.springframework.boot.context.properties.bind.validation.BindValidationException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
@@ -25,6 +23,8 @@ import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.boot.origin.Origin;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+
+import java.util.List;
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of any bind validation

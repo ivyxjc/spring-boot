@@ -16,15 +16,14 @@
 
 package org.springframework.boot.loader;
 
-import java.io.File;
-import java.net.URL;
-import java.util.List;
-
 import org.junit.Test;
-
 import org.springframework.boot.loader.archive.Archive;
 import org.springframework.boot.loader.archive.ExplodedArchive;
 import org.springframework.boot.loader.archive.JarFileArchive;
+
+import java.io.File;
+import java.net.URL;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

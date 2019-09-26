@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.security.reactive;
 
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.web.server.WebFilterChainProxy;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
+import reactor.core.publisher.Flux;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Security in a reactive
@@ -41,7 +40,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
  */
 @Configuration
 @EnableConfigurationProperties(SecurityProperties.class)
-@ConditionalOnClass({ Flux.class, EnableWebFluxSecurity.class, WebFilterChainProxy.class, WebFluxConfigurer.class })
+@ConditionalOnClass({Flux.class, EnableWebFluxSecurity.class, WebFilterChainProxy.class, WebFluxConfigurer.class})
 public class ReactiveSecurityAutoConfiguration {
 
 	@Configuration

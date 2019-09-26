@@ -17,12 +17,7 @@
 package org.springframework.boot.autoconfigure.data.neo4j;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
-
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnNotWebApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,9 +37,9 @@ import org.springframework.web.context.WebApplicationContext;
  * @author Michael Simons
  */
 @Configuration
-@ConditionalOnClass({ Caffeine.class, CaffeineCacheManager.class })
+@ConditionalOnClass({Caffeine.class, CaffeineCacheManager.class})
 @ConditionalOnMissingBean(BookmarkManager.class)
-@ConditionalOnBean({ BeanFactoryBookmarkOperationAdvisor.class, BookmarkInterceptor.class })
+@ConditionalOnBean({BeanFactoryBookmarkOperationAdvisor.class, BookmarkInterceptor.class})
 class Neo4jBookmarkManagementConfiguration {
 
 	private static final String BOOKMARK_MANAGER_BEAN_NAME = "bookmarkManager";

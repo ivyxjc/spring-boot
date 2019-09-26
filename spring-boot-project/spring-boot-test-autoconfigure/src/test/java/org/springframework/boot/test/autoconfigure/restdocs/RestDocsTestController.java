@@ -16,14 +16,14 @@
 
 package org.springframework.boot.test.autoconfigure.restdocs;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.mvc.ControllerLinkBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class RestDocsTestController {

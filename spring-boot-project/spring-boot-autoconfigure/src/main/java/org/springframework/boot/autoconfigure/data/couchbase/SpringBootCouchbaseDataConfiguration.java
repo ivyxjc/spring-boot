@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.data.couchbase;
 
-import java.util.Set;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -34,6 +32,8 @@ import org.springframework.data.couchbase.core.CouchbaseTemplate;
 import org.springframework.data.couchbase.core.mapping.Document;
 import org.springframework.data.couchbase.core.query.Consistency;
 import org.springframework.data.couchbase.repository.support.IndexManager;
+
+import java.util.Set;
 
 /**
  * Configure Spring Data's couchbase support.
@@ -52,7 +52,7 @@ class SpringBootCouchbaseDataConfiguration extends AbstractCouchbaseDataConfigur
 	private final CouchbaseConfigurer couchbaseConfigurer;
 
 	SpringBootCouchbaseDataConfiguration(ApplicationContext applicationContext, CouchbaseDataProperties properties,
-			ObjectProvider<CouchbaseConfigurer> couchbaseConfigurer) {
+										 ObjectProvider<CouchbaseConfigurer> couchbaseConfigurer) {
 		this.applicationContext = applicationContext;
 		this.properties = properties;
 		this.couchbaseConfigurer = couchbaseConfigurer.getIfAvailable();

@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import javax.servlet.ServletRequest;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -41,6 +39,8 @@ import org.springframework.core.Ordered;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ObjectUtils;
 
+import javax.servlet.ServletRequest;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for servlet web servers.
  *
@@ -56,10 +56,10 @@ import org.springframework.util.ObjectUtils;
 @ConditionalOnClass(ServletRequest.class)
 @ConditionalOnWebApplication(type = Type.SERVLET)
 @EnableConfigurationProperties(ServerProperties.class)
-@Import({ ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
-		ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,
-		ServletWebServerFactoryConfiguration.EmbeddedJetty.class,
-		ServletWebServerFactoryConfiguration.EmbeddedUndertow.class })
+@Import({ServletWebServerFactoryAutoConfiguration.BeanPostProcessorsRegistrar.class,
+				ServletWebServerFactoryConfiguration.EmbeddedTomcat.class,
+				ServletWebServerFactoryConfiguration.EmbeddedJetty.class,
+				ServletWebServerFactoryConfiguration.EmbeddedUndertow.class})
 public class ServletWebServerFactoryAutoConfiguration {
 
 	@Bean
@@ -91,7 +91,7 @@ public class ServletWebServerFactoryAutoConfiguration {
 
 		@Override
 		public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-				BeanDefinitionRegistry registry) {
+											BeanDefinitionRegistry registry) {
 			if (this.beanFactory == null) {
 				return;
 			}

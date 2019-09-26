@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.server;
 
-import java.net.InetAddress;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
@@ -25,38 +23,38 @@ import org.springframework.boot.web.server.Ssl;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import java.net.InetAddress;
+
 /**
  * Properties for the management server (e.g. port and path settings).
  *
  * @author Dave Syer
  * @author Stephane Nicoll
  * @author Vedran Pavic
- * @since 2.0.0
  * @see ServerProperties
+ * @since 2.0.0
  */
 @ConfigurationProperties(prefix = "management.server", ignoreUnknownFields = true)
 public class ManagementServerProperties {
 
+	private final Servlet servlet = new Servlet();
 	/**
 	 * Management endpoint HTTP port (uses the same port as the application by default).
 	 * Configure a different port to use management-specific SSL.
 	 */
 	private Integer port;
-
 	/**
 	 * Network address to which the management endpoints should bind. Requires a custom
 	 * management.server.port.
 	 */
 	private InetAddress address;
-
-	private final Servlet servlet = new Servlet();
-
 	@NestedConfigurationProperty
 	private Ssl ssl;
 
 	/**
 	 * Returns the management port or {@code null} if the
 	 * {@link ServerProperties#getPort() server port} should be used.
+	 *
 	 * @return the port
 	 * @see #setPort(Integer)
 	 */
@@ -68,6 +66,7 @@ public class ManagementServerProperties {
 	 * Sets the port of the management server, use {@code null} if the
 	 * {@link ServerProperties#getPort() server port} should be used. Set to 0 to use a
 	 * random port or set to -1 to disable.
+	 *
 	 * @param port the port
 	 */
 	public void setPort(Integer port) {
@@ -108,6 +107,7 @@ public class ManagementServerProperties {
 		/**
 		 * Return the context path with no trailing slash (i.e. the '/' root context is
 		 * represented as the empty string).
+		 *
 		 * @return the context path (no trailing slash)
 		 */
 		public String getContextPath() {

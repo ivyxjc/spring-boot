@@ -16,13 +16,6 @@
 
 package org.springframework.boot.context.properties.migrator;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 import org.springframework.boot.configurationmetadata.ConfigurationMetadataProperty;
 import org.springframework.boot.configurationmetadata.ConfigurationMetadataRepository;
 import org.springframework.boot.configurationmetadata.Deprecation;
@@ -38,6 +31,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 /**
  * Report on {@link PropertyMigration properties migration}.
  *
@@ -50,7 +50,7 @@ class PropertiesMigrationReporter {
 	private final ConfigurableEnvironment environment;
 
 	PropertiesMigrationReporter(ConfigurationMetadataRepository metadataRepository,
-			ConfigurableEnvironment environment) {
+								ConfigurableEnvironment environment) {
 		this.allProperties = Collections.unmodifiableMap(metadataRepository.getAllProperties());
 		this.environment = environment;
 	}
@@ -58,6 +58,7 @@ class PropertiesMigrationReporter {
 	/**
 	 * Analyse the {@link ConfigurableEnvironment environment} and attempt to rename
 	 * legacy properties if a replacement exists.
+	 *
 	 * @return a report of the migration
 	 */
 	public PropertiesMigrationReport getReport() {
@@ -76,7 +77,7 @@ class PropertiesMigrationReporter {
 	}
 
 	private PropertySource<?> mapPropertiesWithReplacement(PropertiesMigrationReport report, String name,
-			List<PropertyMigration> properties) {
+														   List<PropertyMigration> properties) {
 		report.add(name, properties);
 		List<PropertyMigration> renamed = properties.stream().filter(PropertyMigration::isCompatibleType)
 				.collect(Collectors.toList());

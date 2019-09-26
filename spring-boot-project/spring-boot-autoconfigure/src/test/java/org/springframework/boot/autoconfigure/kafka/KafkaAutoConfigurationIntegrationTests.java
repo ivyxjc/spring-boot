@@ -16,15 +16,11 @@
 
 package org.springframework.boot.autoconfigure.kafka;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.Producer;
 import org.junit.After;
 import org.junit.ClassRule;
 import org.junit.Test;
-
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +34,9 @@ import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
 import org.springframework.messaging.handler.annotation.Header;
 
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -49,12 +48,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class KafkaAutoConfigurationIntegrationTests {
 
 	private static final String TEST_TOPIC = "testTopic";
-
-	private static final String ADMIN_CREATED_TOPIC = "adminCreatedTopic";
-
 	@ClassRule
 	public static final EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1, true, TEST_TOPIC);
-
+	private static final String ADMIN_CREATED_TOPIC = "adminCreatedTopic";
 	private AnnotationConfigApplicationContext context;
 
 	@After
@@ -64,7 +60,7 @@ public class KafkaAutoConfigurationIntegrationTests {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Test
 	public void testEndToEnd() throws Exception {
 		load(KafkaConfig.class, "spring.kafka.bootstrap-servers:" + getEmbeddedKafkaBrokersAsString(),
@@ -90,7 +86,7 @@ public class KafkaAutoConfigurationIntegrationTests {
 	}
 
 	private void load(Class<?> config, String... environment) {
-		this.context = doLoad(new Class<?>[] { config }, environment);
+		this.context = doLoad(new Class<?>[]{config}, environment);
 	}
 
 	private AnnotationConfigApplicationContext doLoad(Class<?>[] configs, String... environment) {

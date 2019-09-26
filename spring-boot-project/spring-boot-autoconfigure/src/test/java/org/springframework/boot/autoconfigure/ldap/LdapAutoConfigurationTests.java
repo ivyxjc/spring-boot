@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.ldap;
 
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
@@ -79,15 +78,15 @@ public class LdapAutoConfigurationTests {
 				"spring.ldap.password:secret", "spring.ldap.anonymous-read-only:true",
 				"spring.ldap.base:cn=SpringDevelopers",
 				"spring.ldap.baseEnvironment.java.naming.security.authentication:DIGEST-MD5").run((context) -> {
-					LdapContextSource contextSource = context.getBean(LdapContextSource.class);
-					assertThat(contextSource.getUserDn()).isEqualTo("root");
-					assertThat(contextSource.getPassword()).isEqualTo("secret");
-					assertThat(contextSource.isAnonymousReadOnly()).isTrue();
-					assertThat(contextSource.getBaseLdapPathAsString()).isEqualTo("cn=SpringDevelopers");
-					LdapProperties ldapProperties = context.getBean(LdapProperties.class);
-					assertThat(ldapProperties.getBaseEnvironment()).containsEntry("java.naming.security.authentication",
-							"DIGEST-MD5");
-				});
+			LdapContextSource contextSource = context.getBean(LdapContextSource.class);
+			assertThat(contextSource.getUserDn()).isEqualTo("root");
+			assertThat(contextSource.getPassword()).isEqualTo("secret");
+			assertThat(contextSource.isAnonymousReadOnly()).isTrue();
+			assertThat(contextSource.getBaseLdapPathAsString()).isEqualTo("cn=SpringDevelopers");
+			LdapProperties ldapProperties = context.getBean(LdapProperties.class);
+			assertThat(ldapProperties.getBaseEnvironment()).containsEntry("java.naming.security.authentication",
+					"DIGEST-MD5");
+		});
 	}
 
 	@Test

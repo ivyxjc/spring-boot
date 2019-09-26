@@ -31,6 +31,7 @@ public interface FlywayMigrationStrategy {
 
 	/**
 	 * Trigger flyway migration.
+	 *
 	 * @param flyway the flyway instance
 	 */
 	void migrate(Flyway flyway);

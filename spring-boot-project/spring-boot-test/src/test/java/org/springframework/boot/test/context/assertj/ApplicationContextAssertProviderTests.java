@@ -16,20 +16,17 @@
 
 package org.springframework.boot.test.context.assertj;
 
-import java.util.function.Supplier;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.StaticApplicationContext;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 /**

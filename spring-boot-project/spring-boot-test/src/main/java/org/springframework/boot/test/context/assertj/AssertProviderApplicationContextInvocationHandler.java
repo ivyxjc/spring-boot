@@ -16,6 +16,11 @@
 
 package org.springframework.boot.test.context.assertj;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.style.ToStringCreator;
+import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
@@ -23,11 +28,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.function.Supplier;
-
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.style.ToStringCreator;
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
 
 /**
  * {@link InvocationHandler} used by {@link ApplicationContextAssertProvider} generated
@@ -49,8 +49,7 @@ class AssertProviderApplicationContextInvocationHandler implements InvocationHan
 		if (contextOrStartupFailure instanceof RuntimeException) {
 			this.applicationContext = null;
 			this.startupFailure = (RuntimeException) contextOrStartupFailure;
-		}
-		else {
+		} else {
 			this.applicationContext = (ApplicationContext) contextOrStartupFailure;
 			this.startupFailure = null;
 		}
@@ -59,8 +58,7 @@ class AssertProviderApplicationContextInvocationHandler implements InvocationHan
 	private Object getContextOrStartupFailure(Supplier<?> contextSupplier) {
 		try {
 			return contextSupplier.get();
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			return ex;
 		}
 	}
@@ -104,7 +102,7 @@ class AssertProviderApplicationContextInvocationHandler implements InvocationHan
 
 	private boolean isGetSourceContext(Method method) {
 		return "getSourceApplicationContext".equals(method.getName()) && ((method.getParameterCount() == 0)
-				|| Arrays.equals(new Class<?>[] { Class.class }, method.getParameterTypes()));
+				|| Arrays.equals(new Class<?>[]{Class.class}, method.getParameterTypes()));
 	}
 
 	private Object getSourceContext(Object[] args) {
@@ -145,8 +143,7 @@ class AssertProviderApplicationContextInvocationHandler implements InvocationHan
 	private Object invokeApplicationContextMethod(Method method, Object[] args) throws Throwable {
 		try {
 			return method.invoke(getStartedApplicationContext(), args);
-		}
-		catch (InvocationTargetException ex) {
+		} catch (InvocationTargetException ex) {
 			throw ex.getTargetException();
 		}
 	}

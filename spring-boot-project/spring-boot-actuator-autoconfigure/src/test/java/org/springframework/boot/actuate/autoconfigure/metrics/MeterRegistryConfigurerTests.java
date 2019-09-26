@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.MeterRegistry.Config;
 import io.micrometer.core.instrument.Metrics;
@@ -30,15 +27,14 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.factory.ObjectProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link MeterRegistryConfigurer}.
@@ -152,8 +148,7 @@ public class MeterRegistryConfigurerTests {
 		try {
 			configurer.configure(this.mockRegistry);
 			assertThat(Metrics.globalRegistry.getRegistries()).contains(this.mockRegistry);
-		}
-		finally {
+		} finally {
 			Metrics.removeRegistry(this.mockRegistry);
 		}
 	}

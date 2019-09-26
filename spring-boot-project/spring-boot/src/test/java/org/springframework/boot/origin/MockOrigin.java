@@ -32,6 +32,10 @@ public final class MockOrigin implements Origin {
 		this.value = value;
 	}
 
+	public static Origin of(String value) {
+		return (value != null) ? new MockOrigin(value) : null;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -51,10 +55,6 @@ public final class MockOrigin implements Origin {
 	@Override
 	public String toString() {
 		return this.value;
-	}
-
-	public static Origin of(String value) {
-		return (value != null) ? new MockOrigin(value) : null;
 	}
 
 }

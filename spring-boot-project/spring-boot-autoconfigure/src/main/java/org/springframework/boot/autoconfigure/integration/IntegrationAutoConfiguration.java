@@ -16,19 +16,11 @@
 
 package org.springframework.boot.autoconfigure.integration;
 
-import javax.management.MBeanServer;
-import javax.sql.DataSource;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
-import org.springframework.boot.autoconfigure.condition.SearchStrategy;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -47,6 +39,9 @@ import org.springframework.integration.jmx.config.EnableIntegrationMBeanExport;
 import org.springframework.integration.monitor.IntegrationMBeanExporter;
 import org.springframework.util.StringUtils;
 
+import javax.management.MBeanServer;
+import javax.sql.DataSource;
+
 /**
  * {@link org.springframework.boot.autoconfigure.EnableAutoConfiguration
  * Auto-configuration} for Spring Integration.
@@ -61,7 +56,7 @@ import org.springframework.util.StringUtils;
 @Configuration
 @ConditionalOnClass(EnableIntegration.class)
 @EnableConfigurationProperties(IntegrationProperties.class)
-@AutoConfigureAfter({ DataSourceAutoConfiguration.class, JmxAutoConfiguration.class })
+@AutoConfigureAfter({DataSourceAutoConfiguration.class, JmxAutoConfiguration.class})
 public class IntegrationAutoConfiguration {
 
 	/**
@@ -117,7 +112,7 @@ public class IntegrationAutoConfiguration {
 	@Configuration
 	@ConditionalOnClass(EnableIntegrationManagement.class)
 	@ConditionalOnMissingBean(value = IntegrationManagementConfigurer.class,
-			name = IntegrationManagementConfigurer.MANAGEMENT_CONFIGURER_NAME, search = SearchStrategy.CURRENT)
+							  name = IntegrationManagementConfigurer.MANAGEMENT_CONFIGURER_NAME, search = SearchStrategy.CURRENT)
 	protected static class IntegrationManagementConfiguration {
 
 		@Configuration
@@ -149,7 +144,7 @@ public class IntegrationAutoConfiguration {
 		@Bean
 		@ConditionalOnMissingBean
 		public IntegrationDataSourceInitializer integrationDataSourceInitializer(DataSource dataSource,
-				ResourceLoader resourceLoader, IntegrationProperties properties) {
+																				 ResourceLoader resourceLoader, IntegrationProperties properties) {
 			return new IntegrationDataSourceInitializer(dataSource, resourceLoader, properties);
 		}
 

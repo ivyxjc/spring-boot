@@ -16,16 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.integrationtest;
 
-import java.io.IOException;
-import java.util.function.Supplier;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -51,6 +42,13 @@ import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.function.Supplier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -63,16 +61,16 @@ public class WebMvcEndpointExposureIntegrationTests {
 
 	private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner(
 			AnnotationConfigServletWebServerApplicationContext::new)
-					.withConfiguration(AutoConfigurations.of(ServletWebServerFactoryAutoConfiguration.class,
-							DispatcherServletAutoConfiguration.class, JacksonAutoConfiguration.class,
-							HttpMessageConvertersAutoConfiguration.class, WebMvcAutoConfiguration.class,
-							EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
-							ManagementContextAutoConfiguration.class, ServletManagementContextAutoConfiguration.class,
-							ManagementContextAutoConfiguration.class, ServletManagementContextAutoConfiguration.class,
-							HttpTraceAutoConfiguration.class, HealthIndicatorAutoConfiguration.class))
-					.withConfiguration(AutoConfigurations.of(EndpointAutoConfigurationClasses.ALL))
-					.withUserConfiguration(CustomMvcEndpoint.class, CustomServletEndpoint.class)
-					.withPropertyValues("server.port:0");
+			.withConfiguration(AutoConfigurations.of(ServletWebServerFactoryAutoConfiguration.class,
+					DispatcherServletAutoConfiguration.class, JacksonAutoConfiguration.class,
+					HttpMessageConvertersAutoConfiguration.class, WebMvcAutoConfiguration.class,
+					EndpointAutoConfiguration.class, WebEndpointAutoConfiguration.class,
+					ManagementContextAutoConfiguration.class, ServletManagementContextAutoConfiguration.class,
+					ManagementContextAutoConfiguration.class, ServletManagementContextAutoConfiguration.class,
+					HttpTraceAutoConfiguration.class, HealthIndicatorAutoConfiguration.class))
+			.withConfiguration(AutoConfigurations.of(EndpointAutoConfigurationClasses.ALL))
+			.withUserConfiguration(CustomMvcEndpoint.class, CustomServletEndpoint.class)
+			.withPropertyValues("server.port:0");
 
 	@Test
 	public void webEndpointsAreDisabledByDefault() {

@@ -16,15 +16,11 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.FilteredEndpoint;
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Identifies a type as being an endpoint that is only exposed over HTTP.
@@ -42,6 +38,7 @@ public @interface WebEndpoint {
 
 	/**
 	 * The id of the endpoint.
+	 *
 	 * @return the id
 	 */
 	@AliasFor(annotation = Endpoint.class)
@@ -49,6 +46,7 @@ public @interface WebEndpoint {
 
 	/**
 	 * If the endpoint should be enabled or disabled by default.
+	 *
 	 * @return {@code true} if the endpoint is enabled by default
 	 */
 	@AliasFor(annotation = Endpoint.class)

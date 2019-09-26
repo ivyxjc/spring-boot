@@ -17,7 +17,6 @@
 package org.springframework.boot.test.context.runner;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.web.context.ConfigurableWebApplicationContext;

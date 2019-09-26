@@ -19,11 +19,10 @@ package org.springframework.boot;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import sampleconfig.MyComponentInPackageWithoutDot;
-
 import org.springframework.boot.sampleconfig.MyComponent;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import sampleconfig.MyComponentInPackageWithoutDot;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

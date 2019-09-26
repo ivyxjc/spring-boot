@@ -16,27 +16,26 @@
 
 package org.springframework.boot.autoconfigureprocessor;
 
+import javax.annotation.processing.SupportedAnnotationTypes;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.annotation.processing.SupportedAnnotationTypes;
-
 /**
  * Version of {@link AutoConfigureAnnotationProcessor} used for testing.
  *
  * @author Madhura Bhave
  */
-@SupportedAnnotationTypes({ "org.springframework.boot.autoconfigureprocessor.TestConfiguration",
-		"org.springframework.boot.autoconfigureprocessor.TestConditionalOnClass",
-		"org.springframework.boot.autoconfigure.condition.TestConditionalOnBean",
-		"org.springframework.boot.autoconfigure.condition.TestConditionalOnSingleCandidate",
-		"org.springframework.boot.autoconfigure.condition.TestConditionalOnWebApplication",
-		"org.springframework.boot.autoconfigureprocessor.TestAutoConfigureBefore",
-		"org.springframework.boot.autoconfigureprocessor.TestAutoConfigureAfter",
-		"org.springframework.boot.autoconfigureprocessor.TestAutoConfigureOrder" })
+@SupportedAnnotationTypes({"org.springframework.boot.autoconfigureprocessor.TestConfiguration",
+								  "org.springframework.boot.autoconfigureprocessor.TestConditionalOnClass",
+								  "org.springframework.boot.autoconfigure.condition.TestConditionalOnBean",
+								  "org.springframework.boot.autoconfigure.condition.TestConditionalOnSingleCandidate",
+								  "org.springframework.boot.autoconfigure.condition.TestConditionalOnWebApplication",
+								  "org.springframework.boot.autoconfigureprocessor.TestAutoConfigureBefore",
+								  "org.springframework.boot.autoconfigureprocessor.TestAutoConfigureAfter",
+								  "org.springframework.boot.autoconfigureprocessor.TestAutoConfigureOrder"})
 public class TestAutoConfigureAnnotationProcessor extends AutoConfigureAnnotationProcessor {
 
 	private final File outputLocation;

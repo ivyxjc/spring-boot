@@ -16,9 +16,9 @@
 
 package org.springframework.boot.context.properties.source;
 
-import java.util.Locale;
-
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName.Form;
+
+import java.util.Locale;
 
 /**
  * {@link PropertyMapper} for system environment variables. Names are mapped by removing
@@ -36,15 +36,19 @@ final class SystemEnvironmentPropertyMapper implements PropertyMapper {
 
 	public static final PropertyMapper INSTANCE = new SystemEnvironmentPropertyMapper();
 
+	private static boolean isNumber(String string) {
+		return string.chars().allMatch(Character::isDigit);
+	}
+
 	@Override
 	public PropertyMapping[] map(ConfigurationPropertyName configurationPropertyName) {
 		String name = convertName(configurationPropertyName);
 		String legacyName = convertLegacyName(configurationPropertyName);
 		if (name.equals(legacyName)) {
-			return new PropertyMapping[] { new PropertyMapping(name, configurationPropertyName) };
+			return new PropertyMapping[]{new PropertyMapping(name, configurationPropertyName)};
 		}
-		return new PropertyMapping[] { new PropertyMapping(name, configurationPropertyName),
-				new PropertyMapping(legacyName, configurationPropertyName) };
+		return new PropertyMapping[]{new PropertyMapping(name, configurationPropertyName),
+				new PropertyMapping(legacyName, configurationPropertyName)};
 	}
 
 	@Override
@@ -53,14 +57,13 @@ final class SystemEnvironmentPropertyMapper implements PropertyMapper {
 		if (name == null || name.isEmpty()) {
 			return NO_MAPPINGS;
 		}
-		return new PropertyMapping[] { new PropertyMapping(propertySourceName, name) };
+		return new PropertyMapping[]{new PropertyMapping(propertySourceName, name)};
 	}
 
 	private ConfigurationPropertyName convertName(String propertySourceName) {
 		try {
 			return ConfigurationPropertyName.adapt(propertySourceName, '_', this::processElementValue);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}
@@ -98,10 +101,6 @@ final class SystemEnvironmentPropertyMapper implements PropertyMapper {
 	private CharSequence processElementValue(CharSequence value) {
 		String result = value.toString().toLowerCase(Locale.ENGLISH);
 		return isNumber(result) ? "[" + result + "]" : result;
-	}
-
-	private static boolean isNumber(String string) {
-		return string.chars().allMatch(Character::isDigit);
 	}
 
 }

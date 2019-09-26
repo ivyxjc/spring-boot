@@ -27,6 +27,7 @@ public interface LaunchScript {
 
 	/**
 	 * The content of the launch script as a byte array.
+	 *
 	 * @return the script bytes
 	 */
 	byte[] toByteArray();

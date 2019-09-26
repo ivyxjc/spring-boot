@@ -47,8 +47,7 @@ class OnInitializedRestarterCondition extends SpringBootCondition {
 	private Restarter getRestarter() {
 		try {
 			return Restarter.getInstance();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}

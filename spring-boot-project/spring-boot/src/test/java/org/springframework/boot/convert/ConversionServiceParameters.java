@@ -16,19 +16,18 @@
 
 package org.springframework.boot.convert;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.ConverterFactory;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.format.Formatter;
 import org.springframework.format.support.FormattingConversionService;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Factory to create {@link ConversionService ConversionServices} for test
@@ -57,8 +56,8 @@ public class ConversionServiceParameters implements Iterable<Object[]> {
 		FormattingConversionService withoutDefaults = new FormattingConversionService();
 		initializer.accept(withoutDefaults);
 		List<Object[]> parameters = new ArrayList<>();
-		parameters.add(new Object[] { "without defaults conversion service", withoutDefaults });
-		parameters.add(new Object[] { "application conversion service", new ApplicationConversionService() });
+		parameters.add(new Object[]{"without defaults conversion service", withoutDefaults});
+		parameters.add(new Object[]{"application conversion service", new ApplicationConversionService()});
 		this.parameters = Collections.unmodifiableList(parameters);
 	}
 

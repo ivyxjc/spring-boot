@@ -28,6 +28,7 @@ public interface ExitCodeExceptionMapper {
 
 	/**
 	 * Returns the exit code that should be returned from the application.
+	 *
 	 * @param exception the exception causing the application to exit
 	 * @return the exit code or {@code 0}.
 	 */

@@ -16,12 +16,12 @@
 
 package org.springframework.boot.cli.compiler.dependencies;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -84,7 +84,7 @@ public class CompositeDependencyManagementTests {
 				.willReturn(Arrays.asList(new Dependency("test", "artifact", "1.2.4")));
 		assertThat(new CompositeDependencyManagement(this.dependencyManagement1, this.dependencyManagement2)
 				.getDependencies()).containsOnly(new Dependency("test", "artifact", "1.2.3"),
-						new Dependency("test", "artifact", "1.2.4"));
+				new Dependency("test", "artifact", "1.2.4"));
 	}
 
 }

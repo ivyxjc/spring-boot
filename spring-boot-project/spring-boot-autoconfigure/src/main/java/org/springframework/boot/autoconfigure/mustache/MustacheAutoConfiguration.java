@@ -16,14 +16,11 @@
 
 package org.springframework.boot.autoconfigure.mustache;
 
-import javax.annotation.PostConstruct;
-
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Mustache.Collector;
 import com.samskivert.mustache.Mustache.TemplateLoader;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -35,6 +32,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 
+import javax.annotation.PostConstruct;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Mustache.
  *
@@ -45,7 +44,7 @@ import org.springframework.core.env.Environment;
 @Configuration
 @ConditionalOnClass(Mustache.class)
 @EnableConfigurationProperties(MustacheProperties.class)
-@Import({ MustacheServletWebConfiguration.class, MustacheReactiveWebConfiguration.class })
+@Import({MustacheServletWebConfiguration.class, MustacheReactiveWebConfiguration.class})
 public class MustacheAutoConfiguration {
 
 	private static final Log logger = LogFactory.getLog(MustacheAutoConfiguration.class);
@@ -57,7 +56,7 @@ public class MustacheAutoConfiguration {
 	private final ApplicationContext applicationContext;
 
 	public MustacheAutoConfiguration(MustacheProperties mustache, Environment environment,
-			ApplicationContext applicationContext) {
+									 ApplicationContext applicationContext) {
 		this.mustache = mustache;
 		this.environment = environment;
 		this.applicationContext = applicationContext;

@@ -16,16 +16,12 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.condition;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.EndpointExtension;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.core.env.Environment;
+
+import java.lang.annotation.*;
 
 /**
  * {@link Conditional} that checks whether an endpoint is enabled or not. Matches
@@ -88,11 +84,11 @@ import org.springframework.core.env.Environment;
  * }</pre>
  *
  * @author Stephane Nicoll
- * @since 2.0.0
  * @see Endpoint
+ * @since 2.0.0
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.TYPE })
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Documented
 @Conditional(OnEnabledEndpointCondition.class)
 public @interface ConditionalOnEnabledEndpoint {
@@ -100,6 +96,7 @@ public @interface ConditionalOnEnabledEndpoint {
 	/**
 	 * The endpoint type that should be checked. Inferred when the return type of the
 	 * {@code @Bean} method is either an {@link Endpoint} or an {@link EndpointExtension}.
+	 *
 	 * @return the endpoint type to check
 	 * @since 2.0.6
 	 */

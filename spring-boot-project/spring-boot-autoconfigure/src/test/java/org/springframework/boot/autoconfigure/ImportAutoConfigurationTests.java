@@ -16,16 +16,15 @@
 
 package org.springframework.boot.autoconfigure;
 
+import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.util.ClassUtils;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Test;
-
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.util.ClassUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -79,48 +78,48 @@ public class ImportAutoConfigurationTests {
 		return orderedConfigBeans;
 	}
 
-	@ImportAutoConfiguration({ ConfigD.class, ConfigB.class })
+	@Retention(RetentionPolicy.RUNTIME)
+	@ImportAutoConfiguration({ConfigC.class, ConfigA.class})
+	@interface MetaImportAutoConfiguration {
+
+	}
+
+	@ImportAutoConfiguration({ConfigD.class, ConfigB.class})
 	@MetaImportAutoConfiguration
 	static class Config {
 
 	}
 
 	@MetaImportAutoConfiguration
-	@ImportAutoConfiguration({ ConfigB.class, ConfigD.class })
+	@ImportAutoConfiguration({ConfigB.class, ConfigD.class})
 	static class AnotherConfig {
 
 	}
 
 	@MetaImportAutoConfiguration
-	@ImportAutoConfiguration(classes = { ConfigB.class, ConfigD.class })
+	@ImportAutoConfiguration(classes = {ConfigB.class, ConfigD.class})
 	static class AnotherConfigUsingClasses {
 
 	}
 
-	@ImportAutoConfiguration(classes = { ConfigD.class, ConfigB.class }, exclude = ConfigC.class)
+	@ImportAutoConfiguration(classes = {ConfigD.class, ConfigB.class}, exclude = ConfigC.class)
 	@MetaImportAutoConfiguration
 	static class ExcludingConfig {
 
 	}
 
-	@ImportAutoConfiguration(classes = { ConfigA.class, ConfigD.class })
+	@ImportAutoConfiguration(classes = {ConfigA.class, ConfigD.class})
 	static class ImportADConfig {
 
 	}
 
-	@ImportAutoConfiguration(exclude = { ConfigA.class, ConfigD.class })
+	@ImportAutoConfiguration(exclude = {ConfigA.class, ConfigD.class})
 	static class ExcludeADConfig {
 
 	}
 
 	@ImportAutoConfiguration(exclude = ConfigD.class)
 	static class ExcludeDConfig {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@ImportAutoConfiguration({ ConfigC.class, ConfigA.class })
-	@interface MetaImportAutoConfiguration {
 
 	}
 

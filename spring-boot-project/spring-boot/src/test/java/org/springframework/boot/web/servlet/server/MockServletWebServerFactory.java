@@ -16,15 +16,14 @@
 
 package org.springframework.boot.web.servlet.server;
 
-import java.util.Arrays;
-
-import javax.servlet.ServletContext;
-
 import org.springframework.boot.testsupport.web.servlet.MockServletWebServer.RegisteredFilter;
 import org.springframework.boot.testsupport.web.servlet.MockServletWebServer.RegisteredServlet;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+
+import javax.servlet.ServletContext;
+import java.util.Arrays;
 
 import static org.mockito.Mockito.spy;
 

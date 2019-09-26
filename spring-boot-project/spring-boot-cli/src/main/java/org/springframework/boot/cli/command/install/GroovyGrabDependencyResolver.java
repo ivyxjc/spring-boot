@@ -16,6 +16,10 @@
 
 package org.springframework.boot.cli.command.install;
 
+import org.codehaus.groovy.control.CompilationFailedException;
+import org.springframework.boot.cli.compiler.GroovyCompiler;
+import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -26,11 +30,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.codehaus.groovy.control.CompilationFailedException;
-
-import org.springframework.boot.cli.compiler.GroovyCompiler;
-import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
 
 /**
  * A {@code DependencyResolver} implemented using Groovy's {@code @Grab}.
@@ -83,8 +82,7 @@ class GroovyGrabDependencyResolver implements DependencyResolver {
 	private File toFile(URL url) {
 		try {
 			return new File(url.toURI());
-		}
-		catch (URISyntaxException ex) {
+		} catch (URISyntaxException ex) {
 			return new File(url.getPath());
 		}
 	}

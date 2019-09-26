@@ -16,27 +16,12 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import groovy.grape.Grape;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.model.Repository;
-import org.apache.maven.model.building.DefaultModelBuilder;
-import org.apache.maven.model.building.DefaultModelBuilderFactory;
-import org.apache.maven.model.building.DefaultModelBuildingRequest;
-import org.apache.maven.model.building.ModelSource;
-import org.apache.maven.model.building.UrlModelSource;
+import org.apache.maven.model.building.*;
 import org.apache.maven.model.resolution.InvalidRepositoryException;
 import org.apache.maven.model.resolution.ModelResolver;
 import org.apache.maven.model.resolution.UnresolvableModelException;
@@ -49,12 +34,15 @@ import org.codehaus.groovy.control.messages.Message;
 import org.codehaus.groovy.control.messages.SyntaxErrorMessage;
 import org.codehaus.groovy.syntax.SyntaxException;
 import org.codehaus.groovy.transform.ASTTransformation;
-
 import org.springframework.boot.cli.compiler.dependencies.MavenModelDependencyManagement;
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
 import org.springframework.boot.groovy.DependencyManagementBom;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.util.*;
 
 /**
  * {@link ASTTransformation} for processing {@link DependencyManagementBom} annotations.
@@ -89,8 +77,7 @@ public class DependencyManagementBomTransformation extends AnnotatedNodeASTTrans
 				for (AnnotationNode annotationNode : annotationNodes) {
 					handleDuplicateDependencyManagementBomAnnotation(annotationNode);
 				}
-			}
-			else {
+			} else {
 				processDependencyManagementBomAnnotation(annotationNodes.get(0));
 			}
 		}
@@ -117,8 +104,7 @@ public class DependencyManagementBomTransformation extends AnnotatedNodeASTTrans
 					dependency.put("version", components[2]);
 					dependency.put("type", "pom");
 					dependencies.add(dependency);
-				}
-				else {
+				} else {
 					handleMalformedDependency(expression);
 				}
 			}
@@ -145,8 +131,7 @@ public class DependencyManagementBomTransformation extends AnnotatedNodeASTTrans
 			if (expression instanceof ConstantExpression
 					&& ((ConstantExpression) expression).getValue() instanceof String) {
 				expressions.add((ConstantExpression) expression);
-			}
-			else {
+			} else {
 				reportError("Each entry in the array must be an " + "inline string constant", expression);
 			}
 		}
@@ -170,8 +155,7 @@ public class DependencyManagementBomTransformation extends AnnotatedNodeASTTrans
 				request.setSystemProperties(System.getProperties());
 				Model model = modelBuilder.build(request).getEffectiveModel();
 				this.resolutionContext.addDependencyManagement(new MavenModelDependencyManagement(model));
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new IllegalStateException("Failed to build model for '" + uri + "'. Is it a valid Maven bom?",
 						ex);
 			}
@@ -215,8 +199,7 @@ public class DependencyManagementBomTransformation extends AnnotatedNodeASTTrans
 			dependency.put("type", "pom");
 			try {
 				return new UrlModelSource(Grape.getInstance().resolve(null, dependency)[0].toURL());
-			}
-			catch (MalformedURLException ex) {
+			} catch (MalformedURLException ex) {
 				throw new UnresolvableModelException(ex.getMessage(), groupId, artifactId, version);
 			}
 		}

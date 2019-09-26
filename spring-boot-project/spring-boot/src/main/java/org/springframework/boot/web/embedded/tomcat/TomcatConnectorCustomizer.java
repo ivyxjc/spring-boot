@@ -30,6 +30,7 @@ public interface TomcatConnectorCustomizer {
 
 	/**
 	 * Customize the connector.
+	 *
 	 * @param connector the connector to customize
 	 */
 	void customize(Connector connector);

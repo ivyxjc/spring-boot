@@ -1,9 +1,9 @@
 plugins {
-	id 'war'
-	id 'application'
-	id 'org.springframework.boot' version '{version}'
+    id 'war'
+    id 'application'
+    id 'org.springframework.boot' version '{version}'
 }
 
 springBoot {
-	mainClassName = 'com.example.CustomMain'
+    mainClassName = 'com.example.CustomMain'
 }

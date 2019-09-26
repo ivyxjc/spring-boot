@@ -39,7 +39,7 @@ class Tree extends ReflectionWrapper {
 
 	public void accept(TreeVisitor visitor) throws Exception {
 		this.acceptMethod.invoke(getInstance(), Proxy.newProxyInstance(getInstance().getClass().getClassLoader(),
-				new Class<?>[] { this.treeVisitorType }, new TreeVisitorInvocationHandler(visitor)), 0);
+				new Class<?>[]{this.treeVisitorType}, new TreeVisitorInvocationHandler(visitor)), 0);
 	}
 
 	/**

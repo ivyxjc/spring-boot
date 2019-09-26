@@ -16,13 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.net.URI;
-
-import javax.servlet.MultipartConfigElement;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -47,6 +42,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import javax.servlet.MultipartConfigElement;
+import java.net.URI;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -169,7 +167,7 @@ public class MultipartAutoConfigurationTests {
 	}
 
 	private void testWebServerWithCustomMultipartConfigEnabledSetting(final String propertyValue,
-			int expectedNumberOfMultipartConfigElementBeans) {
+																	  int expectedNumberOfMultipartConfigElementBeans) {
 		this.context = new AnnotationConfigServletWebServerApplicationContext();
 		TestPropertyValues.of("spring.servlet.multipart.enabled=" + propertyValue).applyTo(this.context);
 		this.context.register(WebServerWithNoMultipartTomcat.class, BaseConfiguration.class);
@@ -284,8 +282,8 @@ public class MultipartAutoConfigurationTests {
 	}
 
 	@Configuration
-	@Import({ ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-			MultipartAutoConfiguration.class })
+	@Import({ServletWebServerFactoryAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+					MultipartAutoConfiguration.class})
 	@EnableConfigurationProperties(MultipartProperties.class)
 	protected static class BaseConfiguration {
 

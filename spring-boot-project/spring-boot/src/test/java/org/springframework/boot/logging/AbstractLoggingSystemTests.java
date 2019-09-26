@@ -16,14 +16,13 @@
 
 package org.springframework.boot.logging;
 
-import java.io.IOException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
 
 /**
  * Base for {@link LoggingSystem} tests.

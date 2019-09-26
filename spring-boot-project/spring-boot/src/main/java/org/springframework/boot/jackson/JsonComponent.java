@@ -16,17 +16,12 @@
 
 package org.springframework.boot.jackson;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonSerializer;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.stereotype.Component;
+
+import java.lang.annotation.*;
 
 /**
  * {@link Component} that provides {@link JsonSerializer} and/or {@link JsonDeserializer}
@@ -53,9 +48,9 @@ import org.springframework.stereotype.Component;
  *
  * </pre>
  *
+ * @author Phillip Webb
  * @see JsonComponentModule
  * @since 1.4.0
- * @author Phillip Webb
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -66,6 +61,7 @@ public @interface JsonComponent {
 	/**
 	 * The value may indicate a suggestion for a logical component name, to be turned into
 	 * a Spring bean in case of an autodetected component.
+	 *
 	 * @return the component name
 	 */
 	@AliasFor(annotation = Component.class)

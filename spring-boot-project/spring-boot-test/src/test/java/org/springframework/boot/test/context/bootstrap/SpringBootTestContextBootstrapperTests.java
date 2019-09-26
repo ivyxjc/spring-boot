@@ -17,7 +17,6 @@
 package org.springframework.boot.test.context.bootstrap;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.context.SpringBootTestContextBootstrapper;

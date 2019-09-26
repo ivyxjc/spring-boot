@@ -16,18 +16,6 @@
 
 package org.springframework.boot.actuate.web.mappings.servlet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.servlet.Servlet;
-
 import org.springframework.boot.actuate.web.mappings.HandlerMethodDescription;
 import org.springframework.boot.actuate.web.mappings.MappingDescriptionProvider;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -41,6 +29,12 @@ import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.handler.AbstractUrlHandlerMapping;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping;
+
+import javax.servlet.Servlet;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A {@link MappingDescriptionProvider} that introspects the {@link HandlerMapping
@@ -63,6 +57,17 @@ public class DispatcherServletsMappingDescriptionProvider implements MappingDesc
 			providers.add(new DelegatingHandlerMappingDescriptionProvider(new ArrayList<>(providers)));
 		}
 		descriptionProviders = Collections.unmodifiableList(providers);
+	}
+
+	@SuppressWarnings("unchecked")
+	private static <T extends HandlerMapping> List<DispatcherServletMappingDescription> describe(T handlerMapping,
+																								 List<HandlerMappingDescriptionProvider<?>> descriptionProviders) {
+		for (HandlerMappingDescriptionProvider<?> descriptionProvider : descriptionProviders) {
+			if (descriptionProvider.getMappingClass().isInstance(handlerMapping)) {
+				return ((HandlerMappingDescriptionProvider<T>) descriptionProvider).describe(handlerMapping);
+			}
+		}
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -107,17 +112,6 @@ public class DispatcherServletsMappingDescriptionProvider implements MappingDesc
 
 	private <T extends HandlerMapping> Stream<DispatcherServletMappingDescription> describe(T handlerMapping) {
 		return describe(handlerMapping, descriptionProviders).stream();
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T extends HandlerMapping> List<DispatcherServletMappingDescription> describe(T handlerMapping,
-			List<HandlerMappingDescriptionProvider<?>> descriptionProviders) {
-		for (HandlerMappingDescriptionProvider<?> descriptionProvider : descriptionProviders) {
-			if (descriptionProvider.getMappingClass().isInstance(handlerMapping)) {
-				return ((HandlerMappingDescriptionProvider<T>) descriptionProvider).describe(handlerMapping);
-			}
-		}
-		return Collections.emptyList();
 	}
 
 	private interface HandlerMappingDescriptionProvider<T extends HandlerMapping> {

@@ -16,16 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.orm.jpa;
 
-import java.util.Collections;
-import java.util.Map;
-
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceException;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.jpa.HibernateMetrics;
 import org.hibernate.SessionFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
@@ -37,6 +30,11 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceException;
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for metrics on all available
  * Hibernate {@link EntityManagerFactory} instances that have statistics enabled.
@@ -46,10 +44,10 @@ import org.springframework.util.StringUtils;
  * @since 2.1.0
  */
 @Configuration
-@AutoConfigureAfter({ MetricsAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
-		SimpleMetricsExportAutoConfiguration.class })
-@ConditionalOnClass({ EntityManagerFactory.class, SessionFactory.class, MeterRegistry.class })
-@ConditionalOnBean({ EntityManagerFactory.class, MeterRegistry.class })
+@AutoConfigureAfter({MetricsAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
+							SimpleMetricsExportAutoConfiguration.class})
+@ConditionalOnClass({EntityManagerFactory.class, SessionFactory.class, MeterRegistry.class})
+@ConditionalOnBean({EntityManagerFactory.class, MeterRegistry.class})
 public class HibernateMetricsAutoConfiguration {
 
 	private static final String ENTITY_MANAGER_FACTORY_SUFFIX = "entityManagerFactory";
@@ -70,14 +68,14 @@ public class HibernateMetricsAutoConfiguration {
 		try {
 			new HibernateMetrics(entityManagerFactory.unwrap(SessionFactory.class), entityManagerFactoryName,
 					Collections.emptyList()).bindTo(this.registry);
-		}
-		catch (PersistenceException ex) {
+		} catch (PersistenceException ex) {
 			// Continue
 		}
 	}
 
 	/**
 	 * Get the name of an {@link EntityManagerFactory} based on its {@code beanName}.
+	 *
 	 * @param beanName the name of the {@link EntityManagerFactory} bean
 	 * @return a name for the given entity manager factory
 	 */

@@ -15,12 +15,8 @@
  */
 package org.springframework.boot.actuate.autoconfigure.web.server;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.web.servlet.ServletManagementContextAutoConfiguration;
@@ -29,6 +25,9 @@ import org.springframework.boot.autoconfigure.web.servlet.ServletWebServerFactor
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.boot.test.rule.OutputCapture;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,10 +46,10 @@ public class ManagementContextAutoConfigurationTests {
 	public void childManagementContextShouldStartForEmbeddedServer() {
 		WebApplicationContextRunner contextRunner = new WebApplicationContextRunner(
 				AnnotationConfigServletWebServerApplicationContext::new)
-						.withConfiguration(AutoConfigurations.of(ManagementContextAutoConfiguration.class,
-								ServletWebServerFactoryAutoConfiguration.class,
-								ServletManagementContextAutoConfiguration.class, WebEndpointAutoConfiguration.class,
-								EndpointAutoConfiguration.class));
+				.withConfiguration(AutoConfigurations.of(ManagementContextAutoConfiguration.class,
+						ServletWebServerFactoryAutoConfiguration.class,
+						ServletManagementContextAutoConfiguration.class, WebEndpointAutoConfiguration.class,
+						EndpointAutoConfiguration.class));
 		contextRunner.withPropertyValues("server.port=0", "management.server.port=0")
 				.run((context) -> assertThat(tomcatStartedOccurencesIn(this.output.toString())).isEqualTo(2));
 

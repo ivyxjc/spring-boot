@@ -16,19 +16,18 @@
 
 package org.springframework.boot.convert;
 
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.util.ReflectionUtils;
+
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,6 +43,15 @@ public class DelimitedStringToCollectionConverterTests {
 
 	public DelimitedStringToCollectionConverterTests(String name, ConversionService conversionService) {
 		this.conversionService = conversionService;
+	}
+
+	@Parameters(name = "{0}")
+	public static Iterable<Object[]> conversionServices() {
+		return new ConversionServiceParameters(DelimitedStringToCollectionConverterTests::addConverter);
+	}
+
+	private static void addConverter(FormattingConversionService service) {
+		service.addConverter(new DelimitedStringToCollectionConverter(service));
 	}
 
 	@Test
@@ -127,15 +135,6 @@ public class DelimitedStringToCollectionConverterTests {
 		MyCustomList<String> converted = (MyCustomList<String>) this.conversionService.convert("a*b", sourceType,
 				targetType);
 		assertThat(converted).containsExactly("a", "b");
-	}
-
-	@Parameters(name = "{0}")
-	public static Iterable<Object[]> conversionServices() {
-		return new ConversionServiceParameters(DelimitedStringToCollectionConverterTests::addConverter);
-	}
-
-	private static void addConverter(FormattingConversionService service) {
-		service.addConverter(new DelimitedStringToCollectionConverter(service));
 	}
 
 	static class Values {

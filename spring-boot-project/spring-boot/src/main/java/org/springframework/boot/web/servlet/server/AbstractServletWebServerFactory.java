@@ -16,31 +16,21 @@
 
 package org.springframework.boot.web.servlet.server;
 
-import java.io.File;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.SessionCookieConfig;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.web.server.AbstractConfigurableWebServerFactory;
 import org.springframework.boot.web.server.MimeMappings;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.SessionCookieConfig;
+import java.io.File;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * Abstract base class for {@link ConfigurableServletWebServerFactory} implementations.
@@ -58,28 +48,17 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 		implements ConfigurableServletWebServerFactory {
 
 	protected final Log logger = LogFactory.getLog(getClass());
-
-	private String contextPath = "";
-
-	private String displayName;
-
-	private Session session = new Session();
-
-	private boolean registerDefaultServlet = true;
-
-	private MimeMappings mimeMappings = new MimeMappings(MimeMappings.DEFAULT);
-
-	private List<ServletContextInitializer> initializers = new ArrayList<>();
-
-	private Jsp jsp = new Jsp();
-
-	private Map<Locale, Charset> localeCharsetMappings = new HashMap<>();
-
-	private Map<String, String> initParameters = Collections.emptyMap();
-
 	private final DocumentRoot documentRoot = new DocumentRoot(this.logger);
-
 	private final StaticResourceJars staticResourceJars = new StaticResourceJars();
+	private String contextPath = "";
+	private String displayName;
+	private Session session = new Session();
+	private boolean registerDefaultServlet = true;
+	private MimeMappings mimeMappings = new MimeMappings(MimeMappings.DEFAULT);
+	private List<ServletContextInitializer> initializers = new ArrayList<>();
+	private Jsp jsp = new Jsp();
+	private Map<Locale, Charset> localeCharsetMappings = new HashMap<>();
+	private Map<String, String> initParameters = Collections.emptyMap();
 
 	/**
 	 * Create a new {@link AbstractServletWebServerFactory} instance.
@@ -90,6 +69,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	/**
 	 * Create a new {@link AbstractServletWebServerFactory} instance with the specified
 	 * port.
+	 *
 	 * @param port the port number for the web server
 	 */
 	public AbstractServletWebServerFactory(int port) {
@@ -99,8 +79,9 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	/**
 	 * Create a new {@link AbstractServletWebServerFactory} instance with the specified
 	 * context path and port.
+	 *
 	 * @param contextPath the context path for the web server
-	 * @param port the port number for the web server
+	 * @param port        the port number for the web server
 	 */
 	public AbstractServletWebServerFactory(String contextPath, int port) {
 		super(port);
@@ -111,6 +92,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	/**
 	 * Returns the context path for the web server. The path will start with "/" and not
 	 * end with "/". The root context is represented by an empty string.
+	 *
 	 * @return the context path
 	 */
 	public String getContextPath() {
@@ -146,6 +128,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	/**
 	 * Flag to indicate that the default servlet should be registered.
+	 *
 	 * @return true if the default servlet is to be registered
 	 */
 	public boolean isRegisterDefaultServlet() {
@@ -159,6 +142,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	/**
 	 * Returns the mime-type mappings.
+	 *
 	 * @return the mimeMappings the mime-type mappings.
 	 */
 	public MimeMappings getMimeMappings() {
@@ -173,6 +157,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	/**
 	 * Returns the document root which will be used by the web context to serve static
 	 * files.
+	 *
 	 * @return the document root
 	 */
 	public File getDocumentRoot() {
@@ -216,6 +201,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	/**
 	 * Return the Locale to Charset mappings.
+	 *
 	 * @return the charset mappings
 	 */
 	public Map<Locale, Charset> getLocaleCharsetMappings() {
@@ -228,18 +214,19 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 		this.localeCharsetMappings = localeCharsetMappings;
 	}
 
+	public Map<String, String> getInitParameters() {
+		return this.initParameters;
+	}
+
 	@Override
 	public void setInitParameters(Map<String, String> initParameters) {
 		this.initParameters = initParameters;
 	}
 
-	public Map<String, String> getInitParameters() {
-		return this.initParameters;
-	}
-
 	/**
 	 * Utility method that can be used by subclasses wishing to combine the specified
 	 * {@link ServletContextInitializer} parameters with those defined in this instance.
+	 *
 	 * @param initializers the initializers to merge
 	 * @return a complete set of merged initializers (with the specified parameters
 	 * appearing first)
@@ -255,6 +242,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 
 	/**
 	 * Returns whether or not the JSP servlet should be registered with the web server.
+	 *
 	 * @return {@code true} if the servlet should be registered, otherwise {@code false}
 	 */
 	protected boolean shouldRegisterJspServlet() {
@@ -265,6 +253,7 @@ public abstract class AbstractServletWebServerFactory extends AbstractConfigurab
 	/**
 	 * Returns the absolute document root when it points to a valid directory, logging a
 	 * warning and returning {@code null} otherwise.
+	 *
 	 * @return the valid document root
 	 */
 	protected final File getValidDocumentRoot() {

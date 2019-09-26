@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.autoconfigure.properties;
 
-import java.util.List;
-
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
 import org.springframework.test.context.ContextCustomizerFactory;
+
+import java.util.List;
 
 /**
  * {@link ContextCustomizerFactory} to map annotation attributes to {@link Environment}
@@ -33,7 +33,7 @@ class PropertyMappingContextCustomizerFactory implements ContextCustomizerFactor
 
 	@Override
 	public ContextCustomizer createContextCustomizer(Class<?> testClass,
-			List<ContextConfigurationAttributes> configurationAttributes) {
+													 List<ContextConfigurationAttributes> configurationAttributes) {
 		AnnotationsPropertySource propertySource = new AnnotationsPropertySource(testClass);
 		return new PropertyMappingContextCustomizer(propertySource);
 	}

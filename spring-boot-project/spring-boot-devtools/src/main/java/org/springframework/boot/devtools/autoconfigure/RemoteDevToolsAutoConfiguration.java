@@ -16,13 +16,8 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.util.Collection;
-
-import javax.servlet.Filter;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,14 +26,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties.Servlet;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.devtools.remote.server.AccessManager;
-import org.springframework.boot.devtools.remote.server.Dispatcher;
-import org.springframework.boot.devtools.remote.server.DispatcherFilter;
-import org.springframework.boot.devtools.remote.server.Handler;
-import org.springframework.boot.devtools.remote.server.HandlerMapper;
-import org.springframework.boot.devtools.remote.server.HttpHeaderAccessManager;
-import org.springframework.boot.devtools.remote.server.HttpStatusHandler;
-import org.springframework.boot.devtools.remote.server.UrlHandlerMapper;
+import org.springframework.boot.devtools.remote.server.*;
 import org.springframework.boot.devtools.restart.server.DefaultSourceFolderUrlFilter;
 import org.springframework.boot.devtools.restart.server.HttpRestartServer;
 import org.springframework.boot.devtools.restart.server.HttpRestartServerHandler;
@@ -46,6 +34,9 @@ import org.springframework.boot.devtools.restart.server.SourceFolderUrlFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
+
+import javax.servlet.Filter;
+import java.util.Collection;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for remote development support.
@@ -57,8 +48,8 @@ import org.springframework.http.server.ServerHttpRequest;
  */
 @Configuration
 @ConditionalOnProperty(prefix = "spring.devtools.remote", name = "secret")
-@ConditionalOnClass({ Filter.class, ServerHttpRequest.class })
-@EnableConfigurationProperties({ ServerProperties.class, DevToolsProperties.class })
+@ConditionalOnClass({Filter.class, ServerHttpRequest.class})
+@EnableConfigurationProperties({ServerProperties.class, DevToolsProperties.class})
 public class RemoteDevToolsAutoConfiguration {
 
 	private static final Log logger = LogFactory.getLog(RemoteDevToolsAutoConfiguration.class);
@@ -90,7 +81,7 @@ public class RemoteDevToolsAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public DispatcherFilter remoteDevToolsDispatcherFilter(AccessManager accessManager,
-			Collection<HandlerMapper> mappers) {
+														   Collection<HandlerMapper> mappers) {
 		Dispatcher dispatcher = new Dispatcher(accessManager, mappers);
 		return new DispatcherFilter(dispatcher);
 	}

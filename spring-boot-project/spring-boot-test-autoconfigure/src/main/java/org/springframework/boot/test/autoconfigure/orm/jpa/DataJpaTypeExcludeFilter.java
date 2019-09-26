@@ -16,13 +16,13 @@
 
 package org.springframework.boot.test.autoconfigure.orm.jpa;
 
-import java.util.Collections;
-import java.util.Set;
-
 import org.springframework.boot.context.TypeExcludeFilter;
 import org.springframework.boot.test.autoconfigure.filter.AnnotationCustomizableTypeExcludeFilter;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
+
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * {@link TypeExcludeFilter} for {@link DataJpaTest @DataJpaTest}.
@@ -45,10 +45,10 @@ class DataJpaTypeExcludeFilter extends AnnotationCustomizableTypeExcludeFilter {
 	@Override
 	protected Filter[] getFilters(FilterType type) {
 		switch (type) {
-		case INCLUDE:
-			return this.annotation.includeFilters();
-		case EXCLUDE:
-			return this.annotation.excludeFilters();
+			case INCLUDE:
+				return this.annotation.includeFilters();
+			case EXCLUDE:
+				return this.annotation.excludeFilters();
 		}
 		throw new IllegalStateException("Unsupported type " + type);
 	}

@@ -16,20 +16,15 @@
 
 package org.springframework.boot.autoconfigure.web.reactive.function.client;
 
-import java.util.function.Function;
-
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.reactive.ClientHttpConnector;
-import org.springframework.http.client.reactive.JettyClientHttpConnector;
-import org.springframework.http.client.reactive.JettyResourceFactory;
-import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.http.client.reactive.ReactorResourceFactory;
+import org.springframework.http.client.reactive.*;
+
+import java.util.function.Function;
 
 /**
  * Configuration classes for WebClient client connectors.

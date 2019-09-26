@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.quartz;
 
-import javax.sql.DataSource;
-
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import javax.sql.DataSource;
 
 /**
  * Callback interface that can be implemented by beans wishing to customize the Quartz
@@ -38,6 +38,7 @@ public interface SchedulerFactoryBeanCustomizer {
 
 	/**
 	 * Customize the {@link SchedulerFactoryBean}.
+	 *
 	 * @param schedulerFactoryBean the scheduler to customize
 	 */
 	void customize(SchedulerFactoryBean schedulerFactoryBean);

@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry.servlet;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.AccessLevel;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException;
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
@@ -51,6 +44,12 @@ import org.springframework.util.Base64Utils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -149,8 +148,7 @@ public class CloudFoundryMvcWebEndpointIntegrationTests {
 		try {
 			consumer.accept(context,
 					WebTestClient.bindToServer().baseUrl("http://localhost:" + getPort(context)).build());
-		}
-		finally {
+		} finally {
 			context.close();
 		}
 	}
@@ -159,6 +157,14 @@ public class CloudFoundryMvcWebEndpointIntegrationTests {
 		return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwu"
 				+ "Y29tIiwiZXhwIjoxNDI2NDIwODAwLCJhd2Vzb21lIjp0cnVlfQ."
 				+ Base64Utils.encodeToString("signature".getBytes());
+	}
+
+	public interface EndpointDelegate {
+
+		void write();
+
+		void write(String foo, String bar);
+
 	}
 
 	@Configuration
@@ -190,7 +196,7 @@ public class CloudFoundryMvcWebEndpointIntegrationTests {
 
 		@Bean
 		public WebEndpointDiscoverer webEndpointDiscoverer(ApplicationContext applicationContext,
-				EndpointMediaTypes endpointMediaTypes) {
+														   EndpointMediaTypes endpointMediaTypes) {
 			ParameterValueMapper parameterMapper = new ConversionServiceParameterValueMapper(
 					DefaultConversionService.getSharedInstance());
 			return new WebEndpointDiscoverer(applicationContext, parameterMapper, endpointMediaTypes, null,
@@ -278,14 +284,6 @@ public class CloudFoundryMvcWebEndpointIntegrationTests {
 		public TestEnvEndpoint testEnvEndpoint() {
 			return new TestEnvEndpoint();
 		}
-
-	}
-
-	public interface EndpointDelegate {
-
-		void write();
-
-		void write(String foo, String bar);
 
 	}
 

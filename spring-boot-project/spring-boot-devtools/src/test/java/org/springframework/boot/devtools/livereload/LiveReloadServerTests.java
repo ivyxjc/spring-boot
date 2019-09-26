@@ -16,6 +16,17 @@
 
 package org.springframework.boot.devtools.livereload;
 
+import org.apache.tomcat.websocket.WsWebSocketContainer;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.*;
+import org.springframework.web.socket.client.WebSocketClient;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,23 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
-import org.apache.tomcat.websocket.WsWebSocketContainer;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.socket.CloseStatus;
-import org.springframework.web.socket.PingMessage;
-import org.springframework.web.socket.PongMessage;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.client.WebSocketClient;
-import org.springframework.web.socket.client.standard.StandardWebSocketClient;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -58,6 +52,25 @@ public class LiveReloadServerTests {
 	private int port;
 
 	private MonitoredLiveReloadServer server;
+
+	/**
+	 * Useful main method for manual testing against a real browser.
+	 *
+	 * @param args main args
+	 * @throws IOException in case of I/O errors
+	 */
+	public static void main(String[] args) throws IOException {
+		LiveReloadServer server = new LiveReloadServer();
+		server.start();
+		while (true) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+			server.triggerReload();
+		}
+	}
 
 	@Before
 	public void setUp() throws Exception {
@@ -130,25 +143,6 @@ public class LiveReloadServerTests {
 	}
 
 	/**
-	 * Useful main method for manual testing against a real browser.
-	 * @param args main args
-	 * @throws IOException in case of I/O errors
-	 */
-	public static void main(String[] args) throws IOException {
-		LiveReloadServer server = new LiveReloadServer();
-		server.start();
-		while (true) {
-			try {
-				Thread.sleep(1000);
-			}
-			catch (InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
-			server.triggerReload();
-		}
-	}
-
-	/**
 	 * {@link LiveReloadServer} with additional monitoring.
 	 */
 	private static class MonitoredLiveReloadServer extends LiveReloadServer {
@@ -163,7 +157,7 @@ public class LiveReloadServerTests {
 
 		@Override
 		protected Connection createConnection(java.net.Socket socket, InputStream inputStream,
-				OutputStream outputStream) throws IOException {
+											  OutputStream outputStream) throws IOException {
 			return new MonitoredConnection(socket, inputStream, outputStream);
 		}
 
@@ -184,8 +178,7 @@ public class LiveReloadServerTests {
 			public void run() throws Exception {
 				try {
 					super.run();
-				}
-				catch (ConnectionClosedException ex) {
+				} catch (ConnectionClosedException ex) {
 					synchronized (MonitoredLiveReloadServer.this.monitor) {
 						MonitoredLiveReloadServer.this.closedExceptions.add(ex);
 					}
@@ -199,12 +192,9 @@ public class LiveReloadServerTests {
 
 	private static class LiveReloadWebSocketHandler extends TextWebSocketHandler {
 
-		private WebSocketSession session;
-
 		private final CountDownLatch helloLatch = new CountDownLatch(2);
-
 		private final List<String> messages = new ArrayList<>();
-
+		private WebSocketSession session;
 		private int pongCount;
 
 		private CloseStatus closeStatus;

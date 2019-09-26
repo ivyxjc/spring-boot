@@ -16,16 +16,12 @@
 
 package org.springframework.boot.autoconfigure.data.cassandra;
 
-import java.time.Duration;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.testcontainers.containers.CassandraContainer;
-
 import org.springframework.boot.autoconfigure.AutoConfigurationPackages;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
 import org.springframework.boot.autoconfigure.data.cassandra.city.City;
@@ -34,6 +30,9 @@ import org.springframework.boot.testsupport.testcontainers.SkippableContainer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.cassandra.config.CassandraSessionFactoryBean;
 import org.springframework.data.cassandra.config.SchemaAction;
+import org.testcontainers.containers.CassandraContainer;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

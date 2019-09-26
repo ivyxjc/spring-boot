@@ -16,12 +16,12 @@
 
 package org.springframework.boot.actuate.info;
 
-import java.util.Map;
-import java.util.Properties;
-
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
+
+import java.util.Map;
+import java.util.Properties;
 
 /**
  * An {@link InfoContributor} that exposes {@link BuildProperties}.

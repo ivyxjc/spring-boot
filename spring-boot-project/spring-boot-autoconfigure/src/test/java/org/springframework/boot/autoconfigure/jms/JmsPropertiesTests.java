@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import java.time.Duration;
-
 import org.junit.Test;
+
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

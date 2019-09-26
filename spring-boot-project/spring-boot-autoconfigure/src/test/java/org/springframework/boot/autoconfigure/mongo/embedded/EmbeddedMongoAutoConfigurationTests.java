@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.mongo.embedded;
 
-import java.io.File;
-import java.util.EnumSet;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.mongodb.MongoClient;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -32,7 +27,6 @@ import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import org.bson.Document;
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -45,6 +39,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
+import java.util.EnumSet;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

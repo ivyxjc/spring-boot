@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.servlet;
 
-import javax.servlet.Servlet;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -28,6 +26,8 @@ import org.springframework.boot.web.servlet.filter.ApplicationContextHeaderFilte
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.servlet.Servlet;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Servlet-specific management

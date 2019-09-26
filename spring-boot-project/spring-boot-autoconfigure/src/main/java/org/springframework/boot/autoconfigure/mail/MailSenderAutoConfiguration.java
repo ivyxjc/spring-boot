@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.mail;
 
-import javax.activation.MimeType;
-import javax.mail.internet.MimeMessage;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.AnyNestedCondition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,6 +28,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.mail.MailSender;
 
+import javax.activation.MimeType;
+import javax.mail.internet.MimeMessage;
+
 /**
  * {@link EnableAutoConfiguration Auto configuration} for email support.
  *
@@ -40,11 +40,11 @@ import org.springframework.mail.MailSender;
  * @since 1.2.0
  */
 @Configuration
-@ConditionalOnClass({ MimeMessage.class, MimeType.class, MailSender.class })
+@ConditionalOnClass({MimeMessage.class, MimeType.class, MailSender.class})
 @ConditionalOnMissingBean(MailSender.class)
 @Conditional(MailSenderCondition.class)
 @EnableConfigurationProperties(MailProperties.class)
-@Import({ MailSenderJndiConfiguration.class, MailSenderPropertiesConfiguration.class })
+@Import({MailSenderJndiConfiguration.class, MailSenderPropertiesConfiguration.class})
 public class MailSenderAutoConfiguration {
 
 	/**

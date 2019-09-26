@@ -22,7 +22,6 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -71,11 +70,11 @@ public class SecurityFilterAutoConfigurationEarlyInitializationTests {
 	}
 
 	@Configuration
-	@Import({ DeserializerBean.class, JacksonModuleBean.class, ExampleController.class, ConverterBean.class })
-	@ImportAutoConfiguration({ WebMvcAutoConfiguration.class, JacksonAutoConfiguration.class,
-			HttpMessageConvertersAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
-			SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class,
-			SecurityFilterAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class })
+	@Import({DeserializerBean.class, JacksonModuleBean.class, ExampleController.class, ConverterBean.class})
+	@ImportAutoConfiguration({WebMvcAutoConfiguration.class, JacksonAutoConfiguration.class,
+									 HttpMessageConvertersAutoConfiguration.class, DispatcherServletAutoConfiguration.class,
+									 SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class,
+									 SecurityFilterAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
 	static class Config {
 
 		@Bean

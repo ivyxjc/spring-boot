@@ -16,13 +16,7 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.reflect.Method;
-import java.nio.file.Files;
-import java.util.ServiceLoader;
-import java.util.function.Function;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnJava.Range;
 import org.springframework.boot.system.JavaVersion;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -31,6 +25,11 @@ import org.springframework.boot.testsupport.Assume;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.util.ServiceLoader;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

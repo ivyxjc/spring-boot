@@ -16,13 +16,11 @@
 
 package org.springframework.boot.docs.jersey;
 
-import java.util.Collections;
+import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
-
-import org.glassfish.jersey.server.ResourceConfig;
-
-import org.springframework.stereotype.Component;
+import java.util.Collections;
 
 /**
  * Example configuration for a Jersey {@link ResourceConfig} configured to use
@@ -33,6 +31,11 @@ import org.springframework.stereotype.Component;
  */
 public class JerseySetStatusOverSendErrorExample {
 
+	static class Endpoint {
+
+	}
+	// end::resource-config[]
+
 	// tag::resource-config[]
 	@Component
 	public class JerseyConfig extends ResourceConfig {
@@ -41,11 +44,6 @@ public class JerseySetStatusOverSendErrorExample {
 			register(Endpoint.class);
 			setProperties(Collections.singletonMap("jersey.config.server.response.setStatusOverSendError", true));
 		}
-
-	}
-	// end::resource-config[]
-
-	static class Endpoint {
 
 	}
 

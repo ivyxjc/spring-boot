@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jersey;
 
-import java.nio.charset.StandardCharsets;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
 import org.apache.catalina.Context;
 import org.apache.catalina.Wrapper;
 import org.apache.tomcat.util.buf.UDecoder;
@@ -29,7 +24,6 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
@@ -44,6 +38,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -67,8 +65,8 @@ public class JerseyAutoConfigurationServletContainerTests {
 		assertThat(output.toString()).contains("Servlet " + Application.class.getName() + " was not registered");
 	}
 
-	@ImportAutoConfiguration({ ServletWebServerFactoryAutoConfiguration.class, JerseyAutoConfiguration.class,
-			PropertyPlaceholderAutoConfiguration.class })
+	@ImportAutoConfiguration({ServletWebServerFactoryAutoConfiguration.class, JerseyAutoConfiguration.class,
+									 PropertyPlaceholderAutoConfiguration.class})
 	@Import(ContainerConfiguration.class)
 	@Path("/hello")
 	public static class Application extends ResourceConfig {

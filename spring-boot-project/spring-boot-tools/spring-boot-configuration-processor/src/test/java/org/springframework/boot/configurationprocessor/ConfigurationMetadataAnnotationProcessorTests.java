@@ -16,6 +16,26 @@
 
 package org.springframework.boot.configurationprocessor;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.boot.configurationprocessor.metadata.*;
+import org.springframework.boot.configurationsample.endpoint.*;
+import org.springframework.boot.configurationsample.endpoint.incremental.IncrementalEndpoint;
+import org.springframework.boot.configurationsample.generic.*;
+import org.springframework.boot.configurationsample.incremental.BarProperties;
+import org.springframework.boot.configurationsample.incremental.FooProperties;
+import org.springframework.boot.configurationsample.incremental.RenamedBarProperties;
+import org.springframework.boot.configurationsample.lombok.*;
+import org.springframework.boot.configurationsample.method.*;
+import org.springframework.boot.configurationsample.simple.*;
+import org.springframework.boot.configurationsample.specific.*;
+import org.springframework.boot.testsupport.compiler.TestCompiler;
+import org.springframework.util.FileCopyUtils;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -24,80 +44,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.boot.configurationprocessor.metadata.ConfigurationMetadata;
-import org.springframework.boot.configurationprocessor.metadata.ItemDeprecation;
-import org.springframework.boot.configurationprocessor.metadata.ItemHint;
-import org.springframework.boot.configurationprocessor.metadata.ItemMetadata;
-import org.springframework.boot.configurationprocessor.metadata.Metadata;
-import org.springframework.boot.configurationprocessor.metadata.TestJsonConverter;
-import org.springframework.boot.configurationsample.endpoint.CamelCaseEndpoint;
-import org.springframework.boot.configurationsample.endpoint.CustomPropertiesEndpoint;
-import org.springframework.boot.configurationsample.endpoint.DisabledEndpoint;
-import org.springframework.boot.configurationsample.endpoint.EnabledEndpoint;
-import org.springframework.boot.configurationsample.endpoint.SimpleEndpoint;
-import org.springframework.boot.configurationsample.endpoint.SpecificEndpoint;
-import org.springframework.boot.configurationsample.endpoint.incremental.IncrementalEndpoint;
-import org.springframework.boot.configurationsample.generic.AbstractGenericProperties;
-import org.springframework.boot.configurationsample.generic.ComplexGenericProperties;
-import org.springframework.boot.configurationsample.generic.SimpleGenericProperties;
-import org.springframework.boot.configurationsample.generic.UnresolvedGenericProperties;
-import org.springframework.boot.configurationsample.generic.UpperBoundGenericPojo;
-import org.springframework.boot.configurationsample.incremental.BarProperties;
-import org.springframework.boot.configurationsample.incremental.FooProperties;
-import org.springframework.boot.configurationsample.incremental.RenamedBarProperties;
-import org.springframework.boot.configurationsample.lombok.LombokAccessLevelOverwriteDataProperties;
-import org.springframework.boot.configurationsample.lombok.LombokAccessLevelOverwriteDefaultProperties;
-import org.springframework.boot.configurationsample.lombok.LombokAccessLevelOverwriteExplicitProperties;
-import org.springframework.boot.configurationsample.lombok.LombokAccessLevelProperties;
-import org.springframework.boot.configurationsample.lombok.LombokExplicitProperties;
-import org.springframework.boot.configurationsample.lombok.LombokInnerClassProperties;
-import org.springframework.boot.configurationsample.lombok.LombokInnerClassWithGetterProperties;
-import org.springframework.boot.configurationsample.lombok.LombokSimpleDataProperties;
-import org.springframework.boot.configurationsample.lombok.LombokSimpleProperties;
-import org.springframework.boot.configurationsample.lombok.SimpleLombokPojo;
-import org.springframework.boot.configurationsample.method.DeprecatedMethodConfig;
-import org.springframework.boot.configurationsample.method.EmptyTypeMethodConfig;
-import org.springframework.boot.configurationsample.method.InvalidMethodConfig;
-import org.springframework.boot.configurationsample.method.MethodAndClassConfig;
-import org.springframework.boot.configurationsample.method.SimpleMethodConfig;
-import org.springframework.boot.configurationsample.simple.ClassWithNestedProperties;
-import org.springframework.boot.configurationsample.simple.DeprecatedFieldSingleProperty;
-import org.springframework.boot.configurationsample.simple.DeprecatedSingleProperty;
-import org.springframework.boot.configurationsample.simple.DescriptionProperties;
-import org.springframework.boot.configurationsample.simple.HierarchicalProperties;
-import org.springframework.boot.configurationsample.simple.NotAnnotated;
-import org.springframework.boot.configurationsample.simple.SimpleArrayProperties;
-import org.springframework.boot.configurationsample.simple.SimpleCollectionProperties;
-import org.springframework.boot.configurationsample.simple.SimplePrefixValueProperties;
-import org.springframework.boot.configurationsample.simple.SimpleProperties;
-import org.springframework.boot.configurationsample.simple.SimpleTypeProperties;
-import org.springframework.boot.configurationsample.specific.AnnotatedGetter;
-import org.springframework.boot.configurationsample.specific.BoxingPojo;
-import org.springframework.boot.configurationsample.specific.BuilderPojo;
-import org.springframework.boot.configurationsample.specific.DeprecatedUnrelatedMethodPojo;
-import org.springframework.boot.configurationsample.specific.DoubleRegistrationProperties;
-import org.springframework.boot.configurationsample.specific.ExcludedTypesPojo;
-import org.springframework.boot.configurationsample.specific.GenericConfig;
-import org.springframework.boot.configurationsample.specific.InnerClassAnnotatedGetterConfig;
-import org.springframework.boot.configurationsample.specific.InnerClassHierarchicalProperties;
-import org.springframework.boot.configurationsample.specific.InnerClassProperties;
-import org.springframework.boot.configurationsample.specific.InnerClassRootConfig;
-import org.springframework.boot.configurationsample.specific.InvalidAccessorProperties;
-import org.springframework.boot.configurationsample.specific.InvalidDoubleRegistrationProperties;
-import org.springframework.boot.configurationsample.specific.SimpleConflictingProperties;
-import org.springframework.boot.configurationsample.specific.SimplePojo;
-import org.springframework.boot.configurationsample.specific.StaticAccessor;
-import org.springframework.boot.configurationsample.specific.WildcardConfig;
-import org.springframework.boot.testsupport.compiler.TestCompiler;
-import org.springframework.util.FileCopyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -984,12 +930,12 @@ public class ConfigurationMetadataAnnotationProcessorTests {
 	}
 
 	private void assertAccessLevelOverwriteLombokProperties(ConfigurationMetadata metadata, Class<?> source,
-			String prefix) {
+															String prefix) {
 		assertAccessLevelLombokProperties(metadata, source, prefix, 7);
 	}
 
 	private void assertAccessLevelLombokProperties(ConfigurationMetadata metadata, Class<?> source, String prefix,
-			int countNameFields) {
+												   int countNameFields) {
 		assertThat(metadata).has(Metadata.withGroup(prefix).fromSource(source));
 		for (int i = 0; i < countNameFields; i++) {
 			assertThat(metadata).has(Metadata.withProperty(prefix + ".name" + i, String.class));

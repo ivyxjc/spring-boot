@@ -16,19 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.security.servlet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -45,6 +32,12 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Factory that can be used to create a {@link RequestMatcher} for actuator endpoint
@@ -69,6 +62,7 @@ public final class EndpointRequest {
 	 * <pre class="code">
 	 * EndpointRequest.toAnyEndpoint().excluding(ShutdownEndpoint.class)
 	 * </pre>
+	 *
 	 * @return the configured {@link RequestMatcher}
 	 */
 	public static EndpointRequestMatcher toAnyEndpoint() {
@@ -80,6 +74,7 @@ public final class EndpointRequest {
 	 * For example: <pre class="code">
 	 * EndpointRequest.to(ShutdownEndpoint.class, HealthEndpoint.class)
 	 * </pre>
+	 *
 	 * @param endpoints the endpoints to include
 	 * @return the configured {@link RequestMatcher}
 	 */
@@ -92,6 +87,7 @@ public final class EndpointRequest {
 	 * For example: <pre class="code">
 	 * EndpointRequest.to("shutdown", "health")
 	 * </pre>
+	 *
 	 * @param endpoints the endpoints to include
 	 * @return the configured {@link RequestMatcher}
 	 */
@@ -109,6 +105,7 @@ public final class EndpointRequest {
 	 * <pre class="code">
 	 * EndpointRequest.toLinks()
 	 * </pre>
+	 *
 	 * @return the configured {@link RequestMatcher}
 	 */
 	public static LinksRequestMatcher toLinks() {
@@ -147,17 +144,16 @@ public final class EndpointRequest {
 		private RequestMatcher createDelegate(WebApplicationContext context) {
 			try {
 				return createDelegate(context, new RequestMatcherFactory());
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return EMPTY_MATCHER;
 			}
 		}
 
 		protected abstract RequestMatcher createDelegate(WebApplicationContext context,
-				RequestMatcherFactory requestMatcherFactory);
+														 RequestMatcherFactory requestMatcherFactory);
 
 		protected List<RequestMatcher> getLinksMatchers(RequestMatcherFactory requestMatcherFactory,
-				RequestMatcherProvider matcherProvider, String basePath) {
+														RequestMatcherProvider matcherProvider, String basePath) {
 			List<RequestMatcher> linksMatchers = new ArrayList<>();
 			linksMatchers.add(requestMatcherFactory.antPath(matcherProvider, basePath));
 			linksMatchers.add(requestMatcherFactory.antPath(matcherProvider, basePath, "/"));
@@ -167,8 +163,7 @@ public final class EndpointRequest {
 		protected RequestMatcherProvider getRequestMatcherProvider(WebApplicationContext context) {
 			try {
 				return context.getBean(RequestMatcherProvider.class);
-			}
-			catch (NoSuchBeanDefinitionException ex) {
+			} catch (NoSuchBeanDefinitionException ex) {
 				return AntPathRequestMatcher::new;
 			}
 		}
@@ -222,7 +217,7 @@ public final class EndpointRequest {
 
 		@Override
 		protected RequestMatcher createDelegate(WebApplicationContext context,
-				RequestMatcherFactory requestMatcherFactory) {
+												RequestMatcherFactory requestMatcherFactory) {
 			PathMappedEndpoints pathMappedEndpoints = context.getBean(PathMappedEndpoints.class);
 			RequestMatcherProvider matcherProvider = getRequestMatcherProvider(context);
 			Set<String> paths = new LinkedHashSet<>();
@@ -263,7 +258,7 @@ public final class EndpointRequest {
 		}
 
 		private List<RequestMatcher> getDelegateMatchers(RequestMatcherFactory requestMatcherFactory,
-				RequestMatcherProvider matcherProvider, Set<String> paths) {
+														 RequestMatcherProvider matcherProvider, Set<String> paths) {
 			return paths.stream().map((path) -> requestMatcherFactory.antPath(matcherProvider, path, "/**"))
 					.collect(Collectors.toList());
 		}
@@ -277,7 +272,7 @@ public final class EndpointRequest {
 
 		@Override
 		protected RequestMatcher createDelegate(WebApplicationContext context,
-				RequestMatcherFactory requestMatcherFactory) {
+												RequestMatcherFactory requestMatcherFactory) {
 			WebEndpointProperties properties = context.getBean(WebEndpointProperties.class);
 			String basePath = properties.getBasePath();
 			if (StringUtils.hasText(basePath)) {

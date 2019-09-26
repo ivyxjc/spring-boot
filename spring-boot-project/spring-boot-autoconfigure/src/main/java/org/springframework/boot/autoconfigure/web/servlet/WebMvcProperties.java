@@ -16,15 +16,15 @@
 
 package org.springframework.boot.autoconfigure.web.servlet;
 
-import java.time.Duration;
-import java.util.LinkedHashMap;
-import java.util.Locale;
-import java.util.Map;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
 import org.springframework.validation.DefaultMessageCodesResolver;
+
+import java.time.Duration;
+import java.util.LinkedHashMap;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * {@link ConfigurationProperties properties} for Spring MVC.
@@ -39,69 +39,55 @@ import org.springframework.validation.DefaultMessageCodesResolver;
 @ConfigurationProperties(prefix = "spring.mvc")
 public class WebMvcProperties {
 
+	private final Async async = new Async();
+	private final Servlet servlet = new Servlet();
+	private final View view = new View();
+	private final Contentnegotiation contentnegotiation = new Contentnegotiation();
+	private final Pathmatch pathmatch = new Pathmatch();
 	/**
 	 * Formatting strategy for message codes. For instance, `PREFIX_ERROR_CODE`.
 	 */
 	private DefaultMessageCodesResolver.Format messageCodesResolverFormat;
-
 	/**
 	 * Locale to use. By default, this locale is overridden by the "Accept-Language"
 	 * header.
 	 */
 	private Locale locale;
-
 	/**
 	 * Define how the locale should be resolved.
 	 */
 	private LocaleResolver localeResolver = LocaleResolver.ACCEPT_HEADER;
-
 	/**
 	 * Date format to use. For instance, `dd/MM/yyyy`.
 	 */
 	private String dateFormat;
-
 	/**
 	 * Whether to dispatch TRACE requests to the FrameworkServlet doService method.
 	 */
 	private boolean dispatchTraceRequest = false;
-
 	/**
 	 * Whether to dispatch OPTIONS requests to the FrameworkServlet doService method.
 	 */
 	private boolean dispatchOptionsRequest = true;
-
 	/**
 	 * Whether the content of the "default" model should be ignored during redirect
 	 * scenarios.
 	 */
 	private boolean ignoreDefaultModelOnRedirect = true;
-
 	/**
 	 * Whether a "NoHandlerFoundException" should be thrown if no Handler was found to
 	 * process a request.
 	 */
 	private boolean throwExceptionIfNoHandlerFound = false;
-
 	/**
 	 * Whether to enable warn logging of exceptions resolved by a
 	 * "HandlerExceptionResolver", except for "DefaultHandlerExceptionResolver".
 	 */
 	private boolean logResolvedException = false;
-
 	/**
 	 * Path pattern used for static resources.
 	 */
 	private String staticPathPattern = "/**";
-
-	private final Async async = new Async();
-
-	private final Servlet servlet = new Servlet();
-
-	private final View view = new View();
-
-	private final Contentnegotiation contentnegotiation = new Contentnegotiation();
-
-	private final Pathmatch pathmatch = new Pathmatch();
 
 	public DefaultMessageCodesResolver.Format getMessageCodesResolverFormat() {
 		return this.messageCodesResolverFormat;
@@ -201,6 +187,21 @@ public class WebMvcProperties {
 
 	public Pathmatch getPathmatch() {
 		return this.pathmatch;
+	}
+
+	public enum LocaleResolver {
+
+		/**
+		 * Always use the configured locale.
+		 */
+		FIXED,
+
+		/**
+		 * Use the "Accept-Language" header or the configured locale if the header is not
+		 * set.
+		 */
+		ACCEPT_HEADER
+
 	}
 
 	public static class Async {
@@ -405,21 +406,6 @@ public class WebMvcProperties {
 		public void setUseRegisteredSuffixPattern(boolean useRegisteredSuffixPattern) {
 			this.useRegisteredSuffixPattern = useRegisteredSuffixPattern;
 		}
-
-	}
-
-	public enum LocaleResolver {
-
-		/**
-		 * Always use the configured locale.
-		 */
-		FIXED,
-
-		/**
-		 * Use the "Accept-Language" header or the configured locale if the header is not
-		 * set.
-		 */
-		ACCEPT_HEADER
 
 	}
 

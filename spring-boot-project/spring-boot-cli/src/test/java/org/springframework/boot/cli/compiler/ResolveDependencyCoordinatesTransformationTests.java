@@ -16,19 +16,8 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.util.Arrays;
-
 import groovy.lang.Grab;
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.AnnotationNode;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.ConstructorNode;
-import org.codehaus.groovy.ast.FieldNode;
-import org.codehaus.groovy.ast.MethodNode;
-import org.codehaus.groovy.ast.ModuleNode;
-import org.codehaus.groovy.ast.PackageNode;
-import org.codehaus.groovy.ast.Parameter;
-import org.codehaus.groovy.ast.VariableScope;
+import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.ast.expr.DeclarationExpression;
 import org.codehaus.groovy.ast.expr.Expression;
@@ -41,10 +30,11 @@ import org.codehaus.groovy.control.io.ReaderSource;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.cli.compiler.dependencies.ArtifactCoordinatesResolver;
 import org.springframework.boot.cli.compiler.dependencies.SpringBootDependenciesDependencyManagement;
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -181,7 +171,7 @@ public final class ResolveDependencyCoordinatesTransformationTests {
 		Parameter parameter = new Parameter(new ClassNode(Object.class), "test");
 		parameter.addAnnotation(this.grabAnnotation);
 
-		MethodNode methodNode = new MethodNode("test", 0, new ClassNode(Void.class), new Parameter[] { parameter },
+		MethodNode methodNode = new MethodNode("test", 0, new ClassNode(Void.class), new Parameter[]{parameter},
 				new ClassNode[0], null);
 		classNode.addMethod(methodNode);
 
@@ -216,7 +206,7 @@ public final class ResolveDependencyCoordinatesTransformationTests {
 	}
 
 	private void assertGrabAnnotationHasBeenTransformed() {
-		this.transformation.visit(new ASTNode[] { this.moduleNode }, this.sourceUnit);
+		this.transformation.visit(new ASTNode[]{this.moduleNode}, this.sourceUnit);
 		assertThat(getGrabAnnotationMemberAsString("group")).isEqualTo("org.springframework");
 		assertThat(getGrabAnnotationMemberAsString("module")).isEqualTo("spring-core");
 	}
@@ -225,11 +215,9 @@ public final class ResolveDependencyCoordinatesTransformationTests {
 		Expression expression = this.grabAnnotation.getMember(memberName);
 		if (expression instanceof ConstantExpression) {
 			return ((ConstantExpression) expression).getValue();
-		}
-		else if (expression == null) {
+		} else if (expression == null) {
 			return null;
-		}
-		else {
+		} else {
 			throw new IllegalStateException("Member '" + memberName + "' is not a ConstantExpression");
 		}
 	}

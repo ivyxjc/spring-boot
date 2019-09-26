@@ -16,17 +16,12 @@
 
 package org.springframework.boot.actuate.logging;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.EnumSet;
-
 import net.minidev.json.JSONArray;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-
 import org.springframework.boot.actuate.endpoint.http.ActuatorMediaType;
 import org.springframework.boot.actuate.endpoint.web.test.WebEndpointRunners;
 import org.springframework.boot.logging.LogLevel;
@@ -38,10 +33,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.EnumSet;
+
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Integration tests for {@link LoggersEndpoint} when exposed via Jersey, Spring MVC, and

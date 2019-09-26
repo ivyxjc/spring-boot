@@ -16,16 +16,15 @@
 
 package org.springframework.boot.logging.logback;
 
-import java.util.Collections;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.springframework.boot.ansi.AnsiOutput;
+
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,11 +35,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ColorConverterTests {
 
-	private ColorConverter converter;
-
-	private LoggingEvent event;
-
 	private final String in = "in";
+	private ColorConverter converter;
+	private LoggingEvent event;
 
 	@BeforeClass
 	public static void setupAnsi() {

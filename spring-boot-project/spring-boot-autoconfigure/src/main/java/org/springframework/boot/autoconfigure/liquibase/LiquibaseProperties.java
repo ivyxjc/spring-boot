@@ -16,13 +16,12 @@
 
 package org.springframework.boot.autoconfigure.liquibase;
 
-import java.io.File;
-import java.util.Map;
-
 import liquibase.integration.spring.SpringLiquibase;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.Assert;
+
+import java.io.File;
+import java.util.Map;
 
 /**
  * Configuration properties to configure {@link SpringLiquibase}.

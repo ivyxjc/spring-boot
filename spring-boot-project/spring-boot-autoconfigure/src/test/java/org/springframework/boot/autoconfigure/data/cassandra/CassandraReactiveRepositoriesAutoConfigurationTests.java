@@ -16,12 +16,9 @@
 
 package org.springframework.boot.autoconfigure.data.cassandra;
 
-import java.util.Set;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.cassandra.CassandraAutoConfiguration;
@@ -41,6 +38,8 @@ import org.springframework.data.cassandra.ReactiveSession;
 import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
 import org.springframework.data.cassandra.repository.config.EnableReactiveCassandraRepositories;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -132,7 +131,7 @@ public class CassandraReactiveRepositoriesAutoConfigurationTests {
 	}
 
 	@Configuration
-	@ComponentScan(excludeFilters = @Filter(classes = { ReactiveSession.class }, type = FilterType.ASSIGNABLE_TYPE))
+	@ComponentScan(excludeFilters = @Filter(classes = {ReactiveSession.class}, type = FilterType.ASSIGNABLE_TYPE))
 	static class TestExcludeConfiguration {
 
 	}

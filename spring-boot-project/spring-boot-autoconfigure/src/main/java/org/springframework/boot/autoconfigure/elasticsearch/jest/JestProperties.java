@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.elasticsearch.jest;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Configuration properties for Jest.
@@ -33,39 +33,33 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class JestProperties {
 
 	/**
+	 * Proxy settings.
+	 */
+	private final Proxy proxy = new Proxy();
+	/**
 	 * Comma-separated list of the Elasticsearch instances to use.
 	 */
 	private List<String> uris = new ArrayList<>(Collections.singletonList("http://localhost:9200"));
-
 	/**
 	 * Login username.
 	 */
 	private String username;
-
 	/**
 	 * Login password.
 	 */
 	private String password;
-
 	/**
 	 * Whether to enable connection requests from multiple execution threads.
 	 */
 	private boolean multiThreaded = true;
-
 	/**
 	 * Connection timeout.
 	 */
 	private Duration connectionTimeout = Duration.ofSeconds(3);
-
 	/**
 	 * Read timeout.
 	 */
 	private Duration readTimeout = Duration.ofSeconds(3);
-
-	/**
-	 * Proxy settings.
-	 */
-	private final Proxy proxy = new Proxy();
 
 	public List<String> getUris() {
 		return this.uris;

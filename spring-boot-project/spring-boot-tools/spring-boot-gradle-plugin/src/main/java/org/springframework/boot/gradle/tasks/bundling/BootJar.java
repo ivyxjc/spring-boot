@@ -16,10 +16,6 @@
 
 package org.springframework.boot.gradle.tasks.bundling;
 
-import java.io.File;
-import java.util.Collections;
-import java.util.concurrent.Callable;
-
 import org.gradle.api.Action;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.FileCollection;
@@ -29,6 +25,10 @@ import org.gradle.api.internal.file.copy.CopyAction;
 import org.gradle.api.specs.Spec;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.bundling.Jar;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.concurrent.Callable;
 
 /**
  * A custom {@link Jar} task that produces a Spring Boot executable jar.
@@ -127,19 +127,19 @@ public class BootJar extends Jar implements BootArchive {
 		return this.classpath;
 	}
 
-	@Override
-	public void classpath(Object... classpath) {
-		FileCollection existingClasspath = this.classpath;
-		this.classpath = getProject().files((existingClasspath != null) ? existingClasspath : Collections.emptyList(),
-				classpath);
-	}
-
 	public void setClasspath(Object classpath) {
 		this.classpath = getProject().files(classpath);
 	}
 
 	public void setClasspath(FileCollection classpath) {
 		this.classpath = getProject().files(classpath);
+	}
+
+	@Override
+	public void classpath(Object... classpath) {
+		FileCollection existingClasspath = this.classpath;
+		this.classpath = getProject().files((existingClasspath != null) ? existingClasspath : Collections.emptyList(),
+				classpath);
 	}
 
 	@Override
@@ -155,6 +155,7 @@ public class BootJar extends Jar implements BootArchive {
 	/**
 	 * Returns a {@code CopySpec} that can be used to add content to the {@code BOOT-INF}
 	 * directory of the jar.
+	 *
 	 * @return a {@code CopySpec} for {@code BOOT-INF}
 	 * @since 2.0.3
 	 */
@@ -168,6 +169,7 @@ public class BootJar extends Jar implements BootArchive {
 	/**
 	 * Calls the given {@code action} to add content to the {@code BOOT-INF} directory of
 	 * the jar.
+	 *
 	 * @param action the {@code Action} to call
 	 * @return the {@code CopySpec} for {@code BOOT-INF} that was passed to the
 	 * {@code Action}
@@ -185,6 +187,7 @@ public class BootJar extends Jar implements BootArchive {
 	 * <p>
 	 * By default, any file in {@code BOOT-INF/lib/} is stored and all other files are
 	 * deflated.
+	 *
 	 * @param details the details
 	 * @return the compression to use
 	 */

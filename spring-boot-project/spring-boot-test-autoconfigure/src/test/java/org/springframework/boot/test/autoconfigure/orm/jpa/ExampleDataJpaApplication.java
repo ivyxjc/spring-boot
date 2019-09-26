@@ -16,12 +16,12 @@
 
 package org.springframework.boot.test.autoconfigure.orm.jpa;
 
-import javax.sql.DataSource;
-
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+
+import javax.sql.DataSource;
 
 /**
  * Example {@link SpringBootApplication} used with {@link DataJpaTest} tests.

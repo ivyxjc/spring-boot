@@ -16,11 +16,10 @@
 
 package org.springframework.boot.actuate.metrics.web.reactive.server;
 
-import java.util.Arrays;
-
 import io.micrometer.core.instrument.Tag;
-
 import org.springframework.web.server.ServerWebExchange;
+
+import java.util.Arrays;
 
 /**
  * Default implementation of {@link WebFluxTagsProvider}.

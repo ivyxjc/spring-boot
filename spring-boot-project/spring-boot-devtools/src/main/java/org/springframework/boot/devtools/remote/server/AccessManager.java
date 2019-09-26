@@ -35,6 +35,7 @@ public interface AccessManager {
 	/**
 	 * Determine if the specific request is allowed to be handled by the
 	 * {@link Dispatcher}.
+	 *
 	 * @param request the request to check
 	 * @return {@code true} if access is allowed.
 	 */

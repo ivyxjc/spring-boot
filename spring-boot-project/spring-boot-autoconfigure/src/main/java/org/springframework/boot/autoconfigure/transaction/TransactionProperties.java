@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.transaction;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.convert.DurationUnit;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Configuration properties that can be applied to an

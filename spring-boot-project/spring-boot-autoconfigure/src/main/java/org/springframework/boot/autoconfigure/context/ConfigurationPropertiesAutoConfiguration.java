@@ -27,9 +27,9 @@ import org.springframework.context.annotation.Configuration;
  * {@code @ConfigurationProperties}.
  *
  * @author Stephane Nicoll
- * @since 1.3.0
  * @see EnableConfigurationProperties
  * @see ConfigurationProperties
+ * @since 1.3.0
  */
 @Configuration
 @EnableConfigurationProperties

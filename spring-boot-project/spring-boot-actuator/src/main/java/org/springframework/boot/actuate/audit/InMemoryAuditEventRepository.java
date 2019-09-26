@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.audit;
 
+import org.springframework.util.Assert;
+
 import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.springframework.util.Assert;
 
 /**
  * In-memory {@link AuditEventRepository} implementation.
@@ -53,6 +53,7 @@ public class InMemoryAuditEventRepository implements AuditEventRepository {
 
 	/**
 	 * Set the capacity of this event repository.
+	 *
 	 * @param capacity the capacity
 	 */
 	public void setCapacity(int capacity) {

@@ -16,13 +16,12 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.util.Map;
-
-import javax.servlet.annotation.WebListener;
-
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+
+import javax.servlet.annotation.WebListener;
+import java.util.Map;
 
 /**
  * Handler for {@link WebListener}-annotated classes.
@@ -37,7 +36,7 @@ class WebListenerHandler extends ServletComponentHandler {
 
 	@Override
 	protected void doHandle(Map<String, Object> attributes, ScannedGenericBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry) {
+							BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(ServletListenerRegistrationBean.class);
 		builder.addPropertyValue("listener", beanDefinition);
 		registry.registerBeanDefinition(beanDefinition.getBeanClassName(), builder.getBeanDefinition());

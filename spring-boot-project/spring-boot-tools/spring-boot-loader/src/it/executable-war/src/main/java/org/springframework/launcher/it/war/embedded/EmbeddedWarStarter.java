@@ -34,8 +34,8 @@ public final class EmbeddedWarStarter {
 
 		WebAppContext webAppContext = new WebAppContext();
 		webAppContext.setContextPath("/");
-		webAppContext.setConfigurations(new Configuration[] {
-				new WebApplicationInitializersConfiguration(SpringInitializer.class) });
+		webAppContext.setConfigurations(new Configuration[]{
+				new WebApplicationInitializersConfiguration(SpringInitializer.class)});
 
 		webAppContext.setParentLoaderPriority(true);
 		server.setHandler(webAppContext);

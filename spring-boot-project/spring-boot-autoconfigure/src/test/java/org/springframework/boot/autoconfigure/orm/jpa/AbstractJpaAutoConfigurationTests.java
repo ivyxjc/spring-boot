@@ -16,17 +16,8 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.TestAutoConfigurationPackage;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -50,6 +41,13 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -179,13 +177,13 @@ public abstract class AbstractJpaAutoConfigurationTests {
 	public void customJpaProperties() {
 		this.contextRunner.withPropertyValues("spring.jpa.properties.a:b", "spring.jpa.properties.a.b:c",
 				"spring.jpa.properties.c:d").run((context) -> {
-					LocalContainerEntityManagerFactoryBean bean = context
-							.getBean(LocalContainerEntityManagerFactoryBean.class);
-					Map<String, Object> map = bean.getJpaPropertyMap();
-					assertThat(map.get("a")).isEqualTo("b");
-					assertThat(map.get("c")).isEqualTo("d");
-					assertThat(map.get("a.b")).isEqualTo("c");
-				});
+			LocalContainerEntityManagerFactoryBean bean = context
+					.getBean(LocalContainerEntityManagerFactoryBean.class);
+			Map<String, Object> map = bean.getJpaPropertyMap();
+			assertThat(map.get("a")).isEqualTo("b");
+			assertThat(map.get("c")).isEqualTo("d");
+			assertThat(map.get("a.b")).isEqualTo("c");
+		});
 	}
 
 	@Test
@@ -320,7 +318,7 @@ public abstract class AbstractJpaAutoConfigurationTests {
 
 		@Bean
 		public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource,
-				JpaVendorAdapter adapter) {
+																		   JpaVendorAdapter adapter) {
 			LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
 			factoryBean.setJpaVendorAdapter(adapter);
 			factoryBean.setDataSource(dataSource);

@@ -37,8 +37,7 @@ class DisableReferenceClearingContextCustomizer implements TomcatContextCustomiz
 			standardContext.setClearReferencesObjectStreamClassCaches(false);
 			standardContext.setClearReferencesRmiTargets(false);
 			standardContext.setClearReferencesThreadLocals(false);
-		}
-		catch (NoSuchMethodError ex) {
+		} catch (NoSuchMethodError ex) {
 			// Earlier version of Tomcat (probably without
 			// setClearReferencesThreadLocals). Continue.
 		}

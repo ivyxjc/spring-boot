@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.integration;
 
-import javax.sql.DataSource;
-
 import org.springframework.boot.jdbc.AbstractDataSourceInitializer;
 import org.springframework.boot.jdbc.DataSourceInitializationMode;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.Assert;
+
+import javax.sql.DataSource;
 
 /**
  * Initializer for Spring Integration schema.
@@ -34,7 +34,7 @@ public class IntegrationDataSourceInitializer extends AbstractDataSourceInitiali
 	private final IntegrationProperties.Jdbc properties;
 
 	public IntegrationDataSourceInitializer(DataSource dataSource, ResourceLoader resourceLoader,
-			IntegrationProperties properties) {
+											IntegrationProperties properties) {
 		super(dataSource, resourceLoader);
 		Assert.notNull(properties, "IntegrationProperties must not be null");
 		this.properties = properties.getJdbc();

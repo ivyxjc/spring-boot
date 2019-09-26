@@ -16,9 +16,6 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-
 import org.springframework.boot.devtools.classpath.ClassPathFolders;
 import org.springframework.boot.devtools.filewatch.ChangedFiles;
 import org.springframework.boot.devtools.filewatch.FileChangeListener;
@@ -26,6 +23,9 @@ import org.springframework.boot.devtools.filewatch.FileSystemWatcher;
 import org.springframework.boot.devtools.filewatch.FileSystemWatcherFactory;
 import org.springframework.boot.devtools.restart.FailureHandler;
 import org.springframework.boot.devtools.restart.Restarter;
+
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * {@link FailureHandler} that waits for filesystem changes before retrying.
@@ -49,8 +49,7 @@ class FileWatchingFailureHandler implements FailureHandler {
 		watcher.start();
 		try {
 			latch.await();
-		}
-		catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 		return Outcome.RETRY;

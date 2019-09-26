@@ -16,16 +16,15 @@
 
 package org.springframework.boot.docs.context.properties.bind;
 
-import java.time.Duration;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

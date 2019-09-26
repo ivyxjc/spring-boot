@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.data.elasticsearch.city;
 
-import java.io.Serializable;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+
+import java.io.Serializable;
 
 @Document(indexName = "city", type = "city", shards = 1, replicas = 0, refreshInterval = "-1")
 public class City implements Serializable {

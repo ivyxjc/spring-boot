@@ -1,7 +1,8 @@
-@SpringBootTest(classes=Application)
+@SpringBootTest(classes = Application)
 class BookTests {
 	@Autowired
 	Book book
+
 	@Test
 	void testBooks() {
 		assertEquals("Tom Clancy", book.author)

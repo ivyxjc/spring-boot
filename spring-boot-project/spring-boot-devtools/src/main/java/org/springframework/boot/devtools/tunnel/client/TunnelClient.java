@@ -16,6 +16,11 @@
 
 package org.springframework.boot.devtools.tunnel.client;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.SmartInitializingSingleton;
+import org.springframework.util.Assert;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -25,12 +30,6 @@ import java.nio.channels.AsynchronousCloseException;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.beans.factory.SmartInitializingSingleton;
-import org.springframework.util.Assert;
 
 /**
  * The client side component of a socket tunnel. Starts a {@link ServerSocket} of the
@@ -69,8 +68,7 @@ public class TunnelClient implements SmartInitializingSingleton {
 			if (this.serverThread == null) {
 				try {
 					start();
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					throw new IllegalStateException(ex);
 				}
 			}
@@ -79,6 +77,7 @@ public class TunnelClient implements SmartInitializingSingleton {
 
 	/**
 	 * Start the client and accept incoming connections.
+	 *
 	 * @return the port on which the client is listening
 	 * @throws IOException in case of I/O errors
 	 */
@@ -97,6 +96,7 @@ public class TunnelClient implements SmartInitializingSingleton {
 
 	/**
 	 * Stop the client, disconnecting any servers.
+	 *
 	 * @throws IOException in case of I/O errors
 	 */
 	public void stop() throws IOException {
@@ -105,8 +105,7 @@ public class TunnelClient implements SmartInitializingSingleton {
 				this.serverThread.close();
 				try {
 					this.serverThread.join(2000);
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					Thread.currentThread().interrupt();
 				}
 				this.serverThread = null;
@@ -156,13 +155,11 @@ public class TunnelClient implements SmartInitializingSingleton {
 				while (this.acceptConnections) {
 					try (SocketChannel socket = this.serverSocketChannel.accept()) {
 						handleConnection(socket);
-					}
-					catch (AsynchronousCloseException ex) {
+					} catch (AsynchronousCloseException ex) {
 						// Connection has been closed. Keep the server running
 					}
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				logger.trace("Unexpected exception from tunnel client", ex);
 			}
 		}

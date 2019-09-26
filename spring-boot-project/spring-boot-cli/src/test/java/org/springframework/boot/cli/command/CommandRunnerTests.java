@@ -16,17 +16,16 @@
 
 package org.springframework.boot.cli.command;
 
-import java.util.EnumSet;
-import java.util.Set;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.cli.command.core.HelpCommand;
 import org.springframework.boot.cli.command.core.HintCommand;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -42,16 +41,12 @@ import static org.mockito.Mockito.verify;
  */
 public class CommandRunnerTests {
 
+	private final Set<Call> calls = EnumSet.noneOf(Call.class);
 	private CommandRunner commandRunner;
-
 	@Mock
 	private Command regularCommand;
-
 	@Mock
 	private Command anotherCommand;
-
-	private final Set<Call> calls = EnumSet.noneOf(Call.class);
-
 	private ClassLoader loader;
 
 	@After

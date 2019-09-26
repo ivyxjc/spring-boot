@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.web.reactive;
 
-import java.lang.reflect.Modifier;
-
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -31,6 +29,8 @@ import org.springframework.boot.web.reactive.server.ReactiveWebServerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.util.ObjectUtils;
 
+import java.lang.reflect.Modifier;
+
 /**
  * A {@link ManagementContextFactory} for reactive web applications.
  *
@@ -40,7 +40,7 @@ class ReactiveManagementContextFactory implements ManagementContextFactory {
 
 	@Override
 	public ConfigurableWebServerApplicationContext createManagementContext(ApplicationContext parent,
-			Class<?>... configClasses) {
+																		   Class<?>... configClasses) {
 		AnnotationConfigReactiveWebServerApplicationContext child = new AnnotationConfigReactiveWebServerApplicationContext();
 		child.setParent(parent);
 		Class<?>[] combinedClasses = ObjectUtils.addObjectToArray(configClasses,
@@ -51,7 +51,7 @@ class ReactiveManagementContextFactory implements ManagementContextFactory {
 	}
 
 	private void registerReactiveWebServerFactory(ApplicationContext parent,
-			AnnotationConfigReactiveWebServerApplicationContext childContext) {
+												  AnnotationConfigReactiveWebServerApplicationContext childContext) {
 		try {
 			ConfigurableListableBeanFactory beanFactory = childContext.getBeanFactory();
 			if (beanFactory instanceof BeanDefinitionRegistry) {
@@ -59,8 +59,7 @@ class ReactiveManagementContextFactory implements ManagementContextFactory {
 				registry.registerBeanDefinition("ReactiveWebServerFactory",
 						new RootBeanDefinition(determineReactiveWebServerFactoryClass(parent)));
 			}
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Ignore and assume auto-configuration
 		}
 	}

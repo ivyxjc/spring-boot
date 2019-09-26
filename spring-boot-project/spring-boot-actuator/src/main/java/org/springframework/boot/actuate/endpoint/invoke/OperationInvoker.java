@@ -30,6 +30,7 @@ public interface OperationInvoker {
 
 	/**
 	 * Invoke the underlying operation using the given {@code context}.
+	 *
 	 * @param context the context to use to invoke the operation
 	 * @return the result of the operation, may be {@code null}
 	 * @throws MissingParametersException if parameters are missing

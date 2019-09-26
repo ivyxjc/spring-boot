@@ -16,11 +16,10 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Schedulers;
-
-import org.springframework.util.Assert;
 
 /**
  * Adapts a {@link HealthIndicator} to a {@link ReactiveHealthIndicator} so that it can be
@@ -47,8 +46,7 @@ public class HealthIndicatorReactiveAdapter implements ReactiveHealthIndicator {
 		try {
 			Health health = this.delegate.health();
 			sink.success(health);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			sink.error(ex);
 		}
 	}

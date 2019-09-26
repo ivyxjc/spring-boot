@@ -16,22 +16,8 @@
 
 package org.springframework.boot.autoconfigure.diagnostics.analyzer;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.UnsatisfiedDependencyException;
+import org.springframework.beans.factory.*;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -49,6 +35,10 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * An {@link AbstractInjectionFailureAnalyzer} that performs analysis of failures caused
@@ -148,14 +138,14 @@ class NoSuchBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyz
 	}
 
 	private void collectReportedConditionOutcomes(NoSuchBeanDefinitionException cause,
-			List<AutoConfigurationResult> results) {
+												  List<AutoConfigurationResult> results) {
 		this.report.getConditionAndOutcomesBySource()
 				.forEach((source, sourceOutcomes) -> collectReportedConditionOutcomes(cause, new Source(source),
 						sourceOutcomes, results));
 	}
 
 	private void collectReportedConditionOutcomes(NoSuchBeanDefinitionException cause, Source source,
-			ConditionAndOutcomes sourceOutcomes, List<AutoConfigurationResult> results) {
+												  ConditionAndOutcomes sourceOutcomes, List<AutoConfigurationResult> results) {
 		if (sourceOutcomes.isFullMatch()) {
 			return;
 		}
@@ -170,7 +160,7 @@ class NoSuchBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyz
 	}
 
 	private void collectExcludedAutoConfiguration(NoSuchBeanDefinitionException cause,
-			List<AutoConfigurationResult> results) {
+												  List<AutoConfigurationResult> results) {
 		for (String excludedClass : this.report.getExclusions()) {
 			Source source = new Source(excludedClass);
 			BeanMethods methods = new BeanMethods(source, cause);
@@ -189,6 +179,32 @@ class NoSuchBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyz
 			return Collections.emptyList();
 		}
 		return Arrays.asList(unsatisfiedDependencyException.getInjectionPoint().getAnnotations());
+	}
+
+	private static class UserConfigurationResult {
+
+		private final MethodMetadata methodMetadata;
+
+		private final boolean nullBean;
+
+		UserConfigurationResult(MethodMetadata methodMetadata, boolean nullBean) {
+			this.methodMetadata = methodMetadata;
+			this.nullBean = nullBean;
+		}
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder("User-defined bean");
+			if (this.methodMetadata != null) {
+				sb.append(String.format(" method '%s' in '%s'", this.methodMetadata.getMethodName(),
+						ClassUtils.getShortName(this.methodMetadata.getDeclaringClassName())));
+			}
+			if (this.nullBean) {
+				sb.append(" ignored as the bean value is null");
+			}
+			return sb.toString();
+		}
+
 	}
 
 	private class Source {
@@ -234,8 +250,7 @@ class NoSuchBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyz
 					}
 				}
 				return Collections.unmodifiableList(result);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				return Collections.emptyList();
 			}
 		}
@@ -273,8 +288,7 @@ class NoSuchBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyz
 				Class<?> returnType = ClassUtils.forName(returnTypeName,
 						NoSuchBeanDefinitionFailureAnalyzer.this.beanFactory.getBeanClassLoader());
 				return type.isAssignableFrom(returnType);
-			}
-			catch (Throwable ex) {
+			} catch (Throwable ex) {
 				return false;
 			}
 		}
@@ -302,32 +316,6 @@ class NoSuchBeanDefinitionFailureAnalyzer extends AbstractInjectionFailureAnalyz
 			return String.format("Bean method '%s' in '%s' not loaded because %s", this.methodMetadata.getMethodName(),
 					ClassUtils.getShortName(this.methodMetadata.getDeclaringClassName()),
 					this.conditionOutcome.getMessage());
-		}
-
-	}
-
-	private static class UserConfigurationResult {
-
-		private final MethodMetadata methodMetadata;
-
-		private final boolean nullBean;
-
-		UserConfigurationResult(MethodMetadata methodMetadata, boolean nullBean) {
-			this.methodMetadata = methodMetadata;
-			this.nullBean = nullBean;
-		}
-
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder("User-defined bean");
-			if (this.methodMetadata != null) {
-				sb.append(String.format(" method '%s' in '%s'", this.methodMetadata.getMethodName(),
-						ClassUtils.getShortName(this.methodMetadata.getDeclaringClassName())));
-			}
-			if (this.nullBean) {
-				sb.append(" ignored as the bean value is null");
-			}
-			return sb.toString();
 		}
 
 	}

@@ -16,14 +16,13 @@
 
 package org.springframework.boot.devtools.autoconfigure;
 
-import java.lang.reflect.Field;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Field;
 
 /**
  * Replaces the Objenesis instance in Spring HATEOAS's {@code DummyInvocationUtils} with
@@ -56,8 +55,7 @@ class HateoasObjenesisCacheDisabler implements InitializingBean {
 			Class<?> type = ClassUtils.forName("org.springframework.hateoas.core.DummyInvocationUtils",
 					getClass().getClassLoader());
 			removeObjenesisCache(type);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Assume that Spring HATEOAS is not on the classpath and continue
 		}
 	}
@@ -72,8 +70,7 @@ class HateoasObjenesisCacheDisabler implements InitializingBean {
 				ReflectionUtils.makeAccessible(cacheField);
 				ReflectionUtils.setField(cacheField, objenesis, null);
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			logger.warn("Failed to disable Spring HATEOAS's Objenesis cache. ClassCastExceptions may occur", ex);
 		}
 	}

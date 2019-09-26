@@ -16,15 +16,8 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.util.function.Consumer;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -33,6 +26,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.StandardEnvironment;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
@@ -252,8 +251,15 @@ public class ConditionalOnPropertyTests {
 				.run();
 	}
 
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target({ElementType.TYPE, ElementType.METHOD})
+	@ConditionalOnProperty(prefix = "my.feature", name = "enabled", havingValue = "true", matchIfMissing = false)
+	public @interface ConditionalOnMyFeature {
+
+	}
+
 	@Configuration
-	@ConditionalOnProperty(name = { "property1", "property2" })
+	@ConditionalOnProperty(name = {"property1", "property2"})
 	protected static class MultiplePropertiesRequiredConfiguration {
 
 		@Bean
@@ -343,7 +349,7 @@ public class ConditionalOnPropertyTests {
 	}
 
 	@Configuration
-	@ConditionalOnProperty(prefix = "simple", name = { "my-property", "my-another-property" }, havingValue = "bar")
+	@ConditionalOnProperty(prefix = "simple", name = {"my-property", "my-another-property"}, havingValue = "bar")
 	static class MultiValuesConfig {
 
 		@Bean
@@ -406,13 +412,6 @@ public class ConditionalOnPropertyTests {
 		public String foo() {
 			return "foo";
 		}
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target({ ElementType.TYPE, ElementType.METHOD })
-	@ConditionalOnProperty(prefix = "my.feature", name = "enabled", havingValue = "true", matchIfMissing = false)
-	public @interface ConditionalOnMyFeature {
 
 	}
 

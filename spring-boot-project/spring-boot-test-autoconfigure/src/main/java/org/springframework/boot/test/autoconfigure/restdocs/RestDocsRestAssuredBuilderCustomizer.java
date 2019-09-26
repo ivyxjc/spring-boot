@@ -17,7 +17,6 @@
 package org.springframework.boot.test.autoconfigure.restdocs;
 
 import io.restassured.specification.RequestSpecification;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.util.StringUtils;

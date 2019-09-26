@@ -16,8 +16,6 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.util.List;
-
 import groovy.lang.Grab;
 import groovy.lang.GroovyClassLoader;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -29,9 +27,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.boot.cli.compiler.dependencies.ArtifactCoordinatesResolver;
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -61,12 +60,12 @@ public class DependencyCustomizerTests {
 		this.dependencyCustomizer = new DependencyCustomizer(new GroovyClassLoader(getClass().getClassLoader()),
 				this.moduleNode, new DependencyResolutionContext() {
 
-					@Override
-					public ArtifactCoordinatesResolver getArtifactCoordinatesResolver() {
-						return DependencyCustomizerTests.this.resolver;
-					}
+			@Override
+			public ArtifactCoordinatesResolver getArtifactCoordinatesResolver() {
+				return DependencyCustomizerTests.this.resolver;
+			}
 
-				});
+		});
 	}
 
 	@Test
@@ -139,19 +138,17 @@ public class DependencyCustomizerTests {
 	}
 
 	private void assertGrabAnnotation(AnnotationNode annotationNode, String group, String module, String version,
-			String classifier, String type, boolean transitive) {
+									  String classifier, String type, boolean transitive) {
 		assertThat(getMemberValue(annotationNode, "group")).isEqualTo(group);
 		assertThat(getMemberValue(annotationNode, "module")).isEqualTo(module);
 		if (type == null) {
 			assertThat(annotationNode.getMember("type")).isNull();
-		}
-		else {
+		} else {
 			assertThat(getMemberValue(annotationNode, "type")).isEqualTo(type);
 		}
 		if (classifier == null) {
 			assertThat(annotationNode.getMember("classifier")).isNull();
-		}
-		else {
+		} else {
 			assertThat(getMemberValue(annotationNode, "classifier")).isEqualTo(classifier);
 		}
 		assertThat(getMemberValue(annotationNode, "transitive")).isEqualTo(transitive);

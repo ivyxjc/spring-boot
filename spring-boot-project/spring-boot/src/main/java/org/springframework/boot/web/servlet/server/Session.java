@@ -16,12 +16,12 @@
 
 package org.springframework.boot.web.servlet.server;
 
+import org.springframework.boot.convert.DurationUnit;
+
 import java.io.File;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Set;
-
-import org.springframework.boot.convert.DurationUnit;
 
 /**
  * Session properties.
@@ -31,21 +31,16 @@ import org.springframework.boot.convert.DurationUnit;
  */
 public class Session {
 
+	private final Cookie cookie = new Cookie();
+	private final SessionStoreDirectory sessionStoreDirectory = new SessionStoreDirectory();
 	@DurationUnit(ChronoUnit.SECONDS)
 	private Duration timeout = Duration.ofMinutes(30);
-
 	private Set<Session.SessionTrackingMode> trackingModes;
-
 	private boolean persistent;
-
 	/**
 	 * Directory used to store session data.
 	 */
 	private File storeDir;
-
-	private final Cookie cookie = new Cookie();
-
-	private final SessionStoreDirectory sessionStoreDirectory = new SessionStoreDirectory();
 
 	public Cookie getCookie() {
 		return this.cookie;
@@ -61,6 +56,7 @@ public class Session {
 
 	/**
 	 * Return the {@link SessionTrackingMode session tracking modes}.
+	 *
 	 * @return the session tracking modes
 	 */
 	public Set<Session.SessionTrackingMode> getTrackingModes() {
@@ -73,6 +69,7 @@ public class Session {
 
 	/**
 	 * Return whether to persist session data between restarts.
+	 *
 	 * @return {@code true} to persist session data between restarts.
 	 */
 	public boolean isPersistent() {
@@ -85,6 +82,7 @@ public class Session {
 
 	/**
 	 * Return the directory used to store session data.
+	 *
 	 * @return the session data store directory
 	 */
 	public File getStoreDir() {
@@ -98,6 +96,29 @@ public class Session {
 
 	SessionStoreDirectory getSessionStoreDirectory() {
 		return this.sessionStoreDirectory;
+	}
+
+	/**
+	 * Available session tracking modes (mirrors
+	 * {@link javax.servlet.SessionTrackingMode}.
+	 */
+	public enum SessionTrackingMode {
+
+		/**
+		 * Send a cookie in response to the client's first request.
+		 */
+		COOKIE,
+
+		/**
+		 * Rewrite the URL to append a session ID.
+		 */
+		URL,
+
+		/**
+		 * Use SSL build-in mechanism to track the session.
+		 */
+		SSL
+
 	}
 
 	/**
@@ -122,6 +143,7 @@ public class Session {
 
 		/**
 		 * Return the session cookie name.
+		 *
 		 * @return the session cookie name
 		 */
 		public String getName() {
@@ -134,6 +156,7 @@ public class Session {
 
 		/**
 		 * Return the domain for the session cookie.
+		 *
 		 * @return the session cookie domain
 		 */
 		public String getDomain() {
@@ -146,6 +169,7 @@ public class Session {
 
 		/**
 		 * Return the path of the session cookie.
+		 *
 		 * @return the session cookie path
 		 */
 		public String getPath() {
@@ -158,6 +182,7 @@ public class Session {
 
 		/**
 		 * Return the comment for the session cookie.
+		 *
 		 * @return the session cookie comment
 		 */
 		public String getComment() {
@@ -170,6 +195,7 @@ public class Session {
 
 		/**
 		 * Return whether to use "HttpOnly" cookies for session cookies.
+		 *
 		 * @return {@code true} to use "HttpOnly" cookies for session cookies.
 		 */
 		public Boolean getHttpOnly() {
@@ -182,6 +208,7 @@ public class Session {
 
 		/**
 		 * Return whether to always mark the session cookie as secure.
+		 *
 		 * @return {@code true} to mark the session cookie as secure even if the request
 		 * that initiated the corresponding session is using plain HTTP
 		 */
@@ -195,6 +222,7 @@ public class Session {
 
 		/**
 		 * Return the maximum age of the session cookie.
+		 *
 		 * @return the maximum age of the session cookie
 		 */
 		public Duration getMaxAge() {
@@ -204,29 +232,6 @@ public class Session {
 		public void setMaxAge(Duration maxAge) {
 			this.maxAge = maxAge;
 		}
-
-	}
-
-	/**
-	 * Available session tracking modes (mirrors
-	 * {@link javax.servlet.SessionTrackingMode}.
-	 */
-	public enum SessionTrackingMode {
-
-		/**
-		 * Send a cookie in response to the client's first request.
-		 */
-		COOKIE,
-
-		/**
-		 * Rewrite the URL to append a session ID.
-		 */
-		URL,
-
-		/**
-		 * Use SSL build-in mechanism to track the session.
-		 */
-		SSL
 
 	}
 

@@ -16,21 +16,20 @@
 
 package org.springframework.boot.actuate.metrics.web.tomcat;
 
-import java.util.Collections;
-
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.binder.tomcat.TomcatMetrics;
 import org.apache.catalina.Container;
 import org.apache.catalina.Context;
 import org.apache.catalina.Manager;
-
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.boot.web.embedded.tomcat.TomcatWebServer;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
+
+import java.util.Collections;
 
 /**
  * Binds {@link TomcatMetrics} in response to the {@link ApplicationStartedEvent}.

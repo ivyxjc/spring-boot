@@ -16,14 +16,14 @@
 
 package org.springframework.boot.jackson;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializerProvider;
+
+import java.io.IOException;
 
 /**
  * Sample {@link JsonComponent} used for tests.
@@ -48,7 +48,7 @@ public class NameAndAgeJsonComponent {
 
 		@Override
 		protected NameAndAge deserializeObject(JsonParser jsonParser, DeserializationContext context, ObjectCodec codec,
-				JsonNode tree) throws IOException {
+											   JsonNode tree) throws IOException {
 			String name = nullSafeValue(tree.get("name"), String.class);
 			Integer age = nullSafeValue(tree.get("age"), Integer.class);
 			return new NameAndAge(name, age);

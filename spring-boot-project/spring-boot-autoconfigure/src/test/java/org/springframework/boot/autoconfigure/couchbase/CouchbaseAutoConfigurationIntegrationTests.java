@@ -23,7 +23,6 @@ import com.couchbase.client.java.cluster.ClusterInfo;
 import com.couchbase.client.java.env.CouchbaseEnvironment;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -40,11 +39,10 @@ import static org.mockito.Mockito.mock;
  */
 public class CouchbaseAutoConfigurationIntegrationTests {
 
-	private ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
-			AutoConfigurations.of(PropertyPlaceholderAutoConfiguration.class, CouchbaseAutoConfiguration.class));
-
 	@Rule
 	public final CouchbaseTestServer couchbase = new CouchbaseTestServer();
+	private ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
+			AutoConfigurations.of(PropertyPlaceholderAutoConfiguration.class, CouchbaseAutoConfiguration.class));
 
 	@Test
 	public void defaultConfiguration() {
@@ -57,11 +55,11 @@ public class CouchbaseAutoConfigurationIntegrationTests {
 	public void customConfiguration() {
 		this.contextRunner.withUserConfiguration(CustomConfiguration.class)
 				.withPropertyValues("spring.couchbase.bootstrapHosts=localhost").run((context) -> {
-					assertThat(context.getBeansOfType(Cluster.class)).hasSize(2);
-					assertThat(context.getBeansOfType(ClusterInfo.class)).hasSize(1);
-					assertThat(context.getBeansOfType(CouchbaseEnvironment.class)).hasSize(1);
-					assertThat(context.getBeansOfType(Bucket.class)).hasSize(2);
-				});
+			assertThat(context.getBeansOfType(Cluster.class)).hasSize(2);
+			assertThat(context.getBeansOfType(ClusterInfo.class)).hasSize(1);
+			assertThat(context.getBeansOfType(CouchbaseEnvironment.class)).hasSize(1);
+			assertThat(context.getBeansOfType(Bucket.class)).hasSize(2);
+		});
 	}
 
 	@Configuration

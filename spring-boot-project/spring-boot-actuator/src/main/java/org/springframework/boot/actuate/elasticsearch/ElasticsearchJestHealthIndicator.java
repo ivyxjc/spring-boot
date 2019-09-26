@@ -16,16 +16,15 @@
 
 package org.springframework.boot.actuate.elasticsearch;
 
-import java.util.Map;
-
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
+
+import java.util.Map;
 
 /**
  * {@link HealthIndicator} for Elasticsearch using a {@link JestClient}.
@@ -52,14 +51,12 @@ public class ElasticsearchJestHealthIndicator extends AbstractHealthIndicator {
 		if (healthResult.getResponseCode() != 200 || !healthResult.isSucceeded()) {
 			builder.down();
 			builder.withDetail("statusCode", healthResult.getResponseCode());
-		}
-		else {
+		} else {
 			Map<String, Object> response = this.jsonParser.parseMap(healthResult.getJsonString());
 			String status = (String) response.get("status");
 			if (status.equals(io.searchbox.cluster.Health.Status.RED.getKey())) {
 				builder.outOfService();
-			}
-			else {
+			} else {
 				builder.up();
 			}
 			builder.withDetails(response);

@@ -16,20 +16,15 @@
 
 package org.springframework.boot.jta.atomikos;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.atomikos.icatch.jta.UserTransactionManager;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * {@link BeanFactoryPostProcessor} to automatically setup the recommended
@@ -56,7 +51,7 @@ public class AtomikosDependsOnBeanFactoryPostProcessor implements BeanFactoryPos
 	}
 
 	private void addTransactionManagerDependencies(ConfigurableListableBeanFactory beanFactory,
-			String transactionManager) {
+												   String transactionManager) {
 		BeanDefinition bean = beanFactory.getBeanDefinition(transactionManager);
 		Set<String> dependsOn = new LinkedHashSet<>(asList(bean.getDependsOn()));
 		int initialSize = dependsOn.size();
@@ -68,7 +63,7 @@ public class AtomikosDependsOnBeanFactoryPostProcessor implements BeanFactoryPos
 	}
 
 	private void addMessageDrivenContainerDependencies(ConfigurableListableBeanFactory beanFactory,
-			String[] transactionManagers) {
+													   String[] transactionManagers) {
 		String[] messageDrivenContainers = getBeanNamesForType(beanFactory,
 				"com.atomikos.jms.extra.MessageDrivenContainer");
 		for (String messageDrivenContainer : messageDrivenContainers) {
@@ -86,8 +81,7 @@ public class AtomikosDependsOnBeanFactoryPostProcessor implements BeanFactoryPos
 	private String[] getBeanNamesForType(ConfigurableListableBeanFactory beanFactory, String type) {
 		try {
 			return beanFactory.getBeanNamesForType(Class.forName(type), true, false);
-		}
-		catch (ClassNotFoundException | NoClassDefFoundError ex) {
+		} catch (ClassNotFoundException | NoClassDefFoundError ex) {
 			// Ignore
 		}
 		return NO_BEANS;

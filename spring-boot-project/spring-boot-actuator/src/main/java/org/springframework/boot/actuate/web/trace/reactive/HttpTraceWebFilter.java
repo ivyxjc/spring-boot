@@ -16,11 +16,6 @@
 
 package org.springframework.boot.actuate.web.trace.reactive;
 
-import java.security.Principal;
-import java.util.Set;
-
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
 import org.springframework.boot.actuate.trace.http.HttpTrace;
 import org.springframework.boot.actuate.trace.http.HttpTraceRepository;
@@ -30,6 +25,10 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.WebSession;
+import reactor.core.publisher.Mono;
+
+import java.security.Principal;
+import java.util.Set;
 
 /**
  * A {@link WebFilter} for tracing HTTP requests.
@@ -40,16 +39,12 @@ import org.springframework.web.server.WebSession;
 public class HttpTraceWebFilter implements WebFilter, Ordered {
 
 	private static final Object NONE = new Object();
-
+	private final HttpTraceRepository repository;
+	private final HttpExchangeTracer tracer;
+	private final Set<Include> includes;
 	// Not LOWEST_PRECEDENCE, but near the end, so it has a good chance of catching all
 	// enriched headers, but users can add stuff after this if they want to
 	private int order = Ordered.LOWEST_PRECEDENCE - 10;
-
-	private final HttpTraceRepository repository;
-
-	private final HttpExchangeTracer tracer;
-
-	private final Set<Include> includes;
 
 	public HttpTraceWebFilter(HttpTraceRepository repository, HttpExchangeTracer tracer, Set<Include> includes) {
 		this.repository = repository;
@@ -83,7 +78,7 @@ public class HttpTraceWebFilter implements WebFilter, Ordered {
 	}
 
 	private Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain, Principal principal,
-			WebSession session) {
+							  WebSession session) {
 		ServerWebExchangeTraceableRequest request = new ServerWebExchangeTraceableRequest(exchange);
 		final HttpTrace trace = this.tracer.receivedRequest(request);
 		exchange.getResponse().beforeCommit(() -> {

@@ -59,6 +59,7 @@ public class DefaultRestartInitializer implements RestartInitializer {
 	/**
 	 * Returns if the thread is for a main invocation. By default checks the name of the
 	 * thread and the context classloader.
+	 *
 	 * @param thread the thread to check
 	 * @return {@code true} if the thread is a main invocation
 	 */
@@ -70,6 +71,7 @@ public class DefaultRestartInitializer implements RestartInitializer {
 	/**
 	 * Checks if a specific {@link StackTraceElement} should cause the initializer to be
 	 * skipped.
+	 *
 	 * @param element the stack element to check
 	 * @return {@code true} if the stack element means that the initializer should be
 	 * skipped
@@ -85,6 +87,7 @@ public class DefaultRestartInitializer implements RestartInitializer {
 
 	/**
 	 * Return the URLs that should be used with initialization.
+	 *
 	 * @param thread the source thread
 	 * @return the URLs
 	 */

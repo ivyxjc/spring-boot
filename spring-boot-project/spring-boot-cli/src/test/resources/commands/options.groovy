@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
- def foo() {
-	 "Foo"
- }
+def foo() {
+	"Foo"
+}
 
 command("foo") {
 

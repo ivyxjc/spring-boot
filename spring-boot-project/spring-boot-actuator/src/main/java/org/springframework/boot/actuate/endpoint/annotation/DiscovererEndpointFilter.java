@@ -32,6 +32,7 @@ public abstract class DiscovererEndpointFilter implements EndpointFilter<Discove
 
 	/**
 	 * Create a new {@link DiscovererEndpointFilter} instance.
+	 *
 	 * @param discoverer the required discoverer
 	 */
 	protected DiscovererEndpointFilter(Class<? extends EndpointDiscoverer<?, ?>> discoverer) {

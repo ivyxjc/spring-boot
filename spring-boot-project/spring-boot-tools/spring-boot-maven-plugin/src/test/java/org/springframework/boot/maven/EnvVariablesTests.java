@@ -16,10 +16,10 @@
 
 package org.springframework.boot.maven;
 
+import org.junit.Test;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;

@@ -16,13 +16,13 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import javax.servlet.ServletContext;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.core.Ordered;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.ServletContext;
 
 /**
  * {@link ApplicationContextInitializer} for setting the servlet context.
@@ -34,14 +34,13 @@ import org.springframework.web.context.WebApplicationContext;
 public class ServletContextApplicationContextInitializer
 		implements ApplicationContextInitializer<ConfigurableWebApplicationContext>, Ordered {
 
-	private int order = Ordered.HIGHEST_PRECEDENCE;
-
 	private final ServletContext servletContext;
-
 	private final boolean addApplicationContextAttribute;
+	private int order = Ordered.HIGHEST_PRECEDENCE;
 
 	/**
 	 * Create a new {@link ServletContextApplicationContextInitializer} instance.
+	 *
 	 * @param servletContext the servlet that should be ultimately set.
 	 */
 	public ServletContextApplicationContextInitializer(ServletContext servletContext) {
@@ -50,24 +49,25 @@ public class ServletContextApplicationContextInitializer
 
 	/**
 	 * Create a new {@link ServletContextApplicationContextInitializer} instance.
-	 * @param servletContext the servlet that should be ultimately set.
+	 *
+	 * @param servletContext                 the servlet that should be ultimately set.
 	 * @param addApplicationContextAttribute if the {@link ApplicationContext} should be
-	 * stored as an attribute in the {@link ServletContext}
+	 *                                       stored as an attribute in the {@link ServletContext}
 	 * @since 1.3.4
 	 */
 	public ServletContextApplicationContextInitializer(ServletContext servletContext,
-			boolean addApplicationContextAttribute) {
+													   boolean addApplicationContextAttribute) {
 		this.servletContext = servletContext;
 		this.addApplicationContextAttribute = addApplicationContextAttribute;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
 	}
 
 	@Override
 	public int getOrder() {
 		return this.order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
 	}
 
 	@Override

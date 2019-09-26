@@ -16,17 +16,16 @@
 
 package org.springframework.boot.cli.command.init;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Test;
-
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,6 +35,21 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Stephane Nicoll
  */
 public class InitializrServiceMetadataTests {
+
+	private static InitializrServiceMetadata createInstance(String version) throws JSONException {
+		try {
+			return new InitializrServiceMetadata(readJson(version));
+		} catch (IOException ex) {
+			throw new IllegalStateException("Failed to read json", ex);
+		}
+	}
+
+	private static JSONObject readJson(String version) throws IOException, JSONException {
+		Resource resource = new ClassPathResource("metadata/service-metadata-" + version + ".json");
+		try (InputStream stream = resource.getInputStream()) {
+			return new JSONObject(StreamUtils.copyToString(stream, StandardCharsets.UTF_8));
+		}
+	}
 
 	@Test
 	public void parseDefaults() throws Exception {
@@ -75,22 +89,6 @@ public class InitializrServiceMetadataTests {
 		assertThat(projectType).isNotNull();
 		assertThat(projectType.getTags().get("build")).isEqualTo("maven");
 		assertThat(projectType.getTags().get("format")).isEqualTo("project");
-	}
-
-	private static InitializrServiceMetadata createInstance(String version) throws JSONException {
-		try {
-			return new InitializrServiceMetadata(readJson(version));
-		}
-		catch (IOException ex) {
-			throw new IllegalStateException("Failed to read json", ex);
-		}
-	}
-
-	private static JSONObject readJson(String version) throws IOException, JSONException {
-		Resource resource = new ClassPathResource("metadata/service-metadata-" + version + ".json");
-		try (InputStream stream = resource.getInputStream()) {
-			return new JSONObject(StreamUtils.copyToString(stream, StandardCharsets.UTF_8));
-		}
 	}
 
 }

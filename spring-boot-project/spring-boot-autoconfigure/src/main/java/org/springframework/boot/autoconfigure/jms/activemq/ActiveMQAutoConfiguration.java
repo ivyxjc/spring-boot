@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.jms.activemq;
 
-import javax.jms.ConnectionFactory;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -32,6 +29,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import javax.jms.ConnectionFactory;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} to integrate with an ActiveMQ
  * broker. Validates that the classpath contain the necessary classes before starting an
@@ -43,11 +42,11 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @AutoConfigureBefore(JmsAutoConfiguration.class)
-@AutoConfigureAfter({ JndiConnectionFactoryAutoConfiguration.class })
-@ConditionalOnClass({ ConnectionFactory.class, ActiveMQConnectionFactory.class })
+@AutoConfigureAfter({JndiConnectionFactoryAutoConfiguration.class})
+@ConditionalOnClass({ConnectionFactory.class, ActiveMQConnectionFactory.class})
 @ConditionalOnMissingBean(ConnectionFactory.class)
-@EnableConfigurationProperties({ ActiveMQProperties.class, JmsProperties.class })
-@Import({ ActiveMQXAConnectionFactoryConfiguration.class, ActiveMQConnectionFactoryConfiguration.class })
+@EnableConfigurationProperties({ActiveMQProperties.class, JmsProperties.class})
+@Import({ActiveMQXAConnectionFactoryConfiguration.class, ActiveMQConnectionFactoryConfiguration.class})
 public class ActiveMQAutoConfiguration {
 
 }

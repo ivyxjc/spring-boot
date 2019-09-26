@@ -16,18 +16,9 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -42,6 +33,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -50,6 +48,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Madhura Bhave
  */
 public class BindValidationFailureAnalyzerTests {
+
+	private static String failure(String property, String value, String reason) {
+		return String.format("Property: %s%n    Value: %s%n    Reason: %s", property, value, reason);
+	}
 
 	@Before
 	public void setup() {
@@ -91,10 +93,6 @@ public class BindValidationFailureAnalyzerTests {
 		assertThat(analysis.getDescription()).contains(failure("test.value", "null", "must not be null"));
 	}
 
-	private static String failure(String property, String value, String reason) {
-		return String.format("Property: %s%n    Value: %s%n    Reason: %s", property, value, reason);
-	}
-
 	private FailureAnalysis performAnalysis(Class<?> configuration, String... environment) {
 		BeanCreationException failure = createFailure(configuration, environment);
 		assertThat(failure).isNotNull();
@@ -109,8 +107,7 @@ public class BindValidationFailureAnalyzerTests {
 			context.refresh();
 			context.close();
 			return null;
-		}
-		catch (BeanCreationException ex) {
+		} catch (BeanCreationException ex) {
 			return ex;
 		}
 	}

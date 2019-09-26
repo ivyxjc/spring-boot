@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.metrics.web.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Tags;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Default implementation of {@link WebMvcTagsProvider}.
@@ -32,7 +32,7 @@ public class DefaultWebMvcTagsProvider implements WebMvcTagsProvider {
 
 	@Override
 	public Iterable<Tag> getTags(HttpServletRequest request, HttpServletResponse response, Object handler,
-			Throwable exception) {
+								 Throwable exception) {
 		return Tags.of(WebMvcTags.method(request), WebMvcTags.uri(request, response), WebMvcTags.exception(exception),
 				WebMvcTags.status(response), WebMvcTags.outcome(response));
 	}

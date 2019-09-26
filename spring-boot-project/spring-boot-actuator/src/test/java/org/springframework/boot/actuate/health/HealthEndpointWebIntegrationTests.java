@@ -16,17 +16,8 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.function.Consumer;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import reactor.core.publisher.Mono;
-
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.actuate.endpoint.web.test.WebEndpointRunners;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
@@ -36,6 +27,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 /**
  * Integration tests for {@link HealthEndpoint} and {@link HealthEndpointWebExtension}
@@ -83,7 +82,7 @@ public class HealthEndpointWebIntegrationTests {
 				Collections.singletonMap("one", () -> Health.down().build()));
 		CompositeReactiveHealthIndicator reactiveComposite = new CompositeReactiveHealthIndicator(
 				new OrderedHealthAggregator(), new DefaultReactiveHealthIndicatorRegistry(
-						Collections.singletonMap("one", () -> Mono.just(Health.down().build()))));
+				Collections.singletonMap("one", () -> Mono.just(Health.down().build()))));
 		withHealthIndicator("charlie", composite, reactiveComposite, () -> {
 			client.get().uri("/actuator/health/charlie/one").exchange().expectStatus()
 					.isEqualTo(HttpStatus.SERVICE_UNAVAILABLE).expectBody().jsonPath("status").isEqualTo("DOWN");
@@ -92,15 +91,14 @@ public class HealthEndpointWebIntegrationTests {
 	}
 
 	private void withHealthIndicator(String name, HealthIndicator healthIndicator,
-			ReactiveHealthIndicator reactiveHealthIndicator, Callable<Void> action) throws Exception {
+									 ReactiveHealthIndicator reactiveHealthIndicator, Callable<Void> action) throws Exception {
 		Consumer<String> unregister;
 		Consumer<String> reactiveUnregister;
 		try {
 			ReactiveHealthIndicatorRegistry registry = context.getBean(ReactiveHealthIndicatorRegistry.class);
 			registry.register(name, reactiveHealthIndicator);
 			reactiveUnregister = registry::unregister;
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			reactiveUnregister = (indicatorName) -> {
 			};
 			// Continue
@@ -110,8 +108,7 @@ public class HealthEndpointWebIntegrationTests {
 		unregister = reactiveUnregister.andThen(registry::unregister);
 		try {
 			action.call();
-		}
-		finally {
+		} finally {
 			unregister.accept("charlie");
 		}
 	}
@@ -123,8 +120,7 @@ public class HealthEndpointWebIntegrationTests {
 			ReactiveHealthIndicatorRegistry registry = context.getBean(ReactiveHealthIndicatorRegistry.class);
 			ReactiveHealthIndicator unregistered = registry.unregister("bravo");
 			reactiveRegister = (name) -> registry.register(name, unregistered);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
+		} catch (NoSuchBeanDefinitionException ex) {
 			// Continue
 		}
 		HealthIndicatorRegistry registry = context.getBean(HealthIndicatorRegistry.class);
@@ -133,8 +129,7 @@ public class HealthEndpointWebIntegrationTests {
 			client.get().uri("/actuator/health").exchange().expectStatus().isOk().expectBody().jsonPath("status")
 					.isEqualTo("UP").jsonPath("details.alpha.status").isEqualTo("UP").jsonPath("details.bravo.status")
 					.doesNotExist();
-		}
-		finally {
+		} finally {
 			registry.register("bravo", bravo);
 			if (reactiveRegister != null) {
 				reactiveRegister.accept("bravo");

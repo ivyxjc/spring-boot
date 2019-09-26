@@ -16,23 +16,8 @@
 
 package org.springframework.boot.web.embedded.jetty;
 
-import java.net.InetAddress;
-import java.nio.charset.Charset;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.apache.jasper.servlet.JspServlet;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Handler;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
-import org.eclipse.jetty.server.SslConnectionFactory;
+import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.HandlerWrapper;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -42,12 +27,21 @@ import org.eclipse.jetty.webapp.Configuration;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.junit.Test;
 import org.mockito.InOrder;
-
 import org.springframework.boot.web.server.PortInUseException;
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactoryTests;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import java.net.InetAddress;
+import java.nio.charset.Charset;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -118,7 +112,7 @@ public class JettyServletWebServerFactoryTests extends AbstractServletWebServerF
 		ssl.setKeyStore("src/test/resources/test.jks");
 		ssl.setKeyStorePassword("secret");
 		ssl.setKeyPassword("password");
-		ssl.setCiphers(new String[] { "ALPHA", "BRAVO", "CHARLIE" });
+		ssl.setCiphers(new String[]{"ALPHA", "BRAVO", "CHARLIE"});
 
 		JettyServletWebServerFactory factory = getFactory();
 		factory.setSsl(ssl);
@@ -182,7 +176,7 @@ public class JettyServletWebServerFactoryTests extends AbstractServletWebServerF
 		ssl.setKeyStore("src/test/resources/test.jks");
 		ssl.setKeyStorePassword("secret");
 		ssl.setKeyPassword("password");
-		ssl.setCiphers(new String[] { "ALPHA", "BRAVO", "CHARLIE" });
+		ssl.setCiphers(new String[]{"ALPHA", "BRAVO", "CHARLIE"});
 		ssl.setEnabledProtocols(enabledProtocols);
 		return ssl;
 	}
@@ -303,8 +297,7 @@ public class JettyServletWebServerFactoryTests extends AbstractServletWebServerF
 			JettyWebServer jettyWebServer = (JettyWebServer) factory.getWebServer();
 			try {
 				jettyWebServer.start();
-			}
-			finally {
+			} finally {
 				QueuedThreadPool threadPool = (QueuedThreadPool) jettyWebServer.getServer().getThreadPool();
 				assertThat(threadPool.isRunning()).isFalse();
 			}

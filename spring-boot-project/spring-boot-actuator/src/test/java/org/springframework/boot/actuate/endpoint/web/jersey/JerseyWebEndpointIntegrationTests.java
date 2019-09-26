@@ -16,24 +16,11 @@
 
 package org.springframework.boot.actuate.endpoint.web.jersey;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.ext.ContextResolver;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.model.Resource;
 import org.glassfish.jersey.servlet.ServletContainer;
-
 import org.springframework.boot.actuate.endpoint.web.EndpointLinksResolver;
 import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.EndpointMediaTypes;
@@ -53,6 +40,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.ext.ContextResolver;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Integration tests for web endpoints exposed using Jersey.
@@ -85,7 +83,7 @@ public class JerseyWebEndpointIntegrationTests
 
 	@Override
 	protected void validateErrorBody(WebTestClient.BodyContentSpec body, HttpStatus status, String path,
-			String message) {
+									 String message) {
 		// Jersey doesn't support the general error page handling
 	}
 
@@ -104,7 +102,7 @@ public class JerseyWebEndpointIntegrationTests
 
 		@Bean
 		public ResourceConfig resourceConfig(Environment environment, WebEndpointDiscoverer endpointDiscoverer,
-				EndpointMediaTypes endpointMediaTypes) {
+											 EndpointMediaTypes endpointMediaTypes) {
 			ResourceConfig resourceConfig = new ResourceConfig();
 			Collection<Resource> resources = new JerseyEndpointResourceFactory().createEndpointResources(
 					new EndpointMapping(environment.getProperty("endpointPath")), endpointDiscoverer.getEndpoints(),
@@ -126,15 +124,14 @@ public class JerseyWebEndpointIntegrationTests
 
 				@Override
 				protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-						FilterChain filterChain) throws ServletException, IOException {
+												FilterChain filterChain) throws ServletException, IOException {
 					SecurityContext context = SecurityContextHolder.createEmptyContext();
 					context.setAuthentication(new UsernamePasswordAuthenticationToken("Alice", "secret",
 							Arrays.asList(new SimpleGrantedAuthority("ROLE_ACTUATOR"))));
 					SecurityContextHolder.setContext(context);
 					try {
 						filterChain.doFilter(new SecurityContextHolderAwareRequestWrapper(request, "ROLE_"), response);
-					}
-					finally {
+					} finally {
 						SecurityContextHolder.clearContext();
 					}
 				}

@@ -16,18 +16,17 @@
 
 package org.springframework.boot.gradle.plugin;
 
+import org.gradle.api.InvalidUserDataException;
+import org.gradle.api.Project;
+import org.gradle.api.file.FileCollection;
+import org.springframework.boot.gradle.dsl.SpringBootExtension;
+import org.springframework.boot.loader.tools.MainClassFinder;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.Supplier;
-
-import org.gradle.api.InvalidUserDataException;
-import org.gradle.api.Project;
-import org.gradle.api.file.FileCollection;
-
-import org.springframework.boot.gradle.dsl.SpringBootExtension;
-import org.springframework.boot.loader.tools.MainClassFinder;
 
 /**
  * A {@link Callable} that provides a convention for the project's main class name.
@@ -71,8 +70,7 @@ final class MainClassConvention implements Callable<Object> {
 	private String findMainClass(File file) {
 		try {
 			return MainClassFinder.findSingleMainClass(file, SPRING_BOOT_APPLICATION_CLASS_NAME);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			return null;
 		}
 	}

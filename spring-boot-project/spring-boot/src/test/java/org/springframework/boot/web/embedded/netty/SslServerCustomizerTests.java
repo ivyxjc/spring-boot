@@ -16,12 +16,11 @@
 
 package org.springframework.boot.web.embedded.netty;
 
-import java.security.NoSuchProviderException;
-
 import org.junit.Test;
-
 import org.springframework.boot.web.server.Ssl;
 import org.springframework.boot.web.server.WebServerException;
+
+import java.security.NoSuchProviderException;
 
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 

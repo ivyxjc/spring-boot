@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.management;
 
-import java.util.concurrent.CountDownLatch;
-
 import org.junit.Test;
+
+import java.util.concurrent.CountDownLatch;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

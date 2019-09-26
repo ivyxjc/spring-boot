@@ -16,17 +16,16 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.util.Map;
-
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ScannedGenericBeanDefinition;
 import org.springframework.util.StringUtils;
+
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import java.util.Map;
 
 /**
  * Handler for {@link WebServlet}-annotated classes.
@@ -41,7 +40,7 @@ class WebServletHandler extends ServletComponentHandler {
 
 	@Override
 	public void doHandle(Map<String, Object> attributes, ScannedGenericBeanDefinition beanDefinition,
-			BeanDefinitionRegistry registry) {
+						 BeanDefinitionRegistry registry) {
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.rootBeanDefinition(ServletRegistrationBean.class);
 		builder.addPropertyValue("asyncSupported", attributes.get("asyncSupported"));
 		builder.addPropertyValue("initParameters", extractInitParameters(attributes));

@@ -16,10 +16,6 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.function.Supplier;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.boot.security.servlet.ApplicationContextRequestMatcher;
@@ -27,6 +23,9 @@ import org.springframework.boot.web.context.WebServerApplicationContext;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.function.Supplier;
 
 /**
  * Factory that can be used to create a {@link RequestMatcher} for commonly used paths.
@@ -43,6 +42,7 @@ public final class PathRequest {
 	/**
 	 * Returns a {@link StaticResourceRequest} that can be used to create a matcher for
 	 * {@link StaticResourceLocation locations}.
+	 *
 	 * @return a {@link StaticResourceRequest}
 	 */
 	public static StaticResourceRequest toStaticResources() {
@@ -54,6 +54,7 @@ public final class PathRequest {
 	 * <pre class="code">
 	 * PathRequest.toH2Console()
 	 * </pre>
+	 *
 	 * @return the configured {@link RequestMatcher}
 	 */
 	public static H2ConsoleRequestMatcher toH2Console() {

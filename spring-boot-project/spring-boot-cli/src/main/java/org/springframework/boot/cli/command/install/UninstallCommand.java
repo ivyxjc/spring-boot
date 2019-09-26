@@ -16,16 +16,15 @@
 
 package org.springframework.boot.cli.command.install;
 
-import java.util.List;
-
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.OptionParsingCommand;
 import org.springframework.boot.cli.command.options.CompilerOptionHandler;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.cli.util.Log;
+
+import java.util.List;
 
 /**
  * {@link Command} to uninstall dependencies from the CLI's lib/ext directory.
@@ -70,8 +69,7 @@ public class UninstallCommand extends OptionParsingCommand {
 							"Please specify at least one dependency, in the form group:artifact:version, to uninstall");
 				}
 				new Installer(options, this).uninstall(args);
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				String message = ex.getMessage();
 				Log.error((message != null) ? message : ex.getClass().toString());
 			}

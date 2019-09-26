@@ -16,20 +16,18 @@
 
 package org.springframework.boot.jta.atomikos;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
-import javax.jms.ConnectionFactory;
-import javax.sql.DataSource;
-
 import com.atomikos.icatch.jta.UserTransactionManager;
 import com.atomikos.jms.extra.MessageDrivenContainer;
 import org.junit.Test;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.jms.ConnectionFactory;
+import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -67,6 +65,11 @@ public class AtomikosDependsOnBeanFactoryPostProcessorTests {
 	static class Config {
 
 		@Bean
+		public static AtomikosDependsOnBeanFactoryPostProcessor atomikosPostProcessor() {
+			return new AtomikosDependsOnBeanFactoryPostProcessor();
+		}
+
+		@Bean
 		public DataSource dataSource() {
 			return mock(DataSource.class);
 		}
@@ -84,11 +87,6 @@ public class AtomikosDependsOnBeanFactoryPostProcessorTests {
 		@Bean
 		public MessageDrivenContainer messageDrivenContainer() {
 			return mock(MessageDrivenContainer.class);
-		}
-
-		@Bean
-		public static AtomikosDependsOnBeanFactoryPostProcessor atomikosPostProcessor() {
-			return new AtomikosDependsOnBeanFactoryPostProcessor();
 		}
 
 	}

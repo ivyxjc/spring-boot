@@ -16,17 +16,16 @@
 
 package org.springframework.boot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.testsupport.rule.OutputCapture;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -39,10 +38,9 @@ import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException
 @Configuration
 public class SimpleMainTests {
 
+	private static final String SPRING_STARTUP = "Started SpringApplication in";
 	@Rule
 	public OutputCapture outputCapture = new OutputCapture();
-
-	private static final String SPRING_STARTUP = "Started SpringApplication in";
 
 	@Test
 	public void emptyApplicationContext() throws Exception {

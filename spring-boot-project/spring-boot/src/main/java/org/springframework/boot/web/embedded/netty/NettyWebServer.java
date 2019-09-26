@@ -16,19 +16,18 @@
 
 package org.springframework.boot.web.embedded.netty;
 
-import java.time.Duration;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import reactor.netty.ChannelBindException;
-import reactor.netty.DisposableServer;
-import reactor.netty.http.server.HttpServer;
-
 import org.springframework.boot.web.server.PortInUseException;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.server.reactive.ReactorHttpHandlerAdapter;
 import org.springframework.util.Assert;
+import reactor.netty.ChannelBindException;
+import reactor.netty.DisposableServer;
+import reactor.netty.http.server.HttpServer;
+
+import java.time.Duration;
 
 /**
  * {@link WebServer} that can be used to control a Reactor Netty web server. Usually this
@@ -65,8 +64,7 @@ public class NettyWebServer implements WebServer {
 		if (this.disposableServer == null) {
 			try {
 				this.disposableServer = startHttpServer();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				ChannelBindException bindException = findBindException(ex);
 				if (bindException != null) {
 					throw new PortInUseException(bindException.localPort());
@@ -115,8 +113,7 @@ public class NettyWebServer implements WebServer {
 		if (this.disposableServer != null) {
 			if (this.lifecycleTimeout != null) {
 				this.disposableServer.disposeNow(this.lifecycleTimeout);
-			}
-			else {
+			} else {
 				this.disposableServer.disposeNow();
 			}
 			this.disposableServer = null;

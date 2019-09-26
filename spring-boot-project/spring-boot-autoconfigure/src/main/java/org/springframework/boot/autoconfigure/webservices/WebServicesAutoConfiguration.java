@@ -16,11 +16,6 @@
 
 package org.springframework.boot.autoconfigure.webservices;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -51,6 +46,11 @@ import org.springframework.ws.transport.http.MessageDispatcherServlet;
 import org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition;
 import org.springframework.xml.xsd.SimpleXsdSchema;
 
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Web Services.
  *
@@ -73,6 +73,12 @@ public class WebServicesAutoConfiguration {
 	}
 
 	@Bean
+	@Conditional(OnWsdlLocationsCondition.class)
+	public static WsdlDefinitionBeanFactoryPostProcessor wsdlDefinitionBeanFactoryPostProcessor() {
+		return new WsdlDefinitionBeanFactoryPostProcessor();
+	}
+
+	@Bean
 	public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(
 			ApplicationContext applicationContext) {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
@@ -85,12 +91,6 @@ public class WebServicesAutoConfiguration {
 		registration.setLoadOnStartup(servletProperties.getLoadOnStartup());
 		servletProperties.getInit().forEach(registration::addInitParameter);
 		return registration;
-	}
-
-	@Bean
-	@Conditional(OnWsdlLocationsCondition.class)
-	public static WsdlDefinitionBeanFactoryPostProcessor wsdlDefinitionBeanFactoryPostProcessor() {
-		return new WsdlDefinitionBeanFactoryPostProcessor();
 	}
 
 	@Configuration
@@ -126,7 +126,7 @@ public class WebServicesAutoConfiguration {
 		}
 
 		private <T> void registerBeans(String location, String pattern, Class<T> type,
-				Function<Resource, T> beanSupplier, BeanDefinitionRegistry registry) {
+									   Function<Resource, T> beanSupplier, BeanDefinitionRegistry registry) {
 			for (Resource resource : getResources(location, pattern)) {
 				BeanDefinition beanDefinition = BeanDefinitionBuilder
 						.genericBeanDefinition(type, () -> beanSupplier.apply(resource)).getBeanDefinition();
@@ -138,8 +138,7 @@ public class WebServicesAutoConfiguration {
 		private Resource[] getResources(String location, String pattern) {
 			try {
 				return this.applicationContext.getResources(ensureTrailingSlash(location) + pattern);
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				return new Resource[0];
 			}
 		}

@@ -24,7 +24,7 @@ import java.io.OutputStream;
  *
  * @author Phillip Webb
  */
-@TestAutoConfigureBefore(name = { "test.before1", "test.before2" })
+@TestAutoConfigureBefore(name = {"test.before1", "test.before2"})
 @TestAutoConfigureAfter(ObjectInputStream.class)
 @TestConditionalOnClass(name = "java.io.InputStream", value = OutputStream.class)
 @TestAutoConfigureOrder(123)

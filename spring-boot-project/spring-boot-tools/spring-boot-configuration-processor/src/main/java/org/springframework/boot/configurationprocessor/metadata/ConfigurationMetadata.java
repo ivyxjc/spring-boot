@@ -16,23 +16,15 @@
 
 package org.springframework.boot.configurationprocessor.metadata;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Configuration meta-data.
  *
  * @author Stephane Nicoll
  * @author Phillip Webb
- * @since 1.2.0
  * @see ItemMetadata
+ * @since 1.2.0
  */
 public class ConfigurationMetadata {
 
@@ -57,8 +49,42 @@ public class ConfigurationMetadata {
 		this.hints = new LinkedHashMap<>(metadata.hints);
 	}
 
+	public static String nestedPrefix(String prefix, String name) {
+		String nestedPrefix = (prefix != null) ? prefix : "";
+		String dashedName = toDashedCase(name);
+		nestedPrefix += "".equals(nestedPrefix) ? dashedName : "." + dashedName;
+		return nestedPrefix;
+	}
+
+	static String toDashedCase(String name) {
+		StringBuilder dashed = new StringBuilder();
+		Character previous = null;
+		for (char current : name.toCharArray()) {
+			if (SEPARATORS.contains(current)) {
+				dashed.append("-");
+			} else if (Character.isUpperCase(current) && previous != null && !SEPARATORS.contains(previous)) {
+				dashed.append("-").append(current);
+			} else {
+				dashed.append(current);
+			}
+			previous = current;
+
+		}
+		return dashed.toString().toLowerCase(Locale.ENGLISH);
+	}
+
+	private static <T extends Comparable<T>> List<T> flattenValues(Map<?, List<T>> map) {
+		List<T> content = new ArrayList<>();
+		for (List<T> values : map.values()) {
+			content.addAll(values);
+		}
+		Collections.sort(content);
+		return content;
+	}
+
 	/**
 	 * Add item meta-data.
+	 *
 	 * @param itemMetadata the meta-data to add
 	 */
 	public void add(ItemMetadata itemMetadata) {
@@ -67,6 +93,7 @@ public class ConfigurationMetadata {
 
 	/**
 	 * Add item hint.
+	 *
 	 * @param itemHint the item hint to add
 	 */
 	public void add(ItemHint itemHint) {
@@ -75,6 +102,7 @@ public class ConfigurationMetadata {
 
 	/**
 	 * Merge the content from another {@link ConfigurationMetadata}.
+	 *
 	 * @param metadata the {@link ConfigurationMetadata} instance to merge
 	 */
 	public void merge(ConfigurationMetadata metadata) {
@@ -88,6 +116,7 @@ public class ConfigurationMetadata {
 
 	/**
 	 * Return item meta-data.
+	 *
 	 * @return the items
 	 */
 	public List<ItemMetadata> getItems() {
@@ -96,6 +125,7 @@ public class ConfigurationMetadata {
 
 	/**
 	 * Return hint meta-data.
+	 *
 	 * @return the hints
 	 */
 	public List<ItemHint> getHints() {
@@ -116,8 +146,7 @@ public class ConfigurationMetadata {
 			if (deprecation != null) {
 				if (matchingDeprecation == null) {
 					matching.setDeprecation(deprecation);
-				}
-				else {
+				} else {
 					if (deprecation.getReason() != null) {
 						matchingDeprecation.setReason(deprecation.getReason());
 					}
@@ -129,8 +158,7 @@ public class ConfigurationMetadata {
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			add(this.items, metadata.getName(), metadata);
 		}
 	}
@@ -170,41 +198,6 @@ public class ConfigurationMetadata {
 			return true;
 		}
 		return o1 != null && o2 != null && o1.equals(o2);
-	}
-
-	public static String nestedPrefix(String prefix, String name) {
-		String nestedPrefix = (prefix != null) ? prefix : "";
-		String dashedName = toDashedCase(name);
-		nestedPrefix += "".equals(nestedPrefix) ? dashedName : "." + dashedName;
-		return nestedPrefix;
-	}
-
-	static String toDashedCase(String name) {
-		StringBuilder dashed = new StringBuilder();
-		Character previous = null;
-		for (char current : name.toCharArray()) {
-			if (SEPARATORS.contains(current)) {
-				dashed.append("-");
-			}
-			else if (Character.isUpperCase(current) && previous != null && !SEPARATORS.contains(previous)) {
-				dashed.append("-").append(current);
-			}
-			else {
-				dashed.append(current);
-			}
-			previous = current;
-
-		}
-		return dashed.toString().toLowerCase(Locale.ENGLISH);
-	}
-
-	private static <T extends Comparable<T>> List<T> flattenValues(Map<?, List<T>> map) {
-		List<T> content = new ArrayList<>();
-		for (List<T> values : map.values()) {
-			content.addAll(values);
-		}
-		Collections.sort(content);
-		return content;
 	}
 
 	@Override

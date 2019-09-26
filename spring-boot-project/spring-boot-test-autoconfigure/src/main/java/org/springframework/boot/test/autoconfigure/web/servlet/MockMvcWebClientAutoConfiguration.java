@@ -17,7 +17,6 @@
 package org.springframework.boot.test.autoconfigure.web.servlet;
 
 import com.gargoylesoftware.htmlunit.WebClient;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -49,7 +48,7 @@ public class MockMvcWebClientAutoConfiguration {
 	}
 
 	@Bean
-	@ConditionalOnMissingBean({ WebClient.class, MockMvcWebClientBuilder.class })
+	@ConditionalOnMissingBean({WebClient.class, MockMvcWebClientBuilder.class})
 	@ConditionalOnBean(MockMvc.class)
 	public MockMvcWebClientBuilder mockMvcWebClientBuilder(MockMvc mockMvc) {
 		return MockMvcWebClientBuilder.mockMvcSetup(mockMvc).withDelegate(new LocalHostWebClient(this.environment));

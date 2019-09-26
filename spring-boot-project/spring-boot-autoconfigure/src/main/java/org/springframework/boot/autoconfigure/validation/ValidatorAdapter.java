@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.validation;
 
-import javax.validation.ValidationException;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -30,6 +28,8 @@ import org.springframework.validation.SmartValidator;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.OptionalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
+
+import javax.validation.ValidationException;
 
 /**
  * {@link Validator} implementation that delegates calls to another {@link Validator}.
@@ -49,6 +49,67 @@ public class ValidatorAdapter implements SmartValidator, ApplicationContextAware
 	ValidatorAdapter(SmartValidator target, boolean existingBean) {
 		this.target = target;
 		this.existingBean = existingBean;
+	}
+
+	/**
+	 * Return a {@link Validator} that only implements the {@link Validator} interface,
+	 * wrapping it if necessary.
+	 * <p>
+	 * If the specified {@link Validator} is not {@code null}, it is wrapped. If not, a
+	 * {@link javax.validation.Validator} is retrieved from the context and wrapped.
+	 * Otherwise, a new default validator is created.
+	 *
+	 * @param applicationContext the application context
+	 * @param validator          an existing validator to use or {@code null}
+	 * @return the validator to use
+	 */
+	public static Validator get(ApplicationContext applicationContext, Validator validator) {
+		if (validator != null) {
+			return wrap(validator, false);
+		}
+		return getExistingOrCreate(applicationContext);
+	}
+
+	private static Validator getExistingOrCreate(ApplicationContext applicationContext) {
+		Validator existing = getExisting(applicationContext);
+		if (existing != null) {
+			return wrap(existing, true);
+		}
+		return create();
+	}
+
+	private static Validator getExisting(ApplicationContext applicationContext) {
+		try {
+			javax.validation.Validator validator = applicationContext.getBean(javax.validation.Validator.class);
+			if (validator instanceof Validator) {
+				return (Validator) validator;
+			}
+			return new SpringValidatorAdapter(validator);
+		} catch (NoSuchBeanDefinitionException ex) {
+			return null;
+		}
+	}
+
+	private static Validator create() {
+		OptionalValidatorFactoryBean validator = new OptionalValidatorFactoryBean();
+		try {
+			MessageInterpolatorFactory factory = new MessageInterpolatorFactory();
+			validator.setMessageInterpolator(factory.getObject());
+		} catch (ValidationException ex) {
+			// Ignore
+		}
+		return wrap(validator, false);
+	}
+
+	private static Validator wrap(Validator validator, boolean existingBean) {
+		if (validator instanceof javax.validation.Validator) {
+			if (validator instanceof SpringValidatorAdapter) {
+				return new ValidatorAdapter((SpringValidatorAdapter) validator, existingBean);
+			}
+			return new ValidatorAdapter(new SpringValidatorAdapter((javax.validation.Validator) validator),
+					existingBean);
+		}
+		return validator;
 	}
 
 	public final Validator getTarget() {
@@ -89,68 +150,6 @@ public class ValidatorAdapter implements SmartValidator, ApplicationContextAware
 		if (!this.existingBean && this.target instanceof DisposableBean) {
 			((DisposableBean) this.target).destroy();
 		}
-	}
-
-	/**
-	 * Return a {@link Validator} that only implements the {@link Validator} interface,
-	 * wrapping it if necessary.
-	 * <p>
-	 * If the specified {@link Validator} is not {@code null}, it is wrapped. If not, a
-	 * {@link javax.validation.Validator} is retrieved from the context and wrapped.
-	 * Otherwise, a new default validator is created.
-	 * @param applicationContext the application context
-	 * @param validator an existing validator to use or {@code null}
-	 * @return the validator to use
-	 */
-	public static Validator get(ApplicationContext applicationContext, Validator validator) {
-		if (validator != null) {
-			return wrap(validator, false);
-		}
-		return getExistingOrCreate(applicationContext);
-	}
-
-	private static Validator getExistingOrCreate(ApplicationContext applicationContext) {
-		Validator existing = getExisting(applicationContext);
-		if (existing != null) {
-			return wrap(existing, true);
-		}
-		return create();
-	}
-
-	private static Validator getExisting(ApplicationContext applicationContext) {
-		try {
-			javax.validation.Validator validator = applicationContext.getBean(javax.validation.Validator.class);
-			if (validator instanceof Validator) {
-				return (Validator) validator;
-			}
-			return new SpringValidatorAdapter(validator);
-		}
-		catch (NoSuchBeanDefinitionException ex) {
-			return null;
-		}
-	}
-
-	private static Validator create() {
-		OptionalValidatorFactoryBean validator = new OptionalValidatorFactoryBean();
-		try {
-			MessageInterpolatorFactory factory = new MessageInterpolatorFactory();
-			validator.setMessageInterpolator(factory.getObject());
-		}
-		catch (ValidationException ex) {
-			// Ignore
-		}
-		return wrap(validator, false);
-	}
-
-	private static Validator wrap(Validator validator, boolean existingBean) {
-		if (validator instanceof javax.validation.Validator) {
-			if (validator instanceof SpringValidatorAdapter) {
-				return new ValidatorAdapter((SpringValidatorAdapter) validator, existingBean);
-			}
-			return new ValidatorAdapter(new SpringValidatorAdapter((javax.validation.Validator) validator),
-					existingBean);
-		}
-		return validator;
 	}
 
 }

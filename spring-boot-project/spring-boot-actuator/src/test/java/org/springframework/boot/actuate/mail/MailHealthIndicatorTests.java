@@ -16,23 +16,15 @@
 
 package org.springframework.boot.actuate.mail;
 
-import java.util.Properties;
-
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Provider;
-import javax.mail.Provider.Type;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.URLName;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import javax.mail.*;
+import javax.mail.Provider.Type;
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

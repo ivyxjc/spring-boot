@@ -16,17 +16,8 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.EndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.reactive.WebFluxEndpointManagementContextConfiguration;
@@ -47,6 +38,14 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 
 /**
@@ -55,8 +54,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
  *
  * @author Andy Wilkinson
  */
-@TestPropertySource(properties = { "spring.jackson.serialization.indent_output=true",
-		"management.endpoints.web.exposure.include=*", "spring.jackson.default-property-inclusion=non_null" })
+@TestPropertySource(properties = {"spring.jackson.serialization.indent_output=true",
+		"management.endpoints.web.exposure.include=*", "spring.jackson.default-property-inclusion=non_null"})
 public abstract class AbstractEndpointDocumentationTests {
 
 	protected String describeEnumValues(Class<? extends Enum<?>> enumType) {
@@ -80,20 +79,17 @@ public abstract class AbstractEndpointDocumentationTests {
 					if (target instanceof Map) {
 						parent = (Map<Object, Object>) target;
 						target = parent.get(key);
-					}
-					else {
+					} else {
 						throw new IllegalStateException();
 					}
 				}
 				if (target instanceof Map) {
 					parent.put(keys[keys.length - 1], select((Map<String, Object>) target, filter));
-				}
-				else {
+				} else {
 					parent.put(keys[keys.length - 1], select((List<Object>) target, filter));
 				}
 				return objectMapper.writeValueAsBytes(payload);
-			}
-			catch (IOException ex) {
+			} catch (IOException ex) {
 				throw new IllegalStateException(ex);
 			}
 		});
@@ -119,11 +115,11 @@ public abstract class AbstractEndpointDocumentationTests {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class, EndpointAutoConfiguration.class,
-			WebEndpointAutoConfiguration.class, WebMvcEndpointManagementContextConfiguration.class,
-			WebFluxEndpointManagementContextConfiguration.class, PropertyPlaceholderAutoConfiguration.class,
-			WebFluxAutoConfiguration.class, HttpHandlerAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class, EndpointAutoConfiguration.class,
+									 WebEndpointAutoConfiguration.class, WebMvcEndpointManagementContextConfiguration.class,
+									 WebFluxEndpointManagementContextConfiguration.class, PropertyPlaceholderAutoConfiguration.class,
+									 WebFluxAutoConfiguration.class, HttpHandlerAutoConfiguration.class})
 	static class BaseDocumentationConfiguration {
 
 	}

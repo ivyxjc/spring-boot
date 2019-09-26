@@ -16,11 +16,11 @@
 
 package org.springframework.boot.test.json;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.assertj.core.api.AssertProvider;
 import org.junit.Test;
+
+import java.util.Collections;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -52,7 +52,7 @@ public class ObjectContentAssertTests {
 
 	@Test
 	public void asArrayForArrayShouldReturnObjectArrayAssert() {
-		ExampleObject[] source = new ExampleObject[] { SOURCE };
+		ExampleObject[] source = new ExampleObject[]{SOURCE};
 		assertThat(forObject(source)).asArray().containsExactly(SOURCE);
 	}
 

@@ -16,14 +16,10 @@
 
 package org.springframework.boot.test.json;
 
-import java.util.Map;
-
-import org.assertj.core.api.AbstractMapAssert;
-import org.assertj.core.api.AbstractObjectArrayAssert;
-import org.assertj.core.api.AbstractObjectAssert;
-import org.assertj.core.api.Assert;
-import org.assertj.core.api.Assertions;
+import org.assertj.core.api.*;
 import org.assertj.core.internal.Objects;
+
+import java.util.Map;
 
 /**
  * AssertJ {@link Assert} for {@link ObjectContent}.
@@ -41,6 +37,7 @@ public class ObjectContentAssert<A> extends AbstractObjectAssert<ObjectContentAs
 	/**
 	 * Verifies that the actual value is an array, and returns an array assertion, to
 	 * allow chaining of array-specific assertions from this call.
+	 *
 	 * @return an array assertion object
 	 */
 	public AbstractObjectArrayAssert<?, Object> asArray() {
@@ -51,6 +48,7 @@ public class ObjectContentAssert<A> extends AbstractObjectAssert<ObjectContentAs
 	/**
 	 * Verifies that the actual value is a map, and returns a map assertion, to allow
 	 * chaining of map-specific assertions from this call.
+	 *
 	 * @return a map assertion object
 	 */
 	@SuppressWarnings("unchecked")

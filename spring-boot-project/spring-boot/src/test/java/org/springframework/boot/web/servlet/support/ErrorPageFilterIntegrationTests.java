@@ -16,18 +16,9 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import java.net.URI;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.xnio.channels.UnsupportedOptionException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
@@ -54,6 +45,13 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.xnio.channels.UnsupportedOptionException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,7 +64,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DirtiesContext
 @ContextConfiguration(classes = ErrorPageFilterIntegrationTests.TomcatConfig.class,
-		loader = EmbeddedWebContextLoader.class)
+					  loader = EmbeddedWebContextLoader.class)
 public class ErrorPageFilterIntegrationTests {
 
 	@Autowired
@@ -93,7 +91,7 @@ public class ErrorPageFilterIntegrationTests {
 	}
 
 	private void doTest(AnnotationConfigServletWebServerApplicationContext context, String resourcePath,
-			HttpStatus status) throws Exception {
+						HttpStatus status) throws Exception {
 		int port = context.getWebServer().getPort();
 		RestTemplate template = new RestTemplate();
 		ResponseEntity<String> entity = template.getForEntity(new URI("http://localhost:" + port + resourcePath),
@@ -154,7 +152,7 @@ public class ErrorPageFilterIntegrationTests {
 			registry.addInterceptor(new HandlerInterceptorAdapter() {
 				@Override
 				public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-						ModelAndView modelAndView) {
+									   ModelAndView modelAndView) {
 					HelloWorldController.this.setStatus(response.getStatus());
 					HelloWorldController.this.latch.countDown();
 				}

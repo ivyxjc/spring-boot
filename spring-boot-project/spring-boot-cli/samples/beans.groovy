@@ -11,5 +11,5 @@ class Application {
 }
 
 beans {
-  foo String, "World"
+	foo String, "World"
 }

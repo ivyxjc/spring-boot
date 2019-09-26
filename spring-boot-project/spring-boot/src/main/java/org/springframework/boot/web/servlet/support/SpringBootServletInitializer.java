@@ -16,17 +16,8 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import java.util.Collections;
-
-import javax.servlet.Filter;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.ParentContextApplicationContextInitializer;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -44,6 +35,9 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.*;
+import java.util.Collections;
 
 /**
  * An opinionated {@link WebApplicationInitializer} to run a {@link SpringApplication}
@@ -65,8 +59,8 @@ import org.springframework.web.context.WebApplicationContext;
  * @author Dave Syer
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 2.0.0
  * @see #configure(SpringApplicationBuilder)
+ * @since 2.0.0
  */
 public abstract class SpringBootServletInitializer implements WebApplicationInitializer {
 
@@ -77,6 +71,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 	/**
 	 * Set if the {@link ErrorPageFilter} should be registered. Set to {@code false} if
 	 * error page mappings should be handled via the server and not Spring Boot.
+	 *
 	 * @param registerErrorPageFilter if the {@link ErrorPageFilter} should be registered.
 	 */
 	protected final void setRegisterErrorPageFilter(boolean registerErrorPageFilter) {
@@ -96,8 +91,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 					// no-op because the application context is already initialized
 				}
 			});
-		}
-		else {
+		} else {
 			this.logger.debug("No ContextLoaderListener registered, as " + "createRootApplicationContext() did not "
 					+ "return an application context");
 		}
@@ -135,6 +129,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 	 * Returns the {@code SpringApplicationBuilder} that is used to configure and create
 	 * the {@link SpringApplication}. The default implementation returns a new
 	 * {@code SpringApplicationBuilder} in its default state.
+	 *
 	 * @return the {@code SpringApplicationBuilder}.
 	 * @since 1.3.0
 	 */
@@ -144,6 +139,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 
 	/**
 	 * Called to run a fully configured {@link SpringApplication}.
+	 *
 	 * @param application the application to run
 	 * @return the {@link WebApplicationContext}
 	 */
@@ -164,6 +160,7 @@ public abstract class SpringBootServletInitializer implements WebApplicationInit
 	 * (e.g. config classes) because other settings have sensible defaults. You might
 	 * choose (for instance) to add default command line arguments, or set an active
 	 * Spring profile.
+	 *
 	 * @param builder a builder for the application context
 	 * @return the application builder
 	 * @see SpringApplicationBuilder

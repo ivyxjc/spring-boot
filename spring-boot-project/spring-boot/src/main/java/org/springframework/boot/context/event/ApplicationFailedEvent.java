@@ -23,8 +23,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  * Event published by a {@link SpringApplication} when it fails to start.
  *
  * @author Dave Syer
- * @since 1.0.0
  * @see ApplicationReadyEvent
+ * @since 1.0.0
  */
 @SuppressWarnings("serial")
 public class ApplicationFailedEvent extends SpringApplicationEvent {
@@ -35,13 +35,14 @@ public class ApplicationFailedEvent extends SpringApplicationEvent {
 
 	/**
 	 * Create a new {@link ApplicationFailedEvent} instance.
+	 *
 	 * @param application the current application
-	 * @param args the arguments the application was running with
-	 * @param context the context that was being created (maybe null)
-	 * @param exception the exception that caused the error
+	 * @param args        the arguments the application was running with
+	 * @param context     the context that was being created (maybe null)
+	 * @param exception   the exception that caused the error
 	 */
 	public ApplicationFailedEvent(SpringApplication application, String[] args, ConfigurableApplicationContext context,
-			Throwable exception) {
+								  Throwable exception) {
 		super(application, args);
 		this.context = context;
 		this.exception = exception;
@@ -49,6 +50,7 @@ public class ApplicationFailedEvent extends SpringApplicationEvent {
 
 	/**
 	 * Return the application context.
+	 *
 	 * @return the context
 	 */
 	public ConfigurableApplicationContext getApplicationContext() {
@@ -57,6 +59,7 @@ public class ApplicationFailedEvent extends SpringApplicationEvent {
 
 	/**
 	 * Return the exception that caused the failure.
+	 *
 	 * @return the exception
 	 */
 	public Throwable getException() {

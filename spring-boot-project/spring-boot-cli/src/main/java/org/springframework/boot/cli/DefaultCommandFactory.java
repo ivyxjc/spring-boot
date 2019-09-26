@@ -16,11 +16,6 @@
 
 package org.springframework.boot.cli;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.CommandFactory;
 import org.springframework.boot.cli.command.archive.JarCommand;
@@ -32,6 +27,11 @@ import org.springframework.boot.cli.command.init.InitCommand;
 import org.springframework.boot.cli.command.install.InstallCommand;
 import org.springframework.boot.cli.command.install.UninstallCommand;
 import org.springframework.boot.cli.command.run.RunCommand;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Default implementation of {@link CommandFactory}.

@@ -23,9 +23,9 @@ import org.springframework.util.ObjectUtils;
  *
  * @author Madhura Bhave
  * @author Phillip Webb
- * @since 2.0.0
  * @see #of(Object)
  * @see #of(Object, Origin)
+ * @since 2.0.0
  */
 public class OriginTrackedValue implements OriginProvider {
 
@@ -38,8 +38,33 @@ public class OriginTrackedValue implements OriginProvider {
 		this.origin = origin;
 	}
 
+	public static OriginTrackedValue of(Object value) {
+		return of(value, null);
+	}
+
+	/**
+	 * Create an {@link OriginTrackedValue} containing the specified {@code value} and
+	 * {@code origin}. If the source value implements {@link CharSequence} then so will
+	 * the resulting {@link OriginTrackedValue}.
+	 *
+	 * @param value  the source value
+	 * @param origin the origin
+	 * @return an {@link OriginTrackedValue} or {@code null} if the source value was
+	 * {@code null}.
+	 */
+	public static OriginTrackedValue of(Object value, Origin origin) {
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof CharSequence) {
+			return new OriginTrackedCharSequence((CharSequence) value, origin);
+		}
+		return new OriginTrackedValue(value, origin);
+	}
+
 	/**
 	 * Return the tracked value.
+	 *
 	 * @return the tracked value
 	 */
 	public Object getValue() {
@@ -67,29 +92,6 @@ public class OriginTrackedValue implements OriginProvider {
 	@Override
 	public String toString() {
 		return (this.value != null) ? this.value.toString() : null;
-	}
-
-	public static OriginTrackedValue of(Object value) {
-		return of(value, null);
-	}
-
-	/**
-	 * Create an {@link OriginTrackedValue} containing the specified {@code value} and
-	 * {@code origin}. If the source value implements {@link CharSequence} then so will
-	 * the resulting {@link OriginTrackedValue}.
-	 * @param value the source value
-	 * @param origin the origin
-	 * @return an {@link OriginTrackedValue} or {@code null} if the source value was
-	 * {@code null}.
-	 */
-	public static OriginTrackedValue of(Object value, Origin origin) {
-		if (value == null) {
-			return null;
-		}
-		if (value instanceof CharSequence) {
-			return new OriginTrackedCharSequence((CharSequence) value, origin);
-		}
-		return new OriginTrackedValue(value, origin);
 	}
 
 	/**

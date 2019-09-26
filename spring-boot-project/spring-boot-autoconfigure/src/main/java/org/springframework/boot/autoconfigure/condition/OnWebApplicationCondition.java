@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.util.Map;
-
 import org.springframework.boot.autoconfigure.AutoConfigurationMetadata;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
 import org.springframework.boot.web.reactive.context.ConfigurableReactiveWebEnvironment;
@@ -31,6 +29,8 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.ConfigurableWebEnvironment;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Map;
 
 /**
  * {@link Condition} that checks for the presence or absence of
@@ -50,7 +50,7 @@ class OnWebApplicationCondition extends FilteringSpringBootCondition {
 
 	@Override
 	protected ConditionOutcome[] getOutcomes(String[] autoConfigurationClasses,
-			AutoConfigurationMetadata autoConfigurationMetadata) {
+											 AutoConfigurationMetadata autoConfigurationMetadata) {
 		ConditionOutcome[] outcomes = new ConditionOutcome[autoConfigurationClasses.length];
 		for (int i = 0; i < outcomes.length; i++) {
 			String autoConfigurationClass = autoConfigurationClasses[i];
@@ -98,14 +98,14 @@ class OnWebApplicationCondition extends FilteringSpringBootCondition {
 	}
 
 	private ConditionOutcome isWebApplication(ConditionContext context, AnnotatedTypeMetadata metadata,
-			boolean required) {
+											  boolean required) {
 		switch (deduceType(metadata)) {
-		case SERVLET:
-			return isServletWebApplication(context);
-		case REACTIVE:
-			return isReactiveWebApplication(context);
-		default:
-			return isAnyWebApplication(context, required);
+			case SERVLET:
+				return isServletWebApplication(context);
+			case REACTIVE:
+				return isReactiveWebApplication(context);
+			default:
+				return isAnyWebApplication(context, required);
 		}
 	}
 

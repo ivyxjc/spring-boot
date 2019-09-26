@@ -16,14 +16,10 @@
 
 package org.springframework.boot.convert;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be used to change the default unit used when converting a
@@ -39,6 +35,7 @@ public @interface DataSizeUnit {
 
 	/**
 	 * The {@link DataUnit} to use if one is not specified.
+	 *
 	 * @return the data unit
 	 */
 	DataUnit value();

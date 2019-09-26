@@ -16,10 +16,6 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConstructorArgumentValues.ValueHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -28,6 +24,10 @@ import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
+
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * {@link ImportBeanDefinitionRegistrar} used by {@link ServletComponentScan}.
@@ -44,8 +44,7 @@ class ServletComponentScanRegistrar implements ImportBeanDefinitionRegistrar {
 		Set<String> packagesToScan = getPackagesToScan(importingClassMetadata);
 		if (registry.containsBeanDefinition(BEAN_NAME)) {
 			updatePostProcessor(registry, packagesToScan);
-		}
-		else {
+		} else {
 			addPostProcessor(registry, packagesToScan);
 		}
 	}

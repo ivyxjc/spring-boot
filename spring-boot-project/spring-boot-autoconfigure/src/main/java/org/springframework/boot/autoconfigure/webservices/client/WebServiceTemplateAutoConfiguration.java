@@ -16,9 +16,6 @@
 
 package org.springframework.boot.autoconfigure.webservices.client;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -32,6 +29,9 @@ import org.springframework.oxm.Unmarshaller;
 import org.springframework.util.CollectionUtils;
 import org.springframework.ws.client.core.WebServiceTemplate;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for {@link WebServiceTemplate}.
  *
@@ -39,7 +39,7 @@ import org.springframework.ws.client.core.WebServiceTemplate;
  * @since 2.1.0
  */
 @Configuration
-@ConditionalOnClass({ WebServiceTemplate.class, Unmarshaller.class, Marshaller.class })
+@ConditionalOnClass({WebServiceTemplate.class, Unmarshaller.class, Marshaller.class})
 public class WebServiceTemplateAutoConfiguration {
 
 	private final ObjectProvider<WebServiceTemplateCustomizer> webServiceTemplateCustomizers;

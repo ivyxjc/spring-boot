@@ -16,15 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.util.Arrays;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.flywaydb.core.api.MigrationState;
 import org.flywaydb.core.api.MigrationType;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.flyway.FlywayEndpoint;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
@@ -36,6 +30,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.payload.FieldDescriptor;
+
+import javax.sql.DataSource;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -56,9 +54,9 @@ public class FlywayEndpointDocumentationTests extends MockMvcEndpointDocumentati
 						responseFields(fieldWithPath("contexts").description("Application contexts keyed by id"),
 								fieldWithPath("contexts.*.flywayBeans.*.migrations").description(
 										"Migrations performed by the Flyway instance, keyed by" + " Flyway bean name."))
-												.andWithPrefix("contexts.*.flywayBeans.*.migrations.[].",
-														migrationFieldDescriptors())
-												.and(parentIdField())));
+								.andWithPrefix("contexts.*.flywayBeans.*.migrations.[].",
+										migrationFieldDescriptors())
+								.and(parentIdField())));
 	}
 
 	private List<FieldDescriptor> migrationFieldDescriptors() {

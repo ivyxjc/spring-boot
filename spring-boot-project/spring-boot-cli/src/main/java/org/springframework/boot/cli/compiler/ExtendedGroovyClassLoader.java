@@ -16,6 +16,15 @@
 
 package org.springframework.boot.cli.compiler;
 
+import groovy.lang.GroovyClassLoader;
+import org.codehaus.groovy.ast.ClassNode;
+import org.codehaus.groovy.control.CompilationUnit;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.control.SourceUnit;
+import org.springframework.util.Assert;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -25,22 +34,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import groovy.lang.GroovyClassLoader;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.control.CompilationUnit;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.control.SourceUnit;
-
-import org.springframework.util.Assert;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StringUtils;
+import java.util.*;
 
 /**
  * Extension of the {@link GroovyClassLoader} with support for obtaining '.class' files as
@@ -54,7 +48,7 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 
 	private static final String SHARED_PACKAGE = "org.springframework.boot.groovy";
 
-	private static final URL[] NO_URLS = new URL[] {};
+	private static final URL[] NO_URLS = new URL[]{};
 
 	private final Map<String, byte[]> classResources = new HashMap<>();
 
@@ -66,6 +60,13 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 		this(scope, createParentClassLoader(scope), new CompilerConfiguration());
 	}
 
+	private ExtendedGroovyClassLoader(GroovyCompilerScope scope, ClassLoader parent,
+									  CompilerConfiguration configuration) {
+		super(parent, configuration);
+		this.configuration = configuration;
+		this.scope = scope;
+	}
+
 	private static ClassLoader createParentClassLoader(GroovyCompilerScope scope) {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		if (scope == GroovyCompilerScope.DEFAULT) {
@@ -74,19 +75,11 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 		return classLoader;
 	}
 
-	private ExtendedGroovyClassLoader(GroovyCompilerScope scope, ClassLoader parent,
-			CompilerConfiguration configuration) {
-		super(parent, configuration);
-		this.configuration = configuration;
-		this.scope = scope;
-	}
-
 	@Override
 	protected Class<?> findClass(String name) throws ClassNotFoundException {
 		try {
 			return super.findClass(name);
-		}
-		catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException ex) {
 			if (this.scope == GroovyCompilerScope.DEFAULT && name.startsWith(SHARED_PACKAGE)) {
 				Class<?> sharedClass = findSharedClass(name);
 				if (sharedClass != null) {
@@ -106,8 +99,7 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 				}
 			}
 			return null;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}
@@ -146,30 +138,12 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 	}
 
 	/**
-	 * Inner collector class used to track as classes are added.
-	 */
-	protected class ExtendedClassCollector extends ClassCollector {
-
-		protected ExtendedClassCollector(InnerLoader loader, CompilationUnit unit, SourceUnit su) {
-			super(loader, unit, su);
-		}
-
-		@Override
-		protected Class<?> createClass(byte[] code, ClassNode classNode) {
-			Class<?> createdClass = super.createClass(code, classNode);
-			ExtendedGroovyClassLoader.this.classResources.put(classNode.getName().replace('.', '/') + ".class", code);
-			return createdClass;
-		}
-
-	}
-
-	/**
 	 * ClassLoader used for a parent that filters so that only classes from groovy-all.jar
 	 * are exposed.
 	 */
 	private static class DefaultScopeParentClassLoader extends ClassLoader {
 
-		private static final String[] GROOVY_JARS_PREFIXES = { "groovy", "antlr", "asm" };
+		private static final String[] GROOVY_JARS_PREFIXES = {"groovy", "antlr", "asm"};
 
 		private final URLClassLoader groovyOnlyClassLoader;
 
@@ -211,8 +185,7 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 					if (file.canRead()) {
 						try {
 							urls.add(file.toURI().toURL());
-						}
-						catch (MalformedURLException ex) {
+						} catch (MalformedURLException ex) {
 							// Swallow and continue
 						}
 					}
@@ -241,6 +214,24 @@ public class ExtendedGroovyClassLoader extends GroovyClassLoader {
 				this.groovyOnlyClassLoader.loadClass(name);
 			}
 			return super.loadClass(name, resolve);
+		}
+
+	}
+
+	/**
+	 * Inner collector class used to track as classes are added.
+	 */
+	protected class ExtendedClassCollector extends ClassCollector {
+
+		protected ExtendedClassCollector(InnerLoader loader, CompilationUnit unit, SourceUnit su) {
+			super(loader, unit, su);
+		}
+
+		@Override
+		protected Class<?> createClass(byte[] code, ClassNode classNode) {
+			Class<?> createdClass = super.createClass(code, classNode);
+			ExtendedGroovyClassLoader.this.classResources.put(classNode.getName().replace('.', '/') + ".class", code);
+			return createdClass;
 		}
 
 	}

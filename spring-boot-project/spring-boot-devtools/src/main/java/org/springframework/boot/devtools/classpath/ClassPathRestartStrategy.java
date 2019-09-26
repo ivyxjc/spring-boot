@@ -24,14 +24,15 @@ import org.springframework.boot.devtools.filewatch.ChangedFile;
  * restart where as class files would.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see PatternClassPathRestartStrategy
+ * @since 1.3.0
  */
 @FunctionalInterface
 public interface ClassPathRestartStrategy {
 
 	/**
 	 * Return true if a full restart is required.
+	 *
 	 * @param file the changed file
 	 * @return {@code true} if a full restart is required
 	 */

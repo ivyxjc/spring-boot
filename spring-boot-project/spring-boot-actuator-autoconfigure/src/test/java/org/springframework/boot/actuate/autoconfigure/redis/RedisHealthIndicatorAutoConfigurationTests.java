@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.redis;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
 import org.springframework.boot.actuate.health.ApplicationHealthIndicator;
 import org.springframework.boot.actuate.redis.RedisHealthIndicator;
@@ -37,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Phillip Webb
  */
 @RunWith(ModifiedClassPathRunner.class)
-@ClassPathExclusions({ "reactor-core*.jar", "lettuce-core*.jar" })
+@ClassPathExclusions({"reactor-core*.jar", "lettuce-core*.jar"})
 public class RedisHealthIndicatorAutoConfigurationTests {
 
 	private ApplicationContextRunner contextRunner = new ApplicationContextRunner()

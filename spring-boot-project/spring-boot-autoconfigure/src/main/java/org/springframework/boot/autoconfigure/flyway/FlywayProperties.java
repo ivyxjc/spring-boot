@@ -16,15 +16,11 @@
 
 package org.springframework.boot.autoconfigure.flyway;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import java.util.*;
 
 /**
  * Configuration properties for Flyway database migrations.

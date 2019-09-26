@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.endpoint;
 
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.test.rule.OutputCapture;
 
 import static org.assertj.core.api.Assertions.assertThat;

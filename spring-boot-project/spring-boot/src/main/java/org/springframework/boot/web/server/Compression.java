@@ -30,8 +30,8 @@ public class Compression {
 
 	private boolean enabled = false;
 
-	private String[] mimeTypes = new String[] { "text/html", "text/xml", "text/plain", "text/css", "text/javascript",
-			"application/javascript", "application/json", "application/xml" };
+	private String[] mimeTypes = new String[]{"text/html", "text/xml", "text/plain", "text/css", "text/javascript",
+			"application/javascript", "application/json", "application/xml"};
 
 	private String[] excludedUserAgents = null;
 
@@ -39,6 +39,7 @@ public class Compression {
 
 	/**
 	 * Return whether response compression is enabled.
+	 *
 	 * @return {@code true} if response compression is enabled
 	 */
 	public boolean getEnabled() {
@@ -51,6 +52,7 @@ public class Compression {
 
 	/**
 	 * Return the MIME types that should be compressed.
+	 *
 	 * @return the MIME types that should be compressed
 	 */
 	public String[] getMimeTypes() {
@@ -72,6 +74,7 @@ public class Compression {
 	/**
 	 * Return the minimum "Content-Length" value that is required for compression to be
 	 * performed.
+	 *
 	 * @return the minimum content size in bytes that is required for compression
 	 */
 	public DataSize getMinResponseSize() {

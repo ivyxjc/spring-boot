@@ -20,7 +20,6 @@ import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.ipc.http.HttpUrlConnectionSender;
 import io.micrometer.influx.InfluxConfig;
 import io.micrometer.influx.InfluxMeterRegistry;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.export.simple.SimpleMetricsExportAutoConfiguration;
@@ -43,12 +42,12 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.0.0
  */
 @Configuration
-@AutoConfigureBefore({ CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class })
+@AutoConfigureBefore({CompositeMeterRegistryAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class})
 @AutoConfigureAfter(MetricsAutoConfiguration.class)
 @ConditionalOnBean(Clock.class)
 @ConditionalOnClass(InfluxMeterRegistry.class)
 @ConditionalOnProperty(prefix = "management.metrics.export.influx", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 @EnableConfigurationProperties(InfluxProperties.class)
 public class InfluxMetricsExportAutoConfiguration {
 
@@ -67,7 +66,7 @@ public class InfluxMetricsExportAutoConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public InfluxMeterRegistry influxMeterRegistry(InfluxConfig influxConfig, Clock clock,
-			InfluxProperties influxProperties) {
+												   InfluxProperties influxProperties) {
 		return InfluxMeterRegistry.builder(influxConfig).clock(clock).httpClient(
 				new HttpUrlConnectionSender(this.properties.getConnectTimeout(), this.properties.getReadTimeout()))
 				.build();

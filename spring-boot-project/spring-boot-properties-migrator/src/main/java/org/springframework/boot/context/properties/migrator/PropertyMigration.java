@@ -16,16 +16,16 @@
 
 package org.springframework.boot.context.properties.migrator;
 
-import java.time.Duration;
-import java.util.Comparator;
-import java.util.Map;
-
 import org.springframework.boot.configurationmetadata.ConfigurationMetadataProperty;
 import org.springframework.boot.configurationmetadata.Deprecation;
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
 import org.springframework.boot.origin.Origin;
 import org.springframework.boot.origin.TextResourceOrigin;
 import org.springframework.util.StringUtils;
+
+import java.time.Duration;
+import java.util.Comparator;
+import java.util.Map;
 
 /**
  * Description of a property migration.
@@ -48,7 +48,7 @@ class PropertyMigration {
 	private final boolean compatibleType;
 
 	PropertyMigration(ConfigurationProperty property, ConfigurationMetadataProperty metadata,
-			ConfigurationMetadataProperty replacementMetadata) {
+					  ConfigurationMetadataProperty replacementMetadata) {
 		this.property = property;
 		this.lineNumber = determineLineNumber(property);
 		this.metadata = metadata;
@@ -68,7 +68,7 @@ class PropertyMigration {
 	}
 
 	private static boolean determineCompatibleType(ConfigurationMetadataProperty metadata,
-			ConfigurationMetadataProperty replacementMetadata) {
+												   ConfigurationMetadataProperty replacementMetadata) {
 		String currentType = metadata.getType();
 		String replacementType = determineReplacementType(replacementMetadata);
 		if (replacementType == null || currentType == null) {
@@ -126,8 +126,7 @@ class PropertyMigration {
 			if (this.replacementMetadata != null) {
 				return String.format("Reason: Replacement key '%s' uses an incompatible target type",
 						deprecation.getReplacement());
-			}
-			else {
+			} else {
 				return String.format("Reason: No metadata found for replacement key '%s'",
 						deprecation.getReplacement());
 			}

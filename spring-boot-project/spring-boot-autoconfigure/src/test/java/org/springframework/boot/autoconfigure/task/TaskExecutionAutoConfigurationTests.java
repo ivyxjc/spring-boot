@@ -16,13 +16,8 @@
 
 package org.springframework.boot.autoconfigure.task;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
-
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.task.TaskExecutorBuilder;
 import org.springframework.boot.task.TaskExecutorCustomizer;
@@ -42,6 +37,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.concurrent.Executor;
+import java.util.concurrent.Future;
+import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -54,11 +53,10 @@ import static org.mockito.Mockito.verify;
  */
 public class TaskExecutionAutoConfigurationTests {
 
-	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(TaskExecutionAutoConfiguration.class));
-
 	@Rule
 	public final OutputCapture output = new OutputCapture();
+	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+			.withConfiguration(AutoConfigurations.of(TaskExecutionAutoConfiguration.class));
 
 	@Test
 	public void taskExecutorBuilderShouldApplyCustomSettings() {
@@ -129,11 +127,11 @@ public class TaskExecutionAutoConfigurationTests {
 	public void enableAsyncUsesAutoConfiguredOneByDefault() {
 		this.contextRunner.withPropertyValues("spring.task.execution.thread-name-prefix=task-test-")
 				.withUserConfiguration(AsyncConfiguration.class, TestBean.class).run((context) -> {
-					assertThat(context).hasSingleBean(TaskExecutor.class);
-					TestBean bean = context.getBean(TestBean.class);
-					String text = bean.echo("something").get();
-					assertThat(text).contains("task-test-").contains("something");
-				});
+			assertThat(context).hasSingleBean(TaskExecutor.class);
+			TestBean bean = context.getBean(TestBean.class);
+			String text = bean.echo("something").get();
+			assertThat(text).contains("task-test-").contains("something");
+		});
 	}
 
 	@Test

@@ -3,8 +3,8 @@ def processModule(File moduleDir, File generatedResourcesDir) {
 	def factoriesFile = new File(moduleDir, 'META-INF/spring.factories')
 	new File(generatedResourcesDir, "auto-configuration-classes-${moduleName}.adoc")
 			.withPrintWriter {
-					generateAutoConfigurationClassTable(moduleName, factoriesFile, it)
-	}
+				generateAutoConfigurationClassTable(moduleName, factoriesFile, it)
+			}
 }
 
 def generateAutoConfigurationClassTable(String module, File factories, PrintWriter writer) {
@@ -30,9 +30,9 @@ def getAutoConfigurationClasses(File factories) {
 				.collect {
 					def path = it.replace('.', '/')
 					def name = it.substring(it.lastIndexOf('.') + 1)
-					[ 'path': path, 'name': name]
+					['path': path, 'name': name]
 				}
-				.sort {a, b -> a.name.compareTo(b.name)}
+				.sort { a, b -> a.name.compareTo(b.name) }
 	}
 }
 

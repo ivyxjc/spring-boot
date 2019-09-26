@@ -16,15 +16,15 @@
 
 package org.springframework.boot.autoconfigure.mail;
 
-import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
 
 /**
  * {@link EnableAutoConfiguration Auto configuration} for testing mail service
@@ -50,8 +50,7 @@ public class MailSenderValidatorAutoConfiguration {
 	public void validateConnection() {
 		try {
 			this.mailSender.testConnection();
-		}
-		catch (MessagingException ex) {
+		} catch (MessagingException ex) {
 			throw new IllegalStateException("Mail server is not available", ex);
 		}
 	}

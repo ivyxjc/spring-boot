@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.flyway;
 
 import org.flywaydb.core.Flyway;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
 import org.springframework.boot.actuate.flyway.FlywayEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

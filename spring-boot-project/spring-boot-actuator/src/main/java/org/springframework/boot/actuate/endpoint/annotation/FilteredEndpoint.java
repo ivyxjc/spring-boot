@@ -16,13 +16,9 @@
 
 package org.springframework.boot.actuate.endpoint.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.actuate.endpoint.EndpointFilter;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be used on an {@link Endpoint @Endpoint} to implement implicit
@@ -39,9 +35,10 @@ import org.springframework.boot.actuate.endpoint.EndpointFilter;
  *     boolean enableByDefault() default true;
  *
  * } </pre>
+ *
  * @author Phillip Webb
- * @since 2.0.0
  * @see DiscovererEndpointFilter
+ * @since 2.0.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -50,6 +47,7 @@ public @interface FilteredEndpoint {
 
 	/**
 	 * The filter class to use.
+	 *
 	 * @return the filter class
 	 */
 	Class<? extends EndpointFilter<?>> value();

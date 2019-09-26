@@ -18,7 +18,6 @@ package org.springframework.boot.test.context;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -40,9 +39,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DirtiesContext
 @SpringBootTest(webEnvironment = WebEnvironment.NONE,
-		properties = { "boot-test-inlined=foo", "b=boot-test-inlined", "c=boot-test-inlined" })
+				properties = {"boot-test-inlined=foo", "b=boot-test-inlined", "c=boot-test-inlined"})
 @TestPropertySource(
-		properties = { "property-source-inlined=bar", "a=property-source-inlined", "c=property-source-inlined" },
+		properties = {"property-source-inlined=bar", "a=property-source-inlined", "c=property-source-inlined"},
 		locations = "classpath:/test-property-source-annotation.properties")
 public class SpringBootTestWithTestPropertySourceTests {
 

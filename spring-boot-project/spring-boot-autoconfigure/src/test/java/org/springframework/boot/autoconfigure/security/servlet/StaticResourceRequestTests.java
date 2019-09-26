@@ -16,17 +16,16 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.assertj.core.api.AssertDelegateTarget;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.security.StaticResourceLocation;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletPath;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.context.WebApplicationContext;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;

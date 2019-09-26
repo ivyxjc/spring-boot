@@ -16,6 +16,16 @@
 
 package org.springframework.boot.devtools.tunnel.client;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.devtools.test.MockClientHttpRequestFactory;
+import org.springframework.boot.devtools.tunnel.client.HttpTunnelConnection.TunnelChannel;
+import org.springframework.boot.test.rule.OutputCapture;
+import org.springframework.http.HttpStatus;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
@@ -25,23 +35,10 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.util.concurrent.Executor;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import org.springframework.boot.devtools.test.MockClientHttpRequestFactory;
-import org.springframework.boot.devtools.tunnel.client.HttpTunnelConnection.TunnelChannel;
-import org.springframework.boot.test.rule.OutputCapture;
-import org.springframework.http.HttpStatus;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.hamcrest.Matchers.containsString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link HttpTunnelConnection}.

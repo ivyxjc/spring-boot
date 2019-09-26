@@ -16,12 +16,12 @@
 
 package org.springframework.boot;
 
-import java.io.PrintStream;
-
 import org.springframework.boot.ansi.AnsiColor;
 import org.springframework.boot.ansi.AnsiOutput;
 import org.springframework.boot.ansi.AnsiStyle;
 import org.springframework.core.env.Environment;
+
+import java.io.PrintStream;
 
 /**
  * Default Banner implementation which writes the 'Spring' banner.
@@ -30,10 +30,10 @@ import org.springframework.core.env.Environment;
  */
 class SpringBootBanner implements Banner {
 
-	private static final String[] BANNER = { "", "  .   ____          _            __ _ _",
+	private static final String[] BANNER = {"", "  .   ____          _            __ _ _",
 			" /\\\\ / ___'_ __ _ _(_)_ __  __ _ \\ \\ \\ \\", "( ( )\\___ | '_ | '_| | '_ \\/ _` | \\ \\ \\ \\",
 			" \\\\/  ___)| |_)| | | | | || (_| |  ) ) ) )", "  '  |____| .__|_| |_|_| |_\\__, | / / / /",
-			" =========|_|==============|___/=/_/_/_/" };
+			" =========|_|==============|___/=/_/_/_/"};
 
 	private static final String SPRING_BOOT = " :: Spring Boot :: ";
 

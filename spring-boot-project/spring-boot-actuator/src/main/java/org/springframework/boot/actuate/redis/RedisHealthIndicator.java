@@ -16,8 +16,6 @@
 
 package org.springframework.boot.actuate.redis;
 
-import java.util.Properties;
-
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -27,6 +25,8 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisConnectionUtils;
 import org.springframework.util.Assert;
+
+import java.util.Properties;
 
 /**
  * Simple implementation of a {@link HealthIndicator} returning status information for
@@ -59,13 +59,11 @@ public class RedisHealthIndicator extends AbstractHealthIndicator {
 				builder.up().withDetail("cluster_size", clusterInfo.getClusterSize())
 						.withDetail("slots_up", clusterInfo.getSlotsOk())
 						.withDetail("slots_fail", clusterInfo.getSlotsFail());
-			}
-			else {
+			} else {
 				Properties info = connection.info();
 				builder.up().withDetail(VERSION, info.getProperty(REDIS_VERSION));
 			}
-		}
-		finally {
+		} finally {
 			RedisConnectionUtils.releaseConnection(connection, this.redisConnectionFactory, false);
 		}
 	}

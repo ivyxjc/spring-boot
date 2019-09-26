@@ -16,23 +16,21 @@
 
 package org.springframework.boot.jta.bitronix;
 
+import bitronix.tm.resource.common.ResourceBean;
+import bitronix.tm.resource.common.XAStatefulHolder;
+import bitronix.tm.resource.jdbc.PoolingDataSource;
+import org.springframework.beans.factory.BeanNameAware;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.StringUtils;
+
+import javax.sql.XAConnection;
+import javax.sql.XADataSource;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 import java.util.logging.Logger;
-
-import javax.sql.XAConnection;
-import javax.sql.XADataSource;
-
-import bitronix.tm.resource.common.ResourceBean;
-import bitronix.tm.resource.common.XAStatefulHolder;
-import bitronix.tm.resource.jdbc.PoolingDataSource;
-
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.StringUtils;
 
 /**
  * Spring friendly version of {@link PoolingDataSource}. Provides sensible defaults and
@@ -64,8 +62,7 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 		source.set(this);
 		try {
 			super.init();
-		}
-		finally {
+		} finally {
 			source.remove();
 		}
 	}
@@ -82,19 +79,20 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 		}
 	}
 
+	protected final XADataSource getDataSource() {
+		return this.dataSource;
+	}
+
 	/**
 	 * Set the {@link XADataSource} directly, instead of calling
 	 * {@link #setClassName(String)}.
+	 *
 	 * @param dataSource the data source to use
 	 */
 	public void setDataSource(XADataSource dataSource) {
 		this.dataSource = dataSource;
 		setClassName(DirectXADataSource.class.getName());
 		setDriverProperties(new Properties());
-	}
-
-	protected final XADataSource getDataSource() {
-		return this.dataSource;
 	}
 
 	@Override
@@ -109,8 +107,7 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
 		try {
 			return this.getParentLogger();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Work around https://jira.codehaus.org/browse/BTM-134
 			return Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		}
@@ -136,6 +133,11 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 		}
 
 		@Override
+		public void setLogWriter(PrintWriter out) throws SQLException {
+			this.dataSource.setLogWriter(out);
+		}
+
+		@Override
 		public XAConnection getXAConnection() throws SQLException {
 			return this.dataSource.getXAConnection();
 		}
@@ -146,18 +148,13 @@ public class PoolingDataSourceBean extends PoolingDataSource implements BeanName
 		}
 
 		@Override
-		public void setLogWriter(PrintWriter out) throws SQLException {
-			this.dataSource.setLogWriter(out);
+		public int getLoginTimeout() throws SQLException {
+			return this.dataSource.getLoginTimeout();
 		}
 
 		@Override
 		public void setLoginTimeout(int seconds) throws SQLException {
 			this.dataSource.setLoginTimeout(seconds);
-		}
-
-		@Override
-		public int getLoginTimeout() throws SQLException {
-			return this.dataSource.getLoginTimeout();
 		}
 
 		@Override

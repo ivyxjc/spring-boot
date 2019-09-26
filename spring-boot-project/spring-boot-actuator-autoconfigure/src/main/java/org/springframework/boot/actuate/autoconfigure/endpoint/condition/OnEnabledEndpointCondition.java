@@ -16,9 +16,6 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.condition;
 
-import java.util.Map;
-import java.util.Optional;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.EndpointExtension;
@@ -35,6 +32,9 @@ import org.springframework.core.type.MethodMetadata;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ConcurrentReferenceHashMap;
+
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * A condition that checks if an endpoint is enabled.
@@ -99,8 +99,7 @@ class OnEnabledEndpointCondition extends SpringBootCondition {
 		MethodMetadata methodMetadata = (MethodMetadata) metadata;
 		try {
 			return ClassUtils.forName(methodMetadata.getReturnTypeName(), context.getClassLoader());
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			throw new IllegalStateException("Failed to extract endpoint id for "
 					+ methodMetadata.getDeclaringClassName() + "." + methodMetadata.getMethodName(), ex);
 		}

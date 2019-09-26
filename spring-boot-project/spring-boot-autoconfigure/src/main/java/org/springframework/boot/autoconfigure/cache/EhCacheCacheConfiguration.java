@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.cache;
 
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ResourceCondition;
@@ -38,9 +37,9 @@ import org.springframework.core.io.Resource;
  * @author Madhura Bhave
  */
 @Configuration
-@ConditionalOnClass({ Cache.class, EhCacheCacheManager.class })
+@ConditionalOnClass({Cache.class, EhCacheCacheManager.class})
 @ConditionalOnMissingBean(org.springframework.cache.CacheManager.class)
-@Conditional({ CacheCondition.class, EhCacheCacheConfiguration.ConfigAvailableCondition.class })
+@Conditional({CacheCondition.class, EhCacheCacheConfiguration.ConfigAvailableCondition.class})
 class EhCacheCacheConfiguration {
 
 	private final CacheProperties cacheProperties;

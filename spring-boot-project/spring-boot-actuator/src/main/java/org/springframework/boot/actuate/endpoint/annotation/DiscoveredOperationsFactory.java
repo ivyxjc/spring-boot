@@ -16,14 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.annotation;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Objects;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.boot.actuate.endpoint.Operation;
 import org.springframework.boot.actuate.endpoint.OperationType;
@@ -36,6 +28,10 @@ import org.springframework.core.MethodIntrospector;
 import org.springframework.core.MethodIntrospector.MetadataLookup;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationAttributes;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * Factory to create an {@link Operation} for annotated methods on an
@@ -63,7 +59,7 @@ abstract class DiscoveredOperationsFactory<O extends Operation> {
 	private final Collection<OperationInvokerAdvisor> invokerAdvisors;
 
 	DiscoveredOperationsFactory(ParameterValueMapper parameterValueMapper,
-			Collection<OperationInvokerAdvisor> invokerAdvisors) {
+								Collection<OperationInvokerAdvisor> invokerAdvisors) {
 		this.parameterValueMapper = parameterValueMapper;
 		this.invokerAdvisors = invokerAdvisors;
 	}
@@ -81,7 +77,7 @@ abstract class DiscoveredOperationsFactory<O extends Operation> {
 	}
 
 	private O createOperation(EndpointId endpointId, Object target, Method method, OperationType operationType,
-			Class<? extends Annotation> annotationType) {
+							  Class<? extends Annotation> annotationType) {
 		AnnotationAttributes annotationAttributes = AnnotatedElementUtils.getMergedAnnotationAttributes(method,
 				annotationType);
 		if (annotationAttributes == null) {
@@ -95,7 +91,7 @@ abstract class DiscoveredOperationsFactory<O extends Operation> {
 	}
 
 	private OperationInvoker applyAdvisors(EndpointId endpointId, OperationMethod operationMethod,
-			OperationInvoker invoker) {
+										   OperationInvoker invoker) {
 		if (this.invokerAdvisors != null) {
 			for (OperationInvokerAdvisor advisor : this.invokerAdvisors) {
 				invoker = advisor.apply(endpointId, operationMethod.getOperationType(), operationMethod.getParameters(),
@@ -106,6 +102,6 @@ abstract class DiscoveredOperationsFactory<O extends Operation> {
 	}
 
 	protected abstract O createOperation(EndpointId endpointId, DiscoveredOperationMethod operationMethod,
-			OperationInvoker invoker);
+										 OperationInvoker invoker);
 
 }

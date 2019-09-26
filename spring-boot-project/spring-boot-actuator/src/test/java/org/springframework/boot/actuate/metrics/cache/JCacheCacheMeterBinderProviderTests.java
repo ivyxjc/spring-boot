@@ -16,18 +16,17 @@
 
 package org.springframework.boot.actuate.metrics.cache;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Collections;
-
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.binder.cache.JCacheMetrics;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import org.springframework.cache.jcache.JCacheCache;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

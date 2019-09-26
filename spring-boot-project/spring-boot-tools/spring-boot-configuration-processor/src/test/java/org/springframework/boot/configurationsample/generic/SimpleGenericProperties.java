@@ -16,9 +16,9 @@
 
 package org.springframework.boot.configurationsample.generic;
 
-import java.time.Duration;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * Simple properties with resolved generic information.

@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.health;
 
+import org.springframework.util.Assert;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.springframework.util.Assert;
 
 /**
  * Default implementation of {@link ReactiveHealthIndicatorRegistry}.
@@ -45,8 +45,9 @@ public class DefaultReactiveHealthIndicatorRegistry implements ReactiveHealthInd
 	/**
 	 * Create a new {@link DefaultReactiveHealthIndicatorRegistry} from the specified
 	 * indicators.
+	 *
 	 * @param healthIndicators a map of {@link HealthIndicator}s with the key being used
-	 * as an indicator name.
+	 *                         as an indicator name.
 	 */
 	public DefaultReactiveHealthIndicatorRegistry(Map<String, ReactiveHealthIndicator> healthIndicators) {
 		Assert.notNull(healthIndicators, "HealthIndicators must not be null");

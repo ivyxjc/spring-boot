@@ -16,15 +16,7 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.junit.jupiter.api.extension.ExtendWith;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.WebApplicationType;
@@ -40,6 +32,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextLoader;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be specified on a test class that runs Spring Boot based tests.
@@ -67,8 +61,8 @@ import org.springframework.web.context.WebApplicationContext;
  *
  * @author Phillip Webb
  * @author Andy Wilkinson
- * @since 1.4.0
  * @see ContextConfiguration
+ * @since 1.4.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -80,6 +74,7 @@ public @interface SpringBootTest {
 
 	/**
 	 * Alias for {@link #properties()}.
+	 *
 	 * @return the properties to apply
 	 */
 	@AliasFor("properties")
@@ -88,6 +83,7 @@ public @interface SpringBootTest {
 	/**
 	 * Properties in form {@literal key=value} that should be added to the Spring
 	 * {@link Environment} before the test runs.
+	 *
 	 * @return the properties to add
 	 */
 	@AliasFor("value")
@@ -101,14 +97,16 @@ public @interface SpringBootTest {
 	 * explicit classes are defined the test will look for nested
 	 * {@link Configuration @Configuration} classes, before falling back to a
 	 * {@link SpringBootConfiguration} search.
-	 * @see ContextConfiguration#classes()
+	 *
 	 * @return the annotated classes used to load the application context
+	 * @see ContextConfiguration#classes()
 	 */
 	Class<?>[] classes() default {};
 
 	/**
 	 * The type of web environment to create when applicable. Defaults to
 	 * {@link WebEnvironment#MOCK}.
+	 *
 	 * @return the type of web environment
 	 */
 	WebEnvironment webEnvironment() default WebEnvironment.MOCK;
@@ -155,6 +153,7 @@ public @interface SpringBootTest {
 
 		/**
 		 * Return if the environment uses an {@link ServletWebServerApplicationContext}.
+		 *
 		 * @return if an {@link ServletWebServerApplicationContext} is used.
 		 */
 		public boolean isEmbedded() {

@@ -16,17 +16,12 @@
 
 package org.springframework.boot.test.autoconfigure.restdocs;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.properties.PropertyMapping;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be applied to a test class to enable and configure
@@ -35,9 +30,9 @@ import org.springframework.core.annotation.AliasFor;
  * required a {@link RestDocsMockMvcConfigurationCustomizer} bean can be used.
  *
  * @author Andy Wilkinson
- * @since 1.4.0
  * @see RestDocsAutoConfiguration
  * @see RestDocsMockMvcConfigurationCustomizer
+ * @since 1.4.0
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
@@ -51,6 +46,7 @@ public @interface AutoConfigureRestDocs {
 	/**
 	 * The output directory to which generated snippets will be written. An alias for
 	 * {@link #outputDir}.
+	 *
 	 * @return the output directory
 	 */
 	@AliasFor("outputDir")
@@ -59,6 +55,7 @@ public @interface AutoConfigureRestDocs {
 	/**
 	 * The output directory to which generated snippets will be written. An alias for
 	 * {@link #value}.
+	 *
 	 * @return the output directory
 	 */
 	@AliasFor("value")
@@ -67,18 +64,21 @@ public @interface AutoConfigureRestDocs {
 	/**
 	 * The scheme (typically {@code http} or {@code https}) to be used in documented URIs.
 	 * Defaults to {@code http}.
+	 *
 	 * @return the scheme
 	 */
 	String uriScheme() default "http";
 
 	/**
 	 * The host to be used in documented URIs. Defaults to {@code localhost}.
+	 *
 	 * @return the host
 	 */
 	String uriHost() default "localhost";
 
 	/**
 	 * The port to be used in documented URIs. Defaults to {@code 8080}.
+	 *
 	 * @return the port
 	 */
 	int uriPort() default 8080;

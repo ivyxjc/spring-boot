@@ -16,19 +16,18 @@
 
 package org.springframework.boot.autoconfigure.data.neo4j;
 
-import java.util.Base64;
-
 import org.junit.After;
 import org.junit.Test;
 import org.neo4j.ogm.config.AutoIndexMode;
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.config.Credentials;
 import org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver;
-
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,6 +39,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class Neo4jPropertiesTests {
 
 	private AnnotationConfigApplicationContext context;
+
+	private static void assertDriver(Configuration actual, String driver, String uri) {
+		assertThat(actual).isNotNull();
+		assertThat(actual.getDriverClassName()).isEqualTo(driver);
+		assertThat(actual.getURI()).isEqualTo(uri);
+	}
+
+	private static void assertCredentials(Configuration actual, String username, String password) {
+		Credentials<?> credentials = actual.getCredentials();
+		if (username == null && password == null) {
+			assertThat(credentials).isNull();
+		} else {
+			assertThat(credentials).isNotNull();
+			Object content = credentials.credentials();
+			assertThat(content).isInstanceOf(String.class);
+			String[] auth = new String(Base64.getDecoder().decode((String) content)).split(":");
+			assertThat(auth).containsExactly(username, password);
+		}
+	}
 
 	@After
 	public void close() {
@@ -133,26 +151,6 @@ public class Neo4jPropertiesTests {
 		Neo4jProperties properties = load(true, "spring.data.neo4j.uri=file:target/neo4j/my.db");
 		Configuration configuration = properties.createConfiguration();
 		assertDriver(configuration, Neo4jProperties.EMBEDDED_DRIVER, "file:target/neo4j/my.db");
-	}
-
-	private static void assertDriver(Configuration actual, String driver, String uri) {
-		assertThat(actual).isNotNull();
-		assertThat(actual.getDriverClassName()).isEqualTo(driver);
-		assertThat(actual.getURI()).isEqualTo(uri);
-	}
-
-	private static void assertCredentials(Configuration actual, String username, String password) {
-		Credentials<?> credentials = actual.getCredentials();
-		if (username == null && password == null) {
-			assertThat(credentials).isNull();
-		}
-		else {
-			assertThat(credentials).isNotNull();
-			Object content = credentials.credentials();
-			assertThat(content).isInstanceOf(String.class);
-			String[] auth = new String(Base64.getDecoder().decode((String) content)).split(":");
-			assertThat(auth).containsExactly(username, password);
-		}
 	}
 
 	public Neo4jProperties load(boolean embeddedAvailable, String... environment) {

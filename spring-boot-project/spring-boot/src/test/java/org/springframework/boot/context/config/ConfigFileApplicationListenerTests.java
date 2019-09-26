@@ -16,19 +16,6 @@
 
 package org.springframework.boot.context.config;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -37,7 +24,6 @@ import org.assertj.core.api.Condition;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
@@ -51,16 +37,19 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.core.env.ConfigurableEnvironment;
-import org.springframework.core.env.MapPropertySource;
-import org.springframework.core.env.Profiles;
-import org.springframework.core.env.SimpleCommandLinePropertySource;
-import org.springframework.core.env.StandardEnvironment;
+import org.springframework.core.env.*;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -205,8 +194,7 @@ public class ConfigFileApplicationListenerTests {
 			this.initializer.postProcessEnvironment(this.environment, this.application);
 			String property = this.environment.getProperty("the.property");
 			assertThat(property).isEqualTo("fromlocalfile");
-		}
-		finally {
+		} finally {
 			localFile.delete();
 		}
 	}
@@ -453,8 +441,7 @@ public class ConfigFileApplicationListenerTests {
 		loggingContext.updateLoggers();
 		try {
 			runnable.run();
-		}
-		finally {
+		} finally {
 			configuration.removeLogger(ConfigFileApplicationListener.class.getName());
 			loggingContext.updateLoggers();
 		}
@@ -968,14 +955,14 @@ public class ConfigFileApplicationListenerTests {
 	}
 
 	@Configuration
-	@PropertySource({ "classpath:/specificlocation.properties", "classpath:/moreproperties.properties" })
+	@PropertySource({"classpath:/specificlocation.properties", "classpath:/moreproperties.properties"})
 	protected static class WithPropertySourceMultipleLocations {
 
 	}
 
 	@Configuration
-	@PropertySource(value = { "classpath:/specificlocation.properties", "classpath:/moreproperties.properties" },
-			name = "foo")
+	@PropertySource(value = {"classpath:/specificlocation.properties", "classpath:/moreproperties.properties"},
+					name = "foo")
 	protected static class WithPropertySourceMultipleLocationsAndName {
 
 	}

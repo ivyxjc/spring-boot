@@ -16,12 +16,11 @@
 
 package org.springframework.boot.actuate.audit.listener;
 
-import java.util.Collections;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.AuditEventRepository;
+
+import java.util.Collections;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

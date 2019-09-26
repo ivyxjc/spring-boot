@@ -16,15 +16,7 @@
 
 package org.springframework.boot.cli.compiler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.codehaus.groovy.ast.ASTNode;
-import org.codehaus.groovy.ast.AnnotationNode;
-import org.codehaus.groovy.ast.ClassHelper;
-import org.codehaus.groovy.ast.ClassNode;
-import org.codehaus.groovy.ast.ModuleNode;
-import org.codehaus.groovy.ast.PackageNode;
+import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.ast.expr.Expression;
 import org.codehaus.groovy.ast.expr.ListExpression;
@@ -32,8 +24,10 @@ import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.io.ReaderSource;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.junit.Test;
-
 import org.springframework.boot.groovy.DependencyManagementBom;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,14 +60,14 @@ public final class GenericBomAstTransformationTests {
 	@Test
 	public void transformationOfEmptyPackage() {
 		this.moduleNode.setPackage(new PackageNode("foo"));
-		this.transformation.visit(new ASTNode[] { this.moduleNode }, this.sourceUnit);
+		this.transformation.visit(new ASTNode[]{this.moduleNode}, this.sourceUnit);
 		assertThat(getValue().toString()).isEqualTo("[test:child:1.0.0]");
 	}
 
 	@Test
 	public void transformationOfClass() {
 		this.moduleNode.addClass(ClassHelper.make("MyClass"));
-		this.transformation.visit(new ASTNode[] { this.moduleNode }, this.sourceUnit);
+		this.transformation.visit(new ASTNode[]{this.moduleNode}, this.sourceUnit);
 		assertThat(getValue().toString()).isEqualTo("[test:child:1.0.0]");
 	}
 
@@ -85,7 +79,7 @@ public final class GenericBomAstTransformationTests {
 		AnnotationNode annotation = new AnnotationNode(ClassHelper.make(DependencyManagementBom.class));
 		annotation.addMember("value", new ConstantExpression("test:parent:1.0.0"));
 		cls.addAnnotation(annotation);
-		this.transformation.visit(new ASTNode[] { this.moduleNode }, this.sourceUnit);
+		this.transformation.visit(new ASTNode[]{this.moduleNode}, this.sourceUnit);
 		assertThat(getValue().toString()).isEqualTo("[test:parent:1.0.0, test:child:1.0.0]");
 	}
 
@@ -97,11 +91,9 @@ public final class GenericBomAstTransformationTests {
 				list.add((String) ((ConstantExpression) ex).getValue());
 			}
 			return list;
-		}
-		else if (expression == null) {
+		} else if (expression == null) {
 			return null;
-		}
-		else {
+		} else {
 			throw new IllegalStateException("Member 'value' is not a ListExpression");
 		}
 	}

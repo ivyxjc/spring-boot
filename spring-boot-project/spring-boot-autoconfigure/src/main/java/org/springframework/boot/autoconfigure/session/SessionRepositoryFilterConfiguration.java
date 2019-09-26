@@ -16,17 +16,16 @@
 
 package org.springframework.boot.autoconfigure.session;
 
-import java.util.EnumSet;
-import java.util.stream.Collectors;
-
-import javax.servlet.DispatcherType;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.web.http.SessionRepositoryFilter;
+
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+import java.util.stream.Collectors;
 
 /**
  * Configuration for customizing the registration of the {@link SessionRepositoryFilter}.

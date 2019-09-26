@@ -29,6 +29,7 @@ abstract class BeanPropertyName {
 
 	/**
 	 * Return the specified Java Bean property name in dashed form.
+	 *
 	 * @param name the source name
 	 * @return the dashed from
 	 */
@@ -38,7 +39,8 @@ abstract class BeanPropertyName {
 
 	/**
 	 * Return the specified Java Bean property name in dashed form.
-	 * @param name the source name
+	 *
+	 * @param name  the source name
 	 * @param start the starting char
 	 * @return the dashed from
 	 */

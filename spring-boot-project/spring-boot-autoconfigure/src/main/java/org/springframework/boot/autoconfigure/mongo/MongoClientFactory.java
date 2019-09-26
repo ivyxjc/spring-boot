@@ -16,17 +16,12 @@
 
 package org.springframework.boot.autoconfigure.mongo;
 
+import com.mongodb.*;
+import com.mongodb.MongoClientOptions.Builder;
+import org.springframework.core.env.Environment;
+
 import java.util.Collections;
 import java.util.List;
-
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientOptions;
-import com.mongodb.MongoClientOptions.Builder;
-import com.mongodb.MongoClientURI;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
-
-import org.springframework.core.env.Environment;
 
 /**
  * A factory for a blocking {@link MongoClient} that applies {@link MongoProperties}.
@@ -56,6 +51,7 @@ public class MongoClientFactory {
 	 * Creates a {@link MongoClient} using the given {@code options}. If the environment
 	 * contains a {@code local.mongo.port} property, it is used to configure a client to
 	 * an embedded MongoDB instance.
+	 *
 	 * @param options the options
 	 * @return the Mongo client
 	 */

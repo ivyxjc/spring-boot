@@ -27,6 +27,7 @@ public interface SpringApplicationAdminMXBean {
 
 	/**
 	 * Specify if the application has fully started and is now ready.
+	 *
 	 * @return {@code true} if the application is ready
 	 * @see org.springframework.boot.context.event.ApplicationReadyEvent
 	 */
@@ -36,6 +37,7 @@ public interface SpringApplicationAdminMXBean {
 	 * Specify if the application runs in an embedded web container. Return {@code false}
 	 * on a web application that hasn't fully started yet, so it is preferable to wait for
 	 * the application to be {@link #isReady() ready}.
+	 *
 	 * @return {@code true} if the application runs in an embedded web container
 	 * @see #isReady()
 	 */
@@ -44,6 +46,7 @@ public interface SpringApplicationAdminMXBean {
 	/**
 	 * Return the value of the specified key from the application
 	 * {@link org.springframework.core.env.Environment Environment}.
+	 *
 	 * @param key the property key
 	 * @return the property value or {@code null} if it does not exist
 	 */
@@ -51,6 +54,7 @@ public interface SpringApplicationAdminMXBean {
 
 	/**
 	 * Shutdown the application.
+	 *
 	 * @see org.springframework.context.ConfigurableApplicationContext#close()
 	 */
 	void shutdown();

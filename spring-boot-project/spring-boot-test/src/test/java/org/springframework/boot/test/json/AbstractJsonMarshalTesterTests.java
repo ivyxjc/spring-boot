@@ -16,26 +16,21 @@
 
 package org.springframework.boot.test.json;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ReflectionUtils;
+
+import java.io.*;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -60,6 +55,13 @@ public abstract class AbstractJsonMarshalTesterTests {
 	@Rule
 	public TemporaryFolder temp = new TemporaryFolder();
 
+	protected static final ExampleObject createExampleObject(String name, int age) {
+		ExampleObject exampleObject = new ExampleObject();
+		exampleObject.setName(name);
+		exampleObject.setAge(age);
+		return exampleObject;
+	}
+
 	@Test
 	public void writeShouldReturnJsonContent() throws Exception {
 		JsonContent<Object> content = createTester(TYPE).write(OBJECT);
@@ -77,7 +79,7 @@ public abstract class AbstractJsonMarshalTesterTests {
 	@Test
 	public void writeArrayShouldReturnJsonContent() throws Exception {
 		ResolvableType type = ResolvableTypes.get("arrayOfExampleObject");
-		ExampleObject[] value = new ExampleObject[] { OBJECT };
+		ExampleObject[] value = new ExampleObject[]{OBJECT};
 		JsonContent<Object> content = createTester(type).write(value);
 		assertThat(content).isEqualToJson(ARRAY_JSON);
 	}
@@ -170,13 +172,6 @@ public abstract class AbstractJsonMarshalTesterTests {
 		ResolvableType type = ResolvableTypes.get("mapOfExampleObject");
 		AbstractJsonMarshalTester<Object> tester = createTester(type);
 		assertThat(tester.parse(MAP_JSON)).asMap().containsEntry("a", OBJECT);
-	}
-
-	protected static final ExampleObject createExampleObject(String name, int age) {
-		ExampleObject exampleObject = new ExampleObject();
-		exampleObject.setName(name);
-		exampleObject.setAge(age);
-		return exampleObject;
 	}
 
 	protected final AbstractJsonMarshalTester<Object> createTester(ResolvableType type) {

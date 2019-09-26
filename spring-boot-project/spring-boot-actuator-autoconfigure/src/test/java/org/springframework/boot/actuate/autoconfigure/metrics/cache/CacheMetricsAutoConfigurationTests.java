@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.metrics.cache;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.test.MetricsRun;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration;
@@ -65,10 +64,10 @@ public class CacheMetricsAutoConfigurationTests {
 	public void cacheInstrumentationCanBeDisabled() {
 		this.contextRunner.withPropertyValues("management.metrics.enable.cache=false", "spring.cache.type=caffeine",
 				"spring.cache.cache-names=cache1").run((context) -> {
-					MeterRegistry registry = context.getBean(MeterRegistry.class);
-					assertThat(registry.find("cache.requests").tags("name", "cache1")
-							.tags("cacheManager", "cacheManager").meter()).isNull();
-				});
+			MeterRegistry registry = context.getBean(MeterRegistry.class);
+			assertThat(registry.find("cache.requests").tags("name", "cache1")
+					.tags("cacheManager", "cacheManager").meter()).isNull();
+		});
 	}
 
 	@Configuration

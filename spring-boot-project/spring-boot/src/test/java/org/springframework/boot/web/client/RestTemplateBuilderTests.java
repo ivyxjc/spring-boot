@@ -16,25 +16,13 @@
 
 package org.springframework.boot.web.client;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Set;
-import java.util.function.Supplier;
-
 import org.apache.http.client.config.RequestConfig;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpRequestInterceptor;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.InterceptingClientHttpRequestFactory;
-import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.client.*;
 import org.springframework.http.client.support.BasicAuthenticationInterceptor;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
@@ -45,14 +33,15 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplateHandler;
 
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Set;
+import java.util.function.Supplier;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
@@ -383,15 +372,15 @@ public class RestTemplateBuilderTests {
 		this.builder.interceptors(this.interceptor).messageConverters(this.messageConverter)
 				.rootUri("http://localhost:8080").errorHandler(errorHandler).basicAuthentication("spring", "boot")
 				.requestFactory(() -> requestFactory).customizers((restTemplate) -> {
-					assertThat(restTemplate.getInterceptors()).hasSize(2).contains(this.interceptor)
-							.anyMatch((ic) -> ic instanceof BasicAuthenticationInterceptor);
-					assertThat(restTemplate.getMessageConverters()).contains(this.messageConverter);
-					assertThat(restTemplate.getUriTemplateHandler()).isInstanceOf(RootUriTemplateHandler.class);
-					assertThat(restTemplate.getErrorHandler()).isEqualTo(errorHandler);
-					ClientHttpRequestFactory actualRequestFactory = restTemplate.getRequestFactory();
-					assertThat(actualRequestFactory).isInstanceOf(InterceptingClientHttpRequestFactory.class);
-					assertThat(actualRequestFactory).hasFieldOrPropertyWithValue("requestFactory", requestFactory);
-				}).build();
+			assertThat(restTemplate.getInterceptors()).hasSize(2).contains(this.interceptor)
+					.anyMatch((ic) -> ic instanceof BasicAuthenticationInterceptor);
+			assertThat(restTemplate.getMessageConverters()).contains(this.messageConverter);
+			assertThat(restTemplate.getUriTemplateHandler()).isInstanceOf(RootUriTemplateHandler.class);
+			assertThat(restTemplate.getErrorHandler()).isEqualTo(errorHandler);
+			ClientHttpRequestFactory actualRequestFactory = restTemplate.getRequestFactory();
+			assertThat(actualRequestFactory).isInstanceOf(InterceptingClientHttpRequestFactory.class);
+			assertThat(actualRequestFactory).hasFieldOrPropertyWithValue("requestFactory", requestFactory);
+		}).build();
 	}
 
 	@Test
@@ -465,7 +454,7 @@ public class RestTemplateBuilderTests {
 				.setConnectTimeout(Duration.ofMillis(1234)).build().getRequestFactory();
 		assertThat(
 				ReflectionTestUtils.getField(ReflectionTestUtils.getField(requestFactory, "client"), "connectTimeout"))
-						.isEqualTo(1234);
+				.isEqualTo(1234);
 	}
 
 	@Test

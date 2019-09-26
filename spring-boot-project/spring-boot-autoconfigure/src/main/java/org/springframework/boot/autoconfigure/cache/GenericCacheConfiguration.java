@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.util.Collection;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.cache.Cache;
@@ -26,6 +24,8 @@ import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.Collection;
 
 /**
  * Generic cache configuration based on arbitrary {@link Cache} instances defined in the

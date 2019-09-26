@@ -16,13 +16,10 @@
 
 package org.springframework.boot.test.autoconfigure.restdocs;
 
-import java.io.File;
-
 import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -34,6 +31,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.util.FileSystemUtils;
+
+import java.io.File;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -51,13 +50,13 @@ import static org.springframework.restdocs.webtestclient.WebTestClientRestDocume
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "api.example.com", uriPort = 443)
 public class WebTestClientRestDocsAutoConfigurationAdvancedConfigurationIntegrationTests {
 
+	@Autowired
+	private WebTestClient webTestClient;
+
 	@Before
 	public void deleteSnippets() {
 		FileSystemUtils.deleteRecursively(new File("target/generated-snippets"));
 	}
-
-	@Autowired
-	private WebTestClient webTestClient;
 
 	@Test
 	public void defaultSnippetsAreWritten() throws Exception {

@@ -24,7 +24,6 @@ import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.customizers.ImportCustomizer;
-
 import org.springframework.boot.cli.compiler.CompilerAutoConfiguration;
 import org.springframework.boot.cli.compiler.DependencyCustomizer;
 import org.springframework.boot.cli.compiler.GroovyCompilerConfiguration;
@@ -68,7 +67,7 @@ public class SpringBootCompilerAutoConfiguration extends CompilerAutoConfigurati
 
 	@Override
 	public void applyToMainClass(GroovyClassLoader loader, GroovyCompilerConfiguration configuration,
-			GeneratorContext generatorContext, SourceUnit source, ClassNode classNode)
+								 GeneratorContext generatorContext, SourceUnit source, ClassNode classNode)
 			throws CompilationFailedException {
 		addEnableAutoConfigurationAnnotation(classNode);
 	}

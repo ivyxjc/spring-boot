@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.elasticsearch;
 
-import java.util.Map;
-
 import org.elasticsearch.client.RestClient;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -35,6 +32,8 @@ import org.springframework.boot.autoconfigure.elasticsearch.rest.RestClientAutoC
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
  * {@link ElasticsearchRestHealthIndicator} using the {@link RestClient}.
@@ -48,7 +47,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(RestClient.class)
 @ConditionalOnEnabledHealthIndicator("elasticsearch")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)
-@AutoConfigureAfter({ RestClientAutoConfiguration.class, ElasticSearchClientHealthIndicatorAutoConfiguration.class })
+@AutoConfigureAfter({RestClientAutoConfiguration.class, ElasticSearchClientHealthIndicatorAutoConfiguration.class})
 public class ElasticSearchRestHealthIndicatorAutoConfiguration
 		extends CompositeHealthIndicatorConfiguration<ElasticsearchRestHealthIndicator, RestClient> {
 

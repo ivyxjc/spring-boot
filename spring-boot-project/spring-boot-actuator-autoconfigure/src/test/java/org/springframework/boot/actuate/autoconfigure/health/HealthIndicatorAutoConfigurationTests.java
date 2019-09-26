@@ -16,21 +16,15 @@
 
 package org.springframework.boot.actuate.autoconfigure.health;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.junit.Test;
-
-import org.springframework.boot.actuate.health.ApplicationHealthIndicator;
-import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthAggregator;
-import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.OrderedHealthAggregator;
-import org.springframework.boot.actuate.health.Status;
+import org.springframework.boot.actuate.health.*;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -62,7 +56,7 @@ public class HealthIndicatorAutoConfigurationTests {
 	public void runWhenHasDefaultsDisabledAndNoSingleIndicatorEnabledShouldCreateDefaultApplicationHealthIndicator() {
 		this.contextRunner.withUserConfiguration(CustomHealthIndicatorConfiguration.class)
 				.withPropertyValues("management.health.defaults.enabled:false").run((context) -> assertThat(context)
-						.getBean(HealthIndicator.class).isInstanceOf(ApplicationHealthIndicator.class));
+				.getBean(HealthIndicator.class).isInstanceOf(ApplicationHealthIndicator.class));
 
 	}
 

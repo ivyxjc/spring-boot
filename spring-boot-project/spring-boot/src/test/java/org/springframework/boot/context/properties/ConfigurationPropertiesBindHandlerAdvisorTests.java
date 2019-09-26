@@ -16,23 +16,18 @@
 
 package org.springframework.boot.context.properties;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.junit.After;
 import org.junit.Test;
-
-import org.springframework.boot.context.properties.bind.AbstractBindHandler;
-import org.springframework.boot.context.properties.bind.BindContext;
-import org.springframework.boot.context.properties.bind.BindHandler;
-import org.springframework.boot.context.properties.bind.BindResult;
-import org.springframework.boot.context.properties.bind.Bindable;
+import org.springframework.boot.context.properties.bind.*;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.support.TestPropertySourceUtils;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -79,7 +74,7 @@ public class ConfigurationPropertiesBindHandlerAdvisorTests {
 	}
 
 	private AnnotationConfigApplicationContext load(Class<?> configuration, String... inlinedProperties) {
-		return load(new Class<?>[] { configuration }, inlinedProperties);
+		return load(new Class<?>[]{configuration}, inlinedProperties);
 	}
 
 	private AnnotationConfigApplicationContext load(Class<?>[] configuration, String... inlinedProperties) {

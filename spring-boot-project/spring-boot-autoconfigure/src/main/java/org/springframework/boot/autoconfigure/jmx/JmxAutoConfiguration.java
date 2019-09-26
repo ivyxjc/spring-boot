@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.jmx;
 
-import javax.management.MBeanServer;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -41,6 +39,8 @@ import org.springframework.jmx.support.MBeanServerFactoryBean;
 import org.springframework.jmx.support.RegistrationPolicy;
 import org.springframework.util.StringUtils;
 
+import javax.management.MBeanServer;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} to enable/disable Spring's
  * {@link EnableMBeanExport} mechanism based on configuration properties.
@@ -53,7 +53,7 @@ import org.springframework.util.StringUtils;
  * @since 1.0.0
  */
 @Configuration
-@ConditionalOnClass({ MBeanExporter.class })
+@ConditionalOnClass({MBeanExporter.class})
 @ConditionalOnProperty(prefix = "spring.jmx", name = "enabled", havingValue = "true", matchIfMissing = true)
 public class JmxAutoConfiguration implements EnvironmentAware, BeanFactoryAware {
 

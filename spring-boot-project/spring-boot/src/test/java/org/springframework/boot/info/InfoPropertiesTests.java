@@ -16,11 +16,10 @@
 
 package org.springframework.boot.info;
 
-import java.util.Properties;
-
 import org.junit.Test;
-
 import org.springframework.core.env.PropertySource;
+
+import java.util.Properties;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

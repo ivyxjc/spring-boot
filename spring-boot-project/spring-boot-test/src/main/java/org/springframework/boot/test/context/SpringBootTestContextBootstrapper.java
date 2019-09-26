@@ -16,16 +16,8 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.context.properties.bind.Bindable;
@@ -37,14 +29,7 @@ import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.support.SpringFactoriesLoader;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextConfigurationAttributes;
-import org.springframework.test.context.ContextHierarchy;
-import org.springframework.test.context.ContextLoader;
-import org.springframework.test.context.MergedContextConfiguration;
-import org.springframework.test.context.TestContext;
-import org.springframework.test.context.TestContextBootstrapper;
-import org.springframework.test.context.TestExecutionListener;
+import org.springframework.test.context.*;
 import org.springframework.test.context.support.DefaultTestContextBootstrapper;
 import org.springframework.test.context.support.TestPropertySourceUtils;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -53,6 +38,9 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
  * {@link TestContextBootstrapper} for Spring Boot. Provides support for
@@ -72,14 +60,14 @@ import org.springframework.util.StringUtils;
  * @author Brian Clozel
  * @author Madhura Bhave
  * @author Lorenzo Dee
- * @since 1.4.0
  * @see SpringBootTest
  * @see TestConfiguration
+ * @since 1.4.0
  */
 public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstrapper {
 
-	private static final String[] WEB_ENVIRONMENT_CLASSES = { "javax.servlet.Servlet",
-			"org.springframework.web.context.ConfigurableWebApplicationContext" };
+	private static final String[] WEB_ENVIRONMENT_CLASSES = {"javax.servlet.Servlet",
+			"org.springframework.web.context.ConfigurableWebApplicationContext"};
 
 	private static final String REACTIVE_WEB_ENVIRONMENT_CLASS = "org.springframework."
 			+ "web.reactive.DispatcherHandler";
@@ -100,8 +88,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 		WebEnvironment webEnvironment = getWebEnvironment(context.getTestClass());
 		if (webEnvironment == WebEnvironment.MOCK && deduceWebApplicationType() == WebApplicationType.SERVLET) {
 			context.setAttribute(ACTIVATE_SERVLET_LISTENER, true);
-		}
-		else if (webEnvironment != null && webEnvironment.isEmbedded()) {
+		} else if (webEnvironment != null && webEnvironment.isEmbedded()) {
 			context.setAttribute(ACTIVATE_SERVLET_LISTENER, false);
 		}
 		return context;
@@ -120,7 +107,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 
 	@Override
 	protected ContextLoader resolveContextLoader(Class<?> testClass,
-			List<ContextConfigurationAttributes> configAttributesList) {
+												 List<ContextConfigurationAttributes> configAttributesList) {
 		Class<?>[] classes = getClasses(testClass);
 		if (!ObjectUtils.isEmpty(classes)) {
 			for (ContextConfigurationAttributes configAttributes : configAttributesList) {
@@ -155,8 +142,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 			if (webApplicationType == WebApplicationType.SERVLET
 					&& (webEnvironment.isEmbedded() || webEnvironment == WebEnvironment.MOCK)) {
 				mergedConfig = new WebMergedContextConfiguration(mergedConfig, determineResourceBasePath(mergedConfig));
-			}
-			else if (webApplicationType == WebApplicationType.REACTIVE
+			} else if (webApplicationType == WebApplicationType.REACTIVE
 					&& (webEnvironment.isEmbedded() || webEnvironment == WebEnvironment.MOCK)) {
 				return new ReactiveWebMergedContextConfiguration(mergedConfig);
 			}
@@ -190,6 +176,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 	 * Determines the resource base path for web applications using the value of
 	 * {@link WebAppConfiguration @WebAppConfiguration}, if any, on the test class of the
 	 * given {@code configuration}. Defaults to {@code src/main/webapp} in its absence.
+	 *
 	 * @param configuration the configure to examine
 	 * @return the resource base path
 	 * @since 2.1.6
@@ -211,7 +198,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 	}
 
 	private boolean isFromConfiguration(MergedContextConfiguration candidateConfig,
-			ContextConfiguration configuration) {
+										ContextConfiguration configuration) {
 		ContextConfigurationAttributes attributes = new ContextConfigurationAttributes(candidateConfig.getTestClass(),
 				configuration);
 		Set<Class<?>> configurationClasses = new HashSet<>(Arrays.asList(attributes.getClasses()));
@@ -268,6 +255,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 	 * differentiate regular tests and bootstrapped tests. Without this property a cached
 	 * context could be returned that wasn't created by this bootstrapper. By default uses
 	 * the bootstrapper class as a property.
+	 *
 	 * @return the differentiator or {@code null}
 	 */
 	protected String getDifferentiatorPropertySourceProperty() {
@@ -277,11 +265,12 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 	/**
 	 * Post process the property source properties, adding or removing elements as
 	 * required.
-	 * @param mergedConfig the merged context configuration
+	 *
+	 * @param mergedConfig             the merged context configuration
 	 * @param propertySourceProperties the property source properties to process
 	 */
 	protected void processPropertySourceProperties(MergedContextConfiguration mergedConfig,
-			List<String> propertySourceProperties) {
+												   List<String> propertySourceProperties) {
 		Class<?> testClass = mergedConfig.getTestClass();
 		String[] properties = getProperties(testClass);
 		if (!ObjectUtils.isEmpty(properties)) {
@@ -296,6 +285,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 
 	/**
 	 * Return the {@link WebEnvironment} type for this test or null if undefined.
+	 *
 	 * @param testClass the source test class
 	 * @return the {@link WebEnvironment} or {@code null}
 	 */
@@ -322,7 +312,7 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 		SpringBootTest springBootTest = getAnnotation(testClass);
 		if (springBootTest != null
 				&& (springBootTest.webEnvironment() == WebEnvironment.DEFINED_PORT
-						|| springBootTest.webEnvironment() == WebEnvironment.RANDOM_PORT)
+				|| springBootTest.webEnvironment() == WebEnvironment.RANDOM_PORT)
 				&& getAnnotation(WebAppConfiguration.class, testClass) != null) {
 			throw new IllegalStateException("@WebAppConfiguration should only be used "
 					+ "with @SpringBootTest when @SpringBootTest is configured with a "
@@ -336,25 +326,27 @@ public class SpringBootTestContextBootstrapper extends DefaultTestContextBootstr
 
 	/**
 	 * Create a new {@link MergedContextConfiguration} with different classes.
+	 *
 	 * @param mergedConfig the source config
-	 * @param classes the replacement classes
+	 * @param classes      the replacement classes
 	 * @return a new {@link MergedContextConfiguration}
 	 */
 	protected final MergedContextConfiguration createModifiedConfig(MergedContextConfiguration mergedConfig,
-			Class<?>[] classes) {
+																	Class<?>[] classes) {
 		return createModifiedConfig(mergedConfig, classes, mergedConfig.getPropertySourceProperties());
 	}
 
 	/**
 	 * Create a new {@link MergedContextConfiguration} with different classes and
 	 * properties.
-	 * @param mergedConfig the source config
-	 * @param classes the replacement classes
+	 *
+	 * @param mergedConfig             the source config
+	 * @param classes                  the replacement classes
 	 * @param propertySourceProperties the replacement properties
 	 * @return a new {@link MergedContextConfiguration}
 	 */
 	protected final MergedContextConfiguration createModifiedConfig(MergedContextConfiguration mergedConfig,
-			Class<?>[] classes, String[] propertySourceProperties) {
+																	Class<?>[] classes, String[] propertySourceProperties) {
 		return new MergedContextConfiguration(mergedConfig.getTestClass(), mergedConfig.getLocations(), classes,
 				mergedConfig.getContextInitializerClasses(), mergedConfig.getActiveProfiles(),
 				mergedConfig.getPropertySourceLocations(), propertySourceProperties,

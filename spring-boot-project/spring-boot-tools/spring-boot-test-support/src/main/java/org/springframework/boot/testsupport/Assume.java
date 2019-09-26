@@ -17,7 +17,6 @@
 package org.springframework.boot.testsupport;
 
 import org.junit.AssumptionViolatedException;
-
 import org.springframework.util.ClassUtils;
 
 /**

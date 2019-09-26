@@ -16,14 +16,14 @@
 
 package org.springframework.boot.actuate.autoconfigure.cloudfoundry;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.boot.actuate.autoconfigure.cloudfoundry.CloudFoundryAuthorizationException.Reason;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.StringUtils;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The JSON web token provided with each request that originates from Cloud Foundry.
@@ -62,8 +62,7 @@ public class Token {
 		try {
 			byte[] bytes = Base64Utils.decodeFromUrlSafeString(base64);
 			return JsonParserFactory.getJsonParser().parseMap(new String(bytes, StandardCharsets.UTF_8));
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			throw new CloudFoundryAuthorizationException(Reason.INVALID_TOKEN, "Token could not be parsed", ex);
 		}
 	}

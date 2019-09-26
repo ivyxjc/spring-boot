@@ -5,7 +5,7 @@ package app
 class Example {
 
 	@RequestMapping("/")
-	public String helloWorld(Map<String,Object> model) {
+	public String helloWorld(Map<String, Object> model) {
 		model.putAll([title: "My Page", date: new Date(), message: "Hello World"])
 		return "home";
 	}
@@ -25,9 +25,9 @@ class MvcConfiguration extends WebMvcConfigurerAdapter {
 	HandlerInterceptor interceptor() {
 		log.info "Creating interceptor"
 		[
-			postHandle: { request, response, handler, mav ->
-				log.info "Intercepted: model=" + mav.model
-			}
+				postHandle: { request, response, handler, mav ->
+					log.info "Intercepted: model=" + mav.model
+				}
 		] as HandlerInterceptorAdapter
 	}
 }

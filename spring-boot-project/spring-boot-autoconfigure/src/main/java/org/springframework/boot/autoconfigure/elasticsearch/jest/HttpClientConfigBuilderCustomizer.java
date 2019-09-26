@@ -32,6 +32,7 @@ public interface HttpClientConfigBuilderCustomizer {
 
 	/**
 	 * Customize the {@link Builder}.
+	 *
 	 * @param builder the builder to customize
 	 */
 	void customize(Builder builder);

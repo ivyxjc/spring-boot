@@ -16,18 +16,8 @@
 
 package org.springframework.boot.devtools.restart.server;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.devtools.restart.Restarter;
 import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile;
 import org.springframework.boot.devtools.restart.classloader.ClassLoaderFile.Kind;
@@ -36,6 +26,15 @@ import org.springframework.boot.devtools.restart.classloader.ClassLoaderFiles.So
 import org.springframework.util.Assert;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.util.ResourceUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * Server used to {@link Restarter restart} the current application with updated
@@ -54,8 +53,9 @@ public class RestartServer {
 
 	/**
 	 * Create a new {@link RestartServer} instance.
+	 *
 	 * @param sourceFolderUrlFilter the source filter used to link remote folder to the
-	 * local classpath
+	 *                              local classpath
 	 */
 	public RestartServer(SourceFolderUrlFilter sourceFolderUrlFilter) {
 		this(sourceFolderUrlFilter, Thread.currentThread().getContextClassLoader());
@@ -63,9 +63,10 @@ public class RestartServer {
 
 	/**
 	 * Create a new {@link RestartServer} instance.
+	 *
 	 * @param sourceFolderUrlFilter the source filter used to link remote folder to the
-	 * local classpath
-	 * @param classLoader the application classloader
+	 *                              local classpath
+	 * @param classLoader           the application classloader
 	 */
 	public RestartServer(SourceFolderUrlFilter sourceFolderUrlFilter, ClassLoader classLoader) {
 		Assert.notNull(sourceFolderUrlFilter, "SourceFolderUrlFilter must not be null");
@@ -77,6 +78,7 @@ public class RestartServer {
 	/**
 	 * Update the current running application with the specified {@link ClassLoaderFiles}
 	 * and trigger a reload.
+	 *
 	 * @param files updated class loader files
 	 */
 	public void updateAndRestart(ClassLoaderFiles files) {
@@ -110,8 +112,7 @@ public class RestartServer {
 				FileCopyUtils.copy(classLoaderFile.getContents(), file);
 				return true;
 			}
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			// Ignore
 		}
 		return false;
@@ -158,15 +159,15 @@ public class RestartServer {
 			URL actualUrl = ResourceUtils.extractJarFileURL(url);
 			File file = ResourceUtils.getFile(actualUrl, "Jar URL");
 			file.setLastModified(System.currentTimeMillis());
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Ignore
 		}
 	}
 
 	/**
 	 * Called to restart the application.
-	 * @param urls the updated URLs
+	 *
+	 * @param urls  the updated URLs
 	 * @param files the updated files
 	 */
 	protected void restart(Set<URL> urls, ClassLoaderFiles files) {

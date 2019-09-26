@@ -16,18 +16,8 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.boot.context.properties.bind.BinderTests.ExampleEnum;
 import org.springframework.boot.context.properties.bind.BinderTests.JavaBean;
 import org.springframework.boot.context.properties.source.ConfigurationProperty;
@@ -36,6 +26,9 @@ import org.springframework.boot.context.properties.source.MockConfigurationPrope
 import org.springframework.core.ResolvableType;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.test.context.support.TestPropertySourceUtils;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -543,12 +536,12 @@ public class CollectionBinderTests {
 
 		private List<String> values;
 
-		public void setValues(List<String> values) {
-			this.values = values;
-		}
-
 		public List<String> getValues() {
 			return Collections.unmodifiableList(this.values);
+		}
+
+		public void setValues(List<String> values) {
+			this.values = values;
 		}
 
 	}
@@ -557,12 +550,12 @@ public class CollectionBinderTests {
 
 		private List<EnumSet<ExampleEnum>> values;
 
-		public void setValues(List<EnumSet<ExampleEnum>> values) {
-			this.values = values;
-		}
-
 		public List<EnumSet<ExampleEnum>> getValues() {
 			return this.values;
+		}
+
+		public void setValues(List<EnumSet<ExampleEnum>> values) {
+			this.values = values;
 		}
 
 	}

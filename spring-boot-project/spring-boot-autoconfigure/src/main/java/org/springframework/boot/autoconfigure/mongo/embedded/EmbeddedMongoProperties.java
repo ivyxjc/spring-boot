@@ -16,14 +16,13 @@
 
 package org.springframework.boot.autoconfigure.mongo.embedded;
 
-import java.util.Set;
-
 import de.flapdoodle.embed.mongo.distribution.Feature;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.convert.DataSizeUnit;
 import org.springframework.util.unit.DataSize;
 import org.springframework.util.unit.DataUnit;
+
+import java.util.Set;
 
 /**
  * Configuration properties for Embedded Mongo.
@@ -35,13 +34,11 @@ import org.springframework.util.unit.DataUnit;
 @ConfigurationProperties(prefix = "spring.mongodb.embedded")
 public class EmbeddedMongoProperties {
 
+	private final Storage storage = new Storage();
 	/**
 	 * Version of Mongo to use.
 	 */
 	private String version = "3.5.5";
-
-	private final Storage storage = new Storage();
-
 	/**
 	 * Comma-separated list of features to enable. Uses the defaults of the configured
 	 * version by default.

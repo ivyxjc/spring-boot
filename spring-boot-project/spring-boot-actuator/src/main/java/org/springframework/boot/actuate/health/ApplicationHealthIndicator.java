@@ -21,8 +21,8 @@ package org.springframework.boot.actuate.health;
  *
  * @author Dave Syer
  * @author Christian Dupuis
- * @since 1.2.0
  * @see Status#UP
+ * @since 1.2.0
  */
 public class ApplicationHealthIndicator extends AbstractHealthIndicator {
 

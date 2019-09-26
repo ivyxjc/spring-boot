@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.mail;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Configuration properties for email support.
@@ -128,12 +128,12 @@ public class MailProperties {
 		return this.properties;
 	}
 
-	public void setJndiName(String jndiName) {
-		this.jndiName = jndiName;
-	}
-
 	public String getJndiName() {
 		return this.jndiName;
+	}
+
+	public void setJndiName(String jndiName) {
+		this.jndiName = jndiName;
 	}
 
 }

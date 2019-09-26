@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -44,6 +42,8 @@ import org.springframework.orm.jpa.AbstractEntityManagerFactoryBean;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.util.Assert;
 
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for the cache abstraction. Creates a
  * {@link CacheManager} if necessary when caching is enabled via {@link EnableCaching}.
@@ -51,16 +51,16 @@ import org.springframework.util.Assert;
  * Cache store can be auto-detected or specified explicitly via configuration.
  *
  * @author Stephane Nicoll
- * @since 1.3.0
  * @see EnableCaching
+ * @since 1.3.0
  */
 @Configuration
 @ConditionalOnClass(CacheManager.class)
 @ConditionalOnBean(CacheAspectSupport.class)
 @ConditionalOnMissingBean(value = CacheManager.class, name = "cacheResolver")
 @EnableConfigurationProperties(CacheProperties.class)
-@AutoConfigureAfter({ CouchbaseAutoConfiguration.class, HazelcastAutoConfiguration.class,
-		HibernateJpaAutoConfiguration.class, RedisAutoConfiguration.class })
+@AutoConfigureAfter({CouchbaseAutoConfiguration.class, HazelcastAutoConfiguration.class,
+							HibernateJpaAutoConfiguration.class, RedisAutoConfiguration.class})
 @Import(CacheConfigurationImportSelector.class)
 public class CacheAutoConfiguration {
 
@@ -72,7 +72,7 @@ public class CacheAutoConfiguration {
 
 	@Bean
 	public CacheManagerValidator cacheAutoConfigurationValidator(CacheProperties cacheProperties,
-			ObjectProvider<CacheManager> cacheManager) {
+																 ObjectProvider<CacheManager> cacheManager) {
 		return new CacheManagerValidator(cacheProperties, cacheManager);
 	}
 

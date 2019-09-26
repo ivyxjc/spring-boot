@@ -16,11 +16,18 @@
 
 package org.springframework.boot.web.servlet.support;
 
-import java.io.IOException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.apache.catalina.connector.ClientAbortException;
+import org.junit.Rule;
+import org.junit.Test;
+import org.springframework.boot.testsupport.rule.OutputCapture;
+import org.springframework.boot.web.server.ErrorPage;
+import org.springframework.http.HttpStatus;
+import org.springframework.mock.web.*;
+import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.context.request.async.StandardServletAsyncWebRequest;
+import org.springframework.web.context.request.async.WebAsyncManager;
+import org.springframework.web.context.request.async.WebAsyncUtils;
+import org.springframework.web.util.NestedServletException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,30 +36,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
-import org.apache.catalina.connector.ClientAbortException;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.springframework.boot.testsupport.rule.OutputCapture;
-import org.springframework.boot.web.server.ErrorPage;
-import org.springframework.http.HttpStatus;
-import org.springframework.mock.web.MockFilterChain;
-import org.springframework.mock.web.MockFilterConfig;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockRequestDispatcher;
-import org.springframework.web.context.request.async.DeferredResult;
-import org.springframework.web.context.request.async.StandardServletAsyncWebRequest;
-import org.springframework.web.context.request.async.WebAsyncManager;
-import org.springframework.web.context.request.async.WebAsyncUtils;
-import org.springframework.web.util.NestedServletException;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link ErrorPageFilter}.
@@ -62,17 +54,13 @@ import static org.mockito.Mockito.verify;
  */
 public class ErrorPageFilterTests {
 
-	private ErrorPageFilter filter = new ErrorPageFilter();
-
-	private DispatchRecordingMockHttpServletRequest request = new DispatchRecordingMockHttpServletRequest();
-
-	private MockHttpServletResponse response = new MockHttpServletResponse();
-
-	private MockFilterChain chain = new TestFilterChain((request, response, chain) -> {
-	});
-
 	@Rule
 	public OutputCapture output = new OutputCapture();
+	private ErrorPageFilter filter = new ErrorPageFilter();
+	private DispatchRecordingMockHttpServletRequest request = new DispatchRecordingMockHttpServletRequest();
+	private MockHttpServletResponse response = new MockHttpServletResponse();
+	private MockFilterChain chain = new TestFilterChain((request, response, chain) -> {
+	});
 
 	@Test
 	public void notAnError() throws Exception {
@@ -411,6 +399,21 @@ public class ErrorPageFilterTests {
 		return this.request.getDispatcher(path).getRequestAttributes();
 	}
 
+	@FunctionalInterface
+	private interface FilterHandler {
+
+		void handle(HttpServletRequest request, HttpServletResponse response, Chain chain)
+				throws IOException, ServletException;
+
+	}
+
+	@FunctionalInterface
+	private interface Chain {
+
+		void call() throws IOException, ServletException;
+
+	}
+
 	private static class TestFilterChain extends MockFilterChain {
 
 		private final FilterHandler handler;
@@ -430,21 +433,6 @@ public class ErrorPageFilterTests {
 			this.handler.handle((HttpServletRequest) request, (HttpServletResponse) response, chain);
 			chain.call();
 		}
-
-	}
-
-	@FunctionalInterface
-	private interface FilterHandler {
-
-		void handle(HttpServletRequest request, HttpServletResponse response, Chain chain)
-				throws IOException, ServletException;
-
-	}
-
-	@FunctionalInterface
-	private interface Chain {
-
-		void call() throws IOException, ServletException;
 
 	}
 

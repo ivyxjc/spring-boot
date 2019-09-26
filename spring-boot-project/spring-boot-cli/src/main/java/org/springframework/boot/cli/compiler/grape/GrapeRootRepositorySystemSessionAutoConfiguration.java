@@ -16,14 +16,13 @@
 
 package org.springframework.boot.cli.compiler.grape;
 
-import java.io.File;
-
 import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.repository.LocalRepository;
 import org.eclipse.aether.repository.LocalRepositoryManager;
-
 import org.springframework.util.StringUtils;
+
+import java.io.File;
 
 /**
  * Honours the configuration of {@code grape.root} by customizing the session's local
@@ -43,7 +42,7 @@ public class GrapeRootRepositorySystemSessionAutoConfiguration implements Reposi
 	}
 
 	private void configureLocalRepository(DefaultRepositorySystemSession session, RepositorySystem repositorySystem,
-			String grapeRoot) {
+										  String grapeRoot) {
 		File repositoryDir = new File(grapeRoot, "repository");
 		LocalRepository localRepository = new LocalRepository(repositoryDir);
 		LocalRepositoryManager localRepositoryManager = repositorySystem.newLocalRepositoryManager(session,

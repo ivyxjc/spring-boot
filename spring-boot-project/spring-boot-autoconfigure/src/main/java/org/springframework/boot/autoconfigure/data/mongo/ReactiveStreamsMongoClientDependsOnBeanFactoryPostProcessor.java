@@ -17,7 +17,6 @@
 package org.springframework.boot.autoconfigure.data.mongo;
 
 import com.mongodb.reactivestreams.client.MongoClient;
-
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.boot.autoconfigure.AbstractDependsOnBeanFactoryPostProcessor;
@@ -40,6 +39,7 @@ public class ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor
 	/**
 	 * Creates a new {@code ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor}
 	 * that will set up dependencies upon beans with the given names.
+	 *
 	 * @param dependsOn names of the beans to depend upon
 	 * @deprecated since 2.1.7 in favor of
 	 * {@link #ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor}
@@ -52,6 +52,7 @@ public class ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor
 	/**
 	 * Creates a new {@code ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor}
 	 * that will set up dependencies upon beans with the given types.
+	 *
 	 * @param dependsOn types of the beans to depend upon
 	 */
 	public ReactiveStreamsMongoClientDependsOnBeanFactoryPostProcessor(Class<?>... dependsOn) {

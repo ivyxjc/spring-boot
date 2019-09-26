@@ -16,10 +16,6 @@
 
 package org.springframework.boot.actuate.endpoint.web.annotation;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.boot.actuate.endpoint.invoke.ParameterValueMapper;
 import org.springframework.boot.actuate.endpoint.invoke.convert.ConversionServiceParameterValueMapper;
@@ -29,6 +25,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.support.DefaultConversionService;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 
@@ -48,8 +48,7 @@ class BaseConfiguration {
 		}
 		try {
 			return mock(AbstractWebEndpointIntegrationTests.EndpointDelegate.class);
-		}
-		finally {
+		} finally {
 			Thread.currentThread().setContextClassLoader(classLoader);
 		}
 	}

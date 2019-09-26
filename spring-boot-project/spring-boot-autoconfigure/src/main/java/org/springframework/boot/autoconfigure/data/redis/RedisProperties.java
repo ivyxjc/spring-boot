@@ -16,10 +16,10 @@
 
 package org.springframework.boot.autoconfigure.data.redis;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
 import java.time.Duration;
 import java.util.List;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * Configuration properties for Redis.
@@ -35,49 +35,39 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "spring.redis")
 public class RedisProperties {
 
+	private final Jedis jedis = new Jedis();
+	private final Lettuce lettuce = new Lettuce();
 	/**
 	 * Database index used by the connection factory.
 	 */
 	private int database = 0;
-
 	/**
 	 * Connection URL. Overrides host, port, and password. User is ignored. Example:
 	 * redis://user:password@example.com:6379
 	 */
 	private String url;
-
 	/**
 	 * Redis server host.
 	 */
 	private String host = "localhost";
-
 	/**
 	 * Login password of the redis server.
 	 */
 	private String password;
-
 	/**
 	 * Redis server port.
 	 */
 	private int port = 6379;
-
 	/**
 	 * Whether to enable SSL support.
 	 */
 	private boolean ssl;
-
 	/**
 	 * Connection timeout.
 	 */
 	private Duration timeout;
-
 	private Sentinel sentinel;
-
 	private Cluster cluster;
-
-	private final Jedis jedis = new Jedis();
-
-	private final Lettuce lettuce = new Lettuce();
 
 	public int getDatabase() {
 		return this.database;
@@ -127,12 +117,12 @@ public class RedisProperties {
 		this.ssl = ssl;
 	}
 
-	public void setTimeout(Duration timeout) {
-		this.timeout = timeout;
-	}
-
 	public Duration getTimeout() {
 		return this.timeout;
+	}
+
+	public void setTimeout(Duration timeout) {
+		this.timeout = timeout;
 	}
 
 	public Sentinel getSentinel() {

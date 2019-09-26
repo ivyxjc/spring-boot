@@ -16,22 +16,21 @@
 
 package org.springframework.boot.test.context;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.Collections;
-import java.util.Set;
-
 import kotlin.Metadata;
 import org.junit.Test;
 import org.spockframework.runtime.model.SpecMetadata;
-import spock.lang.Issue;
-import spock.lang.Stepwise;
-
 import org.springframework.boot.context.annotation.DeterminableImports;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
+import spock.lang.Issue;
+import spock.lang.Stepwise;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.Collections;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -70,6 +69,16 @@ public class ImportsContextCustomizerTests {
 	public void customizersForTestClassesWithDifferentSpockLangAnnotationsAreEqual() {
 		assertThat(new ImportsContextCustomizer(FirstSpockLangAnnotatedTestClass.class))
 				.isEqualTo(new ImportsContextCustomizer(SecondSpockLangAnnotatedTestClass.class));
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Indicator1 {
+
+	}
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@interface Indicator2 {
+
 	}
 
 	@Import(TestImportSelector.class)
@@ -126,21 +135,11 @@ public class ImportsContextCustomizerTests {
 
 	}
 
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface Indicator1 {
-
-	}
-
-	@Retention(RetentionPolicy.RUNTIME)
-	@interface Indicator2 {
-
-	}
-
 	static class TestImportSelector implements ImportSelector {
 
 		@Override
 		public String[] selectImports(AnnotationMetadata arg0) {
-			return new String[] {};
+			return new String[]{};
 		}
 
 	}
@@ -149,7 +148,7 @@ public class ImportsContextCustomizerTests {
 
 		@Override
 		public String[] selectImports(AnnotationMetadata arg0) {
-			return new String[] { TestConfig.class.getName() };
+			return new String[]{TestConfig.class.getName()};
 		}
 
 		@Override

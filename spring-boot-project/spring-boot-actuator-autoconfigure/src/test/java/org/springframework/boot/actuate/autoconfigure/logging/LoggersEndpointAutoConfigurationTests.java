@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.logging;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.logging.LoggersEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.logging.LoggingSystem;

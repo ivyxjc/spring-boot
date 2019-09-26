@@ -16,10 +16,10 @@
 
 package org.springframework.boot.configurationsample.specific;
 
+import org.springframework.boot.configurationsample.ConfigurationProperties;
+
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.boot.configurationsample.ConfigurationProperties;
 
 /**
  * Demonstrate properties with a wildcard type.

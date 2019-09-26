@@ -17,7 +17,6 @@
 package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
-
 import org.springframework.boot.test.mock.mockito.example.ExampleService;
 
 import static org.assertj.core.api.Assertions.assertThat;

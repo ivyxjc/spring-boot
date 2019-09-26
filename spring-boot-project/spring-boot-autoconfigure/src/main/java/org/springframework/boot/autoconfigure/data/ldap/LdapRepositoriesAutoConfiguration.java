@@ -16,8 +16,6 @@
 
 package org.springframework.boot.autoconfigure.data.ldap;
 
-import javax.naming.ldap.LdapContext;
-
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,6 +25,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.ldap.repository.LdapRepository;
 import org.springframework.data.ldap.repository.support.LdapRepositoryFactoryBean;
 
+import javax.naming.ldap.LdapContext;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Data's LDAP Repositories.
  *
@@ -34,9 +34,9 @@ import org.springframework.data.ldap.repository.support.LdapRepositoryFactoryBea
  * @since 1.5.0
  */
 @Configuration
-@ConditionalOnClass({ LdapContext.class, LdapRepository.class })
+@ConditionalOnClass({LdapContext.class, LdapRepository.class})
 @ConditionalOnProperty(prefix = "spring.data.ldap.repositories", name = "enabled", havingValue = "true",
-		matchIfMissing = true)
+					   matchIfMissing = true)
 @ConditionalOnMissingBean(LdapRepositoryFactoryBean.class)
 @Import(LdapRepositoriesRegistrar.class)
 public class LdapRepositoriesAutoConfiguration {

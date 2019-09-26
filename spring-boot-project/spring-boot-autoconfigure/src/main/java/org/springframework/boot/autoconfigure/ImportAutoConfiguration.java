@@ -16,15 +16,10 @@
 
 package org.springframework.boot.autoconfigure;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
+
+import java.lang.annotation.*;
 
 /**
  * Import and apply the specified auto-configuration classes. Applies the same ordering
@@ -52,6 +47,7 @@ public @interface ImportAutoConfiguration {
 	/**
 	 * The auto-configuration classes that should be imported. This is an alias for
 	 * {@link #classes()}.
+	 *
 	 * @return the classes to import
 	 */
 	@AliasFor("classes")
@@ -61,6 +57,7 @@ public @interface ImportAutoConfiguration {
 	 * The auto-configuration classes that should be imported. When empty, the classes are
 	 * specified using an entry in {@code META-INF/spring.factories} where the key is the
 	 * fully-qualified name of the annotated class.
+	 *
 	 * @return the classes to import
 	 */
 	@AliasFor("value")
@@ -68,6 +65,7 @@ public @interface ImportAutoConfiguration {
 
 	/**
 	 * Exclude specific auto-configuration classes such that they will never be applied.
+	 *
 	 * @return the classes to exclude
 	 */
 	Class<?>[] exclude() default {};

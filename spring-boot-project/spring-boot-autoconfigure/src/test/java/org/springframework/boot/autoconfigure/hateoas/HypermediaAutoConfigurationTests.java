@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.hateoas;
 
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.hateoas.HypermediaAutoConfiguration.EntityLinksConfiguration;
 import org.springframework.boot.autoconfigure.hateoas.HypermediaAutoConfiguration.HypermediaConfiguration;
@@ -125,8 +124,8 @@ public class HypermediaAutoConfigurationTests {
 		}
 	}
 
-	@ImportAutoConfiguration({ HttpMessageConvertersAutoConfiguration.class, WebMvcAutoConfiguration.class,
-			JacksonAutoConfiguration.class, HypermediaAutoConfiguration.class })
+	@ImportAutoConfiguration({HttpMessageConvertersAutoConfiguration.class, WebMvcAutoConfiguration.class,
+									 JacksonAutoConfiguration.class, HypermediaAutoConfiguration.class})
 	static class BaseConfig {
 
 	}

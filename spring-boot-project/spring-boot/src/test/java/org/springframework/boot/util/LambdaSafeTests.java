@@ -16,16 +16,15 @@
 
 package org.springframework.boot.util;
 
+import org.apache.commons.logging.Log;
+import org.junit.Test;
+import org.springframework.boot.util.LambdaSafe.Filter;
+import org.springframework.boot.util.LambdaSafe.InvocationResult;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
-
-import org.apache.commons.logging.Log;
-import org.junit.Test;
-
-import org.springframework.boot.util.LambdaSafe.Filter;
-import org.springframework.boot.util.LambdaSafe.InvocationResult;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -33,9 +32,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.contains;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link LambdaSafe}.

@@ -16,20 +16,15 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * Parser to create {@link MockDefinition} and {@link SpyDefinition} instances from

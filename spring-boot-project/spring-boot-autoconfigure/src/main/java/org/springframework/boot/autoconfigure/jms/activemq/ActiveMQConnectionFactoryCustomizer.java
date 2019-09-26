@@ -30,6 +30,7 @@ public interface ActiveMQConnectionFactoryCustomizer {
 
 	/**
 	 * Customize the {@link ActiveMQConnectionFactory}.
+	 *
 	 * @param factory the factory to customize
 	 */
 	void customize(ActiveMQConnectionFactory factory);

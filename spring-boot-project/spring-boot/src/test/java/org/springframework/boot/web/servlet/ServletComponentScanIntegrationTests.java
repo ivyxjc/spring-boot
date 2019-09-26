@@ -16,13 +16,8 @@
 
 package org.springframework.boot.web.servlet;
 
-import java.util.Map;
-
-import javax.servlet.MultipartConfigElement;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.web.context.ServerPortInfoApplicationContextInitializer;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
@@ -30,6 +25,9 @@ import org.springframework.boot.web.servlet.testcomponents.TestMultipartServlet;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.MultipartConfigElement;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

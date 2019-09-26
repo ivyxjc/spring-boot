@@ -16,12 +16,12 @@
 
 package org.springframework.boot.autoconfigure.ldap.embedded;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.convert.Delimiter;
 import org.springframework.core.io.Resource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration properties for Embedded LDAP.

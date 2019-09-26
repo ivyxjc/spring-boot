@@ -16,9 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jms;
 
-import java.time.Duration;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.time.Duration;
 
 /**
  * Configuration properties for JMS.
@@ -31,22 +31,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "spring.jms")
 public class JmsProperties {
 
+	private final Cache cache = new Cache();
+	private final Listener listener = new Listener();
+	private final Template template = new Template();
 	/**
 	 * Whether the default destination type is topic.
 	 */
 	private boolean pubSubDomain = false;
-
 	/**
 	 * Connection factory JNDI name. When set, takes precedence to others connection
 	 * factory auto-configurations.
 	 */
 	private String jndiName;
-
-	private final Cache cache = new Cache();
-
-	private final Listener listener = new Listener();
-
-	private final Template template = new Template();
 
 	public boolean isPubSubDomain() {
 		return this.pubSubDomain;
@@ -74,6 +70,74 @@ public class JmsProperties {
 
 	public Template getTemplate() {
 		return this.template;
+	}
+
+	/**
+	 * Translate the acknowledge modes defined on the {@link javax.jms.Session}.
+	 *
+	 * <p>
+	 * {@link javax.jms.Session#SESSION_TRANSACTED} is not defined as we take care of this
+	 * already via a call to {@code setSessionTransacted}.
+	 */
+	public enum AcknowledgeMode {
+
+		/**
+		 * Messages sent or received from the session are automatically acknowledged. This
+		 * is the simplest mode and enables once-only message delivery guarantee.
+		 */
+		AUTO(1),
+
+		/**
+		 * Messages are acknowledged once the message listener implementation has called
+		 * {@link javax.jms.Message#acknowledge()}. This mode gives the application
+		 * (rather than the JMS provider) complete control over message acknowledgement.
+		 */
+		CLIENT(2),
+
+		/**
+		 * Similar to auto acknowledgment except that said acknowledgment is lazy. As a
+		 * consequence, the messages might be delivered more than once. This mode enables
+		 * at-least-once message delivery guarantee.
+		 */
+		DUPS_OK(3);
+
+		private final int mode;
+
+		AcknowledgeMode(int mode) {
+			this.mode = mode;
+		}
+
+		public int getMode() {
+			return this.mode;
+		}
+
+	}
+
+	public enum DeliveryMode {
+
+		/**
+		 * Does not require that the message be logged to stable storage. This is the
+		 * lowest-overhead delivery mode but can lead to lost of message if the broker
+		 * goes down.
+		 */
+		NON_PERSISTENT(1),
+
+		/*
+		 * Instructs the JMS provider to log the message to stable storage as part of the
+		 * client's send operation.
+		 */
+		PERSISTENT(2);
+
+		private final int value;
+
+		DeliveryMode(int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return this.value;
+		}
+
 	}
 
 	public static class Cache {
@@ -300,74 +364,6 @@ public class JmsProperties {
 
 		public void setReceiveTimeout(Duration receiveTimeout) {
 			this.receiveTimeout = receiveTimeout;
-		}
-
-	}
-
-	/**
-	 * Translate the acknowledge modes defined on the {@link javax.jms.Session}.
-	 *
-	 * <p>
-	 * {@link javax.jms.Session#SESSION_TRANSACTED} is not defined as we take care of this
-	 * already via a call to {@code setSessionTransacted}.
-	 */
-	public enum AcknowledgeMode {
-
-		/**
-		 * Messages sent or received from the session are automatically acknowledged. This
-		 * is the simplest mode and enables once-only message delivery guarantee.
-		 */
-		AUTO(1),
-
-		/**
-		 * Messages are acknowledged once the message listener implementation has called
-		 * {@link javax.jms.Message#acknowledge()}. This mode gives the application
-		 * (rather than the JMS provider) complete control over message acknowledgement.
-		 */
-		CLIENT(2),
-
-		/**
-		 * Similar to auto acknowledgment except that said acknowledgment is lazy. As a
-		 * consequence, the messages might be delivered more than once. This mode enables
-		 * at-least-once message delivery guarantee.
-		 */
-		DUPS_OK(3);
-
-		private final int mode;
-
-		AcknowledgeMode(int mode) {
-			this.mode = mode;
-		}
-
-		public int getMode() {
-			return this.mode;
-		}
-
-	}
-
-	public enum DeliveryMode {
-
-		/**
-		 * Does not require that the message be logged to stable storage. This is the
-		 * lowest-overhead delivery mode but can lead to lost of message if the broker
-		 * goes down.
-		 */
-		NON_PERSISTENT(1),
-
-		/*
-		 * Instructs the JMS provider to log the message to stable storage as part of the
-		 * client's send operation.
-		 */
-		PERSISTENT(2);
-
-		private final int value;
-
-		DeliveryMode(int value) {
-			this.value = value;
-		}
-
-		public int getValue() {
-			return this.value;
 		}
 
 	}

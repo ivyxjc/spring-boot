@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.autoconfigure.metrics;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.newrelic.NewRelicMeterRegistry;
 import org.junit.Test;
-
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -49,8 +48,7 @@ public class MissingRequiredConfigurationFailureAnalyzerTests {
 		try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(configuration)) {
 			fail("Expected failure did not occur");
 			return null;
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			return ex;
 		}
 	}

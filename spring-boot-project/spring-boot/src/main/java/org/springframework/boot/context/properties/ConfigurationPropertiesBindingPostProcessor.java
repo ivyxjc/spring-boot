@@ -16,9 +16,6 @@
 
 package org.springframework.boot.context.properties;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -31,6 +28,9 @@ import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.PropertySources;
 import org.springframework.validation.annotation.Validated;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 
 /**
  * {@link BeanPostProcessor} to bind {@link PropertySources} to beans annotated with
@@ -94,13 +94,12 @@ public class ConfigurationPropertiesBindingPostProcessor
 	private void bind(Object bean, String beanName, ConfigurationProperties annotation) {
 		ResolvableType type = getBeanType(bean, beanName);
 		Validated validated = getAnnotation(bean, beanName, Validated.class);
-		Annotation[] annotations = (validated != null) ? new Annotation[] { annotation, validated }
-				: new Annotation[] { annotation };
+		Annotation[] annotations = (validated != null) ? new Annotation[]{annotation, validated}
+				: new Annotation[]{annotation};
 		Bindable<?> target = Bindable.of(type).withExistingValue(bean).withAnnotations(annotations);
 		try {
 			this.configurationPropertiesBinder.bind(target);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new ConfigurationPropertiesBindException(beanName, bean, annotation, ex);
 		}
 	}

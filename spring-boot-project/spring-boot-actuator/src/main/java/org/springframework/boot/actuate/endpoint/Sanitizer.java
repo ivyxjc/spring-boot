@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.endpoint;
 
-import java.util.regex.Pattern;
-
 import org.springframework.util.Assert;
+
+import java.util.regex.Pattern;
 
 /**
  * Strategy that should be used by endpoint implementations to sanitize potentially
@@ -33,7 +33,7 @@ import org.springframework.util.Assert;
  */
 public class Sanitizer {
 
-	private static final String[] REGEX_PARTS = { "*", "$", "^", "+" };
+	private static final String[] REGEX_PARTS = {"*", "$", "^", "+"};
 
 	private Pattern[] keysToSanitize;
 
@@ -48,6 +48,7 @@ public class Sanitizer {
 	/**
 	 * Keys that should be sanitized. Keys can be simple strings that the property ends
 	 * with or regular expressions.
+	 *
 	 * @param keysToSanitize the keys to sanitize
 	 */
 	public void setKeysToSanitize(String... keysToSanitize) {
@@ -76,7 +77,8 @@ public class Sanitizer {
 
 	/**
 	 * Sanitize the given value if necessary.
-	 * @param key the key to sanitize
+	 *
+	 * @param key   the key to sanitize
 	 * @param value the value
 	 * @return the potentially sanitized value
 	 */

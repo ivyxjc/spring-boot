@@ -16,12 +16,8 @@
 
 package org.springframework.boot.autoconfigure.security.servlet;
 
-import java.util.List;
-import java.util.regex.Pattern;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -40,6 +36,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+import java.util.regex.Pattern;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for a Spring Security in-memory
  * {@link AuthenticationManager}. Adds an {@link InMemoryUserDetailsManager} with a
@@ -55,7 +54,7 @@ import org.springframework.util.StringUtils;
 @Configuration
 @ConditionalOnClass(AuthenticationManager.class)
 @ConditionalOnBean(ObjectPostProcessor.class)
-@ConditionalOnMissingBean({ AuthenticationManager.class, AuthenticationProvider.class, UserDetailsService.class })
+@ConditionalOnMissingBean({AuthenticationManager.class, AuthenticationProvider.class, UserDetailsService.class})
 public class UserDetailsServiceAutoConfiguration {
 
 	private static final String NOOP_PASSWORD_PREFIX = "{noop}";
@@ -69,7 +68,7 @@ public class UserDetailsServiceAutoConfiguration {
 			type = "org.springframework.security.oauth2.client.registration.ClientRegistrationRepository")
 	@Lazy
 	public InMemoryUserDetailsManager inMemoryUserDetailsManager(SecurityProperties properties,
-			ObjectProvider<PasswordEncoder> passwordEncoder) {
+																 ObjectProvider<PasswordEncoder> passwordEncoder) {
 		SecurityProperties.User user = properties.getUser();
 		List<String> roles = user.getRoles();
 		return new InMemoryUserDetailsManager(

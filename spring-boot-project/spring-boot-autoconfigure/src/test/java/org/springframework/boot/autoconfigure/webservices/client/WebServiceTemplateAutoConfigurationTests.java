@@ -16,10 +16,7 @@
 
 package org.springframework.boot.autoconfigure.webservices.client;
 
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -34,6 +31,8 @@ import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.ws.client.core.WebServiceTemplate;
 import org.springframework.ws.transport.WebServiceMessageSender;
 import org.springframework.ws.transport.http.ClientHttpRequestMessageSender;
+
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -108,8 +107,7 @@ public class WebServiceTemplateAutoConfigurationTests {
 		public WebServiceTemplate webServiceTemplateOne(WebServiceTemplateBuilder builder) {
 			try {
 				return builder.build();
-			}
-			finally {
+			} finally {
 				breakBuilderOnNextCall(builder);
 			}
 		}
@@ -118,8 +116,7 @@ public class WebServiceTemplateAutoConfigurationTests {
 		public WebServiceTemplate webServiceTemplateTwo(WebServiceTemplateBuilder builder) {
 			try {
 				return builder.build();
-			}
-			finally {
+			} finally {
 				breakBuilderOnNextCall(builder);
 			}
 		}

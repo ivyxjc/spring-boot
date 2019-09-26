@@ -16,11 +16,7 @@
 
 package org.springframework.boot.convert;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * Declares a field or method parameter should be converted to collection using the
@@ -31,7 +27,7 @@ import java.lang.annotation.Target;
  */
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE })
+@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 public @interface Delimiter {
 
 	/**
@@ -43,6 +39,7 @@ public @interface Delimiter {
 	/**
 	 * The delimiter to use or {@code NONE} if the entire contents should be treated as a
 	 * single element.
+	 *
 	 * @return the delimiter
 	 */
 	String value();

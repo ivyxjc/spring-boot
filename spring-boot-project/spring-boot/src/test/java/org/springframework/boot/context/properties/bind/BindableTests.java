@@ -16,15 +16,14 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import org.junit.Test;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotationUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
@@ -181,11 +180,11 @@ public class BindableTests {
 
 	static class TestNewInstanceWithNoDefaultConstructor {
 
+		private String foo = "hello world";
+
 		TestNewInstanceWithNoDefaultConstructor(String foo) {
 			this.foo = foo;
 		}
-
-		private String foo = "hello world";
 
 		public String getFoo() {
 			return this.foo;

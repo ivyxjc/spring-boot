@@ -16,13 +16,8 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa.test;
 
+import javax.persistence.*;
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 @Entity
 @EntityListeners(CityListener.class)

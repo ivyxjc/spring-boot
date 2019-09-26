@@ -16,19 +16,16 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.junit.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.Collections;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link CompositeReactiveHealthIndicatorFactory}.
@@ -91,7 +88,7 @@ public class CompositeReactiveHealthIndicatorFactoryTests {
 	}
 
 	private ReactiveHealthIndicator createHealthIndicator(Map<String, ReactiveHealthIndicator> reactiveHealthIndicators,
-			Map<String, HealthIndicator> healthIndicators) {
+														  Map<String, HealthIndicator> healthIndicators) {
 		return new CompositeReactiveHealthIndicatorFactory((n) -> n).createReactiveHealthIndicator(
 				new OrderedHealthAggregator(), reactiveHealthIndicators, healthIndicators);
 	}

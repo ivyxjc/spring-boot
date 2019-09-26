@@ -16,9 +16,9 @@
 
 package org.springframework.boot.configurationsample.simple;
 
-import java.util.Map;
-
 import org.springframework.boot.configurationsample.ConfigurationProperties;
+
+import java.util.Map;
 
 /**
  * Properties with array.

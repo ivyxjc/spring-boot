@@ -16,17 +16,13 @@
 
 package org.springframework.boot.autoconfigure.condition;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.*;
 
 /**
  * A message associated with a {@link ConditionOutcome}. Provides a fluent builder style
@@ -52,7 +48,77 @@ public final class ConditionMessage {
 	}
 
 	/**
+	 * Factory method to return a new empty {@link ConditionMessage}.
+	 *
+	 * @return a new empty {@link ConditionMessage}
+	 */
+	public static ConditionMessage empty() {
+		return new ConditionMessage();
+	}
+
+	/**
+	 * Factory method to create a new {@link ConditionMessage} with a specific message.
+	 *
+	 * @param message the source message (may be a format string if {@code args} are
+	 *                specified)
+	 * @param args    format arguments for the message
+	 * @return a new {@link ConditionMessage} instance
+	 */
+	public static ConditionMessage of(String message, Object... args) {
+		if (ObjectUtils.isEmpty(args)) {
+			return new ConditionMessage(message);
+		}
+		return new ConditionMessage(String.format(message, args));
+	}
+
+	/**
+	 * Factory method to create a new {@link ConditionMessage} comprised of the specified
+	 * messages.
+	 *
+	 * @param messages the source messages (may be {@code null})
+	 * @return a new {@link ConditionMessage} instance
+	 */
+	public static ConditionMessage of(Collection<? extends ConditionMessage> messages) {
+		ConditionMessage result = new ConditionMessage();
+		if (messages != null) {
+			for (ConditionMessage message : messages) {
+				result = new ConditionMessage(result, message.toString());
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * Factory method for a builder to construct a new {@link ConditionMessage} for a
+	 * condition.
+	 *
+	 * @param condition the condition
+	 * @param details   details of the condition
+	 * @return a {@link Builder} builder
+	 * @see #forCondition(String, Object...)
+	 * @see #andCondition(String, Object...)
+	 */
+	public static Builder forCondition(Class<? extends Annotation> condition, Object... details) {
+		return new ConditionMessage().andCondition(condition, details);
+	}
+
+	/**
+	 * Factory method for a builder to construct a new {@link ConditionMessage} for a
+	 * condition.
+	 *
+	 * @param condition the condition
+	 * @param details   details of the condition
+	 * @return a {@link Builder} builder
+	 * @see #forCondition(Class, Object...)
+	 * @see #andCondition(String, Object...)
+	 */
+	public static Builder forCondition(String condition, Object... details) {
+		return new ConditionMessage().andCondition(condition, details);
+	}
+
+	/**
 	 * Return {@code true} if the message is empty.
+	 *
 	 * @return if the message is empty
 	 */
 	public boolean isEmpty() {
@@ -83,6 +149,7 @@ public final class ConditionMessage {
 	/**
 	 * Return a new {@link ConditionMessage} based on the instance and an appended
 	 * message.
+	 *
 	 * @param message the message to append
 	 * @return a new {@link ConditionMessage} instance
 	 */
@@ -100,8 +167,9 @@ public final class ConditionMessage {
 	/**
 	 * Return a new builder to construct a new {@link ConditionMessage} based on the
 	 * instance and a new condition outcome.
+	 *
 	 * @param condition the condition
-	 * @param details details of the condition
+	 * @param details   details of the condition
 	 * @return a {@link Builder} builder
 	 * @see #andCondition(String, Object...)
 	 * @see #forCondition(Class, Object...)
@@ -114,8 +182,9 @@ public final class ConditionMessage {
 	/**
 	 * Return a new builder to construct a new {@link ConditionMessage} based on the
 	 * instance and a new condition outcome.
+	 *
 	 * @param condition the condition
-	 * @param details details of the condition
+	 * @param details   details of the condition
 	 * @return a {@link Builder} builder
 	 * @see #andCondition(Class, Object...)
 	 * @see #forCondition(String, Object...)
@@ -130,67 +199,34 @@ public final class ConditionMessage {
 	}
 
 	/**
-	 * Factory method to return a new empty {@link ConditionMessage}.
-	 * @return a new empty {@link ConditionMessage}
+	 * Render styles.
 	 */
-	public static ConditionMessage empty() {
-		return new ConditionMessage();
-	}
+	public enum Style {
 
-	/**
-	 * Factory method to create a new {@link ConditionMessage} with a specific message.
-	 * @param message the source message (may be a format string if {@code args} are
-	 * specified)
-	 * @param args format arguments for the message
-	 * @return a new {@link ConditionMessage} instance
-	 */
-	public static ConditionMessage of(String message, Object... args) {
-		if (ObjectUtils.isEmpty(args)) {
-			return new ConditionMessage(message);
-		}
-		return new ConditionMessage(String.format(message, args));
-	}
-
-	/**
-	 * Factory method to create a new {@link ConditionMessage} comprised of the specified
-	 * messages.
-	 * @param messages the source messages (may be {@code null})
-	 * @return a new {@link ConditionMessage} instance
-	 */
-	public static ConditionMessage of(Collection<? extends ConditionMessage> messages) {
-		ConditionMessage result = new ConditionMessage();
-		if (messages != null) {
-			for (ConditionMessage message : messages) {
-				result = new ConditionMessage(result, message.toString());
+		NORMAL {
+			@Override
+			protected Object applyToItem(Object item) {
+				return item;
 			}
+		},
+
+		QUOTE {
+			@Override
+			protected String applyToItem(Object item) {
+				return (item != null) ? "'" + item + "'" : null;
+			}
+		};
+
+		public Collection<?> applyTo(Collection<?> items) {
+			List<Object> result = new ArrayList<>();
+			for (Object item : items) {
+				result.add(applyToItem(item));
+			}
+			return result;
 		}
-		return result;
-	}
 
-	/**
-	 * Factory method for a builder to construct a new {@link ConditionMessage} for a
-	 * condition.
-	 * @param condition the condition
-	 * @param details details of the condition
-	 * @return a {@link Builder} builder
-	 * @see #forCondition(String, Object...)
-	 * @see #andCondition(String, Object...)
-	 */
-	public static Builder forCondition(Class<? extends Annotation> condition, Object... details) {
-		return new ConditionMessage().andCondition(condition, details);
-	}
+		protected abstract Object applyToItem(Object item);
 
-	/**
-	 * Factory method for a builder to construct a new {@link ConditionMessage} for a
-	 * condition.
-	 * @param condition the condition
-	 * @param details details of the condition
-	 * @return a {@link Builder} builder
-	 * @see #forCondition(Class, Object...)
-	 * @see #andCondition(String, Object...)
-	 */
-	public static Builder forCondition(String condition, Object... details) {
-		return new ConditionMessage().andCondition(condition, details);
 	}
 
 	/**
@@ -207,6 +243,7 @@ public final class ConditionMessage {
 		/**
 		 * Indicate that an exact result was found. For example
 		 * {@code foundExactly("foo")} results in the message "found foo".
+		 *
 		 * @param result the result that was found
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -217,6 +254,7 @@ public final class ConditionMessage {
 		/**
 		 * Indicate that one or more results were found. For example
 		 * {@code found("bean").items("x")} results in the message "found bean x".
+		 *
 		 * @param article the article found
 		 * @return an {@link ItemsBuilder}
 		 */
@@ -228,8 +266,9 @@ public final class ConditionMessage {
 		 * Indicate that one or more results were found. For example
 		 * {@code found("bean", "beans").items("x", "y")} results in the message "found
 		 * beans x, y".
+		 *
 		 * @param singular the article found in singular form
-		 * @param plural the article found in plural form
+		 * @param plural   the article found in plural form
 		 * @return an {@link ItemsBuilder}
 		 */
 		public ItemsBuilder found(String singular, String plural) {
@@ -240,6 +279,7 @@ public final class ConditionMessage {
 		 * Indicate that one or more results were not found. For example
 		 * {@code didNotFind("bean").items("x")} results in the message "did not find bean
 		 * x".
+		 *
 		 * @param article the article found
 		 * @return an {@link ItemsBuilder}
 		 */
@@ -251,8 +291,9 @@ public final class ConditionMessage {
 		 * Indicate that one or more results were found. For example
 		 * {@code didNotFind("bean", "beans").items("x", "y")} results in the message "did
 		 * not find beans x, y".
+		 *
 		 * @param singular the article found in singular form
-		 * @param plural the article found in plural form
+		 * @param plural   the article found in plural form
 		 * @return an {@link ItemsBuilder}
 		 */
 		public ItemsBuilder didNotFind(String singular, String plural) {
@@ -262,6 +303,7 @@ public final class ConditionMessage {
 		/**
 		 * Indicates a single result. For example {@code resultedIn("yes")} results in the
 		 * message "resulted in yes".
+		 *
 		 * @param result the result
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -272,6 +314,7 @@ public final class ConditionMessage {
 		/**
 		 * Indicates something is available. For example {@code available("money")}
 		 * results in the message "money is available".
+		 *
 		 * @param item the item that is available
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -282,6 +325,7 @@ public final class ConditionMessage {
 		/**
 		 * Indicates something is not available. For example {@code notAvailable("time")}
 		 * results in the message "time is not available".
+		 *
 		 * @param item the item that is not available
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -292,6 +336,7 @@ public final class ConditionMessage {
 		/**
 		 * Indicates the reason. For example {@code reason("running Linux")} results in
 		 * the message "running Linux".
+		 *
 		 * @param reason the reason for the message
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -329,6 +374,7 @@ public final class ConditionMessage {
 		 * Used when no items are available. For example
 		 * {@code didNotFind("any beans").atAll()} results in the message "did not find
 		 * any beans".
+		 *
 		 * @return a built {@link ConditionMessage}
 		 */
 		public ConditionMessage atAll() {
@@ -339,6 +385,7 @@ public final class ConditionMessage {
 		 * Indicate the items. For example
 		 * {@code didNotFind("bean", "beans").items("x", "y")} results in the message "did
 		 * not find beans x, y".
+		 *
 		 * @param items the items (may be {@code null})
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -350,6 +397,7 @@ public final class ConditionMessage {
 		 * Indicate the items. For example
 		 * {@code didNotFind("bean", "beans").items("x", "y")} results in the message "did
 		 * not find beans x, y".
+		 *
 		 * @param style the render style
 		 * @param items the items (may be {@code null})
 		 * @return a built {@link ConditionMessage}
@@ -362,6 +410,7 @@ public final class ConditionMessage {
 		 * Indicate the items. For example
 		 * {@code didNotFind("bean", "beans").items(Collections.singleton("x")} results in
 		 * the message "did not find bean x".
+		 *
 		 * @param items the source of the items (may be {@code null})
 		 * @return a built {@link ConditionMessage}
 		 */
@@ -373,6 +422,7 @@ public final class ConditionMessage {
 		 * Indicate the items with a {@link Style}. For example
 		 * {@code didNotFind("bean", "beans").items(Style.QUOTE, Collections.singleton("x")}
 		 * results in the message "did not find bean 'x'".
+		 *
 		 * @param style the render style
 		 * @param items the source of the items (may be {@code null})
 		 * @return a built {@link ConditionMessage}
@@ -383,8 +433,7 @@ public final class ConditionMessage {
 			items = style.applyTo(items);
 			if ((this.condition == null || items.size() <= 1) && StringUtils.hasLength(this.singular)) {
 				message.append(" " + this.singular);
-			}
-			else if (StringUtils.hasLength(this.plural)) {
+			} else if (StringUtils.hasLength(this.plural)) {
 				message.append(" " + this.plural);
 			}
 			if (items != null && !items.isEmpty()) {
@@ -392,37 +441,6 @@ public final class ConditionMessage {
 			}
 			return this.condition.because(message.toString());
 		}
-
-	}
-
-	/**
-	 * Render styles.
-	 */
-	public enum Style {
-
-		NORMAL {
-			@Override
-			protected Object applyToItem(Object item) {
-				return item;
-			}
-		},
-
-		QUOTE {
-			@Override
-			protected String applyToItem(Object item) {
-				return (item != null) ? "'" + item + "'" : null;
-			}
-		};
-
-		public Collection<?> applyTo(Collection<?> items) {
-			List<Object> result = new ArrayList<>();
-			for (Object item : items) {
-				result.add(applyToItem(item));
-			}
-			return result;
-		}
-
-		protected abstract Object applyToItem(Object item);
 
 	}
 

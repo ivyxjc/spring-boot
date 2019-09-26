@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.endpoint.web.test;
 
-import java.util.List;
-
 import org.springframework.context.ConfigurableApplicationContext;
+
+import java.util.List;
 
 /**
  * @author Phillip Webb

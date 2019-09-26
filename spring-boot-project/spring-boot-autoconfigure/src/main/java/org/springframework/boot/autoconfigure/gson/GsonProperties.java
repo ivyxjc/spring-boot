@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.gson;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.LongSerializationPolicy;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**

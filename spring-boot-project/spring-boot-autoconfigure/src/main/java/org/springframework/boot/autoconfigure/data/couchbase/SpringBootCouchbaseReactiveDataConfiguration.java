@@ -42,7 +42,7 @@ class SpringBootCouchbaseReactiveDataConfiguration extends AbstractReactiveCouch
 	private final CouchbaseConfigurer couchbaseConfigurer;
 
 	SpringBootCouchbaseReactiveDataConfiguration(CouchbaseDataProperties properties,
-			CouchbaseConfigurer couchbaseConfigurer) {
+												 CouchbaseConfigurer couchbaseConfigurer) {
 		this.properties = properties;
 		this.couchbaseConfigurer = couchbaseConfigurer;
 	}

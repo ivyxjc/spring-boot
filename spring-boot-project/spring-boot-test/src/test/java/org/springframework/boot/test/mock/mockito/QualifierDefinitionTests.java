@@ -16,23 +16,22 @@
 
 package org.springframework.boot.test.mock.mockito;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.reflect.Field;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.DependencyDescriptor;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ReflectionUtils;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -123,6 +122,12 @@ public class QualifierDefinitionTests {
 				.isNotEqualTo(differentDirectQualifier1);
 	}
 
+	@Qualifier
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface CustomQualifier {
+
+	}
+
 	@Configuration
 	static class ConfigA {
 
@@ -156,12 +161,6 @@ public class QualifierDefinitionTests {
 		@MockBean
 		@CustomQualifier
 		private Object customQualifier;
-
-	}
-
-	@Qualifier
-	@Retention(RetentionPolicy.RUNTIME)
-	public @interface CustomQualifier {
 
 	}
 

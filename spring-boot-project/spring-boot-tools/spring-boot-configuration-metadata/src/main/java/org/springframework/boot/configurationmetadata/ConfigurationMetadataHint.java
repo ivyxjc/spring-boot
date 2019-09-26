@@ -29,12 +29,9 @@ class ConfigurationMetadataHint {
 	private static final String KEY_SUFFIX = ".keys";
 
 	private static final String VALUE_SUFFIX = ".values";
-
-	private String id;
-
 	private final List<ValueHint> valueHints = new ArrayList<>();
-
 	private final List<ValueProvider> valueProviders = new ArrayList<>();
+	private String id;
 
 	public boolean isMapKeyHints() {
 		return (this.id != null && this.id.endsWith(KEY_SUFFIX));

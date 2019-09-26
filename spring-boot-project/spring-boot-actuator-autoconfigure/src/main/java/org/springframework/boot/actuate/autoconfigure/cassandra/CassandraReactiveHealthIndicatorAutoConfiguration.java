@@ -15,11 +15,7 @@
  */
 package org.springframework.boot.actuate.autoconfigure.cassandra;
 
-import java.util.Map;
-
 import com.datastax.driver.core.Cluster;
-import reactor.core.publisher.Flux;
-
 import org.springframework.boot.actuate.autoconfigure.health.CompositeReactiveHealthIndicatorConfiguration;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.autoconfigure.health.HealthIndicatorAutoConfiguration;
@@ -35,6 +31,9 @@ import org.springframework.boot.autoconfigure.data.cassandra.CassandraReactiveDa
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.core.ReactiveCassandraOperations;
+import reactor.core.publisher.Flux;
+
+import java.util.Map;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for
@@ -45,7 +44,7 @@ import org.springframework.data.cassandra.core.ReactiveCassandraOperations;
  * @since 2.1.0
  */
 @Configuration
-@ConditionalOnClass({ Cluster.class, ReactiveCassandraOperations.class, Flux.class })
+@ConditionalOnClass({Cluster.class, ReactiveCassandraOperations.class, Flux.class})
 @ConditionalOnBean(ReactiveCassandraOperations.class)
 @ConditionalOnEnabledHealthIndicator("cassandra")
 @AutoConfigureBefore(HealthIndicatorAutoConfiguration.class)

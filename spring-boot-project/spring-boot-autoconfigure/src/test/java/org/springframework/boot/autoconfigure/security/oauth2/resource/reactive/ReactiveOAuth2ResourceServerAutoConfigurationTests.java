@@ -15,20 +15,12 @@
  */
 package org.springframework.boot.autoconfigure.security.oauth2.resource.reactive;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Stream;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.assertj.AssertableReactiveWebApplicationContext;
@@ -56,6 +48,13 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.WebFilter;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -101,9 +100,9 @@ public class ReactiveOAuth2ResourceServerAutoConfigurationTests {
 		setupMockResponse(cleanIssuerPath);
 		this.contextRunner.withPropertyValues("spring.security.oauth2.resourceserver.jwt.issuer-uri=http://"
 				+ this.server.getHostName() + ":" + this.server.getPort()).run((context) -> {
-					assertThat(context.getBean(ReactiveJwtDecoder.class)).isInstanceOf(NimbusReactiveJwtDecoder.class);
-					assertFilterConfiguredWithJwtAuthenticationManager(context);
-				});
+			assertThat(context.getBean(ReactiveJwtDecoder.class)).isInstanceOf(NimbusReactiveJwtDecoder.class);
+			assertFilterConfiguredWithJwtAuthenticationManager(context);
+		});
 	}
 
 	@Test
@@ -164,9 +163,9 @@ public class ReactiveOAuth2ResourceServerAutoConfigurationTests {
 		this.contextRunner
 				.withPropertyValues("spring.security.oauth2.resourceserver.jwt.jwk-set-uri=https://jwk-set-uri.com")
 				.withUserConfiguration(SecurityWebFilterChainConfig.class).run((context) -> {
-					assertThat(context).hasSingleBean(SecurityWebFilterChain.class);
-					assertThat(context).hasBean("testSpringSecurityFilterChain");
-				});
+			assertThat(context).hasSingleBean(SecurityWebFilterChain.class);
+			assertThat(context).hasBean("testSpringSecurityFilterChain");
+		});
 	}
 
 	@SuppressWarnings("unchecked")

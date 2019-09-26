@@ -30,17 +30,15 @@ import org.springframework.util.Assert;
 @ConfigurationProperties(prefix = "spring.h2.console")
 public class H2ConsoleProperties {
 
+	private final Settings settings = new Settings();
 	/**
 	 * Path at which the console is available.
 	 */
 	private String path = "/h2-console";
-
 	/**
 	 * Whether to enable the console.
 	 */
 	private boolean enabled = false;
-
-	private final Settings settings = new Settings();
 
 	public String getPath() {
 		return this.path;

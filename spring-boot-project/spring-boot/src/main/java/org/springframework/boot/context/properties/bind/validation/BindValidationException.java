@@ -23,9 +23,9 @@ import org.springframework.util.Assert;
  *
  * @author Phillip Webb
  * @author Madhura Bhave
- * @since 2.0.0
  * @see ValidationErrors
  * @see ValidationBindHandler
+ * @since 2.0.0
  */
 public class BindValidationException extends RuntimeException {
 
@@ -37,14 +37,6 @@ public class BindValidationException extends RuntimeException {
 		this.validationErrors = validationErrors;
 	}
 
-	/**
-	 * Return the validation errors that caused the exception.
-	 * @return the validationErrors the validation errors
-	 */
-	public ValidationErrors getValidationErrors() {
-		return this.validationErrors;
-	}
-
 	private static String getMessage(ValidationErrors errors) {
 		StringBuilder message = new StringBuilder("Binding validation errors");
 		if (errors != null) {
@@ -52,6 +44,15 @@ public class BindValidationException extends RuntimeException {
 			errors.getAllErrors().forEach((error) -> message.append(String.format("%n   - %s", error)));
 		}
 		return message.toString();
+	}
+
+	/**
+	 * Return the validation errors that caused the exception.
+	 *
+	 * @return the validationErrors the validation errors
+	 */
+	public ValidationErrors getValidationErrors() {
+		return this.validationErrors;
 	}
 
 }

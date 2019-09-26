@@ -44,6 +44,7 @@ public enum ManagementPortType {
 	/**
 	 * Look at the given environment to determine if the {@link ManagementPortType} is
 	 * {@link #DISABLED}, {@link #SAME} or {@link #DIFFERENT}.
+	 *
 	 * @param environment the Spring environment
 	 * @return {@link #DISABLED} if {@code management.server.port} is set to a negative
 	 * value, {@link #SAME} if {@code management.server.port} is not specified or equal to

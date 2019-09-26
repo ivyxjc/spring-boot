@@ -16,11 +16,11 @@
 
 package org.springframework.boot.context.properties.bind;
 
-import java.util.function.Supplier;
-
 import org.springframework.boot.context.properties.bind.Binder.Context;
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
 import org.springframework.boot.context.properties.source.ConfigurationPropertySource;
+
+import java.util.function.Supplier;
 
 /**
  * Internal strategy used by {@link Binder} to bind aggregates (Maps, Lists, Arrays).
@@ -39,6 +39,7 @@ abstract class AggregateBinder<T> {
 
 	/**
 	 * Determine if recursive binding is supported.
+	 *
 	 * @param source the configuration property source or {@code null} for all sources.
 	 * @return if recursive binding is supported
 	 */
@@ -46,8 +47,9 @@ abstract class AggregateBinder<T> {
 
 	/**
 	 * Perform binding for the aggregate.
-	 * @param name the configuration property name to bind
-	 * @param target the target to bind
+	 *
+	 * @param name          the configuration property name to bind
+	 * @param target        the target to bind
 	 * @param elementBinder an element binder
 	 * @return the bound aggregate or null
 	 */
@@ -63,17 +65,19 @@ abstract class AggregateBinder<T> {
 
 	/**
 	 * Perform the actual aggregate binding.
-	 * @param name the configuration property name to bind
-	 * @param target the target to bind
+	 *
+	 * @param name          the configuration property name to bind
+	 * @param target        the target to bind
 	 * @param elementBinder an element binder
 	 * @return the bound result
 	 */
 	protected abstract Object bindAggregate(ConfigurationPropertyName name, Bindable<?> target,
-			AggregateElementBinder elementBinder);
+											AggregateElementBinder elementBinder);
 
 	/**
 	 * Merge any additional elements into the existing aggregate.
-	 * @param existing the supplier for the existing value
+	 *
+	 * @param existing   the supplier for the existing value
 	 * @param additional the additional elements to merge
 	 * @return the merged result
 	 */
@@ -81,6 +85,7 @@ abstract class AggregateBinder<T> {
 
 	/**
 	 * Return the context being used by this binder.
+	 *
 	 * @return the context
 	 */
 	protected final Context getContext() {

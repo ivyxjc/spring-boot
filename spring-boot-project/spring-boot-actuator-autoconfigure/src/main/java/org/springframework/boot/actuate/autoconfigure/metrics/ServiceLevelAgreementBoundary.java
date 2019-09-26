@@ -16,9 +16,9 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics;
 
-import java.time.Duration;
-
 import io.micrometer.core.instrument.Meter;
+
+import java.time.Duration;
 
 /**
  * A service level agreement boundary for use when configuring Micrometer. Can be
@@ -37,18 +37,9 @@ public final class ServiceLevelAgreementBoundary {
 	}
 
 	/**
-	 * Return the underlying value of the SLA in form suitable to apply to the given meter
-	 * type.
-	 * @param meterType the meter type
-	 * @return the value or {@code null} if the value cannot be applied
-	 */
-	public Long getValue(Meter.Type meterType) {
-		return this.value.getValue(meterType);
-	}
-
-	/**
 	 * Return a new {@link ServiceLevelAgreementBoundary} instance for the given long
 	 * value.
+	 *
 	 * @param value the source value
 	 * @return a {@link ServiceLevelAgreementBoundary} instance
 	 */
@@ -59,11 +50,23 @@ public final class ServiceLevelAgreementBoundary {
 	/**
 	 * Return a new {@link ServiceLevelAgreementBoundary} instance for the given String
 	 * value.
+	 *
 	 * @param value the source value
 	 * @return a {@link ServiceLevelAgreementBoundary} instance
 	 */
 	public static ServiceLevelAgreementBoundary valueOf(String value) {
 		return new ServiceLevelAgreementBoundary(MeterValue.valueOf(value));
+	}
+
+	/**
+	 * Return the underlying value of the SLA in form suitable to apply to the given meter
+	 * type.
+	 *
+	 * @param meterType the meter type
+	 * @return the value or {@code null} if the value cannot be applied
+	 */
+	public Long getValue(Meter.Type meterType) {
+		return this.value.getValue(meterType);
 	}
 
 }

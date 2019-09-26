@@ -16,24 +16,19 @@
 
 package org.springframework.boot.test.autoconfigure.orm.jpa;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+
+import java.lang.annotation.*;
 
 /**
  * Annotation that can be applied to a test class to enable auto-configuration of a
  * {@link TestEntityManager}.
  *
  * @author Phillip Webb
- * @since 1.4.0
  * @see TestEntityManagerAutoConfiguration
+ * @since 1.4.0
  */
-@Target({ ElementType.TYPE, ElementType.METHOD })
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Inherited

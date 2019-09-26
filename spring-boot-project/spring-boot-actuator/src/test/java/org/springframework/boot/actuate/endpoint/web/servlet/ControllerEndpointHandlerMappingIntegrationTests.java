@@ -16,14 +16,7 @@
 
 package org.springframework.boot.actuate.endpoint.web.servlet;
 
-import java.net.URI;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
-import java.util.function.Consumer;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.endpoint.web.EndpointMapping;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointDiscoverer;
 import org.springframework.boot.actuate.endpoint.web.annotation.ControllerEndpointsSupplier;
@@ -51,6 +44,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
+import java.net.URI;
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Map;
+import java.util.function.Consumer;
+
 /**
  * Integration tests for {@link ControllerEndpointHandlerMapping}.
  *
@@ -61,7 +60,7 @@ public class ControllerEndpointHandlerMappingIntegrationTests {
 
 	private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner(
 			AnnotationConfigServletWebServerApplicationContext::new).withUserConfiguration(EndpointConfiguration.class,
-					ExampleMvcEndpoint.class);
+			ExampleMvcEndpoint.class);
 
 	@Test
 	public void get() {
@@ -100,8 +99,8 @@ public class ControllerEndpointHandlerMappingIntegrationTests {
 	}
 
 	@Configuration
-	@ImportAutoConfiguration({ JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
-			WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class })
+	@ImportAutoConfiguration({JacksonAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+									 WebMvcAutoConfiguration.class, DispatcherServletAutoConfiguration.class})
 	static class EndpointConfiguration {
 
 		@Bean

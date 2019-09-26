@@ -16,16 +16,13 @@
 
 package org.springframework.boot.devtools.restart;
 
-import java.lang.reflect.Method;
-
 import org.junit.Before;
 import org.junit.Test;
-
 import org.springframework.util.ReflectionUtils;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
-import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import java.lang.reflect.Method;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * Tests for {@link MainMethod}.
@@ -94,8 +91,7 @@ public class MainMethodTests {
 			try {
 				this.runnable.run();
 				this.mainMethod = MainMethodTests.mainMethod.get();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				this.exception = ex;
 			}
 		}

@@ -16,13 +16,7 @@
 
 package org.springframework.boot.autoconfigure.freemarker;
 
-import java.io.StringWriter;
-import java.time.Duration;
-import java.util.Locale;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ReactiveWebApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
@@ -33,6 +27,11 @@ import org.springframework.web.reactive.result.view.View;
 import org.springframework.web.reactive.result.view.freemarker.FreeMarkerConfig;
 import org.springframework.web.reactive.result.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.reactive.result.view.freemarker.FreeMarkerViewResolver;
+import reactor.core.publisher.Mono;
+
+import java.io.StringWriter;
+import java.time.Duration;
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -100,7 +99,7 @@ public class FreeMarkerAutoConfigurationReactiveIntegrationTests {
 		this.contextRunner.withPropertyValues("spring.freemarker.settings.boolean_format:yup,nope")
 				.run((context) -> assertThat(
 						context.getBean(FreeMarkerConfigurer.class).getConfiguration().getSetting("boolean_format"))
-								.isEqualTo("yup,nope"));
+						.isEqualTo("yup,nope"));
 	}
 
 	@Test

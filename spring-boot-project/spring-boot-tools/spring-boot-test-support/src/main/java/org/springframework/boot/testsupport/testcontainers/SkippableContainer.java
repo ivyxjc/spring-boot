@@ -16,8 +16,6 @@
 
 package org.springframework.boot.testsupport.testcontainers;
 
-import java.util.function.Supplier;
-
 import org.junit.AssumptionViolatedException;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -25,6 +23,8 @@ import org.junit.runners.model.Statement;
 import org.testcontainers.DockerClientFactory;
 import org.testcontainers.containers.FailureDetectingExternalResource;
 import org.testcontainers.containers.GenericContainer;
+
+import java.util.function.Supplier;
 
 /**
  * A {@link GenericContainer} decorator that skips test execution when Docker is not
@@ -48,8 +48,7 @@ public class SkippableContainer<T> implements TestRule {
 	public Statement apply(Statement base, Description description) {
 		try {
 			DockerClientFactory.instance().client();
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return new SkipStatement();
 		}
 		this.container = this.containerFactory.get();

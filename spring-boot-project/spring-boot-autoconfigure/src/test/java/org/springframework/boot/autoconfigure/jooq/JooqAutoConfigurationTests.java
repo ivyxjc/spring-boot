@@ -16,31 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jooq;
 
-import java.util.concurrent.Executor;
-
-import javax.sql.DataSource;
-
-import org.jooq.DSLContext;
-import org.jooq.ExecuteListener;
-import org.jooq.ExecuteListenerProvider;
-import org.jooq.ExecutorProvider;
-import org.jooq.Record;
-import org.jooq.RecordListener;
-import org.jooq.RecordListenerProvider;
-import org.jooq.RecordMapper;
-import org.jooq.RecordMapperProvider;
-import org.jooq.RecordType;
-import org.jooq.RecordUnmapper;
-import org.jooq.RecordUnmapperProvider;
-import org.jooq.SQLDialect;
-import org.jooq.TransactionListener;
-import org.jooq.TransactionListenerProvider;
-import org.jooq.TransactionalRunnable;
-import org.jooq.VisitListener;
-import org.jooq.VisitListenerProvider;
+import org.jooq.*;
 import org.jooq.impl.DefaultExecuteListenerProvider;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -50,6 +28,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.sql.DataSource;
+import java.util.concurrent.Executor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -116,20 +97,20 @@ public class JooqAutoConfigurationTests {
 				TestRecordMapperProvider.class, TestRecordUnmapperProvider.class, TestRecordListenerProvider.class,
 				TestExecuteListenerProvider.class, TestVisitListenerProvider.class,
 				TestTransactionListenerProvider.class, TestExecutorProvider.class).run((context) -> {
-					DSLContext dsl = context.getBean(DSLContext.class);
-					assertThat(dsl.configuration().recordMapperProvider().getClass())
-							.isEqualTo(TestRecordMapperProvider.class);
-					assertThat(dsl.configuration().recordUnmapperProvider().getClass())
-							.isEqualTo(TestRecordUnmapperProvider.class);
-					assertThat(dsl.configuration().executorProvider().getClass()).isEqualTo(TestExecutorProvider.class);
-					assertThat(dsl.configuration().recordListenerProviders().length).isEqualTo(1);
-					ExecuteListenerProvider[] executeListenerProviders = dsl.configuration().executeListenerProviders();
-					assertThat(executeListenerProviders.length).isEqualTo(2);
-					assertThat(executeListenerProviders[0]).isInstanceOf(DefaultExecuteListenerProvider.class);
-					assertThat(executeListenerProviders[1]).isInstanceOf(TestExecuteListenerProvider.class);
-					assertThat(dsl.configuration().visitListenerProviders().length).isEqualTo(1);
-					assertThat(dsl.configuration().transactionListenerProviders().length).isEqualTo(1);
-				});
+			DSLContext dsl = context.getBean(DSLContext.class);
+			assertThat(dsl.configuration().recordMapperProvider().getClass())
+					.isEqualTo(TestRecordMapperProvider.class);
+			assertThat(dsl.configuration().recordUnmapperProvider().getClass())
+					.isEqualTo(TestRecordUnmapperProvider.class);
+			assertThat(dsl.configuration().executorProvider().getClass()).isEqualTo(TestExecutorProvider.class);
+			assertThat(dsl.configuration().recordListenerProviders().length).isEqualTo(1);
+			ExecuteListenerProvider[] executeListenerProviders = dsl.configuration().executeListenerProviders();
+			assertThat(executeListenerProviders.length).isEqualTo(2);
+			assertThat(executeListenerProviders[0]).isInstanceOf(DefaultExecuteListenerProvider.class);
+			assertThat(executeListenerProviders[1]).isInstanceOf(TestExecuteListenerProvider.class);
+			assertThat(dsl.configuration().visitListenerProviders().length).isEqualTo(1);
+			assertThat(dsl.configuration().transactionListenerProviders().length).isEqualTo(1);
+		});
 	}
 
 	@Test

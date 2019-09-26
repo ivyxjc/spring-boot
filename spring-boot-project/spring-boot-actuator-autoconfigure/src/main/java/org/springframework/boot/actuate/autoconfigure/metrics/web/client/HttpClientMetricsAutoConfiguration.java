@@ -18,7 +18,6 @@ package org.springframework.boot.actuate.autoconfigure.metrics.web.client;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsProperties;
 import org.springframework.boot.actuate.autoconfigure.metrics.OnlyOnceLoggingDenyMeterFilter;
@@ -41,10 +40,10 @@ import org.springframework.core.annotation.Order;
  * @since 2.1.0
  */
 @Configuration
-@AutoConfigureAfter({ MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class })
+@AutoConfigureAfter({MetricsAutoConfiguration.class, SimpleMetricsExportAutoConfiguration.class})
 @ConditionalOnClass(MeterRegistry.class)
 @ConditionalOnBean(MeterRegistry.class)
-@Import({ RestTemplateMetricsConfiguration.class, WebClientMetricsConfiguration.class })
+@Import({RestTemplateMetricsConfiguration.class, WebClientMetricsConfiguration.class})
 public class HttpClientMetricsAutoConfiguration {
 
 	private final MetricsProperties properties;

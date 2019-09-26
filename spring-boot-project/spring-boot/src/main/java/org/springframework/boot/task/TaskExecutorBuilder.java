@@ -16,12 +16,6 @@
 
 package org.springframework.boot.task;
 
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.PropertyMapper;
 import org.springframework.core.task.TaskDecorator;
@@ -29,6 +23,12 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Builder that can be used to configure and create a {@link TaskExecutor}. Provides
@@ -72,8 +72,8 @@ public class TaskExecutorBuilder {
 	}
 
 	private TaskExecutorBuilder(Integer queueCapacity, Integer corePoolSize, Integer maxPoolSize,
-			Boolean allowCoreThreadTimeOut, Duration keepAlive, String threadNamePrefix, TaskDecorator taskDecorator,
-			Set<TaskExecutorCustomizer> customizers) {
+								Boolean allowCoreThreadTimeOut, Duration keepAlive, String threadNamePrefix, TaskDecorator taskDecorator,
+								Set<TaskExecutorCustomizer> customizers) {
 		this.queueCapacity = queueCapacity;
 		this.corePoolSize = corePoolSize;
 		this.maxPoolSize = maxPoolSize;
@@ -87,6 +87,7 @@ public class TaskExecutorBuilder {
 	/**
 	 * Set the capacity of the queue. An unbounded capacity does not increase the pool and
 	 * therefore ignores {@link #maxPoolSize(int) maxPoolSize}.
+	 *
 	 * @param queueCapacity the queue capacity to set
 	 * @return a new builder instance
 	 */
@@ -101,6 +102,7 @@ public class TaskExecutorBuilder {
 	 * <p>
 	 * Core threads can grow and shrink if {@link #allowCoreThreadTimeOut(boolean)} is
 	 * enabled.
+	 *
 	 * @param corePoolSize the core pool size to set
 	 * @return a new builder instance
 	 */
@@ -115,6 +117,7 @@ public class TaskExecutorBuilder {
 	 * <p>
 	 * If the {@link #queueCapacity(int) queue capacity} is unbounded, this setting is
 	 * ignored.
+	 *
 	 * @param maxPoolSize the max pool size to set
 	 * @return a new builder instance
 	 */
@@ -126,6 +129,7 @@ public class TaskExecutorBuilder {
 	/**
 	 * Set whether core threads are allow to time out. When enabled, this enables dynamic
 	 * growing and shrinking of the pool.
+	 *
 	 * @param allowCoreThreadTimeOut if core threads are allowed to time out
 	 * @return a new builder instance
 	 */
@@ -136,6 +140,7 @@ public class TaskExecutorBuilder {
 
 	/**
 	 * Set the time limit for which threads may remain idle before being terminated.
+	 *
 	 * @param keepAlive the keep alive to set
 	 * @return a new builder instance
 	 */
@@ -146,6 +151,7 @@ public class TaskExecutorBuilder {
 
 	/**
 	 * Set the prefix to use for the names of newly created threads.
+	 *
 	 * @param threadNamePrefix the thread name prefix to set
 	 * @return a new builder instance
 	 */
@@ -156,6 +162,7 @@ public class TaskExecutorBuilder {
 
 	/**
 	 * Set the {@link TaskDecorator} to use or {@code null} to not use any.
+	 *
 	 * @param taskDecorator the task decorator to use
 	 * @return a new builder instance
 	 */
@@ -169,6 +176,7 @@ public class TaskExecutorBuilder {
 	 * applied to the {@link ThreadPoolTaskExecutor}. Customizers are applied in the order
 	 * that they were added after builder configuration has been applied. Setting this
 	 * value will replace any previously configured customizers.
+	 *
 	 * @param customizers the customizers to set
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(TaskExecutorCustomizer...)
@@ -183,6 +191,7 @@ public class TaskExecutorBuilder {
 	 * applied to the {@link ThreadPoolTaskExecutor}. Customizers are applied in the order
 	 * that they were added after builder configuration has been applied. Setting this
 	 * value will replace any previously configured customizers.
+	 *
 	 * @param customizers the customizers to set
 	 * @return a new builder instance
 	 * @see #additionalCustomizers(TaskExecutorCustomizer...)
@@ -198,6 +207,7 @@ public class TaskExecutorBuilder {
 	 * Add {@link TaskExecutorCustomizer TaskExecutorCustomizers} that should be applied
 	 * to the {@link ThreadPoolTaskExecutor}. Customizers are applied in the order that
 	 * they were added after builder configuration has been applied.
+	 *
 	 * @param customizers the customizers to add
 	 * @return a new builder instance
 	 * @see #customizers(TaskExecutorCustomizer...)
@@ -211,6 +221,7 @@ public class TaskExecutorBuilder {
 	 * Add {@link TaskExecutorCustomizer TaskExecutorCustomizers} that should be applied
 	 * to the {@link ThreadPoolTaskExecutor}. Customizers are applied in the order that
 	 * they were added after builder configuration has been applied.
+	 *
 	 * @param customizers the customizers to add
 	 * @return a new builder instance
 	 * @see #customizers(TaskExecutorCustomizer...)
@@ -225,6 +236,7 @@ public class TaskExecutorBuilder {
 	/**
 	 * Build a new {@link ThreadPoolTaskExecutor} instance and configure it using this
 	 * builder.
+	 *
 	 * @return a configured {@link ThreadPoolTaskExecutor} instance.
 	 * @see #build(Class)
 	 * @see #configure(ThreadPoolTaskExecutor)
@@ -236,7 +248,8 @@ public class TaskExecutorBuilder {
 	/**
 	 * Build a new {@link ThreadPoolTaskExecutor} instance of the specified type and
 	 * configure it using this builder.
-	 * @param <T> the type of task executor
+	 *
+	 * @param <T>               the type of task executor
 	 * @param taskExecutorClass the template type to create
 	 * @return a configured {@link ThreadPoolTaskExecutor} instance.
 	 * @see #build()
@@ -248,7 +261,8 @@ public class TaskExecutorBuilder {
 
 	/**
 	 * Configure the provided {@link ThreadPoolTaskExecutor} instance using this builder.
-	 * @param <T> the type of task executor
+	 *
+	 * @param <T>          the type of task executor
 	 * @param taskExecutor the {@link ThreadPoolTaskExecutor} to configure
 	 * @return the task executor instance
 	 * @see #build()

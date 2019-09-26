@@ -16,15 +16,9 @@
 
 package org.springframework.boot.autoconfigure.transaction.jta;
 
-import java.io.File;
-
-import javax.jms.Message;
-import javax.transaction.TransactionManager;
-
 import bitronix.tm.BitronixTransactionManager;
 import bitronix.tm.TransactionManagerServices;
 import bitronix.tm.jndi.BitronixContext;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +37,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.StringUtils;
 
+import javax.jms.Message;
+import javax.transaction.TransactionManager;
+import java.io.File;
+
 /**
  * JTA Configuration for <A href="https://github.com/bitronix/btm">Bitronix</A>.
  *
@@ -53,7 +51,7 @@ import org.springframework.util.StringUtils;
  */
 @Configuration
 @EnableConfigurationProperties(JtaProperties.class)
-@ConditionalOnClass({ JtaTransactionManager.class, BitronixContext.class })
+@ConditionalOnClass({JtaTransactionManager.class, BitronixContext.class})
 @ConditionalOnMissingBean(PlatformTransactionManager.class)
 class BitronixJtaConfiguration {
 
@@ -62,9 +60,15 @@ class BitronixJtaConfiguration {
 	private final TransactionManagerCustomizers transactionManagerCustomizers;
 
 	BitronixJtaConfiguration(JtaProperties jtaProperties,
-			ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
+							 ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
 		this.jtaProperties = jtaProperties;
 		this.transactionManagerCustomizers = transactionManagerCustomizers.getIfAvailable();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public static BitronixDependentBeanFactoryPostProcessor bitronixDependentBeanFactoryPostProcessor() {
+		return new BitronixDependentBeanFactoryPostProcessor();
 	}
 
 	@Bean
@@ -101,12 +105,6 @@ class BitronixJtaConfiguration {
 	@ConditionalOnMissingBean(XADataSourceWrapper.class)
 	public BitronixXADataSourceWrapper xaDataSourceWrapper() {
 		return new BitronixXADataSourceWrapper();
-	}
-
-	@Bean
-	@ConditionalOnMissingBean
-	public static BitronixDependentBeanFactoryPostProcessor bitronixDependentBeanFactoryPostProcessor() {
-		return new BitronixDependentBeanFactoryPostProcessor();
 	}
 
 	@Bean

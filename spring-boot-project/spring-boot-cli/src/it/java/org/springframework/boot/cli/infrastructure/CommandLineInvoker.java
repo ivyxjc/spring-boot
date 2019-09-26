@@ -16,24 +16,16 @@
 
 package org.springframework.boot.cli.infrastructure;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
+import org.springframework.util.Assert;
+import org.springframework.util.StreamUtils;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-
-import org.springframework.util.Assert;
-import org.springframework.util.StreamUtils;
 
 /**
  * Utility to invoke the command line in the same way as a user would, i.e. via the shell
@@ -79,8 +71,7 @@ public final class CommandLineInvoker {
 					File file = new File(unpacked, entry.getName());
 					if (entry.isDirectory()) {
 						file.mkdirs();
-					}
-					else {
+					} else {
 						file.getParentFile().mkdirs();
 						try (FileOutputStream output = new FileOutputStream(file)) {
 							StreamUtils.copy(input, output);
@@ -196,8 +187,7 @@ public final class CommandLineInvoker {
 							output.append(new String(this.buffer, 0, read));
 						}
 					}
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					// Allow thread to die
 				}
 			}

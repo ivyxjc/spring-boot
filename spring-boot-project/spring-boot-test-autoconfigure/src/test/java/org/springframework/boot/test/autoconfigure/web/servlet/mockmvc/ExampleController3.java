@@ -16,14 +16,14 @@
 
 package org.springframework.boot.test.autoconfigure.web.servlet.mockmvc;
 
-import javax.validation.constraints.Size;
-
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Size;
 
 /**
  * Example {@link Controller} used with {@link WebMvcTest} tests.

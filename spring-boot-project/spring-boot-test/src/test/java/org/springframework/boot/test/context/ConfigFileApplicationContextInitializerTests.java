@@ -18,7 +18,6 @@ package org.springframework.boot.test.context;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -36,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DirtiesContext
 @ContextConfiguration(classes = ConfigFileApplicationContextInitializerTests.Config.class,
-		initializers = ConfigFileApplicationContextInitializer.class)
+					  initializers = ConfigFileApplicationContextInitializer.class)
 public class ConfigFileApplicationContextInitializerTests {
 
 	@Autowired

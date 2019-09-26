@@ -17,7 +17,6 @@
 package org.springframework.boot.test.autoconfigure.json.app;
 
 import com.fasterxml.jackson.annotation.JsonView;
-
 import org.springframework.util.ObjectUtils;
 
 /**

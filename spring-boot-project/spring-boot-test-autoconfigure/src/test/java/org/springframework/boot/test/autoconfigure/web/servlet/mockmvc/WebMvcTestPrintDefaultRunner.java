@@ -20,7 +20,6 @@ import org.assertj.core.matcher.AssertionMatcher;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
-
 import org.springframework.boot.test.rule.OutputCapture;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -51,8 +50,7 @@ public class WebMvcTestPrintDefaultRunner extends SpringJUnit4ClassRunner {
 				}
 
 			});
-		}
-		else if (frameworkMethod.getName().equals("shouldNotPrint")) {
+		} else if (frameworkMethod.getName().equals("shouldNotPrint")) {
 			outputCapture.expect(new AssertionMatcher<String>() {
 
 				@Override
@@ -61,8 +59,7 @@ public class WebMvcTestPrintDefaultRunner extends SpringJUnit4ClassRunner {
 				}
 
 			});
-		}
-		else {
+		} else {
 			throw new IllegalStateException("Unexpected test method");
 		}
 		System.err.println(frameworkMethod.getName());
@@ -81,8 +78,7 @@ public class WebMvcTestPrintDefaultRunner extends SpringJUnit4ClassRunner {
 		public void evaluate() throws Throwable {
 			try {
 				this.delegate.evaluate();
-			}
-			catch (AssertionError ex) {
+			} catch (AssertionError ex) {
 			}
 		}
 

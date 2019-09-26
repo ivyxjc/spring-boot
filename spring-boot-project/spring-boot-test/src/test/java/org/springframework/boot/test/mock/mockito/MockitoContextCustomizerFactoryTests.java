@@ -19,7 +19,6 @@ package org.springframework.boot.test.mock.mockito;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.test.context.ContextCustomizer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,30 +64,30 @@ public class MockitoContextCustomizerFactoryTests {
 		assertThat(customizer).isNotEqualTo(different);
 	}
 
-	static class NoMockBeanAnnotation {
-
-	}
-
-	@MockBean({ Service1.class, Service2.class })
-	static class WithMockBeanAnnotation {
-
-	}
-
-	@MockBean({ Service2.class, Service1.class })
-	static class WithSameMockBeanAnnotation {
-
-	}
-
-	@MockBean({ Service1.class })
-	static class WithDifferentMockBeanAnnotation {
-
-	}
-
 	interface Service1 {
 
 	}
 
 	interface Service2 {
+
+	}
+
+	static class NoMockBeanAnnotation {
+
+	}
+
+	@MockBean({Service1.class, Service2.class})
+	static class WithMockBeanAnnotation {
+
+	}
+
+	@MockBean({Service2.class, Service1.class})
+	static class WithSameMockBeanAnnotation {
+
+	}
+
+	@MockBean({Service1.class})
+	static class WithDifferentMockBeanAnnotation {
 
 	}
 

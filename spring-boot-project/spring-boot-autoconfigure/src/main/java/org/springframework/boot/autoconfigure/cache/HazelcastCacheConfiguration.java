@@ -16,11 +16,8 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.io.IOException;
-
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.spring.cache.HazelcastCacheManager;
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
@@ -30,6 +27,8 @@ import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.IOException;
 
 /**
  * Hazelcast cache configuration. Can either reuse the {@link HazelcastInstance} that has
@@ -43,7 +42,7 @@ import org.springframework.context.annotation.Configuration;
  * @see HazelcastConfigResourceCondition
  */
 @Configuration
-@ConditionalOnClass({ HazelcastInstance.class, HazelcastCacheManager.class })
+@ConditionalOnClass({HazelcastInstance.class, HazelcastCacheManager.class})
 @ConditionalOnMissingBean(CacheManager.class)
 @Conditional(CacheCondition.class)
 @ConditionalOnSingleCandidate(HazelcastInstance.class)

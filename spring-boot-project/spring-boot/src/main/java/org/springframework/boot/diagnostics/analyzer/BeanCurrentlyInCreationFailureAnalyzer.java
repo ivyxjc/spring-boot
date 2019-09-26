@@ -16,9 +16,6 @@
 
 package org.springframework.boot.diagnostics.analyzer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.InjectionPoint;
@@ -26,6 +23,9 @@ import org.springframework.beans.factory.UnsatisfiedDependencyException;
 import org.springframework.boot.diagnostics.AbstractFailureAnalyzer;
 import org.springframework.boot.diagnostics.FailureAnalysis;
 import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An {@link AbstractFailureAnalyzer} that performs analysis of failures caused by a
@@ -75,8 +75,7 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 			BeanInCycle beanInCycle = beansInCycle.get(i);
 			if (i == cycleStart) {
 				message.append(String.format("┌─────┐%n"));
-			}
-			else if (i > 0) {
+			} else if (i > 0) {
 				String leftSide = (i < cycleStart) ? " " : "↑";
 				message.append(String.format("%s     ↓%n", leftSide));
 			}
@@ -119,6 +118,20 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 			this.description = determineDescription(ex);
 		}
 
+		public static BeanInCycle get(Throwable ex) {
+			if (ex instanceof BeanCreationException) {
+				return get((BeanCreationException) ex);
+			}
+			return null;
+		}
+
+		private static BeanInCycle get(BeanCreationException ex) {
+			if (StringUtils.hasText(ex.getBeanName())) {
+				return new BeanInCycle(ex);
+			}
+			return null;
+		}
+
 		private String determineDescription(BeanCreationException ex) {
 			if (StringUtils.hasText(ex.getResourceDescription())) {
 				return String.format(" defined in %s", ex.getResourceDescription());
@@ -156,20 +169,6 @@ class BeanCurrentlyInCreationFailureAnalyzer extends AbstractFailureAnalyzer<Bea
 		@Override
 		public String toString() {
 			return this.name + this.description;
-		}
-
-		public static BeanInCycle get(Throwable ex) {
-			if (ex instanceof BeanCreationException) {
-				return get((BeanCreationException) ex);
-			}
-			return null;
-		}
-
-		private static BeanInCycle get(BeanCreationException ex) {
-			if (StringUtils.hasText(ex.getBeanName())) {
-				return new BeanInCycle(ex);
-			}
-			return null;
 		}
 
 	}

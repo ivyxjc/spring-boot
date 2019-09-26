@@ -16,31 +16,8 @@
 
 package org.springframework.boot.actuate.metrics.web.servlet;
 
-import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.time.Duration;
-import java.util.Collection;
-import java.util.concurrent.BrokenBarrierException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import io.micrometer.core.annotation.Timed;
-import io.micrometer.core.instrument.Clock;
-import io.micrometer.core.instrument.Meter;
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.MockClock;
-import io.micrometer.core.instrument.Tag;
+import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.config.MeterFilterReply;
@@ -53,7 +30,6 @@ import io.prometheus.client.CollectorRegistry;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -66,12 +42,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.ModelAndView;
@@ -79,10 +50,21 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 import org.springframework.web.util.NestedServletException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.fail;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.time.Duration;
+import java.util.Collection;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
@@ -194,8 +176,7 @@ public class WebMvcMetricsFilterTests {
 	public void anonymousError() {
 		try {
 			this.mvc.perform(get("/api/c1/anonymousError/10"));
-		}
-		catch (Throwable ignore) {
+		} catch (Throwable ignore) {
 		}
 		assertThat(this.registry.get("http.server.requests").tag("uri", "/api/c1/anonymousError/{id}").timer().getId()
 				.getTag("exception")).endsWith("$1");
@@ -208,8 +189,7 @@ public class WebMvcMetricsFilterTests {
 			try {
 				result.set(
 						this.mvc.perform(get("/api/c1/callable/10")).andExpect(request().asyncStarted()).andReturn());
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				fail("Failed to execute async request", ex);
 			}
 		});
@@ -244,8 +224,7 @@ public class WebMvcMetricsFilterTests {
 			try {
 				result.set(this.mvc.perform(get("/api/c1/completableFuture/{id}", 1))
 						.andExpect(request().asyncStarted()).andReturn());
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				fail("Failed to execute async request", ex);
 			}
 		});
@@ -270,7 +249,7 @@ public class WebMvcMetricsFilterTests {
 		this.mvc.perform(get("/api/c1/regex/.abc")).andExpect(status().isOk());
 		assertThat(
 				this.registry.get("http.server.requests").tags("uri", "/api/c1/regex/{id:\\.[a-z]+}").timer().count())
-						.isEqualTo(1L);
+				.isEqualTo(1L);
 	}
 
 	@Test
@@ -287,7 +266,7 @@ public class WebMvcMetricsFilterTests {
 		assertThat(this.prometheusRegistry.scrape()).contains("le=\"30.0\"");
 	}
 
-	@Target({ ElementType.METHOD })
+	@Target({ElementType.METHOD})
 	@Retention(RetentionPolicy.RUNTIME)
 	@Timed(percentiles = 0.95)
 	public @interface Timed95 {
@@ -296,7 +275,7 @@ public class WebMvcMetricsFilterTests {
 
 	@Configuration
 	@EnableWebMvc
-	@Import({ Controller1.class, Controller2.class })
+	@Import({Controller1.class, Controller2.class})
 	static class MetricsFilterApp {
 
 		@Bean
@@ -371,22 +350,21 @@ public class WebMvcMetricsFilterTests {
 		@Qualifier("completableFutureBarrier")
 		private CyclicBarrier completableFutureBarrier;
 
-		@Timed(extraTags = { "public", "true" })
+		@Timed(extraTags = {"public", "true"})
 		@GetMapping("/{id}")
 		public String successfulWithExtraTags(@PathVariable Long id) {
 			return id.toString();
 		}
 
 		@Timed
-		@Timed(value = "my.long.request", extraTags = { "region", "test" }, longTask = true)
+		@Timed(value = "my.long.request", extraTags = {"region", "test"}, longTask = true)
 		@GetMapping("/callable/{id}")
 		public Callable<String> asyncCallable(@PathVariable Long id) throws Exception {
 			this.callableBarrier.await();
 			return () -> {
 				try {
 					this.callableBarrier.await();
-				}
-				catch (InterruptedException ex) {
+				} catch (InterruptedException ex) {
 					throw new RuntimeException(ex);
 				}
 				return id.toString();
@@ -400,8 +378,7 @@ public class WebMvcMetricsFilterTests {
 			return CompletableFuture.supplyAsync(() -> {
 				try {
 					this.completableFutureBarrier.await();
-				}
-				catch (InterruptedException | BrokenBarrierException ex) {
+				} catch (InterruptedException | BrokenBarrierException ex) {
 					throw new RuntimeException(ex);
 				}
 				return id.toString();
@@ -454,7 +431,7 @@ public class WebMvcMetricsFilterTests {
 			return id;
 		}
 
-		@Timed(percentiles = { 0.50, 0.95 })
+		@Timed(percentiles = {0.50, 0.95})
 		@GetMapping("/percentiles/{id}")
 		public String percentiles(@PathVariable String id) {
 			return id;
@@ -498,12 +475,11 @@ public class WebMvcMetricsFilterTests {
 
 		@Override
 		protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-				FilterChain filterChain) throws ServletException, IOException {
+										FilterChain filterChain) throws ServletException, IOException {
 			String misbehave = request.getHeader(TEST_MISBEHAVE_HEADER);
 			if (misbehave != null) {
 				response.setStatus(Integer.parseInt(misbehave));
-			}
-			else {
+			} else {
 				filterChain.doFilter(request, response);
 			}
 		}

@@ -16,16 +16,16 @@
 
 package org.springframework.boot.configurationprocessor.metadata;
 
+import org.springframework.boot.configurationprocessor.json.JSONArray;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.boot.configurationprocessor.metadata.ItemMetadata.ItemType;
+
 import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import org.springframework.boot.configurationprocessor.json.JSONArray;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.boot.configurationprocessor.metadata.ItemMetadata.ItemType;
 
 /**
  * Converter to change meta-data objects into JSON objects.

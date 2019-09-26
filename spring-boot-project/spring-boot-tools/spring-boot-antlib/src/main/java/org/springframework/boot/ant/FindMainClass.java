@@ -16,16 +16,15 @@
 
 package org.springframework.boot.ant;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.jar.JarFile;
-
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
-
 import org.springframework.boot.loader.tools.MainClassFinder;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.jar.JarFile;
 
 /**
  * Ant task to find a main class.
@@ -72,8 +71,7 @@ public class FindMainClass extends Task {
 			}
 			return MainClassFinder.findSingleMainClass(new JarFile(this.classesRoot), "/",
 					SPRING_BOOT_APPLICATION_CLASS_NAME);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new BuildException(ex);
 		}
 	}
@@ -81,14 +79,14 @@ public class FindMainClass extends Task {
 	private void handle(String mainClass) {
 		if (StringUtils.hasText(this.property)) {
 			getProject().setProperty(this.property, mainClass);
-		}
-		else {
+		} else {
 			log("Found main class " + mainClass);
 		}
 	}
 
 	/**
 	 * Set the main class, which will cause the search to be bypassed.
+	 *
 	 * @param mainClass the main class name
 	 */
 	public void setMainClass(String mainClass) {
@@ -97,6 +95,7 @@ public class FindMainClass extends Task {
 
 	/**
 	 * Set the root location of classes to be searched.
+	 *
 	 * @param classesRoot the root location
 	 */
 	public void setClassesRoot(File classesRoot) {
@@ -105,6 +104,7 @@ public class FindMainClass extends Task {
 
 	/**
 	 * Set the ANT property to set (if left unset, result will be printed to the log).
+	 *
 	 * @param property the ANT property to set
 	 */
 	public void setProperty(String property) {

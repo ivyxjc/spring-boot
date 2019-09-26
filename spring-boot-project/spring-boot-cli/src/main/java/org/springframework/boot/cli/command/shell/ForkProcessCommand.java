@@ -16,15 +16,15 @@
 
 package org.springframework.boot.cli.command.shell;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.options.OptionHelp;
 import org.springframework.boot.cli.command.status.ExitStatus;
 import org.springframework.boot.loader.tools.JavaExecutable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Decorate an existing command to run it by forking the current java process.

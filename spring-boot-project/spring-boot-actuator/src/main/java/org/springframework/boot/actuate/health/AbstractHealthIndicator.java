@@ -16,14 +16,13 @@
 
 package org.springframework.boot.actuate.health;
 
-import java.util.function.Function;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.function.Function;
 
 /**
  * Base {@link HealthIndicator} implementations that encapsulates creation of
@@ -57,6 +56,7 @@ public abstract class AbstractHealthIndicator implements HealthIndicator {
 	/**
 	 * Create a new {@link AbstractHealthIndicator} instance with a specific message to
 	 * log when the health check fails.
+	 *
 	 * @param healthCheckFailedMessage the message to log on health check failure
 	 * @since 2.0.0
 	 */
@@ -67,6 +67,7 @@ public abstract class AbstractHealthIndicator implements HealthIndicator {
 	/**
 	 * Create a new {@link AbstractHealthIndicator} instance with a specific message to
 	 * log when the health check fails.
+	 *
 	 * @param healthCheckFailedMessage the message to log on health check failure
 	 * @since 2.0.0
 	 */
@@ -80,8 +81,7 @@ public abstract class AbstractHealthIndicator implements HealthIndicator {
 		Health.Builder builder = new Health.Builder();
 		try {
 			doHealthCheck(builder);
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (this.logger.isWarnEnabled()) {
 				String message = this.healthCheckFailedMessage.apply(ex);
 				this.logger.warn(StringUtils.hasText(message) ? message : DEFAULT_MESSAGE, ex);
@@ -93,9 +93,10 @@ public abstract class AbstractHealthIndicator implements HealthIndicator {
 
 	/**
 	 * Actual health check logic.
+	 *
 	 * @param builder the {@link Builder} to report health status and details
 	 * @throws Exception any {@link Exception} that should create a {@link Status#DOWN}
-	 * system status.
+	 *                   system status.
 	 */
 	protected abstract void doHealthCheck(Health.Builder builder) throws Exception;
 

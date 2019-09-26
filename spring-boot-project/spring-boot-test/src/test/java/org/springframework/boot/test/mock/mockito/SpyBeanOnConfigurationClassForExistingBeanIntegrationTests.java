@@ -18,7 +18,6 @@ package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.example.ExampleServiceCaller;
 import org.springframework.boot.test.mock.mockito.example.SimpleExampleService;
@@ -48,7 +47,7 @@ public class SpyBeanOnConfigurationClassForExistingBeanIntegrationTests {
 
 	@Configuration
 	@SpyBean(SimpleExampleService.class)
-	@Import({ ExampleServiceCaller.class, SimpleExampleService.class })
+	@Import({ExampleServiceCaller.class, SimpleExampleService.class})
 	static class Config {
 
 	}

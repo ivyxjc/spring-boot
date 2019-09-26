@@ -16,12 +16,16 @@
 
 package org.springframework.boot.loader.jar;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilePermission;
-import java.io.InputStream;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.springframework.boot.loader.TestJarCreator;
+import org.springframework.boot.loader.data.RandomAccessDataFile;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.util.StreamUtils;
+
+import java.io.*;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.charset.Charset;
@@ -32,19 +36,7 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import org.springframework.boot.loader.TestJarCreator;
-import org.springframework.boot.loader.data.RandomAccessDataFile;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.util.StreamUtils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatIOException;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -94,7 +86,7 @@ public class JarFileTests {
 		assertThat(entries.nextElement().getName()).isEqualTo("multi-release.jar");
 		assertThat(entries.hasMoreElements()).isFalse();
 		URL jarUrl = new URL("jar:" + this.rootJarFile.toURI() + "!/");
-		URLClassLoader urlClassLoader = new URLClassLoader(new URL[] { jarUrl });
+		URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{jarUrl});
 		assertThat(urlClassLoader.getResource("special/\u00EB.dat")).isNotNull();
 		assertThat(urlClassLoader.getResource("d/9.dat")).isNotNull();
 		jarFile.close();
@@ -140,7 +132,7 @@ public class JarFileTests {
 
 	@Test
 	public void getSpecialResourceViaClassLoader() throws Exception {
-		URLClassLoader urlClassLoader = new URLClassLoader(new URL[] { this.jarFile.getUrl() });
+		URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{this.jarFile.getUrl()});
 		assertThat(urlClassLoader.getResource("special/\u00EB.dat")).isNotNull();
 		urlClassLoader.close();
 	}
@@ -419,12 +411,10 @@ public class JarFileTests {
 			JarFile.registerUrlProtocolHandler();
 			String protocolHandler = System.getProperty(PROTOCOL_HANDLER);
 			assertThat(protocolHandler).isEqualTo(HANDLERS_PACKAGE);
-		}
-		finally {
+		} finally {
 			if (original == null) {
 				System.clearProperty(PROTOCOL_HANDLER);
-			}
-			else {
+			} else {
 				System.setProperty(PROTOCOL_HANDLER, original);
 			}
 		}
@@ -438,12 +428,10 @@ public class JarFileTests {
 			JarFile.registerUrlProtocolHandler();
 			String protocolHandler = System.getProperty(PROTOCOL_HANDLER);
 			assertThat(protocolHandler).isEqualTo("com.example|" + HANDLERS_PACKAGE);
-		}
-		finally {
+		} finally {
 			if (original == null) {
 				System.clearProperty(PROTOCOL_HANDLER);
-			}
-			else {
+			} else {
 				System.setProperty(PROTOCOL_HANDLER, original);
 			}
 		}
@@ -470,8 +458,7 @@ public class JarFileTests {
 					.getInputStream().close();
 			assertThatExceptionOfType(FileNotFoundException.class).isThrownBy(
 					new URL(context, "jar:" + this.rootJarFile.toURI() + "!/no.dat").openConnection()::getInputStream);
-		}
-		finally {
+		} finally {
 			JarURLConnection.setUseFastExceptions(false);
 		}
 	}
@@ -490,8 +477,7 @@ public class JarFileTests {
 		try {
 			Object runtimeVersion = Runtime.class.getMethod("version").invoke(null);
 			return (int) runtimeVersion.getClass().getMethod("major").invoke(runtimeVersion);
-		}
-		catch (Throwable ex) {
+		} catch (Throwable ex) {
 			return 8;
 		}
 	}

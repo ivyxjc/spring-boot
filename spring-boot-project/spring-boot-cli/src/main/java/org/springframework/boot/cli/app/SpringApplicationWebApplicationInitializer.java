@@ -16,15 +16,14 @@
 
 package org.springframework.boot.cli.app;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.jar.Manifest;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Manifest;
 
 /**
  * {@link SpringBootServletInitializer} for CLI packaged WAR files.
@@ -45,8 +44,7 @@ public class SpringApplicationWebApplicationInitializer extends SpringBootServle
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		try {
 			this.sources = getSources(servletContext);
-		}
-		catch (IOException ex) {
+		} catch (IOException ex) {
 			throw new IllegalStateException(ex);
 		}
 		super.onStartup(servletContext);
@@ -75,8 +73,7 @@ public class SpringApplicationWebApplicationInitializer extends SpringBootServle
 				sourceClasses[i] = classLoader.loadClass(this.sources[i]);
 			}
 			return builder.sources(sourceClasses).properties("spring.groovy.template.check-template-location=false");
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			throw new IllegalStateException(ex);
 		}
 	}

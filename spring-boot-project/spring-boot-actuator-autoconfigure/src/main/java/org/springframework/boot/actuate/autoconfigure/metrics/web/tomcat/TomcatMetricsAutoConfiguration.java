@@ -19,7 +19,6 @@ package org.springframework.boot.actuate.autoconfigure.metrics.web.tomcat;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.binder.tomcat.TomcatMetrics;
 import org.apache.catalina.Manager;
-
 import org.springframework.boot.actuate.metrics.web.tomcat.TomcatMetricsBinder;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -37,12 +36,12 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnWebApplication
-@ConditionalOnClass({ TomcatMetrics.class, Manager.class })
+@ConditionalOnClass({TomcatMetrics.class, Manager.class})
 public class TomcatMetricsAutoConfiguration {
 
 	@Bean
 	@ConditionalOnBean(MeterRegistry.class)
-	@ConditionalOnMissingBean({ TomcatMetrics.class, TomcatMetricsBinder.class })
+	@ConditionalOnMissingBean({TomcatMetrics.class, TomcatMetricsBinder.class})
 	public TomcatMetricsBinder tomcatMetricsBinder(MeterRegistry meterRegistry) {
 		return new TomcatMetricsBinder(meterRegistry);
 	}

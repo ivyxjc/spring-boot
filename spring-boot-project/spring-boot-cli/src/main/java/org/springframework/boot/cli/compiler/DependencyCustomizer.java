@@ -22,7 +22,6 @@ import org.codehaus.groovy.ast.AnnotationNode;
 import org.codehaus.groovy.ast.ClassNode;
 import org.codehaus.groovy.ast.ModuleNode;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
-
 import org.springframework.boot.cli.compiler.dependencies.ArtifactCoordinatesResolver;
 import org.springframework.boot.cli.compiler.grape.DependencyResolutionContext;
 
@@ -48,12 +47,13 @@ public class DependencyCustomizer {
 
 	/**
 	 * Create a new {@link DependencyCustomizer} instance.
-	 * @param loader the current classloader
-	 * @param moduleNode the current module
+	 *
+	 * @param loader                      the current classloader
+	 * @param moduleNode                  the current module
 	 * @param dependencyResolutionContext the context for dependency resolution
 	 */
 	public DependencyCustomizer(GroovyClassLoader loader, ModuleNode moduleNode,
-			DependencyResolutionContext dependencyResolutionContext) {
+								DependencyResolutionContext dependencyResolutionContext) {
 		this.loader = loader;
 		this.classNode = moduleNode.getClasses().get(0);
 		this.dependencyResolutionContext = dependencyResolutionContext;
@@ -61,6 +61,7 @@ public class DependencyCustomizer {
 
 	/**
 	 * Create a new nested {@link DependencyCustomizer}.
+	 *
 	 * @param parent the parent customizer
 	 */
 	protected DependencyCustomizer(DependencyCustomizer parent) {
@@ -85,6 +86,7 @@ public class DependencyCustomizer {
 	/**
 	 * Create a nested {@link DependencyCustomizer} that only applies if any of the
 	 * specified class names are not on the class path.
+	 *
 	 * @param classNames the class names to test
 	 * @return a nested {@link DependencyCustomizer}
 	 */
@@ -95,8 +97,7 @@ public class DependencyCustomizer {
 				for (String className : classNames) {
 					try {
 						DependencyCustomizer.this.loader.loadClass(className);
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						return true;
 					}
 				}
@@ -108,6 +109,7 @@ public class DependencyCustomizer {
 	/**
 	 * Create a nested {@link DependencyCustomizer} that only applies if all of the
 	 * specified class names are not on the class path.
+	 *
 	 * @param classNames the class names to test
 	 * @return a nested {@link DependencyCustomizer}
 	 */
@@ -119,8 +121,7 @@ public class DependencyCustomizer {
 					try {
 						DependencyCustomizer.this.loader.loadClass(className);
 						return false;
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						// swallow exception and continue
 					}
 				}
@@ -132,6 +133,7 @@ public class DependencyCustomizer {
 	/**
 	 * Create a nested {@link DependencyCustomizer} that only applies if the specified
 	 * paths are on the class path.
+	 *
 	 * @param paths the paths to test
 	 * @return a nested {@link DependencyCustomizer}
 	 */
@@ -145,8 +147,7 @@ public class DependencyCustomizer {
 							return false;
 						}
 						return true;
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						// swallow exception and continue
 					}
 				}
@@ -158,6 +159,7 @@ public class DependencyCustomizer {
 	/**
 	 * Create a nested {@link DependencyCustomizer} that only applies at least one of the
 	 * specified paths is on the class path.
+	 *
 	 * @param paths the paths to test
 	 * @return a nested {@link DependencyCustomizer}
 	 */
@@ -171,8 +173,7 @@ public class DependencyCustomizer {
 							return true;
 						}
 						return false;
-					}
-					catch (Exception ex) {
+					} catch (Exception ex) {
 						// swallow exception and continue
 					}
 				}
@@ -185,6 +186,7 @@ public class DependencyCustomizer {
 	 * Add dependencies and all of their dependencies. The group ID and version of the
 	 * dependencies are resolved from the modules using the customizer's
 	 * {@link ArtifactCoordinatesResolver}.
+	 *
 	 * @param modules the module IDs
 	 * @return this {@link DependencyCustomizer} for continued use
 	 */
@@ -199,9 +201,10 @@ public class DependencyCustomizer {
 	 * Add a single dependency and, optionally, all of its dependencies. The group ID and
 	 * version of the dependency are resolved from the module using the customizer's
 	 * {@link ArtifactCoordinatesResolver}.
-	 * @param module the module ID
+	 *
+	 * @param module     the module ID
 	 * @param transitive {@code true} if the transitive dependencies should also be added,
-	 * otherwise {@code false}
+	 *                   otherwise {@code false}
 	 * @return this {@link DependencyCustomizer} for continued use
 	 */
 	public DependencyCustomizer add(String module, boolean transitive) {
@@ -212,11 +215,12 @@ public class DependencyCustomizer {
 	 * Add a single dependency with the specified classifier and type and, optionally, all
 	 * of its dependencies. The group ID and version of the dependency are resolved from
 	 * the module by using the customizer's {@link ArtifactCoordinatesResolver}.
-	 * @param module the module ID
+	 *
+	 * @param module     the module ID
 	 * @param classifier the classifier, may be {@code null}
-	 * @param type the type, may be {@code null}
+	 * @param type       the type, may be {@code null}
 	 * @param transitive {@code true} if the transitive dependencies should also be added,
-	 * otherwise {@code false}
+	 *                   otherwise {@code false}
 	 * @return this {@link DependencyCustomizer} for continued use
 	 */
 	public DependencyCustomizer add(String module, String classifier, String type, boolean transitive) {
@@ -231,7 +235,7 @@ public class DependencyCustomizer {
 	}
 
 	private AnnotationNode createGrabAnnotation(String group, String module, String version, String classifier,
-			String type, boolean transitive) {
+												String type, boolean transitive) {
 		AnnotationNode annotationNode = new AnnotationNode(new ClassNode(Grab.class));
 		annotationNode.addMember("group", new ConstantExpression(group));
 		annotationNode.addMember("module", new ConstantExpression(module));
@@ -250,6 +254,7 @@ public class DependencyCustomizer {
 	/**
 	 * Strategy called to test if dependencies can be added. Subclasses override as
 	 * required. Returns {@code true} by default.
+	 *
 	 * @return {@code true} if dependencies can be added, otherwise {@code false}
 	 */
 	protected boolean canAdd() {
@@ -258,6 +263,7 @@ public class DependencyCustomizer {
 
 	/**
 	 * Returns the {@link DependencyResolutionContext}.
+	 *
 	 * @return the dependency resolution context
 	 */
 	public DependencyResolutionContext getDependencyResolutionContext() {

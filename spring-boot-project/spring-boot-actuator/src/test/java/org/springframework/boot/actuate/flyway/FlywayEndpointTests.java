@@ -16,10 +16,7 @@
 
 package org.springframework.boot.actuate.flyway;
 
-import java.util.Map;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.flyway.FlywayEndpoint.FlywayDescriptor;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
@@ -29,6 +26,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,7 +62,7 @@ public class FlywayEndpointTests {
 	}
 
 	@Configuration
-	@Import({ EmbeddedDataSourceConfiguration.class, FlywayAutoConfiguration.class })
+	@Import({EmbeddedDataSourceConfiguration.class, FlywayAutoConfiguration.class})
 	public static class Config {
 
 		@Bean

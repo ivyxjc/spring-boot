@@ -16,12 +16,9 @@
 
 package org.springframework.boot.autoconfigure.mustache;
 
-import java.util.Date;
-
 import com.samskivert.mustache.Mustache;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
@@ -41,6 +38,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,10 +71,16 @@ public class MustacheAutoConfigurationReactiveIntegrationTests {
 	}
 
 	@Configuration
-	@Import({ ReactiveWebServerFactoryAutoConfiguration.class, WebFluxAutoConfiguration.class,
-			HttpHandlerAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class })
+	@Import({ReactiveWebServerFactoryAutoConfiguration.class, WebFluxAutoConfiguration.class,
+					HttpHandlerAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
 	@Controller
 	public static class Application {
+
+		public static void main(String[] args) {
+			SpringApplication application = new SpringApplication(Application.class);
+			application.setWebApplicationType(WebApplicationType.REACTIVE);
+			application.run(args);
+		}
 
 		@RequestMapping("/")
 		public String home(Model model) {
@@ -101,12 +106,6 @@ public class MustacheAutoConfigurationReactiveIntegrationTests {
 			resolver.setPrefix("classpath:/mustache-templates/");
 			resolver.setSuffix(".html");
 			return resolver;
-		}
-
-		public static void main(String[] args) {
-			SpringApplication application = new SpringApplication(Application.class);
-			application.setWebApplicationType(WebApplicationType.REACTIVE);
-			application.run(args);
 		}
 
 	}

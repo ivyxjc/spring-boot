@@ -20,7 +20,6 @@ import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.binder.MeterBinder;
 import io.micrometer.core.instrument.config.MeterFilter;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -46,18 +45,18 @@ import org.springframework.core.annotation.Order;
 public class MetricsAutoConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean
-	public Clock micrometerClock() {
-		return Clock.SYSTEM;
+	public static MeterRegistryPostProcessor meterRegistryPostProcessor(ObjectProvider<MeterBinder> meterBinders,
+																		ObjectProvider<MeterFilter> meterFilters,
+																		ObjectProvider<MeterRegistryCustomizer<?>> meterRegistryCustomizers,
+																		ObjectProvider<MetricsProperties> metricsProperties, ApplicationContext applicationContext) {
+		return new MeterRegistryPostProcessor(meterBinders, meterFilters, meterRegistryCustomizers, metricsProperties,
+				applicationContext);
 	}
 
 	@Bean
-	public static MeterRegistryPostProcessor meterRegistryPostProcessor(ObjectProvider<MeterBinder> meterBinders,
-			ObjectProvider<MeterFilter> meterFilters,
-			ObjectProvider<MeterRegistryCustomizer<?>> meterRegistryCustomizers,
-			ObjectProvider<MetricsProperties> metricsProperties, ApplicationContext applicationContext) {
-		return new MeterRegistryPostProcessor(meterBinders, meterFilters, meterRegistryCustomizers, metricsProperties,
-				applicationContext);
+	@ConditionalOnMissingBean
+	public Clock micrometerClock() {
+		return Clock.SYSTEM;
 	}
 
 	@Bean

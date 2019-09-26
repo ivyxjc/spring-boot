@@ -16,11 +16,10 @@
 
 package org.springframework.boot.actuate.autoconfigure.metrics.export.atlas;
 
-import java.time.Duration;
-
 import com.netflix.spectator.atlas.AtlasConfig;
-
 import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.PropertiesConfigAdapter;
+
+import java.time.Duration;
 
 /**
  * Adapter to convert {@link AtlasProperties} to an {@link AtlasConfig}.

@@ -16,12 +16,11 @@
 
 package org.springframework.boot.jdbc.metadata;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 /**
  * A {@link DataSourcePoolMetadataProvider} implementation that returns the first
@@ -37,6 +36,7 @@ public class CompositeDataSourcePoolMetadataProvider implements DataSourcePoolMe
 	/**
 	 * Create a {@link CompositeDataSourcePoolMetadataProvider} instance with an initial
 	 * collection of delegates to use.
+	 *
 	 * @param providers the data source pool metadata providers
 	 */
 	public CompositeDataSourcePoolMetadataProvider(Collection<? extends DataSourcePoolMetadataProvider> providers) {

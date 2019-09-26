@@ -16,18 +16,8 @@
 
 package org.springframework.boot.autoconfigure.web.servlet.error;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.Servlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.aop.framework.autoproxy.AutoProxyUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectProvider;
@@ -35,16 +25,8 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.condition.ConditionMessage;
-import org.springframework.boot.autoconfigure.condition.ConditionOutcome;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type;
-import org.springframework.boot.autoconfigure.condition.SearchStrategy;
-import org.springframework.boot.autoconfigure.condition.SpringBootCondition;
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProvider;
 import org.springframework.boot.autoconfigure.template.TemplateAvailabilityProviders;
 import org.springframework.boot.autoconfigure.web.ResourceProperties;
@@ -72,6 +54,14 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.util.HtmlUtils;
 
+import javax.servlet.Servlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * {@link EnableAutoConfiguration Auto-configuration} to render errors via an MVC error
  * controller.
@@ -84,10 +74,10 @@ import org.springframework.web.util.HtmlUtils;
  */
 @Configuration
 @ConditionalOnWebApplication(type = Type.SERVLET)
-@ConditionalOnClass({ Servlet.class, DispatcherServlet.class })
+@ConditionalOnClass({Servlet.class, DispatcherServlet.class})
 // Load before the main WebMvcAutoConfiguration so that the error View is available
 @AutoConfigureBefore(WebMvcAutoConfiguration.class)
-@EnableConfigurationProperties({ ServerProperties.class, ResourceProperties.class, WebMvcProperties.class })
+@EnableConfigurationProperties({ServerProperties.class, ResourceProperties.class, WebMvcProperties.class})
 public class ErrorMvcAutoConfiguration {
 
 	private final ServerProperties serverProperties;
@@ -97,10 +87,15 @@ public class ErrorMvcAutoConfiguration {
 	private final List<ErrorViewResolver> errorViewResolvers;
 
 	public ErrorMvcAutoConfiguration(ServerProperties serverProperties, DispatcherServletPath dispatcherServletPath,
-			ObjectProvider<ErrorViewResolver> errorViewResolvers) {
+									 ObjectProvider<ErrorViewResolver> errorViewResolvers) {
 		this.serverProperties = serverProperties;
 		this.dispatcherServletPath = dispatcherServletPath;
 		this.errorViewResolvers = errorViewResolvers.orderedStream().collect(Collectors.toList());
+	}
+
+	@Bean
+	public static PreserveErrorControllerTargetClassPostProcessor preserveErrorControllerTargetClassPostProcessor() {
+		return new PreserveErrorControllerTargetClassPostProcessor();
 	}
 
 	@Bean
@@ -120,11 +115,6 @@ public class ErrorMvcAutoConfiguration {
 		return new ErrorPageCustomizer(this.serverProperties, this.dispatcherServletPath);
 	}
 
-	@Bean
-	public static PreserveErrorControllerTargetClassPostProcessor preserveErrorControllerTargetClassPostProcessor() {
-		return new PreserveErrorControllerTargetClassPostProcessor();
-	}
-
 	@Configuration
 	static class DefaultErrorViewResolverConfiguration {
 
@@ -133,7 +123,7 @@ public class ErrorMvcAutoConfiguration {
 		private final ResourceProperties resourceProperties;
 
 		DefaultErrorViewResolverConfiguration(ApplicationContext applicationContext,
-				ResourceProperties resourceProperties) {
+											  ResourceProperties resourceProperties) {
 			this.applicationContext = applicationContext;
 			this.resourceProperties = resourceProperties;
 		}
@@ -291,8 +281,7 @@ public class ErrorMvcAutoConfiguration {
 				try {
 					beanFactory.getBeanDefinition(errorControllerBean)
 							.setAttribute(AutoProxyUtils.PRESERVE_TARGET_CLASS_ATTRIBUTE, Boolean.TRUE);
-				}
-				catch (Throwable ex) {
+				} catch (Throwable ex) {
 					// Ignore
 				}
 			}

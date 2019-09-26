@@ -16,11 +16,11 @@
 
 package org.springframework.boot.actuate.endpoint.web;
 
-import java.util.List;
-
 import org.springframework.boot.actuate.endpoint.EndpointId;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * Strategy interface used to provide a mapping between an endpoint ID and the root path
@@ -34,15 +34,8 @@ import org.springframework.util.StringUtils;
 public interface PathMapper {
 
 	/**
-	 * Resolve the root path for the specified {@code endpointId}.
-	 * @param endpointId the id of an endpoint
-	 * @return the path of the endpoint or {@code null} if this mapper doesn't support the
-	 * given endpoint ID
-	 */
-	String getRootPath(EndpointId endpointId);
-
-	/**
 	 * Returns an {@link PathMapper} that uses the endpoint ID as the path.
+	 *
 	 * @return an {@link PathMapper} that uses the lowercase endpoint ID as the path
 	 * @deprecated since 2.1.0 in favor of {@link #getRootPath(List, EndpointId)} with a
 	 * {@code null} list
@@ -55,8 +48,9 @@ public interface PathMapper {
 	/**
 	 * Resolve the root path for the specified {@code endpointId} from the given path
 	 * mappers. If no mapper matches then the ID itself is returned.
+	 *
 	 * @param pathMappers the path mappers (may be {@code null})
-	 * @param endpointId the id of an endpoint
+	 * @param endpointId  the id of an endpoint
 	 * @return the path of the endpoint
 	 */
 	static String getRootPath(List<PathMapper> pathMappers, EndpointId endpointId) {
@@ -71,5 +65,14 @@ public interface PathMapper {
 		}
 		return endpointId.toString();
 	}
+
+	/**
+	 * Resolve the root path for the specified {@code endpointId}.
+	 *
+	 * @param endpointId the id of an endpoint
+	 * @return the path of the endpoint or {@code null} if this mapper doesn't support the
+	 * given endpoint ID
+	 */
+	String getRootPath(EndpointId endpointId);
 
 }

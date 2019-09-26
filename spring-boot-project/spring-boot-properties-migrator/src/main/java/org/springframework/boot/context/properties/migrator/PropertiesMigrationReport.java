@@ -16,14 +16,14 @@
 
 package org.springframework.boot.context.properties.migrator;
 
+import org.springframework.boot.configurationmetadata.ConfigurationMetadataProperty;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import org.springframework.boot.configurationmetadata.ConfigurationMetadataProperty;
 
 /**
  * Provides a properties migration report.
@@ -37,6 +37,7 @@ class PropertiesMigrationReport {
 	/**
 	 * Return a report for all the properties that were automatically renamed. If no such
 	 * properties were found, return {@code null}.
+	 *
 	 * @return a report with the configurations keys that should be renamed
 	 */
 	public String getWarningReport() {
@@ -59,6 +60,7 @@ class PropertiesMigrationReport {
 	/**
 	 * Return a report for all the properties that are no longer supported. If no such
 	 * properties were found, return {@code null}.
+	 *
 	 * @return a report with the configurations keys that are no longer supported
 	 */
 	public String getErrorReport() {
@@ -100,7 +102,8 @@ class PropertiesMigrationReport {
 
 	/**
 	 * Register a new property source.
-	 * @param name the name of the property source
+	 *
+	 * @param name       the name of the property source
 	 * @param properties the {@link PropertyMigration} instances
 	 */
 	void add(String name, List<PropertyMigration> properties) {

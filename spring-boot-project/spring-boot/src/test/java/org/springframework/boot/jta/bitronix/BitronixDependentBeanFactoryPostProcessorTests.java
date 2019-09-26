@@ -16,20 +16,17 @@
 
 package org.springframework.boot.jta.bitronix;
 
-import javax.jms.ConnectionFactory;
-import javax.sql.DataSource;
-
 import bitronix.tm.BitronixTransactionManager;
 import org.junit.Test;
-
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import javax.jms.ConnectionFactory;
+import javax.sql.DataSource;
+
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link BitronixDependentBeanFactoryPostProcessor}.
@@ -56,6 +53,11 @@ public class BitronixDependentBeanFactoryPostProcessorTests {
 	static class Config {
 
 		@Bean
+		public static BitronixDependentBeanFactoryPostProcessor bitronixPostProcessor() {
+			return new BitronixDependentBeanFactoryPostProcessor();
+		}
+
+		@Bean
 		public DataSource dataSource() {
 			return mock(DataSource.class);
 		}
@@ -68,11 +70,6 @@ public class BitronixDependentBeanFactoryPostProcessorTests {
 		@Bean
 		public BitronixTransactionManager bitronixTransactionManager() {
 			return mock(BitronixTransactionManager.class);
-		}
-
-		@Bean
-		public static BitronixDependentBeanFactoryPostProcessor bitronixPostProcessor() {
-			return new BitronixDependentBeanFactoryPostProcessor();
 		}
 
 	}

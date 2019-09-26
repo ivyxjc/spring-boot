@@ -25,7 +25,6 @@ import org.assertj.core.api.Condition;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -46,6 +45,8 @@ public class HazelcastAutoConfigurationClientTests {
 	 * Servers the test clients will connect to.
 	 */
 	private static HazelcastInstance hazelcastServer;
+	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+			.withConfiguration(AutoConfigurations.of(HazelcastAutoConfiguration.class));
 
 	@BeforeClass
 	public static void init() {
@@ -58,9 +59,6 @@ public class HazelcastAutoConfigurationClientTests {
 			hazelcastServer.shutdown();
 		}
 	}
-
-	private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-			.withConfiguration(AutoConfigurations.of(HazelcastAutoConfiguration.class));
 
 	@Test
 	public void systemProperty() {
@@ -97,7 +95,7 @@ public class HazelcastAutoConfigurationClientTests {
 	public void clientConfigTakesPrecedence() {
 		this.contextRunner.withUserConfiguration(HazelcastServerAndClientConfig.class)
 				.withPropertyValues("spring.hazelcast.config=this-is-ignored.xml").run((context) -> assertThat(context)
-						.getBean(HazelcastInstance.class).isInstanceOf(HazelcastClientProxy.class));
+				.getBean(HazelcastInstance.class).isInstanceOf(HazelcastClientProxy.class));
 	}
 
 	private Condition<HazelcastInstance> nameStartingWith(String prefix) {

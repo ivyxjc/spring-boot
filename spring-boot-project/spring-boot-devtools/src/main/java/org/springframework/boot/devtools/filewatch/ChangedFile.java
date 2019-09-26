@@ -16,17 +16,17 @@
 
 package org.springframework.boot.devtools.filewatch;
 
-import java.io.File;
-
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+
+import java.io.File;
 
 /**
  * A single file that has changed.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see ChangedFiles
+ * @since 1.3.0
  */
 public final class ChangedFile {
 
@@ -38,9 +38,10 @@ public final class ChangedFile {
 
 	/**
 	 * Create a new {@link ChangedFile} instance.
+	 *
 	 * @param sourceFolder the source folder
-	 * @param file the file
-	 * @param type the type of change
+	 * @param file         the file
+	 * @param type         the type of change
 	 */
 	public ChangedFile(File sourceFolder, File file, Type type) {
 		Assert.notNull(sourceFolder, "SourceFolder must not be null");
@@ -53,6 +54,7 @@ public final class ChangedFile {
 
 	/**
 	 * Return the file that was changed.
+	 *
 	 * @return the file
 	 */
 	public File getFile() {
@@ -61,6 +63,7 @@ public final class ChangedFile {
 
 	/**
 	 * Return the type of change.
+	 *
 	 * @return the type of change
 	 */
 	public Type getType() {
@@ -69,6 +72,7 @@ public final class ChangedFile {
 
 	/**
 	 * Return the name of the file relative to the source folder.
+	 *
 	 * @return the relative name
 	 */
 	public String getRelativeName() {

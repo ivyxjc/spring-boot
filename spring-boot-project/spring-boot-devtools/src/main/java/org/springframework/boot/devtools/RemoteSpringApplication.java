@@ -16,10 +16,6 @@
 
 package org.springframework.boot.devtools;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.springframework.boot.Banner;
 import org.springframework.boot.ResourceBanner;
 import org.springframework.boot.SpringApplication;
@@ -36,6 +32,10 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.io.ClassPathResource;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * Application that can be used to establish a link to remotely running Spring Boot code.
  * Allows remote updates (if enabled). This class should be launched from within your IDE
@@ -43,12 +43,22 @@ import org.springframework.core.io.ClassPathResource;
  * The remote URL of the application should be provided as a non-option argument.
  *
  * @author Phillip Webb
- * @since 1.3.0
  * @see RemoteClientConfiguration
+ * @since 1.3.0
  */
 public final class RemoteSpringApplication {
 
 	private RemoteSpringApplication() {
+	}
+
+	/**
+	 * Run the {@link RemoteSpringApplication}.
+	 *
+	 * @param args the program arguments (including the remote URL as a non-option
+	 *             argument)
+	 */
+	public static void main(String[] args) {
+		new RemoteSpringApplication().run(args);
 	}
 
 	private void run(String[] args) {
@@ -87,20 +97,10 @@ public final class RemoteSpringApplication {
 		while (true) {
 			try {
 				Thread.sleep(1000);
-			}
-			catch (InterruptedException ex) {
+			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 		}
-	}
-
-	/**
-	 * Run the {@link RemoteSpringApplication}.
-	 * @param args the program arguments (including the remote URL as a non-option
-	 * argument)
-	 */
-	public static void main(String[] args) {
-		new RemoteSpringApplication().run(args);
 	}
 
 }

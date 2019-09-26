@@ -16,6 +16,16 @@
 
 package org.springframework.boot.web.embedded.undertow;
 
+import io.undertow.Undertow;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.web.server.PortInUseException;
+import org.springframework.boot.web.server.WebServer;
+import org.springframework.boot.web.server.WebServerException;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.util.StringUtils;
+import org.xnio.channels.BoundChannel;
+
 import java.io.Closeable;
 import java.lang.reflect.Field;
 import java.net.BindException;
@@ -23,17 +33,6 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
-
-import io.undertow.Undertow;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.xnio.channels.BoundChannel;
-
-import org.springframework.boot.web.server.PortInUseException;
-import org.springframework.boot.web.server.WebServer;
-import org.springframework.boot.web.server.WebServerException;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 
 /**
  * {@link WebServer} that can be used to control an Undertow web server. Usually this
@@ -65,7 +64,8 @@ public class UndertowWebServer implements WebServer {
 
 	/**
 	 * Create a new {@link UndertowWebServer} instance.
-	 * @param builder the builder
+	 *
+	 * @param builder   the builder
 	 * @param autoStart if the server should be started
 	 */
 	public UndertowWebServer(Undertow.Builder builder, boolean autoStart) {
@@ -74,7 +74,8 @@ public class UndertowWebServer implements WebServer {
 
 	/**
 	 * Create a new {@link UndertowWebServer} instance.
-	 * @param builder the builder
+	 *
+	 * @param builder   the builder
 	 * @param autoStart if the server should be started
 	 * @param closeable called when the server is stopped
 	 * @since 2.0.4
@@ -101,8 +102,7 @@ public class UndertowWebServer implements WebServer {
 				this.undertow.start();
 				this.started = true;
 				logger.info("Undertow started on port(s) " + getPortsDescription());
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				try {
 					if (findBindException(ex) != null) {
 						List<UndertowWebServer.Port> failedPorts = getConfiguredPorts();
@@ -113,8 +113,7 @@ public class UndertowWebServer implements WebServer {
 						}
 					}
 					throw new WebServerException("Unable to start embedded Undertow", ex);
-				}
-				finally {
+				} finally {
 					stopSilently();
 				}
 			}
@@ -127,8 +126,7 @@ public class UndertowWebServer implements WebServer {
 				this.undertow.stop();
 				this.closeable.close();
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Ignore
 		}
 	}
@@ -157,14 +155,12 @@ public class UndertowWebServer implements WebServer {
 		try {
 			if (!this.autoStart) {
 				ports.add(new UndertowWebServer.Port(-1, "unknown"));
-			}
-			else {
+			} else {
 				for (BoundChannel channel : extractChannels()) {
 					ports.add(getPortFromChannel(channel));
 				}
 			}
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			// Continue
 		}
 		return ports;
@@ -192,8 +188,7 @@ public class UndertowWebServer implements WebServer {
 		for (Object listener : extractListeners()) {
 			try {
 				ports.add(getPortFromListener(listener));
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Continue
 			}
 		}
@@ -229,8 +224,7 @@ public class UndertowWebServer implements WebServer {
 				if (this.closeable != null) {
 					this.closeable.close();
 				}
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				throw new WebServerException("Unable to stop undertow", ex);
 			}
 		}

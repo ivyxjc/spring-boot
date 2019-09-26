@@ -16,13 +16,9 @@
 
 package org.springframework.boot.autoconfigure.cache;
 
-import java.time.Duration;
-import java.util.List;
-
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.spring.cache.CacheBuilder;
 import com.couchbase.client.spring.cache.CouchbaseCacheManager;
-
 import org.springframework.boot.autoconfigure.cache.CacheProperties.Couchbase;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -34,6 +30,9 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import java.time.Duration;
+import java.util.List;
+
 /**
  * Couchbase cache configuration.
  *
@@ -41,7 +40,7 @@ import org.springframework.util.StringUtils;
  * @since 1.4.0
  */
 @Configuration
-@ConditionalOnClass({ Bucket.class, CouchbaseCacheManager.class })
+@ConditionalOnClass({Bucket.class, CouchbaseCacheManager.class})
 @ConditionalOnMissingBean(CacheManager.class)
 @ConditionalOnSingleCandidate(Bucket.class)
 @Conditional(CacheCondition.class)
@@ -54,7 +53,7 @@ public class CouchbaseCacheConfiguration {
 	private final Bucket bucket;
 
 	public CouchbaseCacheConfiguration(CacheProperties cacheProperties, CacheManagerCustomizers customizers,
-			Bucket bucket) {
+									   Bucket bucket) {
 		this.cacheProperties = cacheProperties;
 		this.customizers = customizers;
 		this.bucket = bucket;

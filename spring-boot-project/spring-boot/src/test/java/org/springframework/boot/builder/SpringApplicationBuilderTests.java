@@ -16,13 +16,8 @@
 
 package org.springframework.boot.builder;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Collections;
-
 import org.junit.After;
 import org.junit.Test;
-
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.context.ApplicationContext;
@@ -36,6 +31,10 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
+
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -87,7 +86,7 @@ public class SpringApplicationBuilderTests {
 	public void propertiesAsProperties() {
 		SpringApplicationBuilder application = new SpringApplicationBuilder().sources(ExampleConfig.class)
 				.contextClass(StaticApplicationContext.class)
-				.properties(StringUtils.splitArrayElementsIntoProperties(new String[] { "bar=foo" }, "="));
+				.properties(StringUtils.splitArrayElementsIntoProperties(new String[]{"bar=foo"}, "="));
 		this.context = application.run();
 		assertThat(this.context.getEnvironment().getProperty("bar")).isEqualTo("foo");
 	}
@@ -287,23 +286,18 @@ public class SpringApplicationBuilderTests {
 
 		private boolean registeredShutdownHook;
 
-		@Override
-		public void setParent(ApplicationContext parent) {
-			this.applicationContext.setParent(parent);
-		}
-
 		public ConfigurableApplicationContext getApplicationContext() {
 			return this.applicationContext;
+		}
+
+		public ResourceLoader getResourceLoader() {
+			return this.resourceLoader;
 		}
 
 		@Override
 		public void setResourceLoader(ResourceLoader resourceLoader) {
 			super.setResourceLoader(resourceLoader);
 			this.resourceLoader = resourceLoader;
-		}
-
-		public ResourceLoader getResourceLoader() {
-			return this.resourceLoader;
 		}
 
 		@Override
@@ -325,6 +319,11 @@ public class SpringApplicationBuilderTests {
 		@Override
 		public ApplicationContext getParent() {
 			return this.applicationContext.getParent();
+		}
+
+		@Override
+		public void setParent(ApplicationContext parent) {
+			this.applicationContext.setParent(parent);
 		}
 
 	}

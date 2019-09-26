@@ -16,15 +16,11 @@
 
 package org.springframework.boot.actuate.autoconfigure.web;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+
+import java.lang.annotation.*;
 
 /**
  * Specialized {@link Configuration @Configuration} class that defines configuration
@@ -49,6 +45,7 @@ public @interface ManagementContextConfiguration {
 	/**
 	 * Specifies the type of management context that is required for this configuration to
 	 * be applied.
+	 *
 	 * @return the required management context type
 	 * @since 2.0.0
 	 */

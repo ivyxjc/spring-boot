@@ -16,12 +16,7 @@
 
 package org.springframework.boot.autoconfigure.validation;
 
-import java.util.HashMap;
-
-import javax.validation.constraints.Min;
-
 import org.junit.Test;
-
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
@@ -31,12 +26,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.validation.MapBindingResult;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.validation.constraints.Min;
+import java.util.HashMap;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * Tests for {@link ValidatorAdapter}.

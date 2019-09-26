@@ -16,15 +16,7 @@
 
 package org.springframework.boot.actuate.autoconfigure.endpoint.web.documentation;
 
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.junit.Test;
-
 import org.springframework.boot.actuate.context.ShutdownEndpoint;
 import org.springframework.boot.actuate.session.SessionsEndpoint;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,6 +28,9 @@ import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.MapSession;
 import org.springframework.session.Session;
 import org.springframework.test.context.TestPropertySource;
+
+import java.time.Instant;
+import java.util.*;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
@@ -77,6 +72,17 @@ public class SessionsEndpointDocumentationTests extends MockMvcEndpointDocumenta
 	@MockBean
 	private FindByIndexNameSessionRepository<Session> sessionRepository;
 
+	private static MapSession createSession(Instant creationTime, Instant lastAccessedTime) {
+		return createSession(UUID.randomUUID().toString(), creationTime, lastAccessedTime);
+	}
+
+	private static MapSession createSession(String id, Instant creationTime, Instant lastAccessedTime) {
+		MapSession session = new MapSession(id);
+		session.setCreationTime(creationTime);
+		session.setLastAccessedTime(lastAccessedTime);
+		return session;
+	}
+
 	@Test
 	public void sessionsForUsername() throws Exception {
 		Map<String, Session> sessions = new HashMap<>();
@@ -107,17 +113,6 @@ public class SessionsEndpointDocumentationTests extends MockMvcEndpointDocumenta
 		this.mockMvc.perform(delete("/actuator/sessions/{id}", sessionTwo.getId())).andExpect(status().isNoContent())
 				.andDo(document("sessions/delete"));
 		verify(this.sessionRepository).deleteById(sessionTwo.getId());
-	}
-
-	private static MapSession createSession(Instant creationTime, Instant lastAccessedTime) {
-		return createSession(UUID.randomUUID().toString(), creationTime, lastAccessedTime);
-	}
-
-	private static MapSession createSession(String id, Instant creationTime, Instant lastAccessedTime) {
-		MapSession session = new MapSession(id);
-		session.setCreationTime(creationTime);
-		session.setLastAccessedTime(lastAccessedTime);
-		return session;
 	}
 
 	@Configuration

@@ -18,7 +18,6 @@ package org.springframework.boot.autoconfigure.web.servlet.error;
 
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -39,11 +38,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ErrorMvcAutoConfigurationTests {
 
-	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner().withConfiguration(
-			AutoConfigurations.of(DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class));
-
 	@Rule
 	public OutputCapture outputCapture = new OutputCapture();
+	private WebApplicationContextRunner contextRunner = new WebApplicationContextRunner().withConfiguration(
+			AutoConfigurations.of(DispatcherServletAutoConfiguration.class, ErrorMvcAutoConfiguration.class));
 
 	@Test
 	public void renderContainsViewWithExceptionDetails() throws Exception {

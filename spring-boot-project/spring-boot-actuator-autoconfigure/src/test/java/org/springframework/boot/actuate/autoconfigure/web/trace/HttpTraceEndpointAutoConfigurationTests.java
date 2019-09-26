@@ -17,7 +17,6 @@
 package org.springframework.boot.actuate.autoconfigure.web.trace;
 
 import org.junit.Test;
-
 import org.springframework.boot.actuate.autoconfigure.trace.http.HttpTraceAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.trace.http.HttpTraceEndpointAutoConfiguration;
 import org.springframework.boot.actuate.trace.http.HttpTraceEndpoint;

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import java.io.*;
-import org.springframework.boot.maven.*;
+
+import org.springframework.boot.maven.Verify
 
 File f = new File(basedir, "war/target/war-0.0.1.BUILD-SNAPSHOT.war")
 new Verify.WarArchiveVerification(f) {

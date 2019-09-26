@@ -18,7 +18,6 @@ package org.springframework.boot.test.mock.mockito;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.example.ExampleService;
 import org.springframework.boot.test.mock.mockito.example.ExampleServiceCaller;
@@ -52,7 +51,7 @@ public class MockBeanOnConfigurationFieldForExistingBeanIntegrationTests {
 	}
 
 	@Configuration
-	@Import({ ExampleServiceCaller.class, FailingExampleService.class })
+	@Import({ExampleServiceCaller.class, FailingExampleService.class})
 	static class Config {
 
 		@MockBean

@@ -16,13 +16,7 @@
 
 package org.springframework.boot.actuate.trace.http.reactive;
 
-import java.security.Principal;
-import java.time.Duration;
-import java.util.EnumSet;
-
 import org.junit.Test;
-import reactor.core.publisher.Mono;
-
 import org.springframework.boot.actuate.trace.http.HttpExchangeTracer;
 import org.springframework.boot.actuate.trace.http.HttpTrace.Session;
 import org.springframework.boot.actuate.trace.http.InMemoryHttpTraceRepository;
@@ -33,6 +27,11 @@ import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.ServerWebExchangeDecorator;
 import org.springframework.web.server.WebFilterChain;
+import reactor.core.publisher.Mono;
+
+import java.security.Principal;
+import java.time.Duration;
+import java.util.EnumSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;

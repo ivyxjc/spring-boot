@@ -16,23 +16,11 @@
 
 package org.springframework.boot.autoconfigure.orm.jpa;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategy;
 import org.hibernate.cfg.AvailableSettings;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
@@ -50,6 +38,11 @@ import org.springframework.orm.jpa.vendor.AbstractJpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.jta.JtaTransactionManager;
 import org.springframework.util.ClassUtils;
+
+import javax.sql.DataSource;
+import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * {@link JpaBaseConfiguration} implementation for Hibernate.
@@ -76,25 +69,23 @@ class HibernateJpaConfiguration extends JpaBaseConfiguration {
 	 */
 	private static final String[] NO_JTA_PLATFORM_CLASSES = {
 			"org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform",
-			"org.hibernate.service.jta.platform.internal.NoJtaPlatform" };
+			"org.hibernate.service.jta.platform.internal.NoJtaPlatform"};
 
 	private final HibernateProperties hibernateProperties;
 
 	private final HibernateDefaultDdlAutoProvider defaultDdlAutoProvider;
-
+	private final List<HibernatePropertiesCustomizer> hibernatePropertiesCustomizers;
 	private DataSourcePoolMetadataProvider poolMetadataProvider;
 
-	private final List<HibernatePropertiesCustomizer> hibernatePropertiesCustomizers;
-
 	HibernateJpaConfiguration(DataSource dataSource, JpaProperties jpaProperties,
-			ConfigurableListableBeanFactory beanFactory, ObjectProvider<JtaTransactionManager> jtaTransactionManager,
-			ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers,
-			HibernateProperties hibernateProperties,
-			ObjectProvider<Collection<DataSourcePoolMetadataProvider>> metadataProviders,
-			ObjectProvider<SchemaManagementProvider> providers,
-			ObjectProvider<PhysicalNamingStrategy> physicalNamingStrategy,
-			ObjectProvider<ImplicitNamingStrategy> implicitNamingStrategy,
-			ObjectProvider<HibernatePropertiesCustomizer> hibernatePropertiesCustomizers) {
+							  ConfigurableListableBeanFactory beanFactory, ObjectProvider<JtaTransactionManager> jtaTransactionManager,
+							  ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers,
+							  HibernateProperties hibernateProperties,
+							  ObjectProvider<Collection<DataSourcePoolMetadataProvider>> metadataProviders,
+							  ObjectProvider<SchemaManagementProvider> providers,
+							  ObjectProvider<PhysicalNamingStrategy> physicalNamingStrategy,
+							  ObjectProvider<ImplicitNamingStrategy> implicitNamingStrategy,
+							  ObjectProvider<HibernatePropertiesCustomizer> hibernatePropertiesCustomizers) {
 		super(dataSource, jpaProperties, jtaTransactionManager, transactionManagerCustomizers);
 		this.hibernateProperties = hibernateProperties;
 		this.defaultDdlAutoProvider = new HibernateDefaultDdlAutoProvider(providers);
@@ -176,11 +167,10 @@ class HibernateJpaConfiguration extends JpaBaseConfiguration {
 	}
 
 	private void configureSpringJtaPlatform(Map<String, Object> vendorProperties,
-			JtaTransactionManager jtaTransactionManager) {
+											JtaTransactionManager jtaTransactionManager) {
 		try {
 			vendorProperties.put(JTA_PLATFORM, new SpringJtaPlatform(jtaTransactionManager));
-		}
-		catch (LinkageError ex) {
+		} catch (LinkageError ex) {
 			// NoClassDefFoundError can happen if Hibernate 4.2 is used and some
 			// containers (e.g. JBoss EAP 6) wrap it in the superclass LinkageError
 			if (!isUsingJndi()) {
@@ -197,8 +187,7 @@ class HibernateJpaConfiguration extends JpaBaseConfiguration {
 	private boolean isUsingJndi() {
 		try {
 			return JndiLocatorDelegate.isDefaultJndiEnvironmentAvailable();
-		}
-		catch (Error ex) {
+		} catch (Error ex) {
 			return false;
 		}
 	}
@@ -207,8 +196,7 @@ class HibernateJpaConfiguration extends JpaBaseConfiguration {
 		for (String candidate : NO_JTA_PLATFORM_CLASSES) {
 			try {
 				return Class.forName(candidate).newInstance();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				// Continue searching
 			}
 		}
@@ -223,7 +211,7 @@ class HibernateJpaConfiguration extends JpaBaseConfiguration {
 		private final ImplicitNamingStrategy implicitNamingStrategy;
 
 		NamingStrategiesHibernatePropertiesCustomizer(PhysicalNamingStrategy physicalNamingStrategy,
-				ImplicitNamingStrategy implicitNamingStrategy) {
+													  ImplicitNamingStrategy implicitNamingStrategy) {
 			this.physicalNamingStrategy = physicalNamingStrategy;
 			this.implicitNamingStrategy = implicitNamingStrategy;
 		}

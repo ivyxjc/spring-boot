@@ -19,7 +19,6 @@ package org.springframework.boot.autoconfigure.session;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.IMap;
 import org.junit.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -60,12 +59,12 @@ public class SessionAutoConfigurationIntegrationTests extends AbstractSessionAut
 	public void severalCandidatesWithWrongSessionStore() {
 		this.contextRunner.withUserConfiguration(HazelcastConfiguration.class)
 				.withPropertyValues("spring.session.store-type=redis").run((context) -> {
-					assertThat(context).hasFailed();
-					assertThat(context).getFailure().hasCauseInstanceOf(SessionRepositoryUnavailableException.class);
-					assertThat(context).getFailure()
-							.hasMessageContaining("No session repository could be auto-configured");
-					assertThat(context).getFailure().hasMessageContaining("session store type is 'redis'");
-				});
+			assertThat(context).hasFailed();
+			assertThat(context).getFailure().hasCauseInstanceOf(SessionRepositoryUnavailableException.class);
+			assertThat(context).getFailure()
+					.hasMessageContaining("No session repository could be auto-configured");
+			assertThat(context).getFailure().hasMessageContaining("session store type is 'redis'");
+		});
 	}
 
 	@Test

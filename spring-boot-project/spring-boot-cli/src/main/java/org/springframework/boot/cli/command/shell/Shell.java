@@ -16,20 +16,9 @@
 
 package org.springframework.boot.cli.command.shell;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
-import java.util.Set;
-
 import jline.console.ConsoleReader;
 import jline.console.completer.CandidateListCompletionHandler;
 import org.fusesource.jansi.AnsiRenderer.Code;
-
 import org.springframework.boot.cli.command.Command;
 import org.springframework.boot.cli.command.CommandFactory;
 import org.springframework.boot.cli.command.CommandRunner;
@@ -37,6 +26,9 @@ import org.springframework.boot.cli.command.core.HelpCommand;
 import org.springframework.boot.cli.command.core.VersionCommand;
 import org.springframework.boot.loader.tools.SignalUtils;
 import org.springframework.util.StringUtils;
+
+import java.io.IOException;
+import java.util.*;
 
 /**
  * A shell for Spring Boot. Drops the user into an event loop (REPL) where command line
@@ -67,6 +59,7 @@ public class Shell {
 
 	/**
 	 * Create a new {@link Shell} instance.
+	 *
 	 * @throws IOException in case of I/O errors
 	 */
 	Shell() throws IOException {
@@ -124,14 +117,14 @@ public class Shell {
 
 	/**
 	 * Run the shell until the user exists.
+	 *
 	 * @throws Exception on error
 	 */
 	public void run() throws Exception {
 		printBanner();
 		try {
 			runInputLoop();
-		}
-		catch (Exception ex) {
+		} catch (Exception ex) {
 			if (!(ex instanceof ShellExitException)) {
 				throw ex;
 			}
@@ -185,9 +178,8 @@ public class Shell {
 	 */
 	private class ShellCommandRunner extends CommandRunner {
 
-		private volatile Command lastCommand;
-
 		private final Map<String, String> aliases = new HashMap<>();
+		private volatile Command lastCommand;
 
 		ShellCommandRunner() {
 			super(null);

@@ -16,12 +16,9 @@
 
 package org.springframework.boot.autoconfigure.jms.activemq;
 
-import javax.jms.ConnectionFactory;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.junit.Test;
 import org.messaginghub.pooled.jms.JmsPoolConnectionFactory;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -30,6 +27,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jms.connection.CachingConnectionFactory;
 import org.springframework.util.StringUtils;
+
+import javax.jms.ConnectionFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -56,7 +55,7 @@ public class ActiveMQAutoConfigurationTests {
 					.isInstanceOf(ActiveMQConnectionFactory.class);
 			assertThat(
 					((ActiveMQConnectionFactory) cachingConnectionFactory.getTargetConnectionFactory()).getBrokerURL())
-							.isEqualTo("vm://localhost?broker.persistent=false");
+					.isEqualTo("vm://localhost?broker.persistent=false");
 		});
 	}
 
@@ -98,20 +97,20 @@ public class ActiveMQAutoConfigurationTests {
 	public void connectionFactoryCachingCanBeDisabled() {
 		this.contextRunner.withUserConfiguration(EmptyConfiguration.class)
 				.withPropertyValues("spring.jms.cache.enabled=false").run((context) -> {
-					assertThat(context.getBeansOfType(ActiveMQConnectionFactory.class)).hasSize(1);
-					ActiveMQConnectionFactory connectionFactory = context.getBean(ActiveMQConnectionFactory.class);
-					ActiveMQConnectionFactory defaultFactory = new ActiveMQConnectionFactory(
-							"vm://localhost?broker.persistent=false");
-					assertThat(connectionFactory.getUserName()).isEqualTo(defaultFactory.getUserName());
-					assertThat(connectionFactory.getPassword()).isEqualTo(defaultFactory.getPassword());
-					assertThat(connectionFactory.getCloseTimeout()).isEqualTo(defaultFactory.getCloseTimeout());
-					assertThat(connectionFactory.isNonBlockingRedelivery())
-							.isEqualTo(defaultFactory.isNonBlockingRedelivery());
-					assertThat(connectionFactory.getSendTimeout()).isEqualTo(defaultFactory.getSendTimeout());
-					assertThat(connectionFactory.isTrustAllPackages()).isEqualTo(defaultFactory.isTrustAllPackages());
-					assertThat(connectionFactory.getTrustedPackages())
-							.containsExactly(StringUtils.toStringArray(defaultFactory.getTrustedPackages()));
-				});
+			assertThat(context.getBeansOfType(ActiveMQConnectionFactory.class)).hasSize(1);
+			ActiveMQConnectionFactory connectionFactory = context.getBean(ActiveMQConnectionFactory.class);
+			ActiveMQConnectionFactory defaultFactory = new ActiveMQConnectionFactory(
+					"vm://localhost?broker.persistent=false");
+			assertThat(connectionFactory.getUserName()).isEqualTo(defaultFactory.getUserName());
+			assertThat(connectionFactory.getPassword()).isEqualTo(defaultFactory.getPassword());
+			assertThat(connectionFactory.getCloseTimeout()).isEqualTo(defaultFactory.getCloseTimeout());
+			assertThat(connectionFactory.isNonBlockingRedelivery())
+					.isEqualTo(defaultFactory.isNonBlockingRedelivery());
+			assertThat(connectionFactory.getSendTimeout()).isEqualTo(defaultFactory.getSendTimeout());
+			assertThat(connectionFactory.isTrustAllPackages()).isEqualTo(defaultFactory.isTrustAllPackages());
+			assertThat(connectionFactory.getTrustedPackages())
+					.containsExactly(StringUtils.toStringArray(defaultFactory.getTrustedPackages()));
+		});
 	}
 
 	@Test
@@ -139,23 +138,23 @@ public class ActiveMQAutoConfigurationTests {
 	public void defaultPoolConnectionFactoryIsApplied() {
 		this.contextRunner.withUserConfiguration(EmptyConfiguration.class)
 				.withPropertyValues("spring.activemq.pool.enabled=true").run((context) -> {
-					assertThat(context.getBeansOfType(JmsPoolConnectionFactory.class)).hasSize(1);
-					JmsPoolConnectionFactory connectionFactory = context.getBean(JmsPoolConnectionFactory.class);
-					JmsPoolConnectionFactory defaultFactory = new JmsPoolConnectionFactory();
-					assertThat(connectionFactory.isBlockIfSessionPoolIsFull())
-							.isEqualTo(defaultFactory.isBlockIfSessionPoolIsFull());
-					assertThat(connectionFactory.getBlockIfSessionPoolIsFullTimeout())
-							.isEqualTo(defaultFactory.getBlockIfSessionPoolIsFullTimeout());
-					assertThat(connectionFactory.getConnectionIdleTimeout())
-							.isEqualTo(defaultFactory.getConnectionIdleTimeout());
-					assertThat(connectionFactory.getMaxConnections()).isEqualTo(defaultFactory.getMaxConnections());
-					assertThat(connectionFactory.getMaxSessionsPerConnection())
-							.isEqualTo(defaultFactory.getMaxSessionsPerConnection());
-					assertThat(connectionFactory.getConnectionCheckInterval())
-							.isEqualTo(defaultFactory.getConnectionCheckInterval());
-					assertThat(connectionFactory.isUseAnonymousProducers())
-							.isEqualTo(defaultFactory.isUseAnonymousProducers());
-				});
+			assertThat(context.getBeansOfType(JmsPoolConnectionFactory.class)).hasSize(1);
+			JmsPoolConnectionFactory connectionFactory = context.getBean(JmsPoolConnectionFactory.class);
+			JmsPoolConnectionFactory defaultFactory = new JmsPoolConnectionFactory();
+			assertThat(connectionFactory.isBlockIfSessionPoolIsFull())
+					.isEqualTo(defaultFactory.isBlockIfSessionPoolIsFull());
+			assertThat(connectionFactory.getBlockIfSessionPoolIsFullTimeout())
+					.isEqualTo(defaultFactory.getBlockIfSessionPoolIsFullTimeout());
+			assertThat(connectionFactory.getConnectionIdleTimeout())
+					.isEqualTo(defaultFactory.getConnectionIdleTimeout());
+			assertThat(connectionFactory.getMaxConnections()).isEqualTo(defaultFactory.getMaxConnections());
+			assertThat(connectionFactory.getMaxSessionsPerConnection())
+					.isEqualTo(defaultFactory.getMaxSessionsPerConnection());
+			assertThat(connectionFactory.getConnectionCheckInterval())
+					.isEqualTo(defaultFactory.getConnectionCheckInterval());
+			assertThat(connectionFactory.isUseAnonymousProducers())
+					.isEqualTo(defaultFactory.isUseAnonymousProducers());
+		});
 	}
 
 	@Test
@@ -196,11 +195,11 @@ public class ActiveMQAutoConfigurationTests {
 	public void poolConnectionFactoryConfiguration() {
 		this.contextRunner.withUserConfiguration(EmptyConfiguration.class)
 				.withPropertyValues("spring.activemq.pool.enabled:true").run((context) -> {
-					ConnectionFactory factory = context.getBean(ConnectionFactory.class);
-					assertThat(factory).isInstanceOf(JmsPoolConnectionFactory.class);
-					context.getSourceApplicationContext().close();
-					assertThat(factory.createConnection()).isNull();
-				});
+			ConnectionFactory factory = context.getBean(ConnectionFactory.class);
+			assertThat(factory).isInstanceOf(JmsPoolConnectionFactory.class);
+			context.getSourceApplicationContext().close();
+			assertThat(factory.createConnection()).isNull();
+		});
 	}
 
 	@Test

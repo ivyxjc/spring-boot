@@ -16,11 +16,11 @@
 
 package org.springframework.boot.maven;
 
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.jar.JarOutputStream;
-
-import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

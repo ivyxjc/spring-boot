@@ -16,18 +16,16 @@
 
 package org.springframework.boot.actuate.endpoint.web;
 
-import java.util.Collection;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration.Dynamic;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
+import java.util.Collection;
 
 /**
  * {@link ServletContextInitializer} to register {@link ExposableServletEndpoint servlet
